@@ -1,0 +1,270 @@
+body {
+  padding: 30px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#main {
+  float: left;
+  width: 100%;
+  background-color: #eee;
+}
+#main-container {
+  margin: 0 auto;
+  width: 960px;
+}
+#main-layout {
+  float: left;
+  width: 960px;
+  background-color: #fff;
+}
+#header {
+  float: left;
+  width: 940px;
+  padding: 0 10px;
+  color: #fff;
+  background-color: #aaa;
+}
+#player {
+  clear: left;
+  float: left;
+  width: 330px;
+  padding: 5px 10px 20px 5px;
+  margin: 10px 0 0 10px;
+  display: inline;
+  border: 1px solid #808080;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 2px 2px 0px #000;
+  -webkit-box-shadow: 2px 2px 0px #000;
+  box-shadow: 2px 2px 0px #000;
+}
+#current-game {
+  float: right;
+  width: 560px;
+  padding: 5px 5px 20px 10px;
+  margin: 10px 10px 0 0;
+  display: inline;
+  border: 1px solid #808080;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 2px 2px 0px #000;
+  -webkit-box-shadow: 2px 2px 0px #000;
+  box-shadow: 2px 2px 0px #000;
+}
+.game {
+  background-color: #fff;
+  line-height: 25px;
+  padding: 3px 6px 3px 6px;
+  margin: 5px 5px 0 -20px;
+  border: 1px solid #808080;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+.game:hover {
+  border: 2px solid #000;
+  margin: 3px 5px 0 -20px;
+}
+.selected-game {
+  color: #000;
+  padding: 3px 6px 3px 6px;
+  margin: 5px 5px 0 -20px;
+  background-color: #ddd;
+  line-height: 25px;
+  border: 1px solid #000;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 1px 2px 0px #e6e6e6, inset 0px 0px 2px #000;
+  -webkit-box-shadow: 1px 2px 0px #e6e6e6, inset 0px 0px 2px #000;
+  box-shadow: 1px 2px 0px #e6e6e6, inset 0px 0px 2px #000;
+}
+.cancel-add-game {
+  float: right;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  margin: 3px 0 0 0;
+}
+.confirm-add-game {
+  float: right;
+  width: 20px;
+  height: 20px;
+  padding: 0 5px 0 0;
+  margin: 3px 0 0 0;
+}
+.deleteGame {
+  float: right;
+  width: 20px;
+  height: 20px;
+  margin: 3px 0 0 0;
+  display: none;
+}
+.selected-game .deleteGame {
+  display: block;
+}
+.enemyName {
+  display: inline;
+}
+.enemy {
+  background-color: #eee;
+  border: 1px solid #808080;
+  padding: 5px 0 5px 5px;
+  margin: 5px 0;
+  line-height: 30px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 2px 1px 0px #000;
+  -webkit-box-shadow: 2px 1px 0px #000;
+  box-shadow: 2px 1px 0px #000;
+}
+.selected-enemy {
+  background-color: #aaa;
+  color: #fff;
+}
+.selected-enemy .game {
+  background-color: #aaa;
+}
+.player-items {
+  float: left;
+  width: 260px;
+  border: 1px solid #ddd;
+  margin: 0 0 0 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 2px 2px 0px #646464;
+  -webkit-box-shadow: 2px 2px 0px #646464;
+  box-shadow: 2px 2px 0px #646464;
+}
+.player-items h3 {
+  padding: 0 25px;
+}
+.enemy-items h3 {
+  padding: 0 25px;
+}
+.enemy-items {
+  float: right;
+  width: 260px;
+  border: 1px solid #ddd;
+  margin: 0 10px 0 0;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 2px 2px 0px #646464;
+  -webkit-box-shadow: 2px 2px 0px #646464;
+  box-shadow: 2px 2px 0px #646464;
+}
+.items {
+  padding: 0 0 0 25px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.itemImg {
+  margin: 10px 0 0 0;
+  width: 50px;
+  height: 50px;
+  vertical-align: -15px;
+}
+.itemName {
+  display: inline-block;
+  width: 70px;
+  text-align: left;
+}
+.itemCount {
+  display: inline-block;
+  width: 50px;
+  text-align: center;
+}
+.add-game {
+  -moz-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
+  background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
+  background-color: #b8e356;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #83c41a;
+  display: inline-block;
+  color: #fff;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 4px 5px;
+  margin: 0 10px 0 20px;
+  float: right;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #86ae47;
+}
+.add-game:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356));
+  background: -moz-linear-gradient(center top, #a5cc52 5%, #b8e356 100%);
+  background-color: #a5cc52;
+}
+.add-game:active {
+  position: relative;
+  top: 1px;
+}
+.deleteEnemy {
+  -moz-box-shadow: inset 0px 1px 0px 0px #f5e2e2;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f5e2e2;
+  box-shadow: inset 0px 1px 0px 0px #f5e2e2;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffe5e5), color-stop(1, #eba4a4));
+  background: -moz-linear-gradient(center top, #ffe5e5 5%, #eba4a4 100%);
+  background-color: #ffe5e5;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #e8a9a9;
+  display: inline-block;
+  color: #8f4d4d;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 4px 5px;
+  float: right;
+  margin: 0 5px 0 10px;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #f7f7f7;
+}
+.deleteEnemy:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #eba4a4), color-stop(1, #ffe5e5));
+  background: -moz-linear-gradient(center top, #eba4a4 5%, #ffe5e5 100%);
+  background-color: #eba4a4;
+}
+.deleteEnemy:active {
+  position: relative;
+  top: 1px;
+}
+#add-enemy {
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
+  box-shadow: inset 0px 1px 0px 0px #fff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
+  background-color: #ededed;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #dcdcdc;
+  color: #777;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 4px 5px;
+  margin: 0 5px 0 10px;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #fff;
+}
+#add-enemy:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed));
+  background: -moz-linear-gradient(center top, #dfdfdf 5%, #ededed 100%);
+  background-color: #dfdfdf;
+}
+#add-enemy:active {
+  position: relative;
+  top: 1px;
+}

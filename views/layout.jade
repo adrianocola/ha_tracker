@@ -1,0 +1,78 @@
+!!!
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/javascripts/vendor/jquery.js')
+    script(src='/javascripts/vendor/underscore.js')
+    script(src='/javascripts/vendor/backbone.js')
+
+    script(src='/javascripts/ha_tracker/models.js')
+    script(src='/javascripts/ha_tracker/collections.js')
+    script(src='/javascripts/ha_tracker/views.js')
+    script(src='/javascripts/ha_tracker/routes.js')
+    script(src='/javascripts/ha_tracker.js')
+
+    <!-- Templates -->
+
+    script(type="text/template",id="enemy-template")
+        div.enemyName
+            span <%= name %>
+            button.deleteEnemy Delete
+            button.add-game Add Game
+        ul.games
+
+    //script(type="text/template", id="player-template")
+    //    h3  Hey <%= name %>
+
+    script(type="text/template", id="enemies-template")
+        h2 Enemies
+        button#add-enemy Add Enemy
+        ul.enemies
+
+    script(type="text/template",id="add-enemy-template")
+        input#add-enemy-name(type="text",placeholder="New Enemy Name")
+        button.confirm-add-enemy Add
+        button.cancel-add-enemy N
+
+
+    script(type="text/template",id="add-game-template")
+        select.add-game-player-race
+            option(value="Council") Council
+            option(value="Dark Elves") Dark Elves
+            option(value="Dwarves") Dwarves
+            option(value="Tribe") Tribe
+        select.add-game-enemy-race
+            option(value="Council") Council
+            option(value="Dark Elves") Dark Elves
+            option(value="Dwarves") Dwarves
+            option(value="Tribe") Tribe
+        img.cancel-add-game(src='/images/delete-icon.png')
+        img.confirm-add-game(src='/images/accept-icon.png')
+
+    script(type="text/template",id="game-template")
+        a.game-text <%= name %>
+        img.deleteGame(src='/images/delete-icon.png')
+
+    script(type="text/template",id="selected-game-template")
+        h2 Selected Game
+        <% if(name) print("<h3>" + name + "</h3>"); %>
+
+    script(type="text/template", id="player-items-template")
+        h3 Player - <%= playerRace %>
+        ul.items
+
+    script(type="text/template", id="enemy-items-template")
+        h3 Enemy - <%= enemyRace %>
+        ul.items
+
+    script(type="text/template", id="item-template")
+        <% print('<img class=\"itemImg\" src=\"' + itemImg + '\"/>'); %>
+        span.itemName <%= itemName %>
+        span.itemCount <%= itemCount %>
+        button.itemSub -
+        button.itemAdd +
+
+
+  body
+    block content

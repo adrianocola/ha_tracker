@@ -1,0 +1,314 @@
+body
+  padding: 30px
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+
+#main
+    float: left
+    width: 100%
+    background-color: #EEEEEE
+
+#main-container
+    margin: 0 auto
+    width: 960px
+
+#main-layout
+    float: left
+    width: 960px
+    background-color: #FFFFFF
+
+#header
+    float: left
+    width: 940px
+    padding: 0 10px
+    color: #FFFFFF
+    background-color: #AAAAAA
+
+border-radius = 10px
+
+#player
+    clear: left
+    float: left
+    width: 330px
+    padding: 5px 10px 20px 5px
+    margin: 10px 0 0 10px
+    display: inline
+    border: 1px solid grey
+    -moz-border-radius: border-radius
+    -webkit-border-radius: border-radius
+    border-radius: border-radius
+    -moz-box-shadow: 2px 2px 0px rgba(0,0,0,1)
+    -webkit-box-shadow: 2px 2px 0px rgba(0,0,0,1)
+    box-shadow: 2px 2px 0px rgba(0,0,0,1)
+
+#current-game
+    float: right
+    width: 560px
+    padding: 5px 5px 20px 10px
+    margin: 10px 10px 0 0
+    display: inline
+    border: 1px solid grey
+    -moz-border-radius: border-radius
+    -webkit-border-radius: border-radius
+    border-radius: border-radius
+    -moz-box-shadow: 2px 2px 0px rgba(0,0,0,1)
+    -webkit-box-shadow: 2px 2px 0px rgba(0,0,0,1)
+    box-shadow: 2px 2px 0px rgba(0,0,0,1)
+
+.game
+    background-color: white
+    line-height: 25px
+    padding: 3px 6px 3px 6px
+    margin: 5px 5px 0 -20px
+    border: 1px solid grey
+    -moz-border-radius: border-radius
+    -webkit-border-radius: border-radius
+    border-radius: border-radius
+
+.game:hover
+    border: 2px solid black
+    margin: 3px 5px 0 -20px
+
+.selected-game
+    color: black
+    padding: 3px 6px 3px 6px
+    margin: 5px 5px 0 -20px
+    background-color: #DDDDDD
+    line-height: 25px
+    border: 1px solid black
+    -moz-border-radius: border-radius
+    -webkit-border-radius: border-radius
+    border-radius: border-radius
+    -moz-box-shadow: 1px 2px 0px rgba(230,230,230,255), inset 0px 0px 2px rgba(0,0,0,1)
+    -webkit-box-shadow: 1px 2px 0px rgba(230,230,230,255), inset 0px 0px 2px rgba(0,0,0,1)
+    box-shadow: 1px 2px 0px rgba(230,230,230,255), inset 0px 0px 2px rgba(0,0,0,1)
+
+
+.cancel-add-game
+    float: right
+    width: 20px
+    height: 20px
+    border: 0
+    margin: 3px 0 0 0
+    //padding: 0 6px 0 0
+    //background-color: white
+    //color: red
+    //-moz-border-radius: 100px
+    //-webkit-border-radius: 100px
+    //border-radius: 100px
+
+.confirm-add-game
+    float: right
+    width: 20px
+    height: 20px
+    padding: 0 5px 0 0
+    margin: 3px 0 0 0
+    //background-color: white
+    //color: green
+    //-moz-border-radius: 100px
+    //-webkit-border-radius: 100px
+    //border-radius: 100px
+
+//.add-game
+//    float: right
+//    width: 20px
+//    height: 20px
+//    margin: 3px 5px 0 0
+
+.deleteGame
+    float: right
+    width: 20px
+    height: 20px
+    margin: 3px 0 0 0
+    display: none
+
+//.deleteEnemy
+//    float: right
+//    width: 20px
+//    height: 20px
+//    margin: 3px 10px 0 0
+
+
+.selected-game .deleteGame
+    display: block
+
+.enemyName
+    display: inline
+
+.enemy
+    background-color: #EEEEEE
+    border: 1px solid grey
+    padding: 5px 0 5px 5px
+    margin: 5px 0
+    line-height: 30px
+    -moz-border-radius: border-radius
+    -webkit-border-radius: border-radius
+    border-radius: border-radius
+    -moz-box-shadow: 2px 1px 0px rgba(0,0,0,1)
+    -webkit-box-shadow: 2px 1px 0px rgba(0,0,0,1)
+    box-shadow: 2px 1px 0px rgba(0,0,0,1)
+
+.selected-enemy
+    background-color: #AAAAAA
+    color: white
+
+.selected-enemy .game
+    background-color: #AAAAAA
+
+.player-items
+    float: left
+    width: 260px
+    border: 1px solid #DDDDDD
+    margin: 0 0 0 10px
+    -moz-border-radius: border-radius
+    -webkit-border-radius: border-radius
+    border-radius: border-radius
+    -moz-box-shadow: 2px 2px 0px rgba(100,100,100,1)
+    -webkit-box-shadow: 2px 2px 0px rgba(100,100,100,1)
+    box-shadow: 2px 2px 0px rgba(100,100,100,1)
+
+.player-items h3
+    padding: 0 25px
+
+.enemy-items h3
+    padding: 0 25px
+
+.enemy-items
+    float: right
+    width: 260px
+    border: 1px solid #DDDDDD
+    margin: 0 10px 0 0
+    -moz-border-radius: border-radius
+    -webkit-border-radius: border-radius
+    border-radius: border-radius
+    -moz-box-shadow: 2px 2px 0px rgba(100,100,100,1)
+    -webkit-box-shadow: 2px 2px 0px rgba(100,100,100,1)
+    box-shadow: 2px 2px 0px rgba(100,100,100,1)
+
+.items
+    padding 0 0 0 25px
+    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif
+    //border: 1px solid black
+
+img-size = 50px
+
+.itemImg
+    margin: 10px 0 0 0
+    width: img-size
+    height: img-size
+    vertical-align: -15px
+
+.itemName
+  display: inline-block
+  width: 70px
+  text-align: left
+
+.itemCount
+  display: inline-block
+  width: 50px
+  text-align: center
+  
+  
+  
+.add-game
+	-moz-box-shadow:inset 0px 1px 0px 0px #d9fbbe
+	-webkit-box-shadow:inset 0px 1px 0px 0px #d9fbbe
+	box-shadow:inset 0px 1px 0px 0px #d9fbbe
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52) )
+	background:-moz-linear-gradient( center top, #b8e356 5%, #a5cc52 100% )
+	//filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8e356', endColorstr='#a5cc52')
+	background-color:#b8e356
+	-moz-border-radius:6px
+	-webkit-border-radius:6px
+	border-radius:6px
+	border:1px solid #83c41a
+	display:inline-block
+	color:#ffffff
+	font-family:arial
+	font-size:15px
+	font-weight:bold
+	padding: 4px 5px
+	margin: 0 10px 0 20px
+	float: right
+	text-decoration:none
+	text-shadow:1px 1px 0px #86ae47
+.add-game:hover
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356) )
+	background:-moz-linear-gradient( center top, #a5cc52 5%, #b8e356 100% )
+	//filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#a5cc52', endColorstr='#b8e356')
+	background-color:#a5cc52
+.add-game:active
+	position:relative
+	top:1px
+  
+  
+
+
+.deleteEnemy
+	-moz-box-shadow:inset 0px 1px 0px 0px #f5e2e2
+	-webkit-box-shadow:inset 0px 1px 0px 0px #f5e2e2
+	box-shadow:inset 0px 1px 0px 0px #f5e2e2
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffe5e5), color-stop(1, #eba4a4) )
+	background:-moz-linear-gradient( center top, #ffe5e5 5%, #eba4a4 100% )
+	//filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe5e5', endColorstr='#eba4a4')
+	background-color:#ffe5e5
+	-moz-border-radius:6px
+	-webkit-border-radius:6px
+	border-radius:6px
+	border:1px solid #e8a9a9
+	display:inline-block
+	color:#8f4d4d
+	font-family:arial
+	font-size:15px
+	font-weight:bold
+	padding:4px 5px
+	float: right
+	margin: 0 5px 0 10px
+	text-decoration:none
+	text-shadow:1px 1px 0px #f7f7f7
+
+.deleteEnemy:hover
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #eba4a4), color-stop(1, #ffe5e5) )
+	background:-moz-linear-gradient( center top, #eba4a4 5%, #ffe5e5 100% )
+	//filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eba4a4', endColorstr='#ffe5e5')
+	background-color:#eba4a4
+
+.deleteEnemy:active
+	position:relative
+	top:1px
+
+
+#add-enemy
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
+    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff
+    box-shadow:inset 0px 1px 0px 0px #ffffff
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) )
+    background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% )
+    //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf')
+    background-color:#ededed
+    -moz-border-radius:6px
+    -webkit-border-radius:6px
+    border-radius:6px
+    border:1px solid #dcdcdc
+    //display:inline-block
+    color:#777777
+    font-family:arial
+    font-size:15px
+    font-weight:bold
+    padding:4px 5px
+    margin: 0 5px 0 10px
+    text-decoration:none
+    text-shadow:1px 1px 0px #ffffff
+
+#add-enemy:hover
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) )
+    background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% )
+    //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed')
+    background-color:#dfdfdf
+
+#add-enemy:active
+    position:relative
+    top:1px
+
+
+
+

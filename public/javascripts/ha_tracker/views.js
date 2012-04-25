@@ -1,0 +1,483 @@
+app = window.app ? window.app : {};
+
+
+var PlayerView = Backbone.View.extend({
+
+    el: "#player",
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.model.bind("change",this.render,this);
+
+    },
+
+
+    render: function(){
+
+        this.$el.empty();
+
+        var enemiesView = new EnemiesView({collection: this.model.enemies});
+
+        this.$el.append(enemiesView.render().el);
+
+        return this;
+
+    }
+
+});
+
+var EnemiesView = Backbone.View.extend({
+
+    className: 'enemies',
+
+    initialize: function(){
+        this.template = _.template($('#enemies-template').html());
+
+        _.bindAll(this);
+
+        //se um game foi selecionado também precisa resetar a view
+        this.collection.bind('reset selected', this.render, this);
+
+        this.collection.bind('add', this.enemyAdded, this);
+
+    },
+
+    events: {
+        'click #add-enemy':  'addEnemy'
+    },
+
+    addEnemy: function(){
+
+        var $enemies = this.$(".enemies")
+
+        app.AddEnemyView.enemies = this.collection;
+        $enemies.prepend(app.AddEnemyView.render().el);
+        app.AddEnemyView.focus();
+
+    },
+
+    enemyAdded: function(enemy){
+        var $enemies = this.$(".enemies");
+
+        var view = new EnemyView({ model: enemy});
+        $enemies.prepend(view.render().el);
+    },
+
+    render: function() {
+        var $enemies;
+
+        $(this.el).html(this.template({}));
+        $enemies = this.$(".enemies");
+        this.collection.each(function(enemy) {
+            var view = new EnemyView({ model: enemy});
+            $enemies.append(view.render().el);
+        });
+
+        return this;
+    }
+
+});
+
+var AddEnemyView = Backbone.View.extend({
+
+    tagName: "li",
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.template = _.template($("#add-enemy-template").html());
+
+    },
+
+    events:{
+        'click .confirm-add-enemy': 'confirmAddEnemy',
+        'click .cancel-add-enemy': 'cancelAddEnemy',
+        'keypress #add-enemy-name': 'confirmAddEnemy'
+    },
+
+    confirmAddEnemy: function(evt){
+
+        if(evt.type === "keypress"){
+            if(evt.keyCode == 13){
+                this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0});
+                this.$el.remove();
+            }
+        }else if(evt.type === "click"){
+            this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0});
+            this.$el.remove();
+        }
+
+
+    },
+
+    cancelAddEnemy: function(){
+        this.$el.remove();
+    },
+
+    focus: function(){
+        $("#add-enemy-name").focus();
+
+        return this;
+    },
+
+    render: function(){
+
+        this.$el.html(this.template({}));
+
+        //força a delegação de eventos
+        this.delegateEvents();
+
+        return this;
+    }
+
+});
+
+
+var EnemyView = Backbone.View.extend({
+    tagName:"li",
+    className: "enemy",
+
+    initialize: function() {
+        this.template = _.template($("#enemy-template").html())
+
+        _.bindAll(this);
+
+        this.model.games.bind('add remove', this.render, this);
+
+        this.model.games.bind('change:selected', this.renderSelected,this);
+
+        this.model.games.bind('change:unselected', this.renderUnselected,this);
+
+    },
+
+    events: {
+        'click .add-game':  'addGame',
+        'click .deleteEnemy': 'deleteEnemy'
+    },
+
+
+    addGame: function(){
+        app.AddGameView.games = this.model.games;
+        this.$(".games").prepend(app.AddGameView.render().el);
+    },
+
+    deleteEnemy: function(){
+        this.model.destroy();
+        this.$el.remove();
+    },
+
+    renderSelected: function(){
+
+        this.$el.toggleClass('selected-enemy',true);
+
+        return this;
+
+    },
+
+    renderUnselected: function(){
+
+        this.$el.toggleClass('selected-enemy',false);
+
+        return this;
+
+    },
+
+    render: function(){
+
+        var $games,
+            gamesCollection = this.model.games;
+
+        $(this.el).html(this.template(this.model.toJSON()));
+        this.$el.toggleClass('selected-enemy',false);
+
+        $games = this.$(".games");
+
+        this.model.games.each(function(game) {
+            var view = new GameView({ model: game, collection: gamesCollection });
+            $games.append(view.render().el);
+        },this);
+
+
+
+        return this;
+    }
+});
+
+var AddGameView = Backbone.View.extend({
+
+    tagName: "li",
+    className: 'game',
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.template = _.template($("#add-game-template").html());
+
+    },
+
+    events:{
+        'click .confirm-add-game': 'confirmAddGame',
+        'click .cancel-add-game': 'cancelAddGame'
+    },
+
+    confirmAddGame: function(){
+        var playerRace = this.$(".add-game-player-race option:selected").text();
+        var enemyRace = this.$(".add-game-enemy-race option:selected").text();
+
+        var gameModel = new Game({
+            name: playerRace + " vs " + enemyRace,
+            playerRace: playerRace,
+            enemyRace: enemyRace
+        });
+
+
+        gameModel.bind("sync",this.createdGame,this);
+
+        this.games.create(gameModel, {at:0});
+
+    },
+
+    createdGame: function(){
+
+        var game = this.games.at(0);
+
+        this.games.select(game.id);
+        app.SelectedGameView.selected(game);
+    },
+
+    cancelAddGame: function(){
+        $(this.el).remove();
+    },
+
+    render: function(){
+
+        $(this.el).html(this.template({}));
+
+        //força a delegação de eventos
+        this.delegateEvents();
+
+        return this;
+
+    }
+
+});
+
+var GameView = Backbone.View.extend({
+    tagName:"li",
+    className:'game',
+
+
+    initialize: function() {
+        this.template = _.template($("#game-template").html());
+
+        _.bindAll(this);
+
+        this.model.bind("change:selected", this.renderSelected,this);
+
+        this.model.bind("change:unselected", this.renderUnselected,this);
+
+    },
+
+    events:{
+        'click .game-text': 'selectGame',
+        'click .deleteGame': 'deleteGame'
+    },
+
+    selectGame: function(){
+
+        this.collection.select(this.model.id);
+        app.SelectedGameView.selected(this.model);
+    },
+
+    deleteGame: function(){
+        this.model.destroy();
+    },
+
+    renderSelected: function(){
+
+        //this.$(".game").addClass('selected-game',true);
+        //this.$(".game").removeClass('game',false);
+        this.$el.addClass('selected-game',true);
+        this.$el.removeClass('game',false);
+
+        return this;
+
+    },
+
+    renderUnselected: function(){
+
+        this.$el.addClass('game');
+        this.$el.removeClass('selected-game',false);
+
+
+        return this;
+
+    },
+
+    render: function(){
+        $(this.el).html(this.template(this.model.toJSON()));
+
+        return this;
+    }
+});
+
+
+var SelectedGameView = Backbone.View.extend({
+
+    el: "#current-game",
+
+    initialize: function() {
+        _.bindAll(this);
+
+        this.template = _.template($("#selected-game-template").html())
+
+        app.SelectionManager.bind("change:selectedGame",this.selected,this);
+
+        app.SelectionManager.bind("change:unselectedGame change:unselectedEnemy",this.clean,this);
+
+    },
+
+
+    selected: function(game){
+        this.model = game;
+
+        this.render();
+    },
+
+    clean: function(){
+
+        this.model = undefined;
+        this.render();
+    },
+
+    render: function(){
+
+        if(this.model){
+
+            this.$el.html(this.template(this.model.toJSON()));
+
+            this.$el.append(new PlayerItemsView({collection: this.model.playerItems, model: this.model}).render().el);
+            this.$el.append(new EnemyItemsView({collection: this.model.enemyItems, model: this.model}).render().el);
+        }else{
+            this.$el.html(this.template({}));
+        }
+
+        return this;
+    }
+
+});
+
+
+var ItemsView = Backbone.View.extend({
+
+    render: function(){
+
+        $(this.el).html(this.template(this.model.toJSON()));
+
+        var $items = this.$('.items');
+
+        this.collection.each(function(item){
+            $items.append(new ItemView({model: item}).render().el);
+        });
+
+        return this;
+
+    }
+
+});
+
+var PlayerItemsView = ItemsView.extend({
+
+    className: "player-items",
+
+    initialize: function(){
+
+        this.template = _.template($("#player-items-template").html())
+
+        _.bindAll(this, 'render');
+
+        this.collection.bind("loaded",this.render,this);
+    }
+
+
+});
+
+var EnemyItemsView = ItemsView.extend({
+
+    className: "enemy-items",
+
+    initialize: function(){
+
+        this.template = _.template($("#enemy-items-template").html())
+
+        _.bindAll(this, 'render');
+
+        this.collection.bind("loaded",this.render,this);
+
+    }
+
+});
+
+
+var ItemView = Backbone.View.extend({
+
+    tagName: "li",
+    className: "item",
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.template = _.template($("#item-template").html())
+
+        this.model.bind("change",this.render, this);
+
+    },
+
+    events: {
+        'click .itemSub': 'sub',
+        'click .itemAdd': 'add'
+    },
+
+    sub: function(){
+        this.model.subCount();
+    },
+
+    add: function(){
+        this.model.addCount();
+    },
+
+    render: function(){
+
+        if(this.model.has("itemImg")){
+            $(this.el).html(this.template(this.model.toJSON()));
+
+            if(!this.model.canAdd()){
+                this.$(".itemAdd").attr('disabled', 'disabled');
+            }
+            if(!this.model.canSub()){
+                this.$(".itemSub").attr('disabled', 'disabled');
+            }
+        }
+
+        return this;
+    }
+
+});
+
+
+$(function(){
+    app.PlayerView = PlayerView;
+    app.EnemiesView = EnemiesView;
+    app.EnemyView = EnemyView;
+    app.SelectedGameView = new SelectedGameView();
+    app.AddGameView = new AddGameView();
+    app.AddEnemyView = new AddEnemyView();
+
+
+});
+
