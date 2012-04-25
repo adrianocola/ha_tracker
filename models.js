@@ -30,7 +30,5 @@ exports.Enemy = mongoose.model('Enemy', EnemySchema);
 exports.Game = mongoose.model('Game', GameSchema);
 exports.Item = mongoose.model('Item', ItemSchema);
 
-
-
-
+//mongoose.connect('mongodb://heroku_app4244150:j0irl4p4sjukp4q8h5928i2nku@ds033047.mongolab.com:33047/heroku_app4244150');
 mongoose.connect('mongodb://localhost/ha_tracker');

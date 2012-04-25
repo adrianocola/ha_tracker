@@ -43,6 +43,7 @@ models = require('./models');
 
 //mongoose.connect('mongodb://heroku_app3124648:2bi7klje534eo9uimtf1k44mai@ds031407.mongolab.com:31407/heroku_app3124648');
 
-http.createServer(app).listen(3000);
+var port = process.env.PORT || 3000;
+http.createServer(app).listen(port);
 
-console.log("Express server listening on port 3000");
+console.log("Express server listening on port " + port);

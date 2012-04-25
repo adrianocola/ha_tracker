@@ -5,7 +5,7 @@ $(function(){
 
     var selectedGameView = app.SelectedGameView;
 
-    app.AppPlayer = new app.Player({_id: "4f92a60eff8f8c0000000003"});
+    app.AppPlayer = new app.Player({name: "Player"});
     app.AppPlayer.fetch();
 
     new app.PlayerView({model: app.AppPlayer});

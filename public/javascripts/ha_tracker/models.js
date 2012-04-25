@@ -230,7 +230,7 @@ var Enemies = Backbone.Collection.extend({
 
 var Player = Backbone.Model.extend({
 
-    idAttribute: "_id",
+    idAttribute: "name",
 
     urlRoot: "/api/players",
 
