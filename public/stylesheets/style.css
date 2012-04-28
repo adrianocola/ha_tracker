@@ -148,8 +148,8 @@ body {
 .enemy {
   background-color: #eee;
   border: 1px solid #808080;
-  padding: 5px 0 5px 5px;
-  margin: 10px 0 5px -30px;
+  padding: 5px 0 15px 5px;
+  margin: 10px 0 0 -30px;
   line-height: 30px;
   list-style: none;
   -moz-border-radius: 10px;
@@ -165,9 +165,6 @@ body {
   -webkit-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
-}
-.games {
-  margin: 0 0 10px 0;
 }
 .addEnemyPanel {
   height: 30px;
