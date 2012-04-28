@@ -164,6 +164,8 @@ var EnemyView = Backbone.View.extend({
 
 
     addGame: function(){
+        console.log("CREATE CLICK");
+
         app.AddGameView.games = this.model.games;
         this.$(".games").append(app.AddGameView.render().el);
     },
