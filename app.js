@@ -1,10 +1,6 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
-  , http = require('http');
+  , http = require('http')
+  , env = require('./env');
   //, RedisStore = require('connect-redis')(express);
 
 // faz com que o retorno desse arquivo no método require seja a variável app
@@ -41,9 +37,7 @@ models = require('./models');
     require('./routes/' + route);
 });
 
-//mongoose.connect('mongodb://heroku_app3124648:2bi7klje534eo9uimtf1k44mai@ds031407.mongolab.com:31407/heroku_app3124648');
 
-var port = process.env.PORT || 3000;
-http.createServer(app).listen(port);
+http.createServer(app).listen(env.port);
 
-console.log("Express server listening on port " + port);
+console.log("Express server listening on port " + env.port);

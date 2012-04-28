@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+    env = require('./env');
 
 var ItemSchema = new Schema({
     itemId: Number,
@@ -36,6 +37,5 @@ exports.Game = mongoose.model('Game', GameSchema);
 exports.ItemManager = mongoose.model('ItemManager', ItemManagerSchema);
 exports.Item = mongoose.model('Item', ItemSchema);
 
-//mongoose.connect('mongodb://heroku_app4244150:j0irl4p4sjukp4q8h5928i2nku@ds033047.mongolab.com:33047/heroku_app4244150');
-mongoose.connect('mongodb://localhost/ha_tracker');
+mongoose.connect(env.mongo_url);
 
