@@ -10,8 +10,6 @@ app.get('/api/players/:name', function(req, res){
 
         req.session.playerId = doc._id;
 
-        console.log(doc);
-
         res.send(doc);
 
 

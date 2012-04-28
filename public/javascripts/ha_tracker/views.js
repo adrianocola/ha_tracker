@@ -103,11 +103,11 @@ var AddEnemyView = Backbone.View.extend({
 
         if(evt.type === "keypress"){
             if(evt.keyCode == 13){
-                this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0});
+                this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true});
                 this.$el.remove();
             }
         }else if(evt.type === "click"){
-            this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0});
+            this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true});
             this.$el.remove();
         }
 

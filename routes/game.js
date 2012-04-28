@@ -73,7 +73,6 @@ app.post('/api/enemies/:enemy/games', function(req, res){
         enemy.games.push(game);
 
         player.save(function(err){
-            console.log("GAME: " + game);
             if (!err) res.send(game);
         });
 
