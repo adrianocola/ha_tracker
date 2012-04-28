@@ -164,7 +164,6 @@ var EnemyView = Backbone.View.extend({
 
 
     addGame: function(){
-        console.log("CREATE CLICK");
 
         console.log();
 
@@ -484,14 +483,15 @@ var ItemView = Backbone.View.extend({
 
     sub: function(){
         this.model.subCount();
+        this.$(".itemCount").html(this.model.get("itemCount"));
     },
 
     add: function(){
         this.model.addCount();
+        this.$(".itemCount").html(this.model.get("itemCount"));
     },
 
     renderItemCount: function(){
-        this.$(".itemCount").html(this.model.get("itemCount"));
 
         if(!this.model.canAdd()){
             this.$(".itemAdd").attr('disabled', 'disabled');
@@ -509,6 +509,8 @@ var ItemView = Backbone.View.extend({
     },
 
     render: function(){
+
+        console.log("RENDER");
 
         $(this.el).html(this.template(this.model.toJSON()));
 
