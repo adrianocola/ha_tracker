@@ -5,13 +5,8 @@ app = window.app ? window.app : {};
 var Item = Backbone.Model.extend({
 
     idAttribute: "_id",
-    urlRoot: "/api/items",
 
     initialize: function(){
-
-        if(!this.get("itemCount")){
-            this.set("itemCount", this.get("itemCountMax"));
-        }
 
         _.bindAll(this);
 
@@ -49,7 +44,18 @@ var Item = Backbone.Model.extend({
 
 
 var Items = Backbone.Collection.extend({
-    model: Item
+    model: Item,
+
+    url: function(){
+        return '/api/itemmanager/' + this.itemsId + '/items';
+    },
+
+    initialize: function(itemsId){
+
+        this.itemsId = itemsId;
+
+    }
+
 });
 
 var SelectionManager = Backbone.Model.extend({
@@ -126,8 +132,21 @@ var Game = Backbone.Model.extend({
 
         this.selected = false;
 
-        this.playerItems = new Items();
-        this.enemyItems = new Items();
+        //if the model is comming from the server it already have
+        // the playerItems and enemyItems ids
+        if(!this.isNew()){
+            this.playerItems = new Items(this.get('playerItems'));
+            this.enemyItems = new Items(this.get('enemyItems'));
+        }else{
+            //if the game is being created in the client it must
+            // wait the server return with the playerItems and enemyItems id
+            this.bind("sync",function(){
+                this.playerItems = new Items(this.get('playerItems'));
+                this.enemyItems = new Items(this.get('enemyItems'));
+            },this);
+        }
+
+
 
 
 
@@ -135,34 +154,10 @@ var Game = Backbone.Model.extend({
 
     select: function(){
 
-        this.loadItems();
-    },
+        this.playerItems.fetch();
 
-    loadItems: function(){
-
-        _.each(this.get("playerItems"),function(itemId){
-            var item = new app.Item({_id: itemId});
-
-            item.fetch();
-
-            this.playerItems.add(item);
-
-        },this);
-
-        _.each(this.get("enemyItems"),function(itemId){
-            var item = new app.Item({_id: itemId});
-            item.fetch();
-
-            this.enemyItems.add(item);
-
-        },this);
-
-        this.playerItems.trigger("loaded");
-        this.enemyItems.trigger("loaded");
-
+        this.enemyItems.fetch();
     }
-
-
 
 });
 
@@ -174,19 +169,11 @@ var Games = Backbone.Collection.extend({
 
     select: function(gameId){
 
-        app.GameRouter.navigate("enemies/" + this.enemy.id +  "/games/" + gameId);
 
-//        if(app.SelectedGame){
-//            app.SelectedGame.trigger("change:unselected");
-//        }
+        //app.GameRouter.navigate(this.enemy.get('name') +  "/" + gameId);
 
         app.SelectionManager.setSelectedEnemy(this.enemy);
         app.SelectionManager.setSelectedGame(this.get(gameId));
-
-//        app.SelectedGame = this.get(gameId);
-//        app.SelectedGame.select();
-//        app.SelectedGame.trigger("change:selected");
-
 
     }
 
@@ -199,9 +186,6 @@ var Enemy = Backbone.Model.extend({
     idAttribute: "_id",
 
     initialize: function(){
-        //esquema feito para aceitar uma collection de games dentro do modelo de Enemy.
-        //isso também permite salvar o enemy inteiro
-        //não confundir a variável this.collection com this.get('games')
 
         this.games = new Games(this.get('games'));
         this.games.enemy = this;
@@ -236,19 +220,18 @@ var Player = Backbone.Model.extend({
 
     initialize: function(){
 
-        this.enemies = new app.Enemies();
+        _.bindAll(this);
 
-        //quando carregar o player, carrega os enemies
-        this.bind("change",function(){
-            this.off("change");
-            this.enemies.fetch();
-        },this);
+    },
 
+
+    loadEnemies: function(){
+        this.enemies = new app.Enemies(this.get('enemies'));
     },
 
     selectGame: function(enemyId, gameId){
 
-        this.enemies.get(enemyId).selectGame(gameId);
+        //this.enemies.get(enemyId).selectGame(gameId);
 
     }
 

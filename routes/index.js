@@ -44,7 +44,7 @@ app.get('/get/:id',function(req, res){
 });
 
 
-app.get("/enemies/:enemyId/games/:gameId", function(req, res){
+app.get("/:enemyId/:gameId", function(req, res){
     models.Player.findOne({}, function (err, doc){
 
         req.session.playerId = undefined;

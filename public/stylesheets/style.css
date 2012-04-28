@@ -6,6 +6,7 @@ body {
   float: left;
   width: 100%;
   background-color: #eee;
+  margin: -40px 0 30px 0;
 }
 #main-container {
   margin: 0 auto;
@@ -27,6 +28,8 @@ body {
   clear: left;
   float: left;
   width: 330px;
+  height: 600px;
+  overflow: auto;
   padding: 5px 10px 20px 5px;
   margin: 10px 0 0 10px;
   display: inline;
@@ -34,13 +37,11 @@ body {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: 2px 2px 0px #000;
-  -webkit-box-shadow: 2px 2px 0px #000;
-  box-shadow: 2px 2px 0px #000;
 }
 #current-game {
   float: right;
   width: 560px;
+  height: 600px;
   padding: 5px 5px 20px 10px;
   margin: 10px 10px 0 0;
   display: inline;
@@ -48,11 +49,9 @@ body {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: 2px 2px 0px #000;
-  -webkit-box-shadow: 2px 2px 0px #000;
-  box-shadow: 2px 2px 0px #000;
 }
 .game {
+  color: #888;
   background-color: #fff;
   line-height: 25px;
   padding: 3px 6px 3px 6px;
@@ -61,24 +60,30 @@ body {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
+  list-style: none;
+  -moz-box-shadow: 1px 1px 2px #000;
+  -webkit-box-shadow: 1px 1px 2px #000;
+  box-shadow: 1px 1px 2px #000;
 }
 .game:hover {
   border: 2px solid #000;
-  margin: 3px 5px 0 -20px;
+  color: #000;
+  line-height: 23px;
 }
 .selected-game {
-  color: #000;
+  color: #fff;
+  list-style: none;
   padding: 3px 6px 3px 6px;
   margin: 5px 5px 0 -20px;
-  background-color: #ddd;
+  background-color: #bbb;
   line-height: 25px;
   border: 1px solid #000;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: 1px 2px 0px #e6e6e6, inset 0px 0px 2px #000;
-  -webkit-box-shadow: 1px 2px 0px #e6e6e6, inset 0px 0px 2px #000;
-  box-shadow: 1px 2px 0px #e6e6e6, inset 0px 0px 2px #000;
+  -moz-box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
+  -webkit-box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
+  box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
 }
 .cancel-add-game {
   float: right;
@@ -86,58 +91,147 @@ body {
   height: 20px;
   border: 0;
   margin: 3px 0 0 0;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
 }
 .confirm-add-game {
   float: right;
   width: 20px;
   height: 20px;
-  padding: 0 5px 0 0;
-  margin: 3px 0 0 0;
+  margin: 3px 5px 0 0;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
+  -moz-transform: scaleX(-1) rotate(-45deg);
+/* Gecko */
+  -o-transform: scaleX(-1) rotate(-45deg);
+/* Operah */
+  -webkit-transform: scaleX(-1) rotate(-45deg);
+/* webkit */
+  transform: scaleX(-1) rotate(-45deg);
+/* standard */
 }
 .deleteGame {
   float: right;
   width: 20px;
   height: 20px;
+  font-size: 20px;
+  font-weight: bold;
   margin: 3px 0 0 0;
+  padding: 0 0 0 0;
+  line-height: 15px;
+  vertical-align: middle;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
   display: none;
+}
+.game:hover .deleteGame {
+  display: block;
 }
 .selected-game .deleteGame {
   display: block;
 }
 .enemyName {
-  display: inline;
+  margin: 0 0 0 10px;
+  color: #777;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #fff;
+}
+.enemies {
+  margin: 0 0 0 0;
 }
 .enemy {
   background-color: #eee;
   border: 1px solid #808080;
   padding: 5px 0 5px 5px;
-  margin: 5px 0;
+  margin: 10px 0 5px -30px;
   line-height: 30px;
+  list-style: none;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: 2px 1px 0px #000;
-  -webkit-box-shadow: 2px 1px 0px #000;
-  box-shadow: 2px 1px 0px #000;
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
+  box-shadow: inset 0px 1px 0px 0px #fff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
+  background-color: #ededed;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #dcdcdc;
 }
-.selected-enemy {
-  background-color: #aaa;
-  color: #fff;
+.games {
+  margin: 0 0 10px 0;
 }
-.selected-enemy .game {
-  background-color: #aaa;
+.addEnemyPanel {
+  height: 30px;
+}
+#add-enemy-name {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  height: 20px;
+  width: 200px;
+  font-weight: bold;
+  margin: 0 0 0 10px;
+}
+.cancel-add-enemy {
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 2px 0;
+  width: 25px;
+  height: 25px;
+  float: right;
+  margin: 2px 5px 0 10px;
+}
+.confirm-add-enemy {
+  float: right;
+  width: 25px;
+  height: 25px;
+  margin: 2px 0 0 0;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
+  -moz-transform: scaleX(-1) rotate(-45deg);
+/* Gecko */
+  -o-transform: scaleX(-1) rotate(-45deg);
+/* Operah */
+  -webkit-transform: scaleX(-1) rotate(-45deg);
+/* webkit */
+  transform: scaleX(-1) rotate(-45deg);
+/* standard */
 }
 .player-items {
   float: left;
   width: 260px;
-  border: 1px solid #ddd;
   margin: 0 0 0 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: 2px 2px 0px #646464;
-  -webkit-box-shadow: 2px 2px 0px #646464;
-  box-shadow: 2px 2px 0px #646464;
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
+  box-shadow: inset 0px 1px 0px 0px #fff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fafafa), color-stop(1, #fafafa));
+  background: -moz-linear-gradient(center top, #fafafa 5%, #fafafa 100%);
+  background-color: #fff;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #dedede;
 }
 .player-items h3 {
   padding: 0 25px;
@@ -148,28 +242,35 @@ body {
 .enemy-items {
   float: right;
   width: 260px;
-  border: 1px solid #ddd;
   margin: 0 10px 0 0;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: 2px 2px 0px #646464;
-  -webkit-box-shadow: 2px 2px 0px #646464;
-  box-shadow: 2px 2px 0px #646464;
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
+  box-shadow: inset 0px 1px 0px 0px #fff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fafafa), color-stop(1, #fafafa));
+  background: -moz-linear-gradient(center top, #fafafa 5%, #fafafa 100%);
+  background-color: #fff;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #dedede;
 }
 .items {
-  padding: 0 0 0 25px;
+  margin: 0 0 10px -10px;
+  padding: 0 0 0 15px;
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  list-style: none;
 }
 .itemImg {
-  margin: 10px 0 0 0;
-  width: 50px;
-  height: 50px;
-  vertical-align: -15px;
+  width: 40px;
+  height: 40px;
+  vertical-align: -5px;
 }
 .itemName {
   display: inline-block;
-  width: 70px;
+  width: 100px;
   text-align: left;
 }
 .itemCount {
@@ -177,67 +278,55 @@ body {
   width: 50px;
   text-align: center;
 }
+.itemSub {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+}
+.itemAdd {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+}
 .add-game {
-  -moz-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
-  -webkit-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
-  box-shadow: inset 0px 1px 0px 0px #d9fbbe;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
-  background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
-  background-color: #b8e356;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
-  border: 1px solid #83c41a;
-  display: inline-block;
-  color: #fff;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
   font-family: arial;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: bold;
-  padding: 4px 5px;
-  margin: 0 10px 0 20px;
+  padding: 1px 5px;
+  margin: 2px 0 0 20px;
+  width: 25px;
+  height: 25px;
   float: right;
-  text-decoration: none;
-  text-shadow: 1px 1px 0px #86ae47;
 }
-.add-game:hover {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356));
-  background: -moz-linear-gradient(center top, #a5cc52 5%, #b8e356 100%);
-  background-color: #a5cc52;
+.addGamePanel:hover {
+  border: 1px solid #808080;
+  margin: 5px 5px 0 -20px;
+  line-height: 25px;
 }
-.add-game:active {
-  position: relative;
-  top: 1px;
-}
-.deleteEnemy {
-  -moz-box-shadow: inset 0px 1px 0px 0px #f5e2e2;
-  -webkit-box-shadow: inset 0px 1px 0px 0px #f5e2e2;
-  box-shadow: inset 0px 1px 0px 0px #f5e2e2;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffe5e5), color-stop(1, #eba4a4));
-  background: -moz-linear-gradient(center top, #ffe5e5 5%, #eba4a4 100%);
-  background-color: #ffe5e5;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
-  border: 1px solid #e8a9a9;
-  display: inline-block;
-  color: #8f4d4d;
-  font-family: arial;
-  font-size: 15px;
-  font-weight: bold;
+.add-game-player-race,
+.add-game-enemy-race {
+  border: 1px solid #dcdcdc;
+  color: #777;
   padding: 4px 5px;
-  float: right;
   margin: 0 5px 0 10px;
   text-decoration: none;
-  text-shadow: 1px 1px 0px #f7f7f7;
+  text-shadow: 1px 1px 0px #fff;
 }
-.deleteEnemy:hover {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #eba4a4), color-stop(1, #ffe5e5));
-  background: -moz-linear-gradient(center top, #eba4a4 5%, #ffe5e5 100%);
-  background-color: #eba4a4;
-}
-.deleteEnemy:active {
-  position: relative;
-  top: 1px;
+.deleteEnemy {
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 2px 0;
+  width: 25px;
+  height: 25px;
+  float: right;
+  margin: 2px 5px 0 10px;
 }
 #add-enemy {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
@@ -267,4 +356,62 @@ body {
 #add-enemy:active {
   position: relative;
   top: 1px;
+}
+.button-01 {
+  -moz-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
+  background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
+  background-color: #b8e356;
+  border: 1px solid #83c41a;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #86ae47;
+}
+.button-01:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356));
+  background: -moz-linear-gradient(center top, #a5cc52 5%, #b8e356 100%);
+  background-color: #a5cc52;
+}
+.button-01:active {
+  position: relative;
+  top: 1px;
+}
+.button-02 {
+  -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
+  background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
+  background-color: #fc8d83;
+  border: 1px solid #e85959;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #b23e35;
+}
+.button-02:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e4685d), color-stop(1, #fc8d83));
+  background: -moz-linear-gradient(center top, #e4685d 5%, #fc8d83 100%);
+  background-color: #e4685d;
+}
+.button-02:active {
+  position: relative;
+  top: 1px;
+}
+.button-02:disabled {
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
+  box-shadow: inset 0px 1px 0px 0px #fff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
+  background-color: #ededed;
+  border: 1px solid #dcdcdc;
+  color: #777;
+  text-shadow: 1px 1px 0px #fff;
+}
+.button-02:disabled:active {
+  position: relative;
+  top: 0px;
 }

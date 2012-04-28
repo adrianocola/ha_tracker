@@ -5,7 +5,7 @@ var GameRouter = Backbone.Router.extend({
 
     routes: {
 
-        "enemies/:enemyId/games/:gameId": "selectGame"
+        ":enemyId/:gameId": "selectGame"
     },
 
     selectGame: function(enemyId, gameId){

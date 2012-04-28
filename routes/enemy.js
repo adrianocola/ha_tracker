@@ -3,12 +3,12 @@ var models = require('../models.js');
 var u = require('underscore');
 
 
-app.get('/api/enemies', function(req, res){
-    models.Player.findOne({_id: req.session.playerId},function(err, doc){
-        res.send(doc.enemies);
-    });
-
-});
+//app.get('/api/enemies', function(req, res){
+//    models.Player.findOne({_id: req.session.playerId},function(err, doc){
+//        res.send(doc.enemies);
+//    });
+//
+//});
 
 
 
@@ -17,6 +17,7 @@ app.get('/api/enemies/:id', function(req, res){
     models.Enemy.findOne({_id: req.params.id}, function(err, doc){
         res.send(doc);
     });
+
 });
 
 app.post('/api/enemies', function(req, res){
@@ -24,6 +25,7 @@ app.post('/api/enemies', function(req, res){
     models.Player.findOne({_id: req.session.playerId}, function(err, doc){
 
         var enemy = new models.Enemy(req.body);
+        //enemy._id = req.body.name;
 
         doc.enemies.splice(0,0,enemy);
 

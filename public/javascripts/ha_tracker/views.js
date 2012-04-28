@@ -83,6 +83,7 @@ var EnemiesView = Backbone.View.extend({
 var AddEnemyView = Backbone.View.extend({
 
     tagName: "li",
+    className: "enemy addEnemyPanel",
 
     initialize: function(){
 
@@ -114,7 +115,7 @@ var AddEnemyView = Backbone.View.extend({
     },
 
     cancelAddEnemy: function(){
-        this.$el.remove();
+        this.$el.fadeOut('fast');
     },
 
     focus: function(){
@@ -125,9 +126,11 @@ var AddEnemyView = Backbone.View.extend({
 
     render: function(){
 
+        this.$el.hide();
         this.$el.html(this.template({}));
+        this.$el.fadeIn();
 
-        //força a delegação de eventos
+        //force event delegation for the created UI elements
         this.delegateEvents();
 
         return this;
@@ -161,7 +164,7 @@ var EnemyView = Backbone.View.extend({
 
     addGame: function(){
         app.AddGameView.games = this.model.games;
-        this.$(".games").prepend(app.AddGameView.render().el);
+        this.$(".games").append(app.AddGameView.render().el);
     },
 
     deleteEnemy: function(){
@@ -209,7 +212,7 @@ var EnemyView = Backbone.View.extend({
 var AddGameView = Backbone.View.extend({
 
     tagName: "li",
-    className: 'game',
+    className: 'game addGamePanel',
 
     initialize: function(){
 
@@ -229,33 +232,32 @@ var AddGameView = Backbone.View.extend({
         var enemyRace = this.$(".add-game-enemy-race option:selected").text();
 
         var gameModel = new Game({
-            name: playerRace + " vs " + enemyRace,
             playerRace: playerRace,
             enemyRace: enemyRace
         });
 
-
         gameModel.bind("sync",this.createdGame,this);
 
-        this.games.create(gameModel, {at:0});
+        this.games.create(gameModel, {wait: true});
 
     },
 
     createdGame: function(){
 
-        var game = this.games.at(0);
+        var game = this.games.last();
 
         this.games.select(game.id);
         app.SelectedGameView.selected(game);
     },
 
     cancelAddGame: function(){
-        $(this.el).remove();
+        this.$el.fadeOut('fast');
     },
 
     render: function(){
-
+        this.$el.hide();
         $(this.el).html(this.template({}));
+        this.$el.fadeIn();
 
         //força a delegação de eventos
         this.delegateEvents();
@@ -299,8 +301,6 @@ var GameView = Backbone.View.extend({
 
     renderSelected: function(){
 
-        //this.$(".game").addClass('selected-game',true);
-        //this.$(".game").removeClass('game',false);
         this.$el.addClass('selected-game',true);
         this.$el.removeClass('game',false);
 
@@ -335,7 +335,7 @@ var SelectedGameView = Backbone.View.extend({
 
         this.template = _.template($("#selected-game-template").html())
 
-        app.SelectionManager.bind("change:selectedGame",this.selected,this);
+        //app.SelectionManager.bind("change:selectedGame",this.selected,this);
 
         app.SelectionManager.bind("change:unselectedGame change:unselectedEnemy",this.clean,this);
 
@@ -362,6 +362,7 @@ var SelectedGameView = Backbone.View.extend({
 
             this.$el.append(new PlayerItemsView({collection: this.model.playerItems, model: this.model}).render().el);
             this.$el.append(new EnemyItemsView({collection: this.model.enemyItems, model: this.model}).render().el);
+
         }else{
             this.$el.html(this.template({}));
         }
@@ -372,25 +373,7 @@ var SelectedGameView = Backbone.View.extend({
 });
 
 
-var ItemsView = Backbone.View.extend({
-
-    render: function(){
-
-        $(this.el).html(this.template(this.model.toJSON()));
-
-        var $items = this.$('.items');
-
-        this.collection.each(function(item){
-            $items.append(new ItemView({model: item}).render().el);
-        });
-
-        return this;
-
-    }
-
-});
-
-var PlayerItemsView = ItemsView.extend({
+var PlayerItemsView = Backbone.View.extend({
 
     className: "player-items",
 
@@ -398,15 +381,42 @@ var PlayerItemsView = ItemsView.extend({
 
         this.template = _.template($("#player-items-template").html())
 
-        _.bindAll(this, 'render');
+        _.bindAll(this);
 
-        this.collection.bind("loaded",this.render,this);
+        this.collection.bind("reset",this.renderItems,this);
+    },
+
+    renderItems: function(){
+
+        var $items = this.$('.items');
+
+        this.collection.each(function(item){
+
+            $items.append(new ItemView({model: item}).render().el);
+        });
+
+        $items.hide();
+        $items.fadeIn(700);
+
+        return this;
+
+    },
+
+    render: function(){
+
+
+        $(this.el).html(this.template(this.model.toJSON()));
+
+
+
+        return this;
+
     }
 
 
 });
 
-var EnemyItemsView = ItemsView.extend({
+var EnemyItemsView = Backbone.View.extend({
 
     className: "enemy-items",
 
@@ -414,9 +424,33 @@ var EnemyItemsView = ItemsView.extend({
 
         this.template = _.template($("#enemy-items-template").html())
 
-        _.bindAll(this, 'render');
+        _.bindAll(this);
 
-        this.collection.bind("loaded",this.render,this);
+        this.collection.bind("reset",this.renderItems,this);
+
+    },
+
+    renderItems: function(){
+
+        var $items = this.$('.items');
+
+        this.collection.each(function(item){
+
+            $items.append(new ItemView({model: item}).render().el);
+        });
+
+        $items.hide();
+        $items.fadeIn(700);
+
+        return this;
+
+    },
+
+    render: function(){
+
+        $(this.el).html(this.template(this.model.toJSON()));
+
+        return this;
 
     }
 
@@ -434,7 +468,7 @@ var ItemView = Backbone.View.extend({
 
         this.template = _.template($("#item-template").html())
 
-        this.model.bind("change",this.render, this);
+        this.model.bind("change:itemCount",this.renderItemCount, this);
 
     },
 
@@ -451,18 +485,30 @@ var ItemView = Backbone.View.extend({
         this.model.addCount();
     },
 
+    renderItemCount: function(){
+        this.$(".itemCount").html(this.model.get("itemCount"));
+
+        if(!this.model.canAdd()){
+            this.$(".itemAdd").attr('disabled', 'disabled');
+        }else{
+            this.$(".itemAdd").removeAttr('disabled');
+        }
+        if(!this.model.canSub()){
+            this.$(".itemSub").attr('disabled', 'disabled');
+        }else{
+            this.$(".itemSub").removeAttr('disabled');
+        }
+
+        return this;
+
+    },
+
     render: function(){
 
-        if(this.model.has("itemImg")){
-            $(this.el).html(this.template(this.model.toJSON()));
+        $(this.el).html(this.template(this.model.toJSON()));
 
-            if(!this.model.canAdd()){
-                this.$(".itemAdd").attr('disabled', 'disabled');
-            }
-            if(!this.model.canSub()){
-                this.$(".itemSub").attr('disabled', 'disabled');
-            }
-        }
+        this.renderItemCount();
+
 
         return this;
     }

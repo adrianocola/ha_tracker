@@ -5,7 +5,7 @@ var u = require('underscore');
 
 app.get('/api/enemies/:enemy/games', function(req, res){
 
-    models.Player.findOne({_id: req.session.playerId}, function(err, player){
+    models.Player.findById(req.session.playerId, function(err, player){
 
         var enemy = player.enemies.id(req.params.enemy);
 
@@ -15,66 +15,65 @@ app.get('/api/enemies/:enemy/games', function(req, res){
 
 });
 
-app.get('/api/games/:id', function(req, res){
-
-    models.Game.findOne({_id: req.params.id}, function(err, doc){
-        res.send(doc);
-    });
-});
 
 app.post('/api/enemies/:enemy/games', function(req, res){
 
-    models.Player.findOne({_id: req.session.playerId}, function(err, player){
+    models.Player.findById(req.session.playerId, function(err, player){
 
         var enemy = player.enemies.id(req.params.enemy);
+        enemy.gameCount+=1;
 
         var game = new models.Game(req.body);
+        game.num = enemy.gameCount;
 
-        var baseRace = undefined;
+        //create player's items
+        u.each(consts.Races,function(race){
+            if(game.playerRace === race.raceName){
 
-        console.log("PLAYER: " + game.playerRace);
-        console.log("ENEMY: " + game.enemyRace);
+                var playerItemManager = new models.ItemManager();
 
-        switch(game.playerRace){
-            case "Council": baseRace = consts.Council;
-                break;
-            case "Dark Elves": baseRace = consts.DarkElves;
-                break;
-            case "Dwarves": baseRace = consts.Dwarves;
-                break;
-            case "Tribe": baseRace = consts.Tribe;
-                break;
-        }
+                u.each(race.items, function(baseItemId){
+                    var baseItem = consts.Items[baseItemId];
 
-        u.each(baseRace.items, function(baseItem){
-            var item = new models.Item({itemName: baseItem.itemName, itemCount: baseItem.itemCountMax});
-            game.playerItems.push(item);
-            item.save();
-        },this);
+                    var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
+
+                    playerItemManager.items.push(item);
+
+                },this);
+
+                playerItemManager.save();
+
+                game.playerItems = playerItemManager;
+            }
+        })
+
+        //create enemy's items
+        u.each(consts.Races,function(race){
+            if(game.enemyRace === race.raceName){
+
+                var enemyItemManager = new models.ItemManager();
+
+                u.each(race.items, function(baseItemId){
+                    var baseItem = consts.Items[baseItemId];
+
+                    var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
+
+                    enemyItemManager.items.push(item);
+
+                },this);
+
+                enemyItemManager.save();
+
+                game.enemyItems = enemyItemManager;
+
+            }
+        })
 
 
-        switch(game.enemyRace){
-            case "Council": baseRace = consts.Council;
-                break;
-            case "Dark Elves": baseRace = consts.DarkElves;
-                break;
-            case "Dwarves": baseRace = consts.Dwarves;
-                break;
-            case "Tribe": baseRace = consts.Tribe;
-                break;
-        }
-
-        u.each(baseRace.items, function(baseItem){
-            var item = new models.Item({itemName: baseItem.itemName, itemCount: baseItem.itemCountMax});
-            game.enemyItems.push(item);
-            item.save();
-        },this);
-
-
-        enemy.games.splice(0,0,game);
+        enemy.games.push(game);
 
         player.save(function(err){
-            console.log(err);
+            console.log("GAME: " + game);
             if (!err) res.send(game);
         });
 
@@ -82,9 +81,10 @@ app.post('/api/enemies/:enemy/games', function(req, res){
 
 });
 
+
 app.delete('/api/enemies/:enemy/games/:id', function(req, res){
 
-    models.Player.findOne({_id: req.session.playerId}, function(err, player){
+    models.Player.findById(req.session.playerId, function(err, player){
 
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 

@@ -6,16 +6,19 @@ $(function(){
     var selectedGameView = app.SelectedGameView;
 
     app.AppPlayer = new app.Player({name: "Player"});
-    app.AppPlayer.fetch();
+    app.AppPlayer.fetch({success: function(){
 
-    new app.PlayerView({model: app.AppPlayer});
+        app.AppPlayer.loadEnemies();
 
-    selectedGameView.render();
+        new app.PlayerView({model: app.AppPlayer}).render();
 
+        selectedGameView.render();
 
-    app.AppPlayer.enemies.bind("reset",function(){
         app.GameRouter = new GameRouter();
         Backbone.history.start({pushState: true});
-    });
+
+    }});
+
+
 
 });
