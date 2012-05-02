@@ -8,11 +8,12 @@ block content
   div#main
     div#main-container
         #header
-            - if (username != null)
-                p Hey #{username}
-              - else
-                a(href='/login') Create Account
-              h1 Hero Academy Item Tracker
+            //
+                - if (username != null)
+                    p Hey #{username}
+                - else
+                    a(href='/login') Create Account
+            h1 Hero Academy Item Tracker
         div#main-layout
             div#player
             div#current-game
