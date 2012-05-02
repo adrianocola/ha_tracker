@@ -41,20 +41,24 @@ var Item = Backbone.Model.extend({
     addCount: function(){
        var sum = this.get("itemCount")+1;
        if(sum > this.get("itemCountMax")){
-           this.save("itemCount",0);
+           this.set("itemCount",0);
        }else{
-           this.save("itemCount",sum);
+           this.set("itemCount",sum);
        }
+
+        this.save();
 
     },
 
     subCount: function(){
         var sub = this.get("itemCount")-1;
         if(sub < 0){
-            this.save("itemCount",this.get("itemCountMax"));
+            this.set("itemCount",this.get("itemCountMax"));
         }else{
-            this.save("itemCount",sub);
+            this.set("itemCount",sub);
         }
+
+        this.save();
 
     },
 
@@ -91,6 +95,18 @@ var Items = Backbone.Collection.extend({
     initialize: function(itemsId){
 
         this.itemsId = itemsId;
+
+    },
+
+    remaining: function(){
+
+        var count = 0;
+
+        this.each(function(item){
+            count += item.get("itemCount");
+        },this);
+
+        return count;
 
     }
 

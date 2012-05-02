@@ -283,10 +283,12 @@ body {
   border: 1px solid #dedede;
 }
 .player-items h3 {
-  padding: 0 25px;
+  padding: 10px 25px;
+  margin: 400px 0 0 0;
 }
 .enemy-items h3 {
-  padding: 0 25px;
+  padding: 10px 25px;
+  margin: 400px 0 0 0;
 }
 .enemy-items {
   float: right;
@@ -418,7 +420,7 @@ body {
   font-size: 15px;
   font-weight: bold;
   padding: 4px 5px;
-  margin: 0 0 0 80px;
+  margin: 0 0 0 68px;
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }

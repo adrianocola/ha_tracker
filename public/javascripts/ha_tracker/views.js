@@ -390,9 +390,12 @@ var PlayerItemsView = Backbone.View.extend({
         _.bindAll(this);
 
         this.collection.bind("reset",this.renderItems,this);
+        this.collection.bind("change:itemCount",this.renderRemaining,this);
     },
 
     renderItems: function(){
+
+
 
         var $items = this.$('.items');
 
@@ -401,8 +404,20 @@ var PlayerItemsView = Backbone.View.extend({
             $items.append(new ItemView({model: item}).render().el);
         });
 
+
+        this.renderRemaining();
+
         $items.hide();
         $items.fadeIn(700);
+
+        return this;
+
+    },
+
+
+    renderRemaining: function(){
+
+        this.$("h3").html("Remaining: " + this.collection.remaining());
 
         return this;
 
@@ -433,6 +448,7 @@ var EnemyItemsView = Backbone.View.extend({
         _.bindAll(this);
 
         this.collection.bind("reset",this.renderItems,this);
+        this.collection.bind("change:itemCount",this.renderRemaining,this);
 
     },
 
@@ -445,8 +461,18 @@ var EnemyItemsView = Backbone.View.extend({
             $items.append(new ItemView({model: item}).render().el);
         });
 
+        this.renderRemaining();
+
         $items.hide();
         $items.fadeIn(700);
+
+        return this;
+
+    },
+
+    renderRemaining: function(){
+
+        this.$("h3").html("Remaining: " + this.collection.remaining());
 
         return this;
 
