@@ -49,8 +49,7 @@ html
         button.confirm-add-game.button-01 L
 
     script(type="text/template",id="game-template")
-        a.game-text <%= num %>  - <%= playerRace %> vs <%= enemyRace %>
-        //img.deleteGame(src='/images/delete-icon.png')
+        <%= num %>  - <%= playerRace %> vs <%= enemyRace %>
         button.deleteGame.button-02 -
 
     script(type="text/template",id="selected-game-template")

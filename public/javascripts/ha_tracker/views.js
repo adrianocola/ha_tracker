@@ -289,7 +289,7 @@ var GameView = Backbone.View.extend({
     },
 
     events:{
-        'click .game-text': 'selectGame',
+        'click': 'selectGame',
         'click .deleteGame': 'deleteGame'
     },
 
@@ -518,11 +518,11 @@ var ItemView = Backbone.View.extend({
         }
 
         if(this.model.get("itemCount") == 0){
-            this.$(".itemImg").addClass('zero');
             this.$(".itemCount").addClass('zero');
+            this.$(".itemImg").fadeTo(400,0.5);
         }else{
-            this.$(".itemImg").removeClass('zero');
             this.$(".itemCount").removeClass('zero');
+            this.$(".itemImg").fadeTo(400,1);
         }
 
         return this;

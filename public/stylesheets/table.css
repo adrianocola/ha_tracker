@@ -48,9 +48,6 @@ span.zero {
   color: #777;
   text-shadow: 1px 1px 0px #fff;
 }
-img.zero {
-  opacity: 0.5;
-}
 .itemName {
   display: none;
 }
