@@ -478,7 +478,8 @@ var ItemView = Backbone.View.extend({
 
     events: {
         'click .itemSub': 'sub',
-        'click .itemAdd': 'add'
+        'click .itemAdd': 'add',
+        'click .itemImg': 'imgClick'
     },
 
     sub: function(){
@@ -489,6 +490,18 @@ var ItemView = Backbone.View.extend({
     add: function(){
         this.model.addCount();
         this.$(".itemCount").html(this.model.get("itemCount"));
+    },
+
+    imgClick: function(){
+
+        var that = this;
+
+        //blink effect
+        this.$(".itemCount").fadeOut(100, function(){
+            that.sub();
+            that.$(".itemCount").fadeIn(100);
+        });
+
     },
 
     renderItemCount: function(){
@@ -502,6 +515,14 @@ var ItemView = Backbone.View.extend({
             this.$(".itemSub").attr('disabled', 'disabled');
         }else{
             this.$(".itemSub").removeAttr('disabled');
+        }
+
+        if(this.model.get("itemCount") == 0){
+            this.$(".itemImg").addClass('zero');
+            this.$(".itemCount").addClass('zero');
+        }else{
+            this.$(".itemImg").removeClass('zero');
+            this.$(".itemCount").removeClass('zero');
         }
 
         return this;

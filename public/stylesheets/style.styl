@@ -1,3 +1,12 @@
+// ********* MIXINS *********
+border-radius(n)
+    -webkit-border-radius n
+    -moz-border-radius n
+    border-radius n
+
+
+// ********* CSS *********
+
 body
   padding: 30px
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
@@ -24,8 +33,6 @@ body
     color: #FFFFFF
     background-color: #AAAAAA
 
-border-radius = 10px
-
 #player
     clear: left
     float: left
@@ -36,9 +43,7 @@ border-radius = 10px
     margin: 10px 0 0 10px
     display: inline
     border: 1px solid grey
-    -moz-border-radius: border-radius
-    -webkit-border-radius: border-radius
-    border-radius: border-radius
+    border-radius(10px)
 
 #current-game
     float: right
@@ -48,9 +53,7 @@ border-radius = 10px
     margin: 10px 10px 0 0
     display: inline
     border: 1px solid grey
-    -moz-border-radius: border-radius
-    -webkit-border-radius: border-radius
-    border-radius: border-radius
+    border-radius(10px)
 
 .game
     color: #888888
@@ -59,9 +62,7 @@ border-radius = 10px
     padding: 3px 6px 3px 6px
     margin: 5px 5px 0 -20px
     border: 1px solid grey
-    -moz-border-radius: border-radius
-    -webkit-border-radius: border-radius
-    border-radius: border-radius
+    border-radius(10px)
     list-style: none
     -moz-box-shadow: 1px 1px 2px rgba(0,0,0,1);
     -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,1);
@@ -81,9 +82,7 @@ border-radius = 10px
     background-color: #bbbbbb
     line-height: 25px
     border: 1px solid black
-    -moz-border-radius: border-radius
-    -webkit-border-radius: border-radius
-    border-radius: border-radius
+    border-radius(10px)
     -moz-box-shadow: 0px 0px 15px rgba(255,255,255,1), inset 0px 0px 7px rgba(0,0,0,1);
     -webkit-box-shadow: 0px 0px 15px rgba(255,255,255,1), inset 0px 0px 7px rgba(0,0,0,1);
     box-shadow: 0px 0px 15px rgba(255,255,255,1), inset 0px 0px 7px rgba(0,0,0,1);
@@ -96,18 +95,14 @@ border-radius = 10px
     height: 20px
     border: 0
     margin: 3px 0 0 0
-    -moz-border-radius:25px
-    -webkit-border-radius:25px
-    border-radius:25px
+    border-radius(25px)
 
 .confirm-add-game
     float: right
     width: 20px
     height: 20px
     margin: 3px 5px 0 0
-    -moz-border-radius:25px
-    -webkit-border-radius:25px
-    border-radius:25px
+    border-radius(25px)
     -moz-transform: scaleX(-1) rotate(-45deg); /* Gecko */
     -o-transform: scaleX(-1) rotate(-45deg); /* Operah */
     -webkit-transform: scaleX(-1) rotate(-45deg); /* webkit */
@@ -124,9 +119,7 @@ border-radius = 10px
     padding: 0 0 0 0
     line-height: 15px
     vertical-align: middle
-    -moz-border-radius:6px
-    -webkit-border-radius:6px
-    border-radius:6px
+    border-radius(6px)
     display: none
 
 .game:hover .deleteGame
@@ -154,12 +147,6 @@ border-radius = 10px
     margin: 10px 0 0 -30px
     line-height: 30px
     list-style: none
-    -moz-border-radius: border-radius
-    -webkit-border-radius: border-radius
-    border-radius: border-radius
-    //-moz-box-shadow: 2px 1px 0px rgba(0,0,0,1)
-    //-webkit-box-shadow: 2px 1px 0px rgba(0,0,0,1)
-    //box-shadow: 2px 1px 0px rgba(0,0,0,1)
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff
     box-shadow:inset 0px 1px 0px 0px #ffffff
@@ -167,9 +154,7 @@ border-radius = 10px
     background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% )
     //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf')
     background-color:#ededed
-    -moz-border-radius:6px
-    -webkit-border-radius:6px
-    border-radius:6px
+    border-radius(6px)
     border:1px solid #dcdcdc
 
 //.selected-enemy
@@ -187,9 +172,7 @@ border-radius = 10px
     height: 30px
 
 #add-enemy-name
-    -moz-border-radius: 6px
-    -webkit-border-radius: 6px
-    border-radius: 6px
+    border-radius(6px)
     font-size:12px
     height: 20px
     width: 200px
@@ -197,9 +180,7 @@ border-radius = 10px
     margin: 0 0 0 10px
 
 .cancel-add-enemy
-    -moz-border-radius:25px
-    -webkit-border-radius:25px
-    border-radius:25px
+    border-radius(25px)
     font-family:arial
     font-size:15px
     font-weight:bold
@@ -217,9 +198,7 @@ border-radius = 10px
     font-family:arial
     font-size:15px
     font-weight:bold
-    -moz-border-radius:25px
-    -webkit-border-radius:25px
-    border-radius:25px
+    border-radius(25px)
     -moz-transform: scaleX(-1) rotate(-45deg); /* Gecko */
     -o-transform: scaleX(-1) rotate(-45deg); /* Operah */
     -webkit-transform: scaleX(-1) rotate(-45deg); /* webkit */
@@ -236,9 +215,6 @@ player-grad-end = #fafafa
     width: 260px
     //border: 1px solid #DDDDDD
     margin: 0 0 0 10px
-    -moz-border-radius: border-radius
-    -webkit-border-radius: border-radius
-    border-radius: border-radius
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff
     box-shadow:inset 0px 1px 0px 0px #ffffff
@@ -246,9 +222,7 @@ player-grad-end = #fafafa
     background:-moz-linear-gradient( center top, player-grad-start 5%, player-grad-end 100% )
     //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='player-grad-start', endColorstr='player-grad-end')
     background-color:#ffffff
-    -moz-border-radius:6px
-    -webkit-border-radius:6px
-    border-radius:6px
+    border-radius(6px)
     border:1px solid #dedede
 
 
@@ -267,9 +241,6 @@ enemy-grad-end = #fafafa
     width: 260px
     //border: 1px solid #DDDDDD
     margin: 0 10px 0 0
-    -moz-border-radius: border-radius
-    -webkit-border-radius: border-radius
-    border-radius: border-radius
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff
     box-shadow:inset 0px 1px 0px 0px #ffffff
@@ -277,9 +248,7 @@ enemy-grad-end = #fafafa
     background:-moz-linear-gradient( center top, enemy-grad-start 5%, enemy-grad-end 100% )
     //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='enemy-grad-start', endColorstr='enemy-grad-end')
     background-color:#ffffff
-    -moz-border-radius:6px
-    -webkit-border-radius:6px
-    border-radius:6px
+    border-radius(6px)
     border:1px solid #dedede
 
 .items
@@ -291,7 +260,6 @@ enemy-grad-end = #fafafa
 img-size = 40px
 
 .itemImg
-    //margin: 10px 0 0 0
     width: img-size
     height: img-size
     vertical-align: -5px
@@ -307,21 +275,15 @@ img-size = 40px
     text-align: center
 
 .itemSub
-    -moz-border-radius:6px
-    -webkit-border-radius:6px
-    border-radius:6px
+    border-radius(6px)
 
 .itemAdd
-    -moz-border-radius:6px
-    -webkit-border-radius:6px
-    border-radius:6px
-  
-  
-  
+    border-radius(6px)
+
+
+
 .add-game
-    -moz-border-radius:25px
-    -webkit-border-radius:25px
-    border-radius:25px
+    border-radius(25px)
     font-family:arial
     font-size:20px
     font-weight:bold
@@ -351,9 +313,7 @@ img-size = 40px
 
 
 .deleteEnemy
-    -moz-border-radius:25px
-    -webkit-border-radius:25px
-    border-radius:25px
+    border-radius(25px)
     font-family:arial
     font-size:15px
     font-weight:bold
@@ -371,9 +331,7 @@ img-size = 40px
     background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% )
     //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf')
     background-color:#ededed
-    -moz-border-radius:6px
-    -webkit-border-radius:6px
-    border-radius:6px
+    border-radius(6px)
     border:1px solid #dcdcdc
     //display:inline-block
     color:#777777
@@ -460,6 +418,10 @@ img-size = 40px
 .button-02:disabled:active,.button-01:disabled:active
     position:relative
     top:0px
+
+
+
+
 
 
 

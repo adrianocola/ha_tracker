@@ -34,8 +34,8 @@ body {
   margin: 10px 0 0 10px;
   display: inline;
   border: 1px solid #808080;
-  -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 #current-game {
@@ -46,8 +46,8 @@ body {
   margin: 10px 10px 0 0;
   display: inline;
   border: 1px solid #808080;
-  -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
 }
 .game {
@@ -57,8 +57,8 @@ body {
   padding: 3px 6px 3px 6px;
   margin: 5px 5px 0 -20px;
   border: 1px solid #808080;
-  -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
   list-style: none;
   -moz-box-shadow: 1px 1px 2px #000;
@@ -78,8 +78,8 @@ body {
   background-color: #bbb;
   line-height: 25px;
   border: 1px solid #000;
-  -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
   -moz-box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
   -webkit-box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
@@ -91,8 +91,8 @@ body {
   height: 20px;
   border: 0;
   margin: 3px 0 0 0;
-  -moz-border-radius: 25px;
   -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
   border-radius: 25px;
 }
 .confirm-add-game {
@@ -100,8 +100,8 @@ body {
   width: 20px;
   height: 20px;
   margin: 3px 5px 0 0;
-  -moz-border-radius: 25px;
   -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
   border-radius: 25px;
   -moz-transform: scaleX(-1) rotate(-45deg);
 /* Gecko */
@@ -122,8 +122,8 @@ body {
   padding: 0 0 0 0;
   line-height: 15px;
   vertical-align: middle;
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
   display: none;
 }
@@ -152,17 +152,14 @@ body {
   margin: 10px 0 0 -30px;
   line-height: 30px;
   list-style: none;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
   background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
   background-color: #ededed;
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
 }
@@ -170,8 +167,8 @@ body {
   height: 30px;
 }
 #add-enemy-name {
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
   font-size: 12px;
   height: 20px;
@@ -180,8 +177,8 @@ body {
   margin: 0 0 0 10px;
 }
 .cancel-add-enemy {
-  -moz-border-radius: 25px;
   -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
   border-radius: 25px;
   font-family: arial;
   font-size: 15px;
@@ -200,8 +197,8 @@ body {
   font-family: arial;
   font-size: 15px;
   font-weight: bold;
-  -moz-border-radius: 25px;
   -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
   border-radius: 25px;
   -moz-transform: scaleX(-1) rotate(-45deg);
 /* Gecko */
@@ -216,17 +213,14 @@ body {
   float: left;
   width: 260px;
   margin: 0 0 0 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fafafa), color-stop(1, #fafafa));
   background: -moz-linear-gradient(center top, #fafafa 5%, #fafafa 100%);
   background-color: #fff;
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dedede;
 }
@@ -240,23 +234,20 @@ body {
   float: right;
   width: 260px;
   margin: 0 10px 0 0;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fafafa), color-stop(1, #fafafa));
   background: -moz-linear-gradient(center top, #fafafa 5%, #fafafa 100%);
   background-color: #fff;
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dedede;
 }
 .items {
   margin: 0 0 10px -10px;
-  padding: 0 0 0 15px;
+  padding: 0 0 40px 15px;
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
   list-style: none;
 }
@@ -276,18 +267,18 @@ body {
   text-align: center;
 }
 .itemSub {
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
 }
 .itemAdd {
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
 }
 .add-game {
-  -moz-border-radius: 25px;
   -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
   border-radius: 25px;
   font-family: arial;
   font-size: 20px;
@@ -313,8 +304,8 @@ body {
   text-shadow: 1px 1px 0px #fff;
 }
 .deleteEnemy {
-  -moz-border-radius: 25px;
   -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
   border-radius: 25px;
   font-family: arial;
   font-size: 15px;
@@ -332,8 +323,8 @@ body {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
   background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
   background-color: #ededed;
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
   color: #777;

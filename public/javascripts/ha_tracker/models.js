@@ -13,11 +13,23 @@ var Item = Backbone.Model.extend({
     },
 
     addCount: function(){
-       this.save("itemCount",this.get("itemCount")+1);
+       var sum = this.get("itemCount")+1;
+       if(sum > this.get("itemCountMax")){
+           this.save("itemCount",0);
+       }else{
+           this.save("itemCount",sum);
+       }
+
     },
 
     subCount: function(){
-        this.save("itemCount",this.get("itemCount")-1);
+        var sub = this.get("itemCount")-1;
+        if(sub < 0){
+            this.save("itemCount",this.get("itemCountMax"));
+        }else{
+            this.save("itemCount",sub);
+        }
+
     },
 
     canAdd: function(){
