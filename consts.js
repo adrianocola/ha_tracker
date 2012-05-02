@@ -230,7 +230,7 @@ exports.Tribe = {
     raceName: "Tribe",
     raceTitle: "/images/tribe.png",
     raceIcon: "/images/tribe_icon.png",
-    items: [27,28,29,30,31,32,33,34,7]
+    items: [27,28,29,30,31,32,7,33,34]
 }
 
 exports.Races = [exports.Council, exports.DarkElves, exports.Dwarves, exports.Tribe];

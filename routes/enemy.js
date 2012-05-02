@@ -43,13 +43,18 @@ app.delete('/api/enemies/:id', function(req, res){
         var enemy = player.enemies.id(req.params.id);
 
         u.each(enemy.games, function(game){
-            u.each(game.playerItems, function(itemId){
-                models.Item.remove({_id: itemId},function(err){ if(err) console.log(err);});
-            },this);
 
-            u.each(game.enemyItems, function(itemId){
-                models.Item.remove({_id: itemId},function(err){ if(err) console.log(err);});
-            },this);
+            models.ItemManager.remove({_id: game.playerItems},function(err){ if(err) console.log(err);});
+
+            models.ItemManager.remove({_id: game.enemyItems},function(err){ if(err) console.log(err);});
+
+//            u.each(game.playerItems, function(itemId){
+//
+//            },this);
+//
+//            u.each(game.enemyItems, function(itemId){
+//
+//            },this);
         },this);
 
         enemy.remove();
