@@ -99,24 +99,28 @@ var AddEnemyView = Backbone.View.extend({
     events:{
         'click .confirm-add-enemy': 'confirmAddEnemy',
         'click .cancel-add-enemy': 'cancelAddEnemy',
-        'keypress #add-enemy-name': 'confirmAddEnemy'
+        'keyup #add-enemy-name': 'nameKeyPress'
     },
 
-    confirmAddEnemy: function(evt){
-
-        if(evt.type === "keypress"){
-            if(evt.keyCode == 13){
-                this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true});
-            }
-        }else if(evt.type === "click"){
-            this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true});
+    nameKeyPress: function(evt){
+        console.log(evt.keyCode);
+        if(evt.keyCode == 13){
+            this.confirmAddEnemy();
+        }else if(evt.keyCode == 27){
+            this.cancelAddEnemy();
         }
+    },
 
+    confirmAddEnemy: function(){
+
+        this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true});
 
     },
 
     cancelAddEnemy: function(){
+
         this.$el.fadeOut('fast');
+
     },
 
     focus: function(){
@@ -164,8 +168,6 @@ var EnemyView = Backbone.View.extend({
 
 
     addGame: function(){
-
-        console.log();
 
         app.AddGameView.games = this.model.games;
         this.$(".games").append(app.AddGameView.render().el);
@@ -530,8 +532,6 @@ var ItemView = Backbone.View.extend({
     },
 
     render: function(){
-
-        console.log("RENDER");
 
         $(this.el).html(this.template(this.model.toJSON()));
 

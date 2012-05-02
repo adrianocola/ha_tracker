@@ -207,21 +207,29 @@ exports.Items = {
 
 exports.Council = {
     raceName: "Council",
+    raceTitle: "/images/council.png",
+    raceIcon: "/images/council_icon.png",
     items: [1,2,3,4,5,6,7,8,9,10,11]
 }
 
 exports.DarkElves = {
     raceName: "Dark Elves",
+    raceTitle: "/images/darkelves.png",
+    raceIcon: "/images/darkelves_icon.png",
     items: [12,13,14,15,16,17,18,19,7,9,11]
 }
 
 exports.Dwarves = {
     raceName: "Dwarves",
+    raceTitle: "/images/dwarves.png",
+    raceIcon: "/images/dwarves_icon.png",
     items: [20,21,22,23,24,25,26,7,8,9,11]
 }
 
 exports.Tribe = {
     raceName: "Tribe",
+    raceTitle: "/images/tribe.png",
+    raceIcon: "/images/tribe_icon.png",
     items: [27,28,29,30,31,32,33,34,7]
 }
 

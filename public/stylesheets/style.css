@@ -27,7 +27,7 @@ body {
 #player {
   clear: left;
   float: left;
-  width: 330px;
+  width: 280px;
   height: 600px;
   overflow: auto;
   padding: 5px 10px 20px 5px;
@@ -40,7 +40,7 @@ body {
 }
 #current-game {
   float: right;
-  width: 560px;
+  width: 610px;
   height: 600px;
   padding: 5px 5px 20px 10px;
   margin: 10px 10px 0 0;
@@ -50,34 +50,40 @@ body {
   -moz-border-radius: 10px;
   border-radius: 10px;
 }
+#current-game h2 {
+  color: #555;
+  font-family: arial;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #fff;
+}
 .game {
+  width: 220px;
   color: #888;
   background-color: #fff;
-  line-height: 25px;
-  padding: 3px 6px 3px 6px;
+  line-height: 30px;
   margin: 5px 5px 0 -20px;
   border: 1px solid #808080;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
   list-style: none;
-  -moz-box-shadow: 1px 1px 2px #000;
-  -webkit-box-shadow: 1px 1px 2px #000;
-  box-shadow: 1px 1px 2px #000;
   cursor: pointer;
 }
 .game:hover {
-  border: 2px solid #000;
-  color: #000;
-  line-height: 23px;
+  color: #fff;
+  background-color: #888;
+  border: 1px solid #000;
 }
 .selected-game {
+  width: 208px;
   color: #fff;
   list-style: none;
   padding: 3px 6px 3px 6px;
   margin: 5px 5px 0 -20px;
   background-color: #bbb;
-  line-height: 25px;
+  line-height: 30px;
+  height: 30px;
   border: 1px solid #000;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -91,7 +97,7 @@ body {
   width: 20px;
   height: 20px;
   border: 0;
-  margin: 3px 0 0 0;
+  margin: -8px 5px 0 0;
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
   border-radius: 25px;
@@ -100,7 +106,7 @@ body {
   float: right;
   width: 20px;
   height: 20px;
-  margin: 3px 5px 0 0;
+  margin: -8px 5px 0 0;
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
   border-radius: 25px;
@@ -119,10 +125,9 @@ body {
   height: 20px;
   font-size: 20px;
   font-weight: bold;
-  margin: 3px 0 0 0;
+  margin: 7px 6px 0 0;
   padding: 0 0 0 0;
   line-height: 15px;
-  vertical-align: middle;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
@@ -133,6 +138,49 @@ body {
 }
 .selected-game .deleteGame {
   display: block;
+  margin: 5px 2px 0 0;
+}
+.gameNum {
+  float: left;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border-right: 1px solid #999;
+  width: 31px;
+  height: 36px;
+  line-height: 38px;
+  text-align: center;
+  margin: -1px 0 0 -3px;
+  background-color: #aaa;
+  color: #fff;
+}
+.game:hover .gameNum {
+  border-right: 1px solid #bbb;
+  background-color: #555;
+}
+.selected-game .gameNum {
+  background-color: #bfb;
+  width: 30px;
+  height: 36px;
+  margin: -4px 0 0 -8px;
+  border-right: 2px solid #666;
+  -moz-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
+  -webkit-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
+  box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
+  background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
+  background-color: #b8e356;
+  border: 1px solid #83c41a;
+}
+.raceIcon {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  margin: 0 5px 3px 5px;
+}
+.gamePanel {
+  display: inline;
+  margin-left: 30px;
 }
 .enemyName {
   margin: 0 0 0 10px;
@@ -145,6 +193,15 @@ body {
 }
 .enemies {
   margin: 0 0 0 0;
+}
+.enemies h2 {
+  margin-left: 15px;
+  display: inline-block;
+  color: #555;
+  font-family: arial;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #fff;
 }
 .enemy {
   background-color: #eee;
@@ -173,7 +230,7 @@ body {
   border-radius: 6px;
   font-size: 12px;
   height: 20px;
-  width: 200px;
+  width: 160px;
   font-weight: bold;
   margin: 0 0 0 10px;
 }
@@ -212,7 +269,7 @@ body {
 }
 .player-items {
   float: left;
-  width: 260px;
+  width: 280px;
   margin: 0 0 0 10px;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
@@ -233,7 +290,7 @@ body {
 }
 .enemy-items {
   float: right;
-  width: 260px;
+  width: 280px;
   margin: 0 10px 0 0;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
@@ -245,6 +302,12 @@ body {
   -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dedede;
+}
+.raceTitle {
+  height: 60px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .items {
   margin: 0 0 10px -10px;
@@ -289,16 +352,33 @@ body {
   width: 25px;
   height: 25px;
   float: right;
+  display: none;
+}
+.enemy:hover .add-game {
+  display: block;
+}
+.addGamePanel {
+  display: block;
+  height: 55px;
+  line-height: 25px;
 }
 .addGamePanel:hover {
   border: 1px solid #808080;
   margin: 5px 5px 0 -20px;
   line-height: 25px;
 }
+.addGamePanel div {
+  display: inline-block;
+  width: 45px;
+  margin-left: 5px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
 .add-game-player-race,
 .add-game-enemy-race {
   border: 1px solid #dcdcdc;
+  display: inline-block;
   color: #777;
+  width: 100px;
   padding: 4px 5px;
   margin: 0 5px 0 10px;
   text-decoration: none;
@@ -316,6 +396,10 @@ body {
   height: 25px;
   float: right;
   margin: 2px 5px 0 10px;
+  display: none;
+}
+.enemy:hover .deleteEnemy {
+  display: block;
 }
 #add-enemy {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
@@ -328,12 +412,13 @@ body {
   -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
+  display: inline-block;
   color: #777;
   font-family: arial;
   font-size: 15px;
   font-weight: bold;
   padding: 4px 5px;
-  margin: 0 5px 0 10px;
+  margin: 0 0 0 80px;
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }

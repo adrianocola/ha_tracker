@@ -1,6 +1,32 @@
 app = window.app ? window.app : {};
 
 
+var Council = {
+    raceName: "Council",
+    raceTitle: "/images/council.png",
+    raceIcon: "/images/council_icon.png"
+}
+
+var DarkElves = {
+    raceName: "Dark Elves",
+    raceTitle: "/images/darkelves.png",
+    raceIcon: "/images/darkelves_icon.png"
+}
+
+var Dwarves = {
+    raceName: "Dwarves",
+    raceTitle: "/images/dwarves.png",
+    raceIcon: "/images/dwarves_icon.png"
+}
+
+var Tribe = {
+    raceName: "Tribe",
+    raceTitle: "/images/tribe.png",
+    raceIcon: "/images/tribe_icon.png"
+}
+
+var Races = [Council, DarkElves, Dwarves, Tribe];
+
 
 var Item = Backbone.Model.extend({
 
@@ -143,6 +169,15 @@ var Game = Backbone.Model.extend({
     initialize: function(){
 
         this.selected = false;
+
+        var playerRace = _.find(Races, function(race){ return race.raceName === this.get("playerRace")},this);
+        this.set("playerRaceIcon",playerRace.raceIcon);
+        this.set("playerRaceTitle",playerRace.raceTitle);
+
+        var enemyRace = _.find(Races, function(race){ return race.raceName === this.get("enemyRace")},this);
+        this.set("enemyRaceIcon",enemyRace.raceIcon);
+        this.set("enemyRaceTitle",enemyRace.raceTitle);
+
 
         //if the model is comming from the server it already have
         // the playerItems and enemyItems ids

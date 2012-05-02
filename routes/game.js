@@ -3,18 +3,6 @@ var models = require('../models.js');
 var consts = require('../consts.js');
 var u = require('underscore');
 
-app.get('/api/enemies/:enemy/games', function(req, res){
-
-    models.Player.findById(req.session.playerId, function(err, player){
-
-        var enemy = player.enemies.id(req.params.enemy);
-
-        res.send(enemy.games);
-
-    });
-
-});
-
 
 app.post('/api/enemies/:enemy/games', function(req, res){
 

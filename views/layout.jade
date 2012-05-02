@@ -35,11 +35,14 @@ html
 
 
     script(type="text/template",id="add-game-template")
+        div Player:
         select.add-game-player-race
             option(value="Council") Council
             option(value="Dark Elves") Dark Elves
             option(value="Dwarves") Dwarves
             option(value="Tribe") Tribe
+        br
+        div Enemy:
         select.add-game-enemy-race
             option(value="Council") Council
             option(value="Dark Elves") Dark Elves
@@ -49,19 +52,27 @@ html
         button.confirm-add-game.button-01 L
 
     script(type="text/template",id="game-template")
-        <%= num %>  - <%= playerRace %> vs <%= enemyRace %>
+        //<%= num %>  - <%= playerRace %> vs <%= enemyRace %>
+        div.gameNum <%= num %>
+        div.gamePanel
+            <% print('<img class=\"raceIcon\" src=\"' + playerRaceIcon + '\"/>'); %>
+            span vs
+            <% print('<img class=\"raceIcon\" src=\"' + enemyRaceIcon + '\"/>'); %>
         button.deleteGame.button-02 -
+
 
     script(type="text/template",id="selected-game-template")
         h2 Selected Game
         <% if(name) print("<h3>" + name + "</h3>"); %>
 
     script(type="text/template", id="player-items-template")
-        h3 Player - <%= playerRace %>
+        //h3 Player
+        <% print('<img class=\"raceTitle\" src=\"' + playerRaceTitle + '\"/>'); %>
         ul.items
 
     script(type="text/template", id="enemy-items-template")
-        h3 Enemy - <%= enemyRace %>
+        //h3 Enemy
+        <% print('<img class=\"raceTitle\" src=\"' + enemyRaceTitle + '\"/>'); %>
         ul.items
 
     script(type="text/template", id="item-template")
