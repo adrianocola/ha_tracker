@@ -1,6 +1,24 @@
 app = window.app ? window.app : {};
 
 
+var opts = {
+    lines: 7, // The number of lines to draw
+    length: 0, // The length of each line
+    width: 4, // The line thickness
+    radius: 6, // The radius of the inner circle
+    rotate: 0, // The rotation offset
+    color: '#000', // #rgb or #rrggbb
+    speed: 1, // Rounds per second
+    trail: 37, // Afterglow percentage
+    shadow: true, // Whether to render a shadow
+    hwaccel: true, // Whether to use hardware acceleration
+    className: 'spinner', // The CSS class to assign to the spinner
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
+    top: 'auto', // Top position relative to parent in px
+    left: 'auto' // Left position relative to parent in px
+};
+
+
 var PlayerView = Backbone.View.extend({
 
     el: "#player",
@@ -496,11 +514,27 @@ var ItemView = Backbone.View.extend({
 
     initialize: function(){
 
+        var that = this;
+
         _.bindAll(this);
+
+        this.spinner = new Spinner(opts);
 
         this.template = _.template($("#item-template").html())
 
         this.model.bind("change:itemCount",this.renderItemCount, this);
+
+        this.model.bind("sync", function(){
+
+            //setTimeout(function(){
+                that.spinner.stop();
+                that.$(".itemCount").html(that.model.get("itemCount"));
+            //},1000);
+
+
+        }, this);
+
+
 
     },
 
@@ -524,11 +558,17 @@ var ItemView = Backbone.View.extend({
 
         var that = this;
 
+        that.sub();
+
+        this.$(".itemCount").html(this.spinner.spin().el);
+
+
+
         //blink effect
-        this.$(".itemCount").fadeOut(100, function(){
-            that.sub();
-            that.$(".itemCount").fadeIn(100);
-        });
+        //this.$(".itemCount").fadeOut(100, function(){
+//            that.sub();
+//            that.$(".itemCount").fadeIn(100);
+//        });
 
     },
 
