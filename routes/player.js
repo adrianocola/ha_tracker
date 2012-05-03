@@ -1,5 +1,5 @@
 var app = require('../app.js');
-var models = require('../models.js');
+var models = require('../conf/models.js');
 
 
 app.get('/api/players/:name', function(req, res){

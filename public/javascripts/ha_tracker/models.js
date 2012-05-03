@@ -233,7 +233,7 @@ var Games = Backbone.Collection.extend({
     select: function(gameId){
 
 
-        //app.GameRouter.navigate(this.enemy.get('name') +  "/" + gameId);
+        app.GameRouter.navigate(this.enemy.get('name') +  "/" + this.get(gameId).get("num"));
 
         app.SelectionManager.setSelectedEnemy(this.enemy);
         app.SelectionManager.setSelectedGame(this.get(gameId));

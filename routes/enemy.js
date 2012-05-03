@@ -1,5 +1,5 @@
 var app = require('../app.js');
-var models = require('../models.js');
+var models = require('../conf/models.js');
 var u = require('underscore');
 
 

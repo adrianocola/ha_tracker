@@ -1,6 +1,6 @@
 var express = require('express')
   , http = require('http')
-  , env = require('./env');
+  , env = require('./conf/env');
   //, RedisStore = require('connect-redis')(express);
 
 // faz com que o retorno desse arquivo no método require seja a variável app
@@ -26,7 +26,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-models = require('./models');
+models = require('./conf/models');
 
 [   'index',
     'player',
