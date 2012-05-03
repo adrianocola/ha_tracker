@@ -1,5 +1,8 @@
-.spinner {
+.spinner-small {
   margin: 10px 0 0 10px;
+}
+.spinner-big {
+  margin: 150px 0 0 130px;
 }
 body {
   padding: 30px;
