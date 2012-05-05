@@ -1,6 +1,7 @@
 var express = require('express')
   , http = require('http')
-  , env = require('./conf/env');
+  , env = require('./conf/env')
+  , Parse = require('./api/parse.js');
   //, RedisStore = require('connect-redis')(express);
 
 // faz com que o retorno desse arquivo no método require seja a variável app
@@ -36,6 +37,12 @@ models = require('./conf/models');
 ].forEach(function(route) {
     require('./routes/' + route);
 });
+
+
+console.log(env.secrets.parseAppId);
+console.log(env.secrets.parseMasterKey);
+
+module.exports.parse = new Parse(env.secrets.parseAppId, env.secrets.parseRESTKey);
 
 
 http.createServer(app).listen(env.port);
