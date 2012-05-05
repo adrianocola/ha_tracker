@@ -49,35 +49,6 @@ html
 
     <!-- Templates -->
 
-
-    script(type="text/template",id="login-template")
-        div#inner-login
-            div#login-top
-                div#login-login
-                    div.login-left
-                        input#login-username.login-field(type="text",placeholder="Username")
-                        input#login-password.login-field(type="password",placeholder="Password")
-                    div.login-right
-                        button#login-ok.button-01.login-button(title="Login") Login
-                        a#login-create(href="#") Signup
-                div#login-signup.hidden
-                    div.login-left
-                        div.label Username:
-                        input#signup-username.login-field(type="text",placeholder="Username")
-                        div.label Password:
-                        input#signup-password.login-field(type="text",placeholder="Password")
-                        div.label Repeat Password:
-                        input#signup-repeat-password.login-field(type="text",placeholder="Repeat Password")
-                        div.label Email:
-                        input#signup-email.login-field(type="text",placeholder="Email")
-                    div.login-right
-                        button#signup-ok.button-01.login-button(title="Signup") Signup
-                        button#signup-cancel.button-02.login-button(title="Cancel") Cancel
-            div#login-bottom
-                div.separator
-                    span or
-                div.fb-login-button Login with Facebook
-
     script(type="text/template",id="enemy-template")
         div
             span.enemyName <%= name %>

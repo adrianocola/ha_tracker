@@ -35,57 +35,6 @@ var opts_big = {
     left: 'auto' // Left position relative to parent in px
 };
 
-var LoginView = Backbone.View.extend({
-
-    el: '#login',
-
-    initialize: function(){
-
-        _.bindAll(this);
-
-        this.template = _.template($('#login-template').html());
-
-    },
-
-    events: {
-
-        'click #login-create': 'renderSignup',
-        'click #signup-cancel': 'renderLogin'
-
-    },
-
-    renderSignup: function(){
-
-        this.$('#login-login').addClass('hidden');
-        this.$('#login-signup').removeClass('hidden');
-
-        this.$el.addClass('signup-window');
-        this.$el.removeClass('login-window');
-
-    },
-
-    renderLogin: function(){
-
-        this.$('#login-signup').addClass('hidden');
-        this.$('#login-login').removeClass('hidden');
-
-        this.$el.addClass('login-window');
-        this.$el.removeClass('signup-window');
-
-    },
-
-
-
-    render: function(){
-
-        $(this.el).html(this.template({}));
-
-        return this;
-    }
-
-
-});
-
 
 var PlayerView = Backbone.View.extend({
 
@@ -688,7 +637,6 @@ $(function(){
     app.SelectedGameView = new SelectedGameView();
     app.AddGameView = new AddGameView();
     app.AddEnemyView = new AddEnemyView();
-    app.Login = new LoginView();
 
 
 });
