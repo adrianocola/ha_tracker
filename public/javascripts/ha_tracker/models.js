@@ -246,7 +246,7 @@ var Games = Backbone.Collection.extend({
 
 var Enemy = Backbone.Model.extend({
 
-    idAttribute: "objectId",
+    idAttribute: "_id",
 
     initialize: function(){
 
@@ -277,11 +277,8 @@ var Enemies = Backbone.Collection.extend({
 
 var Player = Backbone.Model.extend({
 
-    //idAttribute: "name",
+    idAttribute: "name",
     urlRoot: "/api/players",
-
-    idAttribute: "objectId",
-    //urlRoot: "https://api.parse.com/1/users",
 
     initialize: function(){
 
