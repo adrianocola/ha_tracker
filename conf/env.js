@@ -9,6 +9,9 @@ env.production = !env.development;
 
 if (env.development) {
 
+    try { env.secrets = require('./secrets'); }
+    catch(e) { throw "secret keys file is missing. see ./secrets.js.sample."; }
+
 } else {
 
 }

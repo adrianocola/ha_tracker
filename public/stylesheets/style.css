@@ -4,6 +4,9 @@
 .spinner-big {
   margin: 150px 0 0 130px;
 }
+.hidden {
+  display: none;
+}
 body {
   padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -29,6 +32,126 @@ body {
   padding: 0 10px;
   color: #fff;
   background-color: #aaa;
+}
+.login-left {
+  width: 80%;
+  float: left;
+}
+login-right {
+  width: 20%;
+  float: right;
+}
+#login {
+  color: #000;
+  background-color: #fff;
+  padding: 25px 10px 5px 10px;
+  position: absolute;
+  top: -20px;
+  left: 900px;
+  width: 50px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  overflow: hidden;
+  display: inline;
+  -moz-box-shadow: 0px 2px 8px #000;
+  -webkit-box-shadow: 0px 2px 8px #000;
+  box-shadow: 0px 2px 8px #000;
+}
+#inner-login {
+  width: 320px;
+  position: relative;
+  left: -270px;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+}
+#login:hover {
+  padding: 20px 10px 0 10px;
+  position: absolute;
+  top: -10px;
+  left: 620px;
+  width: 320px;
+}
+#login-login {
+  height: 50px;
+}
+#login-signup {
+  height: 100px;
+}
+.login-window,
+.signup-window {
+  height: 25px;
+}
+.login-window:hover {
+  height: 100px;
+}
+.signup-window:hover {
+  height: 150px;
+}
+#login:hover #inner-login {
+  left: 0;
+}
+#login-username,
+#login-password {
+  width: 90%;
+}
+#login-ok {
+  margin-left: 14px;
+  width: 50px;
+}
+#login-create {
+  margin-top: 5px;
+  margin-right: 10px;
+  float: right;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#signup-username,
+#signup-password,
+#signup-repeat-password,
+#signup-email {
+  width: 120px;
+}
+#signup-ok {
+  margin-left: 14px;
+  width: 50px;
+}
+#signup-cancel {
+  margin-top: 8px;
+  margin-left: 14px;
+  width: 50px;
+}
+.label {
+  float: left;
+  width: 110px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin-top: 3px;
+  margin-right: 4px;
+  text-align: right;
+}
+.separator {
+  margin: 5px 0 15px 0;
+  height: 1px;
+  border-top: 1px dotted #808080;
+  text-align: center;
+  position: relative;
+}
+.separator span {
+  padding: 0px 5px;
+  position: relative;
+  top: -0.7em;
+  background: #fff;
+  display: inline-block;
+}
+.fb-login-button {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 #player {
   clear: left;
@@ -96,7 +219,9 @@ body {
   border-radius: 10px;
   -moz-box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
   -webkit-box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
-  box-shadow: 0px 0px 15px #fff, inset 0px 0px 7px #000;
+  -moz-box-shadow: 0px 0px 15px #fff inset 0px 0px 7px #000;
+  -webkit-box-shadow: 0px 0px 15px #fff inset 0px 0px 7px #000;
+  box-shadow: 0px 0px 15px #fff inset 0px 0px 7px #000;
 }
 .cancel-add-game {
   float: right;
@@ -122,7 +247,10 @@ body {
 /* Operah */
   -webkit-transform: scaleX(-1) rotate(-45deg);
 /* webkit */
-  transform: scaleX(-1) rotate(-45deg);
+  -webkit-transform: scaleX(-1) rotate(-45deg);
+  -moz-transform: scaleX(-1) rotate(-45deg);
+  -o-transform: scaleX(-1) rotate(-45deg);
+  -ms-transform: scaleX(-1) rotate(-45deg);
 /* standard */
 }
 .deleteGame {
@@ -172,6 +300,8 @@ body {
   border-right: 2px solid #666;
   -moz-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
   -webkit-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
+  -moz-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
+  -webkit-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
   box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
   background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
@@ -216,6 +346,8 @@ body {
   margin: 10px 0 0 -30px;
   line-height: 30px;
   list-style: none;
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
@@ -270,13 +402,18 @@ body {
 /* Operah */
   -webkit-transform: scaleX(-1) rotate(-45deg);
 /* webkit */
-  transform: scaleX(-1) rotate(-45deg);
+  -webkit-transform: scaleX(-1) rotate(-45deg);
+  -moz-transform: scaleX(-1) rotate(-45deg);
+  -o-transform: scaleX(-1) rotate(-45deg);
+  -ms-transform: scaleX(-1) rotate(-45deg);
 /* standard */
 }
 .player-items {
   float: left;
   width: 280px;
   margin: 0 0 0 10px;
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
@@ -300,6 +437,8 @@ body {
   float: right;
   width: 280px;
   margin: 0 10px 0 0;
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
@@ -412,6 +551,8 @@ body {
 #add-enemy {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
   background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
@@ -442,6 +583,8 @@ body {
 .button-01 {
   -moz-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
   -webkit-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  -moz-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
   box-shadow: inset 0px 1px 0px 0px #d9fbbe;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
   background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
@@ -464,6 +607,8 @@ body {
 .button-02 {
   -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
   -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
   box-shadow: inset 0px 1px 0px 0px #f7c5c0;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
   background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
@@ -484,6 +629,8 @@ body {
 }
 .button-02:disabled,
 .button-01:disabled {
+  -moz-box-shadow: inset 0px 1px 0px 0px #fff;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
