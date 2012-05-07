@@ -1,7 +1,64 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    env = require('./env');
+    u = require('underscore'),
+    env = require('./env.js');
+
+var ACL_Plugin = function(schema, options) {
+
+    schema.add({ ACL: {} });
+
+    schema.pre('save', function (next, opt, cb) {
+
+        if(typeof opt == "object" && opt.playerId){
+
+            //if is the master user or the object doesn't have ACL
+            if(opt.playerId == 'MASTER' || !this.ACL){
+                next(cb);
+            }else if((obj.ACL['*'] && obj.ACL['*'].write) || (this.ACL[opt.playerId] && this.ACL[opt.playerId].write)){
+                next(cb);
+            }else{
+                next(new Error("{code: 102, error: 'Access not granted'}"));
+            }
+
+        }else{
+            next(new Error("{code: 100, error: 'Missing credentials'}"));
+        }
+
+
+    })
+
+    schema.pre('init', function(next, obj, opt){
+
+        //this.ACL = undefined;
+
+
+        if(opt.options.playerId){
+
+            //if is the master user or the object doesn't have ACL
+            if(opt.options.playerId == 'MASTER' || !obj.ACL){
+                next();
+            }else if((obj.ACL['*'] && obj.ACL['*'].read) || (obj.ACL[opt.options.playerId] && obj.ACL[opt.options.playerId].read)){
+
+                next();
+            }else{
+                next(new Error("{code: 102, error: 'Access not granted'}"));
+            }
+
+        }else{
+            next(new Error("{code: 100, error: 'Missing credentials'}"));
+        }
+
+
+    });
+
+    schema.methods.teste = function(){
+        console.log(this);
+    }
+
+};
+
+
 
 var ItemSchema = new Schema({
     itemId: Number,
@@ -27,9 +84,47 @@ var EnemySchema = new Schema({
 });
 
 var PlayerSchema = new Schema({
-    name: {type: String, index: true , required: true},
+    email: {type: String, index: { unique: true } , required: true},
+    password: {type: String, required: true},
     enemies: [EnemySchema]
 });
+PlayerSchema.plugin(ACL_Plugin);
+//removes passworld field
+////TODO find a better way to do it!
+PlayerSchema.methods.secure = function(){
+
+    this.password = undefined;
+
+
+    return this;
+
+};
+//PlayerSchema.pre('init',function(next, player, extra){
+//
+//    console.log("INIT");
+//    player.password = undefined;
+//
+//    next();
+//});
+//
+//PlayerSchema.pre('save',function(next){
+//
+//    console.log("PRE SAVE");
+//    console.log(this);
+//
+//
+//    next();
+//});
+//
+//PlayerSchema.post('save',function(player){
+//
+//    console.log("POST SAVE");
+//    console.log(player);
+//
+//    //player.password = undefined;
+//
+//    //next();
+//});
 
 exports.Player = mongoose.model('Player', PlayerSchema);
 exports.Enemy = mongoose.model('Enemy', EnemySchema);

@@ -1,64 +1,118 @@
 var app = require('../app.js');
 var models = require('../conf/models.js');
+env = require('../conf/env.js');
 
 app.get('/', function(req, res){
+
     models.Player.findOne({}, function (err, doc){
 
         req.session.playerId = undefined;
 
         if(!doc){
             var player = new models.Player();
-            player.name = "Player";
+            player.username = "Player";
 
             player.save(function(err){
-                res.render('index', { title: "HA Tracker", username: player.name });
+                res.render('index', { title: "HA Tracker", username: player.username });
             });
 
 
         }else{
-            res.render('index', { title: "HA Tracker", username: doc.name });
+            res.render('index', { title: "HA Tracker", username: doc.username });
         }
 
 
     });
 });
 
-app.get('/add/:name',function(req, res){
+//app.get('/get/:id',function(req, res){
+//
+//    models.Player.findById(req.params.id, function (err, doc){
+//
+//        res.send(doc);
+//    });
+//
+//});
 
-    var player = new models.Player();
-    player.name = req.params.name;
 
-    player.save(function(err){
-        res.send(player);
+function playerId(playerId){
+    return {playerId: playerId};
+}
+
+app.get('/api/teste', function(req,res){
+
+    models.Player.findOne({email: req.query.email},{},playerId('MASTER'), function(err,player){
+
+        //console.log(player.secure());
+        player.teste();
+
+        res.send(player.secure());
+
     });
+
+
+
 
 });
 
-app.get('/get/:id',function(req, res){
 
-    models.Player.findById(req.params.id, function (err, doc){
+app.get('/api/login', function(req,res){
 
-        res.send(doc);
+    models.Player.findOne({email: req.query.email},{},playerId('MASTER'), function(err,player){
+
+        if(err) console.log(err);
+
+        if(player && req.query.password == player.password){
+            req.session.playerId = player._id;
+
+            res.send(player.secure());
+        }else{
+            res.send({code: 101, error: "Invalid username or password"});
+        }
+
     });
 
-});
 
-
-app.get("/:enemyId/:gameId", function(req, res){
-    models.Player.findOne({}, function (err, doc){
-
-        req.session.playerId = undefined;
-
-        res.render('index', { title: "HA Tracker", username: doc.name });
-    });
 });
 
 
 app.post("/api/signup", function(req, res){
-    models.Player.findOne({}, function (err, doc){
 
-        req.session.playerId = undefined;
+    var player = new models.Player();
+    player.password = req.body.password;
+    player.email = req.body.email;
 
-        res.render('index', { title: "HA Tracker", username: doc.name });
+
+    player.save(playerId('MASTER'),function(err){
+
+        player.ACL = {};
+        player.ACL[player._id] = {read: true, write: true};
+
+        player.save(playerId('MASTER'),function(err){
+
+            if(err){
+                console.log(err);
+                res.send(err.message);
+            }else{
+
+                req.session.playerId = player._id;
+
+                res.send(player.secure());
+            }
+
+        });
+
     });
+
 });
+
+
+
+//app.get("/:enemyId/:gameId", function(req, res){
+//    models.Player.findOne({}, function (err, doc){
+//
+//        req.session.playerId = undefined;
+//
+//        res.render('index', { title: "HA Tracker", username: doc.username });
+//    });
+//});

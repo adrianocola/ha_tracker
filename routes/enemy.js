@@ -1,6 +1,7 @@
 var app = require('../app.js');
 var models = require('../conf/models.js');
 var u = require('underscore');
+var common = require('./common.js');
 
 
 //app.get('/api/enemies', function(req, res){
@@ -20,7 +21,7 @@ app.get('/api/enemies/:id', function(req, res){
 
 });
 
-app.post('/api/enemies', function(req, res){
+app.post('/api/enemies', common.verifySession(function(req,res){
 
     models.Player.findOne({_id: req.session.playerId}, function(err, doc){
 
@@ -34,7 +35,7 @@ app.post('/api/enemies', function(req, res){
         });
 
     });
-});
+}));
 
 app.delete('/api/enemies/:id', function(req, res){
 
