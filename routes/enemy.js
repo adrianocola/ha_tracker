@@ -21,17 +21,25 @@ app.get('/api/enemies/:id', function(req, res){
 
 });
 
+//IMPLEMENTAR ACL NOS OUTROS REQUESTS!
+
+
 app.post('/api/enemies', common.verifySession(function(req,res){
 
-    models.Player.findOne({_id: req.session.playerId}, function(err, doc){
+    models.Player.findById(req.session.playerId, {},common.playerId(req.session.playerId), function(err, doc){
+
+        if(err) console.log(err);
 
         var enemy = new models.Enemy(req.body);
         //enemy._id = req.body.name;
 
         doc.enemies.splice(0,0,enemy);
 
-        doc.save(function(err){
-            if (!err) res.send(enemy);
+        doc.save(common.playerId(req.session.playerId),function(err){
+
+            if(err) console.log(err);
+
+            res.send(enemy);
         });
 
     });

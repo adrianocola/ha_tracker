@@ -59,10 +59,33 @@ app.get('/api/teste', function(req,res){
 
 });
 
+app.get('/api/logout', function(req, res){
+
+    if(req.session){
+        req.session.destroy(function(err){
+            res.send({});
+        });
+    }else{
+        res.send({code: 105, error: "Not logged"});
+    }
+});
+
 
 app.get('/api/login', function(req,res){
 
-    models.Player.findOne({email: req.query.email},{},playerId('MASTER'), function(err,player){
+    var query = {};
+
+    //if the user is trying to login with e-mail...
+    if(req.query.usernameemail.match(/\S+@\S+\.\S+/)){
+        query.email = req.query.usernameemail;
+    //...or username
+    }else{
+        query.username = req.query.usernameemail;
+    }
+
+
+
+    models.Player.findOne(query,{},playerId('MASTER'), function(err,player){
 
         if(err) console.log(err);
 

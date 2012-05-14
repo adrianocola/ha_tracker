@@ -312,10 +312,15 @@ var Login = Backbone.Model.extend({
 
         if(attrs.username != undefined){
             if(attrs.username == "") return "Username is Required";
+
+            if(attrs.username.match(/[\<\>!@#\$%^&\*, ]+/i)) return "Cannot use white spaces or < > ! @ # $ % ^ & *";
         }
 
         if(attrs.email != undefined){
-            if(attrs.email == "") return "Email is Required";
+            if(attrs.email == "") return "E-mail is Required";
+
+            if(!attrs.email.match(/\S+@\S+\.\S+/)) return "Not a valid e-mail address"
+
         }
 
         if(attrs.password != undefined){
@@ -331,25 +336,45 @@ var Login = Backbone.Model.extend({
     },
 
 
-    login: function(email, password){
+    login: function(usernameemail, password, cb){
+
+        var that = this;
 
         $.ajax({
-            contentType: "application/json",
-            data: "{'email':'" + email + "', 'password':'" +  password + "'}",
-            type: "POST",
+            data: "usernameemail=" + usernameemail + "&password=" +  password,
             url: "/api/login"
         }).success(function( msg ) {
-            console.log("LOGIN: " + msg);
+            if(msg.error){
+                cb(msg.error, undefined);
+            } else{
+                that.set(msg);
+                cb(undefined,msg);
+            }
         });
 
 
     },
 
-    logoff: function(){
+    logout: function(cb){
+
+        var that = this;
+
+        $.ajax({
+            url: "/api/logout"
+        }).success(function( msg ) {
+                if(msg.error){
+                    cb(msg.error);
+                } else{
+                    cb(undefined);
+                }
+            });
+
 
     },
 
     signup: function(username, email, password, cb){
+
+        var that = this;
 
         $.ajax({
             contentType: "application/json",
@@ -360,6 +385,7 @@ var Login = Backbone.Model.extend({
             if(msg.error){
                 cb(msg.error, undefined);
             } else{
+                that.set(msg);
                 cb(undefined,msg);
             }
         });

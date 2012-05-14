@@ -99,8 +99,8 @@ html
                         input#signup-repeat-password.login-field(type="password",placeholder="Verify Password")
                         button#repeat-password-error-icon.signup-error.button-02.hidden !
                             span#repeat-password-error.tooltip-error
-                        div.label Email:
-                        input#signup-email.login-field(type="text",placeholder="Email",maxlength="100")
+                        div.label E-mail:
+                        input#signup-email.login-field(type="text",placeholder="E-mail",maxlength="100")
                         button#email-error-icon.signup-error.button-02.hidden !
                             span#email-error.tooltip-error
                         div.signup-error
@@ -114,6 +114,8 @@ html
                 div.fb-login-button Login with Facebook
 
     script(type="text/template",id="logged-player-template")
+        div <%= username %>
+        a(href="#").logout logout
 
     script(type="text/template",id="enemy-template")
         div

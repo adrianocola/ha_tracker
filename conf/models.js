@@ -19,7 +19,7 @@ var ACL_Plugin = function(schema, options) {
             //if is the master user or the object doesn't have ACL
             if(opt.playerId == 'MASTER' || !this.ACL){
                 next(cb);
-            }else if((obj.ACL['*'] && obj.ACL['*'].write) || (this.ACL[opt.playerId] && this.ACL[opt.playerId].write)){
+            }else if((this.ACL['*'] && this.ACL['*'].write) || (this.ACL[opt.playerId] && this.ACL[opt.playerId].write)){
                 next(cb);
             }else{
                 next(new Error("{code: 102, error: 'Access not granted'}"));

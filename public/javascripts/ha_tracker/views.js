@@ -45,7 +45,65 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.template = _.template($('#logged-player-template').html());
 
+    },
+
+    events: {
+
+        'click .logout': 'logout'
+
+    },
+
+    logout: function(){
+
+        var that = this;
+
+        this.model.logout(function(err){
+            if(err){
+                console.log("ERROR LOGOUT");
+            }else{
+                console.log("LOGOUT OK");
+                $("#player").html("");
+                app.SelectedGameView.clean();
+
+                that.dismiss();
+                app.LoginView.show();
+            }
+        });
+
+    },
+
+    logged: function(model){
+
+        this.model = model;
+
+        console.log(model.toJSON());
+
+
+        var player = new app.Player(model.toJSON());
+
+        player.loadEnemies();
+
+        new app.PlayerView({model: player}).render();
+
+        this.show();
+
+    },
+
+    dismiss: function(){
+        this.$el.addClass('dismissed');
+    },
+
+    show: function(){
+        this.$el.removeClass('dismissed');
+        this.render();
+    },
+
+    render: function(){
+
+        $(this.el).html(this.template(this.model.toJSON()));
+
     }
+
 
 });
 
@@ -67,8 +125,39 @@ var LoginView = Backbone.View.extend({
 
         'click #login-create': 'renderSignup',
         'click #signup-cancel': 'renderLogin',
-        'click #signup-ok': 'signup'
+        'click #signup-ok': 'signup',
+        'click #login-ok': 'login'
     },
+
+    login: function(){
+
+        var usernameemail = this.$('#login-username').val();
+        var password = this.$('#login-password').val();
+
+        this.$("#login-ok").html(this.spinner.spin().el);
+
+        var that = this;
+
+
+        this.model.login(usernameemail,password,function(err,player){
+
+
+            that.spinner.stop();
+            that.$("#login-ok").html("Login");
+            if(err){
+                that.$('.login-error').html(err);
+            }else{
+                //that.$('.login-msg').html("OK!");
+
+                that.dismiss();
+                app.LoggedPlayerView.logged(that.model);
+            }
+
+        });
+
+
+    },
+
 
     signup: function(){
 
@@ -135,7 +224,10 @@ var LoginView = Backbone.View.extend({
                 if(err){
                     that.$('.signup-error').html(err);
                 }else{
-                    that.$('.signup-msg').html("OK!");
+                    //that.$('.signup-msg').html("OK!");
+
+                    that.dismiss();
+                    app.LoggedPlayerView.logged(that.model);
                 }
             });
         }
@@ -165,7 +257,13 @@ var LoginView = Backbone.View.extend({
 
     },
 
+    dismiss: function(){
+        this.$el.addClass('dismissed');
+    },
 
+    show: function(){
+        this.$el.removeClass('dismissed');
+    },
 
     render: function(){
 
@@ -280,7 +378,6 @@ var AddEnemyView = Backbone.View.extend({
     },
 
     nameKeyPress: function(evt){
-        console.log(evt.keyCode);
         if(evt.keyCode == 13){
             this.confirmAddEnemy();
         }else if(evt.keyCode == 27){

@@ -2,6 +2,9 @@ var app = require('../app.js');
 var models = require('../conf/models.js');
 
 
+exports.playerId = function(playerId){
+    return {playerId: playerId};
+}
 
 
 exports.verifySession = function(cb){

@@ -49,6 +49,13 @@ body {
   -moz-border-radius: 10px;
   border-radius: 10px;
 }
+#player h2 {
+  color: #555;
+  font-family: arial;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #fff;
+}
 #current-game {
   float: right;
   width: 610px;

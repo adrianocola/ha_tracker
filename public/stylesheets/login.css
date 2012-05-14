@@ -27,6 +27,17 @@
   -webkit-box-shadow: 0px 2px 8px #000;
   box-shadow: 0px 2px 8px #000;
 }
+#login.dismissed:hover {
+  top: -300px;
+}
+#login.dismissed {
+  top: -70px;
+  height: 25px;
+}
+.login-window,
+.signup-window {
+  height: 25px;
+}
 #inner-login {
   width: 320px;
   position: relative;
@@ -74,10 +85,6 @@ div.login-msg {
 }
 #login-login {
   height: 60px;
-}
-.login-window,
-.signup-window {
-  height: 25px;
 }
 .login-window:hover {
   height: 110px;
@@ -162,11 +169,11 @@ button.signup-error:hover span {
 #logged-player {
   color: #000;
   background-color: #fff;
-  padding: 25px 10px 5px 10px;
+  padding: 22px 10px 5px 10px;
   position: absolute;
   top: -20px;
   left: 950px;
-  width: 50px;
+  min-width: 40px;
   height: 25px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -175,11 +182,21 @@ button.signup-error:hover span {
   -moz-transition: all 1s ease-in-out;
   -o-transition: all 1s ease-in-out;
   -ms-transition: all 1s ease-in-out;
-  overflow: hidden;
+  overflow: visible;
   display: inline;
   -moz-box-shadow: 0px 2px 8px #000;
   -webkit-box-shadow: 0px 2px 8px #000;
   box-shadow: 0px 2px 8px #000;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#logged-player.dismissed {
+  top: -70px;
+}
+a.logout {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 0%;
+  border-left: auto;
+  border-right: auto;
 }
 .fb-login-button {
   margin-left: auto;
