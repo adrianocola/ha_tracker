@@ -4,6 +4,7 @@ app = window.app ? window.app : {};
 $(function(){
 
 
+
     //Facebook authentication
     window.fbAsyncInit = function() {
         FB.init({
@@ -25,14 +26,16 @@ $(function(){
         d.getElementsByTagName('head')[0].appendChild(js);
     }(document));
 
-    $.ajax('/api/login?email=teste@teste.com&password=teste').success(function(player){
+
+
+    //$.ajax('/api/login?email=teste@teste.com&password=teste').success(function(player){
 
         var selectedGameView = app.SelectedGameView;
 
         app.AppPlayer = new app.Player(player);
         //app.AppPlayer.fetch({success: function(){
 
-            app.Login.render();
+            app.LoginView.render();
 
             app.AppPlayer.loadEnemies();
 
@@ -45,7 +48,7 @@ $(function(){
 
         //}});
 
-    });
+    //});
 
 
 

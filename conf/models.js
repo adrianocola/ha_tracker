@@ -99,33 +99,6 @@ PlayerSchema.methods.secure = function(){
 
 };
 
-//PlayerSchema.pre('init',function(next, player, extra){
-//
-//    console.log("INIT");
-//    player.password = undefined;
-//
-//    next();
-//});
-//
-//PlayerSchema.pre('save',function(next){
-//
-//    console.log("PRE SAVE");
-//    console.log(this);
-//
-//
-//    next();
-//});
-//
-//PlayerSchema.post('save',function(player){
-//
-//    console.log("POST SAVE");
-//    console.log(player);
-//
-//    //player.password = undefined;
-//
-//    //next();
-//});
-
 exports.Player = mongoose.model('Player', PlayerSchema);
 exports.Enemy = mongoose.model('Enemy', EnemySchema);
 exports.Game = mongoose.model('Game', GameSchema);

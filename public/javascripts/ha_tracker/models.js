@@ -300,8 +300,49 @@ var Player = Backbone.Model.extend({
 
 });
 
+var Login = Backbone.Model.extend({
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+    },
+
+
+    login: function(email, password){
+
+        $.ajax({
+            contentType: "application/json",
+            data: {"email": email, "password": password},
+            type: "POST",
+            url: "/api/login"
+        }).done(function( msg ) {
+            console.log("LOGIN: " + msg);
+        });
+
+
+    },
+
+    logoff: function(){
+
+    },
+
+    signup: function(email, password, rpassword){
+
+        $.ajax({
+            contentType: "application/json",
+            data: {"email": email, "password": password},
+            type: "POST",
+            url: "/api/signup"
+        });
+
+    }
+
+});
+
 
 $(function(){
+    app.Login = Login;
     app.Player = Player;
     app.Enemy = Enemy;
     app.Game = Game;

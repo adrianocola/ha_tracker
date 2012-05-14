@@ -688,7 +688,7 @@ $(function(){
     app.SelectedGameView = new SelectedGameView();
     app.AddGameView = new AddGameView();
     app.AddEnemyView = new AddEnemyView();
-    app.Login = new LoginView();
+    app.LoginView = new LoginView(new app.Login());
 
 
 });
