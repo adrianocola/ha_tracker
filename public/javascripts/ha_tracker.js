@@ -28,23 +28,25 @@ $(function(){
 
 
 
+    app.LoginView.render();
+
     //$.ajax('/api/login?email=teste@teste.com&password=teste').success(function(player){
 
-        var selectedGameView = app.SelectedGameView;
-
-        app.AppPlayer = new app.Player(player);
-        //app.AppPlayer.fetch({success: function(){
-
-            app.LoginView.render();
-
-            app.AppPlayer.loadEnemies();
-
-            new app.PlayerView({model: app.AppPlayer}).render();
-
-            selectedGameView.render();
-
-            app.GameRouter = new GameRouter();
-            Backbone.history.start({pushState: true});
+//        var selectedGameView = app.SelectedGameView;
+//
+//        app.AppPlayer = new app.Player(player);
+//        //app.AppPlayer.fetch({success: function(){
+//
+//
+//
+//            app.AppPlayer.loadEnemies();
+//
+//            new app.PlayerView({model: app.AppPlayer}).render();
+//
+//            selectedGameView.render();
+//
+//            app.GameRouter = new GameRouter();
+//            Backbone.history.start({pushState: true});
 
         //}});
 

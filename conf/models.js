@@ -79,6 +79,7 @@ var EnemySchema = new Schema({
 });
 
 var PlayerSchema = new Schema({
+    username: {type: String, index: { unique: true } , required: true},
     email: {type: String, index: { unique: true } , required: true},
     password: {type: String, required: true},
     enemies: [EnemySchema]

@@ -308,15 +308,37 @@ var Login = Backbone.Model.extend({
 
     },
 
+    validate: function(attrs){
+
+        if(attrs.username != undefined){
+            if(attrs.username == "") return "Username is Required";
+        }
+
+        if(attrs.email != undefined){
+            if(attrs.email == "") return "Email is Required";
+        }
+
+        if(attrs.password != undefined){
+            if(attrs.password == "") return "Password is Required";
+        }
+
+        if(attrs.rpassword != undefined){
+            if(attrs.rpassword == "") return "Passwords don't match!";
+            if(this.get("password") != attrs.rpassword) return "Passwords don't match!";
+        }
+
+
+    },
+
 
     login: function(email, password){
 
         $.ajax({
             contentType: "application/json",
-            data: {"email": email, "password": password},
+            data: "{'email':'" + email + "', 'password':'" +  password + "'}",
             type: "POST",
             url: "/api/login"
-        }).done(function( msg ) {
+        }).success(function( msg ) {
             console.log("LOGIN: " + msg);
         });
 
@@ -327,13 +349,19 @@ var Login = Backbone.Model.extend({
 
     },
 
-    signup: function(email, password, rpassword){
+    signup: function(username, email, password, cb){
 
         $.ajax({
             contentType: "application/json",
-            data: {"email": email, "password": password},
+            data: '{"username":"' + username + '","email":"' + email + '", "password":"' +  password + '"}',
             type: "POST",
             url: "/api/signup"
+        }).success(function( msg ) {
+            if(msg.error){
+                cb(msg.error, undefined);
+            } else{
+                cb(undefined,msg);
+            }
         });
 
     }

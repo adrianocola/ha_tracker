@@ -4,6 +4,7 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/table.css')
+    link(rel='stylesheet', href='/stylesheets/login.css')
     script(src='/javascripts/vendor/jquery.js')
     script(src='/javascripts/vendor/underscore.js')
     script(src='/javascripts/vendor/backbone.js')
@@ -23,7 +24,7 @@ html
     //        var s=document.createElement("script"); s.async=true;
     //        s.src="http://widgets.amung.us/tab.js";
     //        document.getElementsByTagName("head")[0].appendChild(s);
-    //    })();
+        })();
 
 
     <!-- Google analytics -->
@@ -77,21 +78,33 @@ html
             div#login-top
                 div#login-login
                     div.login-left
-                        input#login-username.login-field(type="text",placeholder="Username")
+                        input#login-username.login-field(type="text",placeholder="Username or Email")
                         input#login-password.login-field(type="password",placeholder="Password")
+                        div.login-error
+                        div.login-msg
                     div.login-right
                         button#login-ok.button-01.login-button(title="Login") Login
                         a#login-create(href="#") Signup
                 div#login-signup.hidden
                     div.login-left
                         div.label Username:
-                        input#signup-username.login-field(type="text",placeholder="Username")
+                        input#signup-username.login-field(type="text",placeholder="Username",maxlength="20")
+                        button#username-error-icon.signup-error.button-02.hidden !
+                            span#username-error.tooltip-error
                         div.label Password:
-                        input#signup-password.login-field(type="text",placeholder="Password")
-                        div.label Repeat Password:
-                        input#signup-repeat-password.login-field(type="text",placeholder="Repeat Password")
+                        input#signup-password.login-field(type="password",placeholder="Password")
+                        button#password-error-icon.signup-error.button-02.hidden !
+                            span#password-error.tooltip-error
+                        div.label Verify:
+                        input#signup-repeat-password.login-field(type="password",placeholder="Verify Password")
+                        button#repeat-password-error-icon.signup-error.button-02.hidden !
+                            span#repeat-password-error.tooltip-error
                         div.label Email:
-                        input#signup-email.login-field(type="text",placeholder="Email")
+                        input#signup-email.login-field(type="text",placeholder="Email",maxlength="100")
+                        button#email-error-icon.signup-error.button-02.hidden !
+                            span#email-error.tooltip-error
+                        div.signup-error
+                        div.signup-msg
                     div.login-right
                         button#signup-ok.button-01.login-button(title="Signup") Signup
                         button#signup-cancel.button-02.login-button(title="Cancel") Cancel
@@ -99,6 +112,8 @@ html
                 div.separator
                     span or
                 div.fb-login-button Login with Facebook
+
+    script(type="text/template",id="logged-player-template")
 
     script(type="text/template",id="enemy-template")
         div

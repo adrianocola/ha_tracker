@@ -71,7 +71,7 @@ app.get('/api/login', function(req,res){
 
             res.send(player.secure());
         }else{
-            res.send({code: 101, error: "Invalid username or password"});
+            res.send({code: 101, error: "Invalid email or password"});
         }
 
     });
@@ -83,28 +83,41 @@ app.get('/api/login', function(req,res){
 app.post("/api/signup", function(req, res){
 
     var player = new models.Player();
+    player.username = req.body.username;
     player.password = req.body.password;
     player.email = req.body.email;
 
 
     player.save(playerId('MASTER'),function(err){
 
-        player.ACL = {};
-        player.ACL[player._id] = {read: true, write: true};
+        if(err){
 
-        player.save(playerId('MASTER'),function(err){
-
-            if(err){
-                console.log(err);
-                res.send(err.message);
+            console.log(err);
+            if(err.code == 11000){
+                res.send({code: 103, error: "Username or Email already registered"});
             }else{
-
-                req.session.playerId = player._id;
-
-                res.send(player.secure());
+                res.send(err);
             }
 
-        });
+
+        }else{
+            player.ACL = {};
+            player.ACL[player._id] = {read: true, write: true};
+
+            player.save(playerId('MASTER'),function(err){
+
+                if(err){
+                    console.log(err);
+                    res.send(err.message);
+                }else{
+
+                    req.session.playerId = player._id;
+
+                    res.send(player.secure());
+                }
+
+            });
+        }
 
     });
 

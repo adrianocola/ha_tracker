@@ -35,6 +35,20 @@ var opts_big = {
     left: 'auto' // Left position relative to parent in px
 };
 
+var LoggedPlayerView = Backbone.View.extend({
+
+    el: '#logged-player',
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.template = _.template($('#logged-player-template').html());
+
+    }
+
+});
+
 var LoginView = Backbone.View.extend({
 
     el: '#login',
@@ -45,12 +59,89 @@ var LoginView = Backbone.View.extend({
 
         this.template = _.template($('#login-template').html());
 
+        this.spinner = new Spinner(opts_small);
+
     },
 
     events: {
 
         'click #login-create': 'renderSignup',
-        'click #signup-cancel': 'renderLogin'
+        'click #signup-cancel': 'renderLogin',
+        'click #signup-ok': 'signup'
+    },
+
+    signup: function(){
+
+        this.$('div.signup-error').html("");
+        this.$('div.signup-msg').html("");
+
+        this.$("#username-error-icon").addClass("hidden");
+        this.$("#email-error-icon").addClass("hidden");
+        this.$("#password-error-icon").addClass("hidden");
+        this.$("#repeat-password-error-icon").addClass("hidden");
+
+        this.$('#signup-username').removeClass("required");
+        this.$('#signup-email').removeClass("required");
+        this.$('#signup-password').removeClass("required");
+        this.$('#signup-repeat-password').removeClass("required");
+
+        var username = this.$('#signup-username').val();
+        var email = this.$('#signup-email').val();
+        var password = this.$('#signup-password').val();
+        var rpassword = this.$('#signup-repeat-password').val();
+
+        var withError = false;
+        var that = this;
+
+
+        this.model.set({username: username}, {error: function(model,error){
+            that.$("#username-error-icon").removeClass("hidden");
+            that.$("#username-error").html(error);
+            that.$('#signup-username').addClass("required");
+            withError = true;
+        }});
+
+        this.model.set({email: email}, {error: function(model,error){
+            that.$("#email-error-icon").removeClass("hidden");
+            that.$("#email-error").html(error);
+            that.$('#signup-email').addClass("required");
+            withError = true;
+        }});
+
+        this.model.set({password: password}, {error: function(model,error){
+            that.$("#password-error-icon").removeClass("hidden");
+            that.$("#password-error").html(error);
+            that.$('#signup-password').addClass("required");
+            withError = true;
+        }});
+
+        this.model.set({rpassword: rpassword}, {error: function(model,error){
+            that.$("#repeat-password-error-icon").removeClass("hidden");
+            that.$("#repeat-password-error").html(error);
+            that.$('#signup-repeat-password').addClass("required");
+            withError = true;
+        }});
+
+
+
+        if(!withError){
+            this.$("#signup-ok").html(this.spinner.spin().el);
+
+            var that = this;
+
+            this.model.signup(username,email,password, function(err,player){
+                that.spinner.stop();
+                that.$("#signup-ok").html("Signup");
+                if(err){
+                    that.$('.signup-error').html(err);
+                }else{
+                    that.$('.signup-msg').html("OK!");
+                }
+            });
+        }
+
+
+
 
     },
 
@@ -688,7 +779,8 @@ $(function(){
     app.SelectedGameView = new SelectedGameView();
     app.AddGameView = new AddGameView();
     app.AddEnemyView = new AddEnemyView();
-    app.LoginView = new LoginView(new app.Login());
+    app.LoginView = new LoginView({model: new app.Login()});
+    app.LoggedPlayerView = new LoggedPlayerView();
 
 
 });
