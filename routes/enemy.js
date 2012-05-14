@@ -13,16 +13,13 @@ var common = require('./common.js');
 
 
 
-app.get('/api/enemies/:id', function(req, res){
-
-    models.Enemy.findOne({_id: req.params.id}, function(err, doc){
-        res.send(doc);
-    });
-
-});
-
-//IMPLEMENTAR ACL NOS OUTROS REQUESTS!
-
+//app.get('/api/enemies/:id', function(req, res){
+//
+//    models.Enemy.findOne({_id: req.params.id}, function(err, doc){
+//        res.send(doc);
+//    });
+//
+//});
 
 app.post('/api/enemies', common.verifySession(function(req,res){
 
@@ -45,9 +42,9 @@ app.post('/api/enemies', common.verifySession(function(req,res){
     });
 }));
 
-app.delete('/api/enemies/:id', function(req, res){
+app.delete('/api/enemies/:id', common.verifySession(function(req, res){
 
-    models.Player.findOne({_id: req.session.playerId}, function(err, player){
+    models.Player.findById(req.session.playerId,{},common.playerId(req.session.playerId), function(err, player){
 
         var enemy = player.enemies.id(req.params.id);
 
@@ -68,11 +65,11 @@ app.delete('/api/enemies/:id', function(req, res){
 
         enemy.remove();
 
-        player.save(function(err){
+        player.save(common.playerId(req.session.playerId),function(err){
             if (!err) res.send("OK");
         });
 
 
     });
 
-});
+}));

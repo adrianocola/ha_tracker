@@ -2,11 +2,12 @@ var app = require('../app.js');
 var models = require('../conf/models.js');
 var consts = require('../conf/consts.js');
 var u = require('underscore');
+var common = require('./common.js');
 
 
-app.post('/api/enemies/:enemy/games', function(req, res){
+app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
-    models.Player.findById(req.session.playerId, function(err, player){
+    models.Player.findById(req.session.playerId,{}, common.playerId(req.session.playerId), function(err, player){
 
         var enemy = player.enemies.id(req.params.enemy);
         enemy.gameCount+=1;
@@ -60,18 +61,18 @@ app.post('/api/enemies/:enemy/games', function(req, res){
 
         enemy.games.push(game);
 
-        player.save(function(err){
+        player.save(common.playerId(req.session.playerId),function(err){
             if (!err) res.send(game);
         });
 
     });
 
-});
+}));
 
 
-app.delete('/api/enemies/:enemy/games/:id', function(req, res){
+app.delete('/api/enemies/:enemy/games/:id', common.verifySession(function(req, res){
 
-    models.Player.findById(req.session.playerId, function(err, player){
+    models.Player.findById(req.session.playerId,{}, common.playerId(req.session.playerId), function(err, player){
 
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
@@ -86,11 +87,11 @@ app.delete('/api/enemies/:enemy/games/:id', function(req, res){
 
         game.remove();
 
-        player.save(function(err){
+        player.save(common.playerId(req.session.playerId), function(err){
             if (!err) res.send("OK");
         });
 
 
     });
 
-});
+}));

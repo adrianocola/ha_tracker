@@ -1,6 +1,7 @@
 var app = require('../app.js');
 var models = require('../conf/models.js');
 env = require('../conf/env.js');
+var common = require('./common.js');
 
 app.get('/', function(req, res){
 
@@ -25,23 +26,10 @@ app.get('/', function(req, res){
     });
 });
 
-//app.get('/get/:id',function(req, res){
-//
-//    models.Player.findById(req.params.id, function (err, doc){
-//
-//        res.send(doc);
-//    });
-//
-//});
-
-
-function playerId(playerId){
-    return {playerId: playerId};
-}
 
 app.get('/api/teste', function(req,res){
 
-    models.Player.findOne({email: req.query.email},{},playerId(req.session.playerId), function(err,player){
+    models.Player.findOne({email: req.query.email},{}, common.playerId(req.session.playerId), function(err,player){
 
         if(err){
             console.log(err);
@@ -85,7 +73,7 @@ app.get('/api/login', function(req,res){
 
 
 
-    models.Player.findOne(query,{},playerId('MASTER'), function(err,player){
+    models.Player.findOne(query,{}, common.playerId('MASTER'), function(err,player){
 
         if(err) console.log(err);
 
@@ -111,7 +99,7 @@ app.post("/api/signup", function(req, res){
     player.email = req.body.email;
 
 
-    player.save(playerId('MASTER'),function(err){
+    player.save( common.playerId('MASTER'),function(err){
 
         if(err){
 
@@ -127,7 +115,7 @@ app.post("/api/signup", function(req, res){
             player.ACL = {};
             player.ACL[player._id] = {read: true, write: true};
 
-            player.save(playerId('MASTER'),function(err){
+            player.save( common.playerId('MASTER'),function(err){
 
                 if(err){
                     console.log(err);

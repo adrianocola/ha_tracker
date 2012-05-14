@@ -2,11 +2,12 @@ var app = require('../app.js');
 var models = require('../conf/models.js');
 var consts = require('../conf/consts.js');
 var u = require('underscore');
+var common = require('./common.js');
 
 
-app.get('/api/itemmanager/:id/items', function(req, res){
+app.get('/api/itemmanager/:id/items', common.verifySession(function(req, res){
 
-    models.ItemManager.findById(req.params.id,function(err,itemManager){
+    models.ItemManager.findById(req.params.id,{}, common.playerId(req.session.playerId), function(err,itemManager){
 
         var items = [];
 
@@ -26,23 +27,23 @@ app.get('/api/itemmanager/:id/items', function(req, res){
     });
 
 
-});
+}));
 
 
 
 
-app.put('/api/itemmanager/:manager/items/:id', function(req, res){
+app.put('/api/itemmanager/:manager/items/:id', common.verifySession(function(req, res){
 
-    models.ItemManager.findById(req.params.manager, function(err, itemManager){
+    models.ItemManager.findById(req.params.manager,{}, common.playerId(req.session.playerId), function(err, itemManager){
 
         var item = itemManager.items.id(req.params.id);
 
         item.itemCount = req.body.itemCount;
 
-        itemManager.save(function(err){
+        itemManager.save(common.playerId(req.session.playerId), function(err){
             res.send(item);
         });
 
     });
-});
+}));
 
