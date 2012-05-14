@@ -4,10 +4,14 @@ var mongoose = require('mongoose'),
     u = require('underscore'),
     env = require('./env.js');
 
+//Mongoose plugin to support ACL object access security
 var ACL_Plugin = function(schema, options) {
 
+    //add the field ACL to all schemas
     schema.add({ ACL: {} });
 
+    //ACL save middleware, executed when a model saves. Checks if the current
+    //request can save the current object
     schema.pre('save', function (next, opt, cb) {
 
         if(typeof opt == "object" && opt.playerId){
@@ -28,10 +32,9 @@ var ACL_Plugin = function(schema, options) {
 
     })
 
+    //ACL init middleware, executed when a model is loaded form the DB. Checks
+    // if the current requet can access the object
     schema.pre('init', function(next, obj, opt){
-
-        //this.ACL = undefined;
-
 
         if(opt.options.playerId){
 
@@ -39,7 +42,6 @@ var ACL_Plugin = function(schema, options) {
             if(opt.options.playerId == 'MASTER' || !obj.ACL){
                 next();
             }else if((obj.ACL['*'] && obj.ACL['*'].read) || (obj.ACL[opt.options.playerId] && obj.ACL[opt.options.playerId].read)){
-
                 next();
             }else{
                 next(new Error("{code: 102, error: 'Access not granted'}"));
@@ -49,16 +51,9 @@ var ACL_Plugin = function(schema, options) {
             next(new Error("{code: 100, error: 'Missing credentials'}"));
         }
 
-
     });
 
-    schema.methods.teste = function(){
-        console.log(this);
-    }
-
 };
-
-
 
 var ItemSchema = new Schema({
     itemId: Number,
@@ -89,16 +84,21 @@ var PlayerSchema = new Schema({
     enemies: [EnemySchema]
 });
 PlayerSchema.plugin(ACL_Plugin);
-//removes passworld field
-////TODO find a better way to do it!
+
+/**
+ *
+ * Removes the passworld field to send to the client
+ *
+ * @return {Object} same object, but without the password field
+ */
 PlayerSchema.methods.secure = function(){
 
-    this.password = undefined;
-
+    delete this._doc.password;
 
     return this;
 
 };
+
 //PlayerSchema.pre('init',function(next, player, extra){
 //
 //    console.log("INIT");

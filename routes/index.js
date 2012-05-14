@@ -41,17 +41,21 @@ function playerId(playerId){
 
 app.get('/api/teste', function(req,res){
 
-    models.Player.findOne({email: req.query.email},{},playerId('MASTER'), function(err,player){
+    models.Player.findOne({email: req.query.email},{},playerId(req.session.playerId), function(err,player){
 
-        //console.log(player.secure());
-        player.teste();
+        if(err){
+            console.log(err);
 
-        res.send(player.secure());
+            res.send({});
+        }else{
+            console.log("player:");
+            console.log(player);
+
+            res.send(player.secure());
+
+        }
 
     });
-
-
-
 
 });
 
