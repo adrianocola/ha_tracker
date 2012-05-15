@@ -34,6 +34,8 @@ app.get('/api/itemmanager/:id/items', common.verifySession(function(req, res){
 
 app.put('/api/itemmanager/:manager/items/:id', common.verifySession(function(req, res){
 
+    console.log("PUT: " + req.params.manager);
+
     models.ItemManager.findById(req.params.manager,{}, common.playerId(req.session.playerId), function(err, itemManager){
 
         var item = itemManager.items.id(req.params.id);

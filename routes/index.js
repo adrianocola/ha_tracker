@@ -112,8 +112,8 @@ app.post("/api/signup", function(req, res){
 
 
         }else{
-            player.ACL = {};
-            player.ACL[player._id] = {read: true, write: true};
+
+            player.addACL(player._id,true,true);
 
             player.save( common.playerId('MASTER'),function(err){
 

@@ -30,7 +30,11 @@ app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
                 },this);
 
-                playerItemManager.save();
+                playerItemManager.addACL(req.session.playerId,true,true);
+
+                playerItemManager.save(common.playerId(req.session.playerId),function(err){
+                    if(err) console.log(err);
+                });
 
                 game.playerItems = playerItemManager;
             }
@@ -51,7 +55,11 @@ app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
                 },this);
 
-                enemyItemManager.save();
+                enemyItemManager.addACL(req.session.playerId,true,true);
+
+                enemyItemManager.save(common.playerId(req.session.playerId),function(err){
+                    if(err) console.log(err);
+                });
 
                 game.enemyItems = enemyItemManager;
 

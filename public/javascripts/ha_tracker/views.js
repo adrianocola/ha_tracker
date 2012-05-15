@@ -142,8 +142,8 @@ var LoginView = Backbone.View.extend({
         this.model.login(usernameemail,password,function(err,player){
 
 
-            that.spinner.stop();
-            that.$("#login-ok").html("Login");
+            //that.spinner.stop();
+            //that.$("#login-ok").html("Login");
             if(err){
                 that.$('.login-error').html(err);
             }else{

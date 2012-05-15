@@ -53,6 +53,48 @@ var ACL_Plugin = function(schema, options) {
 
     });
 
+    /**
+     * Add values to the ACL security
+     *
+     * @param model the model that will receive the ACL
+     * @param playerId id of the user with access to this object. Use '*' to grant to all
+     * @param read have read access
+     * @param write have write access
+     */
+    schema.methods.addACL = function(playerId, read, write){
+
+        this.ACL = this.ACL || {};
+
+        this.ACL[playerId] = {};
+
+        if(read){
+            this.ACL[playerId].read = true;
+        }else{
+            delete this.ACL[playerId].read;
+        }
+
+        if(write){
+            this.ACL[playerId].write = true;
+        }else{
+            delete this.ACL[playerId].write;
+        }
+
+    };
+
+    /**
+     *
+     * @param playerId id of the user that access to this object will be removed
+     */
+    schema.methods.removeACL = function(playerId){
+
+        this.ACL = this.ACL || {};
+
+        if(this.ACL[playerId]){
+            delete this.ACL[playerId];
+        }
+
+    };
+
 };
 
 var ItemSchema = new Schema({
@@ -63,6 +105,7 @@ var ItemSchema = new Schema({
 var ItemManagerSchema = new Schema({
     items: [ItemSchema]
 });
+ItemManagerSchema.plugin(ACL_Plugin);
 
 var GameSchema = new Schema({
     num: Number,
