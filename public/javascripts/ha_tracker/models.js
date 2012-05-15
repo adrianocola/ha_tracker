@@ -340,8 +340,13 @@ var Login = Backbone.Model.extend({
 
         var that = this;
 
+        //generate the password hash combining the actual password hash plus the random
+        //number the server sends to the client . The client password or hash is never sent
+        //by the wire on the login
+        var secure_password = md5.hex_md5(md5.hex_md5(password) + $.trim($("#uuid").html()));
+
         $.ajax({
-            data: "usernameemail=" + usernameemail + "&password=" +  password,
+            data: "usernameemail=" + usernameemail + "&password=" +  secure_password,
             url: "/api/login"
         }).success(function( msg ) {
             if(msg.error){
@@ -378,7 +383,7 @@ var Login = Backbone.Model.extend({
 
         $.ajax({
             contentType: "application/json",
-            data: '{"username":"' + username + '","email":"' + email + '", "password":"' +  password + '"}',
+            data: '{"username":"' + username + '","email":"' + email + '", "password":"' +  md5.hex_md5(password) + '"}',
             type: "POST",
             url: "/api/signup"
         }).success(function( msg ) {

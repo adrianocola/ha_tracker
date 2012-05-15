@@ -2,28 +2,16 @@ var app = require('../app.js');
 var models = require('../conf/models.js');
 env = require('../conf/env.js');
 var common = require('./common.js');
+var uuid = require('../api/uuid.js');
+var md5 = require('../public/javascripts/vendor/md5.js');
 
 app.get('/', function(req, res){
 
-    models.Player.findOne({}, function (err, doc){
-
-        req.session.playerId = undefined;
-
-        if(!doc){
-            var player = new models.Player();
-            player.username = "Player";
-
-            player.save(function(err){
-                res.render('index', { title: "HA Tracker", username: player.username });
-            });
+    //generates random number to client, for authentication
+    req.session.uuid = uuid.uuid(10);
+    res.render('index', { title: "HA Tracker", uuid: req.session.uuid });
 
 
-        }else{
-            res.render('index', { title: "HA Tracker", username: doc.username });
-        }
-
-
-    });
 });
 
 
@@ -50,9 +38,11 @@ app.get('/api/teste', function(req,res){
 app.get('/api/logout', function(req, res){
 
     if(req.session){
-        req.session.destroy(function(err){
-            res.send({});
-        });
+        req.session.playerId = undefined;
+        res.send({});
+//        req.session.destroy(function(err){
+//
+//        });
     }else{
         res.send({code: 105, error: "Not logged"});
     }
@@ -77,7 +67,9 @@ app.get('/api/login', function(req,res){
 
         if(err) console.log(err);
 
-        if(player && req.query.password == player.password){
+        var secure_password = md5.hex_md5(player.password + req.session.uuid);
+
+        if(player && req.query.password == secure_password){
             req.session.playerId = player._id;
 
             res.send(player.secure());
@@ -98,6 +90,7 @@ app.post("/api/signup", function(req, res){
     player.password = req.body.password;
     player.email = req.body.email;
 
+    console.log("PASSWORD: " + player.password);
 
     player.save( common.playerId('MASTER'),function(err){
 

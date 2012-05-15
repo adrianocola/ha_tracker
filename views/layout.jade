@@ -2,6 +2,10 @@
 html
   head
     title= title
+
+    script(type="text/plain",id="uuid")
+        #{uuid}
+
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/table.css')
     link(rel='stylesheet', href='/stylesheets/login.css')
@@ -9,6 +13,7 @@ html
     script(src='/javascripts/vendor/underscore.js')
     script(src='/javascripts/vendor/backbone.js')
     script(src='/javascripts/vendor/spin.js')
+    script(src='/javascripts/vendor/md5.js')
 
     script(src='/javascripts/ha_tracker/models.js')
     script(src='/javascripts/ha_tracker/collections.js')
