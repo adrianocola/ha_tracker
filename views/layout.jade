@@ -5,6 +5,7 @@ html
 
     script(type="text/plain",id="uuid") #{uuid}
     script(type="text/plain",id="salt") #{salt}
+    script(type="text/plain",id="facebook_app_id") #{facebook_app_id}
 
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/table.css')
@@ -122,7 +123,7 @@ html
             div#login-bottom
                 div.separator
                     span or
-                div.fb-login-button Login with Facebook
+                div.fb-login-button(data-redirect-uri="http://www.uol.com.br/") Login with Facebook
 
     script(type="text/template",id="logged-player-template")
         div <%= username %>

@@ -18,12 +18,25 @@ $(function(){
     //Facebook authentication
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '349808971750591',
+            appId      : $('#facebook_app_id').html(),
             status     : true,
             cookie     : true,
             xfbml      : true,
             oauth      : true
         });
+
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
+            if(response.status=="connected")
+            {
+
+                AGORA APRENDER A USAR ESSE TOKEN DO FACEBOOK!
+                //document.getElementById("fblogin").value=response.authResponse.userID;
+                console.log(response.authResponse.accessToken);
+
+            }
+
+        });
+
     };
     (function(d){
         var js, id = 'facebook-jssdk';
@@ -35,6 +48,8 @@ $(function(){
         js.src = "//connect.facebook.net/en_US/all.js";
         d.getElementsByTagName('head')[0].appendChild(js);
     }(document));
+
+
 
 
     //render the login view

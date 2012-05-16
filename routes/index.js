@@ -9,7 +9,7 @@ app.get('/', function(req, res){
 
     //generates random number to client, for authentication
     req.session.uuid = uuid.uuid(10);
-    res.render('index', { title: "HA Tracker", uuid: req.session.uuid, salt: env.salt });
+    res.render('index', { title: "HA Tracker", uuid: req.session.uuid, salt: env.salt, facebook_app_id: env.facebook_app_id });
 
 
 
@@ -18,21 +18,23 @@ app.get('/', function(req, res){
 
 app.get('/api/teste', function(req,res){
 
-    models.Player.findOne({email: req.query.email},{}, common.playerId(req.session.playerId), function(err,player){
+    console.log("TESTE");
 
-        if(err){
-            console.log(err);
-
-            res.send({});
-        }else{
-            console.log("player:");
-            console.log(player);
-
-            res.send(player.secure());
-
-        }
-
-    });
+//    models.Player.findOne({email: req.query.email},{}, common.playerId(req.session.playerId), function(err,player){
+//
+//        if(err){
+//            console.log(err);
+//
+//            res.send({});
+//        }else{
+//            console.log("player:");
+//            console.log(player);
+//
+//            res.send(player.secure());
+//
+//        }
+//
+//    });
 
 });
 

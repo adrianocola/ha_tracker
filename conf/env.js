@@ -10,7 +10,7 @@ env.production = !env.development;
 if (env.development) {
 
     env.salt = 'SYr=*E!{tPb3aRXk#}[';
-
+    env.facebook_app_id = '103668843104996';
     try {
         env.secrets = require('./secrets');
     }
@@ -19,5 +19,6 @@ if (env.development) {
 } else {
 
     env.salt = 'I8~*8Ri:D69U/2etE5C';
+    env.facebook_app_id = '349808971750591';
 
 }

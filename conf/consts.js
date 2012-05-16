@@ -189,19 +189,19 @@ exports.Items = {
         {
             itemImg: "/images/items/typhoon.png",
             itemName: "Typhoon",
-            itemCountMax: 2
+            itemCountMax: 3
         },
     '33':
         {
             itemImg: "/images/items/spikearmor.png",
             itemName: "Spike Armor",
-            itemCountMax: 2
+            itemCountMax: 4
         },
     '34':
         {
             itemImg: "/images/items/haunchofmeat.png",
             itemName: "Haunch of Meat",
-            itemCountMax: 2
+            itemCountMax: 4
         }
 }
 
