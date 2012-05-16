@@ -29,7 +29,6 @@ $(function(){
             if(response.status=="connected")
             {
 
-                AGORA APRENDER A USAR ESSE TOKEN DO FACEBOOK!
                 //document.getElementById("fblogin").value=response.authResponse.userID;
                 console.log(response.authResponse.accessToken);
 
