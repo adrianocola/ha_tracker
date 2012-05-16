@@ -9,9 +9,15 @@ env.production = !env.development;
 
 if (env.development) {
 
-    try { env.secrets = require('./secrets'); }
+    env.salt = 'SYr=*E!{tPb3aRXk#}[';
+
+    try {
+        env.secrets = require('./secrets');
+    }
     catch(e) { throw "secret keys file is missing. see ./secrets.js.sample."; }
 
 } else {
+
+    env.salt = 'I8~*8Ri:D69U/2etE5C';
 
 }

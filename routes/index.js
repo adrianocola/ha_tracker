@@ -9,7 +9,8 @@ app.get('/', function(req, res){
 
     //generates random number to client, for authentication
     req.session.uuid = uuid.uuid(10);
-    res.render('index', { title: "HA Tracker", uuid: req.session.uuid });
+    res.render('index', { title: "HA Tracker", uuid: req.session.uuid, salt: env.salt });
+
 
 
 });
@@ -39,6 +40,8 @@ app.get('/api/logout', function(req, res){
 
     if(req.session){
         req.session.playerId = undefined;
+        res.clearCookie('KEEP_LOGGED_USER');
+        res.clearCookie('KEEP_LOGGED_ID');
         res.send({});
 //        req.session.destroy(function(err){
 //
@@ -51,33 +54,88 @@ app.get('/api/logout', function(req, res){
 
 app.get('/api/login', function(req,res){
 
-    var query = {};
+    if(req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID){
 
-    //if the user is trying to login with e-mail...
-    if(req.query.usernameemail.match(/\S+@\S+\.\S+/)){
-        query.email = req.query.usernameemail;
-    //...or username
+        models.KeepLogged.findById(req.cookies.KEEP_LOGGED_ID,{},common.playerId('MASTER'),function(err,keepLogged){
+
+            if(err) console.log(err);
+
+            if(keepLogged){
+
+                models.Player.findById(keepLogged.playerId,{}, common.playerId('MASTER'), function(err,player){
+
+                    if(err) console.log(err);
+
+                    if(player){
+                        req.session.playerId = player._id;
+
+                        res.send(player.secure());
+                    }else{
+                        res.clearCookie('KEEP_LOGGED_USER');
+                        res.clearCookie('KEEP_LOGGED_ID');
+                        res.send({code: 107, error: "User not exists!"});
+                    }
+                });
+
+            }else{
+
+                res.clearCookie('KEEP_LOGGED_USER');
+                res.clearCookie('KEEP_LOGGED_ID');
+                res.send({code: 106, error: "Session Expired"});
+
+            }
+
+
+        })
+
     }else{
-        query.username = req.query.usernameemail;
+
+
+        models.Player.findOne({username: req.query.username},{}, common.playerId('MASTER'), function(err,player){
+
+            if(err) console.log(err);
+
+            if(player && req.query.password == md5.hex_md5(player.password + req.session.uuid)){
+                req.session.playerId = player._id;
+
+                if(req.query.keepLogged){
+
+                    var keepLogged = new models.KeepLogged();
+
+                    keepLogged.usernameHash = md5.hex_md5(env.salt + player.username + env.salt);
+                    keepLogged.playerId = player._id;
+
+
+                    keepLogged.save(common.playerId('MASTER'),function(err){
+
+                        if(err) console.log(err);
+
+                        res.cookie('KEEP_LOGGED_USER', keepLogged.username, { maxAge: 1209600000 });
+                        res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 1209600000 });
+
+                        res.send(player.secure());
+
+                    });
+
+
+                }else{
+                    res.send(player.secure());
+                }
+
+
+
+
+            }else{
+                res.send({code: 101, error: "Invalid email or password"});
+            }
+
+        });
+
+
     }
 
 
 
-    models.Player.findOne(query,{}, common.playerId('MASTER'), function(err,player){
-
-        if(err) console.log(err);
-
-        var secure_password = md5.hex_md5(player.password + req.session.uuid);
-
-        if(player && req.query.password == secure_password){
-            req.session.playerId = player._id;
-
-            res.send(player.secure());
-        }else{
-            res.send({code: 101, error: "Invalid email or password"});
-        }
-
-    });
 
 
 });
@@ -89,8 +147,6 @@ app.post("/api/signup", function(req, res){
     player.username = req.body.username;
     player.password = req.body.password;
     player.email = req.body.email;
-
-    console.log("PASSWORD: " + player.password);
 
     player.save( common.playerId('MASTER'),function(err){
 

@@ -3,8 +3,8 @@ html
   head
     title= title
 
-    script(type="text/plain",id="uuid")
-        #{uuid}
+    script(type="text/plain",id="uuid") #{uuid}
+    script(type="text/plain",id="salt") #{salt}
 
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/table.css')
@@ -14,6 +14,8 @@ html
     script(src='/javascripts/vendor/backbone.js')
     script(src='/javascripts/vendor/spin.js')
     script(src='/javascripts/vendor/md5.js')
+    script(src='/javascripts/vendor/sha1.js')
+    script(src='/javascripts/vendor/cookies.js')
 
     script(src='/javascripts/ha_tracker/models.js')
     script(src='/javascripts/ha_tracker/collections.js')
@@ -83,8 +85,12 @@ html
             div#login-top
                 div#login-login
                     div.login-left
-                        input#login-username.login-field(type="text",placeholder="Username or Email")
+                        input#login-username.login-field(type="text",placeholder="Username")
                         input#login-password.login-field(type="password",placeholder="Password")
+                        div
+                            input#keep-logged(type="checkbox")
+                            label.login-text Keep me logged in
+                            a#forgot-password.login-text(href="#") Forgot your password?
                         div.login-error
                         div.login-msg
                     div.login-right

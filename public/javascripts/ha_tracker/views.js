@@ -76,9 +76,6 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.model = model;
 
-        console.log(model.toJSON());
-
-
         var player = new app.Player(model.toJSON());
 
         player.loadEnemies();
@@ -99,7 +96,6 @@ var LoggedPlayerView = Backbone.View.extend({
     },
 
     render: function(){
-
         $(this.el).html(this.template(this.model.toJSON()));
 
     }
@@ -131,7 +127,7 @@ var LoginView = Backbone.View.extend({
 
     login: function(){
 
-        var usernameemail = this.$('#login-username').val();
+        var username = this.$('#login-username').val();
         var password = this.$('#login-password').val();
 
         this.$("#login-ok").html(this.spinner.spin().el);
@@ -139,7 +135,7 @@ var LoginView = Backbone.View.extend({
         var that = this;
 
 
-        this.model.login(usernameemail,password,function(err,player){
+        this.model.login(username,password, this.$('#keep-logged').attr('checked'), function(err,player){
 
 
             that.spinner.stop();

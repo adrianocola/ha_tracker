@@ -129,6 +129,14 @@ var PlayerSchema = new Schema({
 });
 PlayerSchema.plugin(ACL_Plugin);
 
+var KeepLoggedSchema = new Schema({
+    usernameHash: {type: String, index: true , required: true},
+    playerId: {type: String, index: true , required: true}
+});
+KeepLoggedSchema.plugin(ACL_Plugin);
+
+
+
 /**
  *
  * Removes the passworld field to send to the client
@@ -143,6 +151,7 @@ PlayerSchema.methods.secure = function(){
 
 };
 
+exports.KeepLogged = mongoose.model('KeepLogged', KeepLoggedSchema);
 exports.Player = mongoose.model('Player', PlayerSchema);
 exports.Enemy = mongoose.model('Enemy', EnemySchema);
 exports.Game = mongoose.model('Game', GameSchema);
