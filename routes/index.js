@@ -41,10 +41,27 @@ app.get('/api/teste', function(req,res){
 app.get('/api/logout', function(req, res){
 
     if(req.session){
-        req.session.playerId = undefined;
-        res.clearCookie('KEEP_LOGGED_USER');
-        res.clearCookie('KEEP_LOGGED_ID');
-        res.send({});
+
+        models.Player.findById(req.session.playerId,{}, common.playerId('MASTER'), function(err,player){
+
+            if(player.facebook){
+                player.facebook.accessToken = undefined;
+                player.facebook.expiresIn = undefined;
+
+                player.save(common.playerId('MASTER'),function(err){});
+
+            }
+
+            req.session.playerId = undefined;
+            res.clearCookie('KEEP_LOGGED_USER');
+            res.clearCookie('KEEP_LOGGED_ID');
+
+            res.send({});
+
+
+        });
+
+
 //        req.session.destroy(function(err){
 //
 //        });
@@ -207,14 +224,40 @@ app.get("/api/login-facebook", function(req, res){
         }else{
             //found existing player
             if(player){
-                console.log("LOGIN - FACE");
+                //if is startup means that the user is logged in facebook and
+                //is registered here as a valid
+                if(req.query.startup){
+                    //check if the user is authenticated here (didn't made logoff)
+                    if(player.facebook.accessToken == req.query.accessToken){
+                        req.session.playerId = player._id;
 
-                req.session.playerId = player._id;
+                        res.send(player.secure());
+                    }else{
+                        res.send({code: 106, error: "Session Expired"});
+                    }
 
-                res.send(player.secure());
-            //must create a new player, user ins signup with facebook
-            }else{
-                console.log("SIGNUP - FACE");
+                //if the player is authenticated in facebook but logged off
+                // he can click on facebook button again and login
+                }else{
+
+                    player.facebook.accessToken = req.query.accessToken;
+                    player.facebook.expiresIn = req.query.expiresIn;
+
+                    player.save(common.playerId('MASTER'),function(){
+
+                        if(err) console.log(err);
+
+                        req.session.playerId = player._id;
+
+                        res.send(player.secure());
+
+                    });
+                }
+
+            //must create a new player, user signed up via facebook
+            //but check if is not startup. If is startup means that the
+            //user must first click on facebook button to authenticate
+            }else if(!req.query.startup){
                 var player = new models.Player();
 
                 player.facebook = {};
@@ -249,6 +292,10 @@ app.get("/api/login-facebook", function(req, res){
                     }
 
                 });
+            //user is logged in facebook ,don' have account here but is startup
+            //so I can' create an account here.
+            }else{
+                res.send({code: 108, error: "Facebook user not authenticated!"});
             }
         }
 

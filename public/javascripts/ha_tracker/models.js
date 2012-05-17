@@ -335,12 +335,12 @@ var Login = Backbone.Model.extend({
 
     },
 
-    login_facebook: function(userID, accessToken, expiresIn, cb){
+    login_facebook: function(userID, accessToken, expiresIn, startup, cb){
 
         var that = this;
 
         $.ajax({
-            data: "userID=" + userID + "&accessToken=" + accessToken + "&expiresIn=" + expiresIn,
+            data: "userID=" + userID + "&accessToken=" + accessToken + "&expiresIn=" + expiresIn + (startup?"&startup=true":""),
             url: "/api/login-facebook"
         }).success(function( msg ) {
 

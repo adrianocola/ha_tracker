@@ -121,6 +121,7 @@ var LoginView = Backbone.View.extend({
         _.bindAll(this);
 
         this.template = _.template($('#login-template').html());
+        this.clickedFacebook = false;
 
         this.spinner = new Spinner(opts_small);
 
@@ -131,23 +132,40 @@ var LoginView = Backbone.View.extend({
         'click #login-create': 'renderSignup',
         'click #signup-cancel': 'renderLogin',
         'click #signup-ok': 'signup',
-        'click #login-ok': 'login'
+        'click #login-ok': 'login',
+        'click .fb-login-button': 'setClickedFacebook'
     },
 
-    login_facebook: function(userID, accessToken, expiresIn){
+    setClickedFacebook: function(){
+        this.clickedFacebook = true;
+
+        FB.getLoginStatus(function(response){
+            if(response.status=="connected"){
+                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+            }
+
+        });
+
+    },
+
+    clickedFacebookStatus: function(){
+        return this.clickedFacebook;
+    },
+
+    login_facebook: function(userID, accessToken, expiresIn, startup){
 
         this.$("#login-ok").html(this.spinner.spin().el);
 
         var that = this;
 
 
-        this.model.login_facebook(userID,accessToken,expiresIn, function(err,player){
+        this.model.login_facebook(userID,accessToken,expiresIn,startup, function(err,player){
 
 
             that.spinner.stop();
             that.$("#login-ok").html("Login");
             if(err){
-                that.$('.login-error').html(err);
+                console.log(err);
             }else{
                 that.dismiss();
                 app.LoggedPlayerView.logged(that.model);

@@ -26,19 +26,13 @@ $(function(){
             oauth      : true
         });
 
-        var authHandler = function(response){
-            console.log("STATUS");
-            console.log(response);
 
+        //executed when the user tries to login or signup or is already authenticated in facebook
+        FB.Event.subscribe('auth.statusChange', function(response){
             if(response.status=="connected")
             {
-
-                //document.getElementById("fblogin").value=response.authResponse.userID;
                 console.log("The user is logged in and has authenticated your app");
-                console.log(response.authResponse.accessToken);
-
-
-                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn);
+                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,!app.LoginView.clickedFacebookStatus());
 
 
             } else if (response.status === 'not_authorized') {
@@ -47,14 +41,24 @@ $(function(){
                 console.log("The user isn't logged in to Facebook");
             }
 
-        };
+        });
 
-        //executed when the user enter the page. If he is authenticated to facebook,
-        //try to login the application
-        //FB.getLoginStatus(authHandler);
-
-        //executed when the user tries to login or signup and is not authenticated to facebook
-        FB.Event.subscribe('auth.statusChange', authHandler);
+        //executed when the user tries to login or signup or is already authenticated in facebook
+//        FB.Event.subscribe('auth.authResponseChange', function(response){
+//            console.log('auth.authResponseChange');
+//            if(response.status=="connected")
+//            {
+//                console.log("The user is logged in and has authenticated your app");
+//                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn);
+//
+//
+//            } else if (response.status === 'not_authorized') {
+//                console.log("The user is logged in to Facebook, but has not authenticated your app");
+//            } else {
+//                console.log("The user isn't logged in to Facebook");
+//            }
+//
+//        });
 
     };
     (function(d){
