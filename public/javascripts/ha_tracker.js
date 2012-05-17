@@ -25,10 +25,16 @@ $(function(){
             xfbml      : true,
             oauth      : true
         });
-
-        FB.Event.subscribe('auth.login', function(response){
+        FB.getLoginStatus(function(response){
+            console.log("STATUS");
             console.log(response);
         });
+
+
+
+//        FB.Event.subscribe('auth.login', function(response){
+//            console.log(response);
+//        });
 
         FB.Event.subscribe('auth.authResponseChange', function(response) {
 
