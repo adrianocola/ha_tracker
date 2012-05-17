@@ -126,16 +126,23 @@ html
                 div.fb-login-button Login with Facebook
 
     script(type="text/template",id="logged-player-template")
-        div <%= data.username %>
-        a.link.settings settings
-        a.link.logout logout
-
-    script(type="text/template",id="facebook-logged-player-template")
-        <% print('<img class=\"avatar\" src=\"' + data.avatar + '\"/>'); %>
-        div.user_info
-            div <%= data.username %>
-            a.link.settings settings
-            a.link.logout logout
+        div
+            <% if(data.avatar) print('<img class=\"avatar\" src=\"' + data.avatar + '\"/>'); %>
+            div.user_info
+                div <%= data.username %>
+                a.link.settings settings
+                a.link.logout logout
+        div.settings
+            div.separator
+            input#change-username-current.change-field(type="text",placeholder="Current Password")
+            input#change-password-new.change-field(type="password",placeholder="New Password")
+            input#change-password-repeat.change-field(type="password",placeholder="Repeat Password")
+            button.button-01.change-password(title="Change Password") Change Password
+            div.separator
+            button.button-02.reset-account(title="Reset Account") Reset Account
+            button.button-02.delete-account(title="Delete Account") Delete Account
+            div.separator
+            a.link.settings close
 
     script(type="text/template",id="enemy-template")
         div

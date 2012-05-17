@@ -44,14 +44,18 @@ var LoggedPlayerView = Backbone.View.extend({
         _.bindAll(this);
 
         this.template = _.template($('#logged-player-template').html());
-        this.templateFacebook = _.template($('#facebook-logged-player-template').html());
 
     },
 
     events: {
 
-        'click .logout': 'logout'
+        'click .logout': 'logout',
+        'click a.settings': 'showSettings'
 
+    },
+
+    showSettings: function(){
+        this.$el.toggleClass('with_settings');
     },
 
     logout: function(){
@@ -89,6 +93,7 @@ var LoggedPlayerView = Backbone.View.extend({
 
     dismiss: function(){
         this.$el.addClass('dismissed');
+        this.$el.removeClass('with_settings');
     },
 
     show: function(){
@@ -98,14 +103,7 @@ var LoggedPlayerView = Backbone.View.extend({
 
     render: function(){
 
-        var json = this.model.toJSON();
-
-        if(json.facebook){
-            $(this.el).html(this.templateFacebook({data: json}));
-        }else{
-            $(this.el).html(this.template({data: json}));
-        }
-
+        $(this.el).html(this.template({data: this.model.toJSON()}));
 
     }
 

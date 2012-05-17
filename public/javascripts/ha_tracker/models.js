@@ -385,6 +385,10 @@ var Login = Backbone.Model.extend({
             if(msg.error){
                 cb(msg.error, undefined);
             } else{
+
+                //clean avatar
+                msg.avatar = undefined;
+
                 that.set(msg);
                 cb(undefined,msg);
 

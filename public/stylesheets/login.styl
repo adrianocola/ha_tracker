@@ -187,33 +187,54 @@ button.signup-error:hover span
     top: -20px
     left: 850px
     min-width: 40px
-    min-height: 25px
+    height: 25px
     border-radius(10px)
     transition all 1s ease-in-out
-    overflow: visible
-    display: inline
+    overflow-x: visible
+    overflow-y: hidden
+    display: inline-block
     box-shadow 0px 2px 8px rgba(0,0,0,1)
     font: 12px "Lucida Grande", Helvetica, Arial, sans-serif
+
+#logged-player.with_settings
+    height: 290px
 
 #logged-player.dismissed
    top: -70px
 
 a.logout,a.settings
-   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
-   width: 0%
-   border-left: auto
-   border-right: auto
+    font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
+    width: 0%
+    width: 40%
+    margin-right: auto
+    margin-left: auto
+    padding-left: 3px
+    padding-right: 3px
 
 a.settings
-   margin-right: 5px
+    float: left
 
-#logged-player .user_info
+a.logout
     float: right
+
+div.settings
+    display: none
+
+#logged-player.with_settings div.settings
+    display: inline-block
+
+#logged-player div.user_info
+    float: left
+
+.reset-account, .delete-account, .change-field, .change-password
+    display: block
+    width: 100%
+    margin-bottom: 10px
 
 img.avatar
     width: 25px
     height: 25px
-    float: left
+    float: right
     margin-right: 5px
     margin-top: 2px
 
