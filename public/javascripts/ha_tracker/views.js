@@ -44,6 +44,7 @@ var LoggedPlayerView = Backbone.View.extend({
         _.bindAll(this);
 
         this.template = _.template($('#logged-player-template').html());
+        this.templateFacebook = _.template($('#facebook-logged-player-template').html());
 
     },
 
@@ -96,7 +97,15 @@ var LoggedPlayerView = Backbone.View.extend({
     },
 
     render: function(){
-        $(this.el).html(this.template(this.model.toJSON()));
+
+        var json = this.model.toJSON();
+
+        if(json.facebook){
+            $(this.el).html(this.templateFacebook({data: json}));
+        }else{
+            $(this.el).html(this.template({data: json}));
+        }
+
 
     }
 
@@ -123,6 +132,29 @@ var LoginView = Backbone.View.extend({
         'click #signup-cancel': 'renderLogin',
         'click #signup-ok': 'signup',
         'click #login-ok': 'login'
+    },
+
+    login_facebook: function(userID, accessToken, expiresIn){
+
+        this.$("#login-ok").html(this.spinner.spin().el);
+
+        var that = this;
+
+
+        this.model.login_facebook(userID,accessToken,expiresIn, function(err,player){
+
+
+            that.spinner.stop();
+            that.$("#login-ok").html("Login");
+            if(err){
+                that.$('.login-error').html(err);
+            }else{
+                that.dismiss();
+                app.LoggedPlayerView.logged(that.model);
+            }
+
+        });
+
     },
 
     login: function(){
@@ -235,6 +267,8 @@ var LoginView = Backbone.View.extend({
 
     renderSignup: function(){
 
+        this.$('.fb_button_text').html("Signup with Facebook");
+
         this.$('#login-login').addClass('hidden');
         this.$('#login-signup').removeClass('hidden');
 
@@ -244,6 +278,8 @@ var LoginView = Backbone.View.extend({
     },
 
     renderLogin: function(){
+
+        this.$('.fb_button_text').html("Login with Facebook");
 
         this.$('#login-signup').addClass('hidden');
         this.$('#login-login').removeClass('hidden');
@@ -344,10 +380,16 @@ var EnemiesView = Backbone.View.extend({
 
         $(this.el).html(this.template({}));
         $enemies = this.$(".enemies");
-        this.collection.each(function(enemy) {
+
+        _.each(this.collection.sortBy('position',this),function(enemy) {
             var view = new EnemyView({ model: enemy});
             $enemies.append(view.render().el);
-        });
+        })
+
+//        this.collection.each(function(enemy) {
+//            var view = new EnemyView({ model: enemy});
+//            $enemies.append(view.render().el);
+//        });
 
         return this;
     }

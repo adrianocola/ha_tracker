@@ -9,6 +9,7 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR MODO SEM LOGIN, COM STORAGE LOCAL
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR CAPTCHA de criação de usuário (ou algo do tipo, pra não existir spam)
+//IMPLEMENTAR purge de AUTO-LOGIN (keep me logged in)
 
 
 $(function(){
@@ -26,12 +27,23 @@ $(function(){
         });
 
         FB.Event.subscribe('auth.authResponseChange', function(response) {
+
+
             if(response.status=="connected")
             {
 
                 //document.getElementById("fblogin").value=response.authResponse.userID;
+                console.log("The user is logged in and has authenticated your app");
                 console.log(response.authResponse.accessToken);
 
+
+                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn);
+
+
+            } else if (response.status === 'not_authorized') {
+                console.log("The user is logged in to Facebook, but has not authenticated your app");
+            } else {
+                console.log("The user isn't logged in to Facebook");
             }
 
         });

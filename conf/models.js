@@ -118,13 +118,19 @@ var GameSchema = new Schema({
 var EnemySchema = new Schema({
     name: {type: String, index: true , required: true},
     gameCount: {type: Number, default: 0},
+    position: {type: Number, required: true},
     games: [GameSchema]
 });
 
 var PlayerSchema = new Schema({
-    username: {type: String, index: { unique: true } , required: true},
-    email: {type: String, index: { unique: true } , required: true},
-    password: {type: String, required: true},
+    username: {type: String, index: { unique: true }},
+    email: {type: String, index: { unique: true }},
+    password: {type: String},
+    facebook: {
+        userID: {type: String, index: { unique: true }},
+        accessToken: String,
+        expiresIn: Date
+    },
     enemies: [EnemySchema]
 });
 PlayerSchema.plugin(ACL_Plugin);

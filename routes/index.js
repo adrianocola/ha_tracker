@@ -145,41 +145,115 @@ app.get('/api/login', function(req,res){
 
 app.post("/api/signup", function(req, res){
 
-    var player = new models.Player();
-    player.username = req.body.username;
-    player.password = req.body.password;
-    player.email = req.body.email;
+    if(!req.body.username || !req.body.password || !req.body.email){
+        res.send({code: 107, error: "Missing username, email or password"});
+    } else{
 
-    player.save( common.playerId('MASTER'),function(err){
+        var player = new models.Player();
 
-        if(err){
+        player.username = req.body.username;
+        player.password = req.body.password;
+        player.email = req.body.email;
 
-            console.log(err);
-            if(err.code == 11000){
-                res.send({code: 103, error: "Username or Email already registered"});
-            }else{
-                res.send(err);
-            }
+        player.save( common.playerId('MASTER'),function(err){
 
+            if(err){
 
-        }else{
-
-            player.addACL(player._id,true,true);
-
-            player.save( common.playerId('MASTER'),function(err){
-
-                if(err){
-                    console.log(err);
-                    res.send(err.message);
+                console.log(err);
+                if(err.code == 11000){
+                    res.send({code: 103, error: "Username or Email already registered"});
                 }else{
-
-                    req.session.playerId = player._id;
-
-                    res.send(player.secure());
+                    res.send(err);
                 }
 
-            });
+
+            }else{
+
+                player.addACL(player._id,true,true);
+
+                player.save( common.playerId('MASTER'),function(err){
+
+                    if(err){
+                        console.log(err);
+                        res.send(err.message);
+                    }else{
+
+                        req.session.playerId = player._id;
+
+                        res.send(player.secure());
+                    }
+
+                });
+            }
+
+        });
+
+    }
+
+
+
+
+
+});
+
+
+app.get("/api/login-facebook", function(req, res){
+
+    models.Player.findOne({"facebook.userID": req.query.userID},{}, common.playerId('MASTER'), function(err,player){
+
+        if(err){
+            console.log(err);
+            res.send(err);
+        }else{
+            //found existing player
+            if(player){
+                console.log("LOGIN - FACE");
+
+                req.session.playerId = player._id;
+
+                res.send(player.secure());
+            //must create a new player, user ins signup with facebook
+            }else{
+                console.log("SIGNUP - FACE");
+                var player = new models.Player();
+
+                player.facebook = {};
+
+                player.facebook.userID = req.query.userID;
+                player.facebook.accessToken = req.query.accessToken;
+                player.facebook.expiresIn = req.query.expiresIn;
+
+                player.save( common.playerId('MASTER'),function(err){
+
+                    if(err){
+                        console.log(err);
+                        res.send(err);
+
+                    }else{
+
+                        player.addACL(player._id,true,true);
+
+                        player.save( common.playerId('MASTER'),function(err){
+
+                            if(err){
+                                console.log(err);
+                                res.send(err.message);
+                            }else{
+
+                                req.session.playerId = player._id;
+
+                                res.send(player.secure());
+                            }
+
+                        });
+                    }
+
+                });
+            }
         }
+
+
+
 
     });
 

@@ -335,6 +335,39 @@ var Login = Backbone.Model.extend({
 
     },
 
+    login_facebook: function(userID, accessToken, expiresIn, cb){
+
+        var that = this;
+
+        $.ajax({
+            data: "userID=" + userID + "&accessToken=" + accessToken + "&expiresIn=" + expiresIn,
+            url: "/api/login-facebook"
+        }).success(function( msg ) {
+
+            if(msg.error){
+                cb(msg.error, undefined);
+            } else{
+                //console.log("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken);
+
+                //need to use getJSON to avoid SOP errors
+                $.getJSON("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken + "&callback=?", function( fbUser ) {
+//                    console.log("fbUser");
+//                    console.log(fbUser);
+
+                    msg.username = fbUser.username;
+                    msg.avatar = "http://graph.facebook.com/" + msg.facebook.userID + "/picture";
+
+                    that.set(msg);
+                    cb(undefined,msg);
+
+                });
+
+            }
+
+        });
+
+    },
+
 
     login: function(username, password, keepLogged, cb){
 

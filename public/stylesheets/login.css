@@ -204,6 +204,15 @@ a.logout {
   border-left: auto;
   border-right: auto;
 }
+#logged-player .user_info {
+  float: right;
+}
+img.avatar {
+  width: 25px;
+  height: 25px;
+  float: left;
+  margin-right: 5px;
+}
 .fb-login-button {
   margin-left: auto;
   margin-right: auto;

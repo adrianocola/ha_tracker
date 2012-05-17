@@ -91,12 +91,12 @@ html
                         div
                             input#keep-logged(type="checkbox")
                             label.login-text Keep me logged in
-                            a#forgot-password.login-text(href="#") Forgot your password?
+                            a#forgot-password.login-text.link Forgot your password?
                         div.login-error
                         div.login-msg
                     div.login-right
                         button#login-ok.button-01.login-button(title="Login") Login
-                        a#login-create(href="#") Signup
+                        a#login-create.link Signup
                 div#login-signup.hidden
                     div.login-left
                         div.label Username:
@@ -123,11 +123,17 @@ html
             div#login-bottom
                 div.separator
                     span or
-                div.fb-login-button(data-redirect-uri="http://www.uol.com.br/") Login with Facebook
+                div.fb-login-button Login with Facebook
 
     script(type="text/template",id="logged-player-template")
-        div <%= username %>
-        a(href="#").logout logout
+        div <%= data.username %>
+        a.link.logout logout
+
+    script(type="text/template",id="facebook-logged-player-template")
+        <% print('<img class=\"avatar\" src=\"' + data.avatar + '\"/>'); %>
+        div.user_info
+            div <%= data.username %>
+            a.link.logout logout
 
     script(type="text/template",id="enemy-template")
         div
