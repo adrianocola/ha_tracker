@@ -16,51 +16,53 @@ $(function(){
 
 
 
-//    //Facebook authentication
-//    window.fbAsyncInit = function() {
-//        FB.init({
-//            appId      : $('#facebook_app_id').html(),
-//            status     : true,
-//            cookie     : true,
-//            xfbml      : true,
-//            oauth      : true
-//        });
-//
-//
-//
-//        FB.Event.subscribe('auth.authResponseChange', function(response) {
-//
-//
-//            if(response.status=="connected")
-//            {
-//
-//                //document.getElementById("fblogin").value=response.authResponse.userID;
-//                console.log("The user is logged in and has authenticated your app");
-//                console.log(response.authResponse.accessToken);
-//
-//
-//                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn);
-//
-//
-//            } else if (response.status === 'not_authorized') {
-//                console.log("The user is logged in to Facebook, but has not authenticated your app");
-//            } else {
-//                console.log("The user isn't logged in to Facebook");
-//            }
-//
-//        });
-//
-//    };
-//    (function(d){
-//        var js, id = 'facebook-jssdk';
-//        if (d.getElementById(id)) {return;}
-//
-//        js = d.createElement('script');
-//        js.id = id;
-//        js.async = true;
-//        js.src = "//connect.facebook.net/en_US/all.js";
-//        d.getElementsByTagName('head')[0].appendChild(js);
-//    }(document));
+    //Facebook authentication
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : $('#facebook_app_id').html(),
+            status     : true,
+            cookie     : true,
+            xfbml      : true,
+            oauth      : true
+        });
+
+        FB.Event.subscribe('auth.login', function(response){
+            console.log(response);
+        });
+
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
+
+
+            if(response.status=="connected")
+            {
+
+                //document.getElementById("fblogin").value=response.authResponse.userID;
+                console.log("The user is logged in and has authenticated your app");
+                console.log(response.authResponse.accessToken);
+
+
+                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn);
+
+
+            } else if (response.status === 'not_authorized') {
+                console.log("The user is logged in to Facebook, but has not authenticated your app");
+            } else {
+                console.log("The user isn't logged in to Facebook");
+            }
+
+        });
+
+    };
+    (function(d){
+        var js, id = 'facebook-jssdk';
+        if (d.getElementById(id)) {return;}
+
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+    }(document));
 
 
 
