@@ -26,7 +26,7 @@ $(function(){
             oauth      : true
         });
 
-        FB.getLoginStatus(function(response){
+        var authHandler = function(response){
             console.log("STATUS");
             console.log(response);
 
@@ -47,35 +47,14 @@ $(function(){
                 console.log("The user isn't logged in to Facebook");
             }
 
-        });
+        };
 
+        //executed when the user enter the page. If he is authenticated to facebook,
+        //try to login the application
+        //FB.getLoginStatus(authHandler);
 
-
-//        FB.Event.subscribe('auth.login', function(response){
-//            console.log(response);
-//        });
-
-        FB.Event.subscribe('auth.authResponseChange', function(response) {
-
-
-            if(response.status=="connected")
-            {
-
-                //document.getElementById("fblogin").value=response.authResponse.userID;
-                console.log("The user is logged in and has authenticated your app");
-                console.log(response.authResponse.accessToken);
-
-
-                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn);
-
-
-            } else if (response.status === 'not_authorized') {
-                console.log("The user is logged in to Facebook, but has not authenticated your app");
-            } else {
-                console.log("The user isn't logged in to Facebook");
-            }
-
-        });
+        //executed when the user tries to login or signup and is not authenticated to facebook
+        FB.Event.subscribe('auth.statusChange', authHandler);
 
     };
     (function(d){

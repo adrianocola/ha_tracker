@@ -180,7 +180,7 @@ button.signup-error:hover span {
   top: -20px;
   left: 950px;
   min-width: 40px;
-  height: 25px;
+  min-height: 25px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
