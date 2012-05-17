@@ -10,6 +10,8 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR CAPTCHA de criação de usuário (ou algo do tipo, pra não existir spam)
 //IMPLEMENTAR purge de AUTO-LOGIN (keep me logged in)
+//IMPLEMENTAR spin quando adiciona enemy ou game
+//ARRUMAR layouts, css
 
 
 $(function(){

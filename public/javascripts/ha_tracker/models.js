@@ -250,6 +250,8 @@ var Enemy = Backbone.Model.extend({
 
     initialize: function(){
 
+        this.visible = true;
+
         this.games = new Games(this.get('games'));
         this.games.enemy = this;
 
@@ -262,7 +264,10 @@ var Enemy = Backbone.Model.extend({
     selectGame: function(gameId){
 
         this.games.select(gameId);
+    },
 
+    setVisible: function(visibility){
+        this.visible = visibility;
     }
 
 });
@@ -270,7 +275,25 @@ var Enemy = Backbone.Model.extend({
 var Enemies = Backbone.Collection.extend({
 
     model: Enemy,
-    url: "/api/enemies"
+    url: "/api/enemies",
+
+    filter: function(key){
+
+        this.each(function(enemy){
+            //contains key
+            if(enemy.get('name').toLowerCase().indexOf(key)!=-1){
+                enemy.setVisible(true);
+
+            //not contains key
+            }else{
+                enemy.setVisible(false);
+            }
+
+
+        },this)
+
+    }
+
 
 
 });

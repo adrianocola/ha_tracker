@@ -368,7 +368,26 @@ var EnemiesView = Backbone.View.extend({
     },
 
     events: {
-        'click #add-enemy':  'addEnemy'
+        'click #add-enemy':  'addEnemy',
+        'keyup #filter': 'filter'
+    },
+
+    filter: function(){
+
+        this.collection.filter($('#filter').val().toLowerCase());
+
+        $enemies = this.$(".enemies");
+
+        $enemies.html('');
+
+        _.each(this.collection.sortBy('position',this),function(enemy) {
+            if(enemy.visible){
+                var view = new EnemyView({ model: enemy});
+                $enemies.append(view.render().el);
+            }
+
+        })
+
     },
 
     addEnemy: function(){
@@ -398,8 +417,11 @@ var EnemiesView = Backbone.View.extend({
         $enemies = this.$(".enemies");
 
         _.each(this.collection.sortBy('position',this),function(enemy) {
-            var view = new EnemyView({ model: enemy});
-            $enemies.append(view.render().el);
+            if(enemy.visible){
+                var view = new EnemyView({ model: enemy});
+                $enemies.append(view.render().el);
+            }
+
         })
 
 //        this.collection.each(function(enemy) {

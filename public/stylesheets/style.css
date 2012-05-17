@@ -238,6 +238,14 @@ body {
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }
+#filter {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  width: 95%;
+  margin-left: 10px;
+  margin-right: auto;
+}
 .enemy {
   background-color: #eee;
   border: 1px solid #808080;
