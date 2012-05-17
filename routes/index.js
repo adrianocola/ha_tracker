@@ -307,6 +307,25 @@ app.get("/api/login-facebook", function(req, res){
 });
 
 
+app.delete('delete',function(){
+
+    //https://developers.facebook.com/docs/reference/api/user/
+
+//    Delete
+//
+//    You can de-authorize an application or revoke a specific extended permissions on behalf of a user by issuing an HTTP DELETE request to PROFILE_ID/permissions with a user access_token for that app.
+//
+//        Parameter	 Description	 Type	 Required
+//    permission	 The permission you wish to revoke. If you don't specify a permission then this will de-authorize the application completely.	string	 no
+//    You get the following result.
+//
+//        Description	 Type
+//    True if the delete succeeded and error otherwise.	boolean
+
+
+});
+
+
 
 //app.get("/:enemyId/:gameId", function(req, res){
 //    models.Player.findOne({}, function (err, doc){

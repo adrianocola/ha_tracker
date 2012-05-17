@@ -12,7 +12,7 @@
   padding: 25px 10px 5px 10px;
   position: absolute;
   top: -20px;
-  left: 750px;
+  left: 650px;
   width: 50px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -78,9 +78,8 @@ div.login-msg {
 }
 #login:hover {
   padding: 20px 10px 0 10px;
-  position: absolute;
   top: -10px;
-  left: 470px;
+  left: 370px;
   width: 320px;
 }
 #login-login {
@@ -178,7 +177,7 @@ button.signup-error:hover span {
   padding: 22px 10px 5px 10px;
   position: absolute;
   top: -20px;
-  left: 850px;
+  right: 80px;
   min-width: 40px;
   height: 25px;
   -webkit-border-radius: 10px;

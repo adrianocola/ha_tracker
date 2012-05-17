@@ -43,6 +43,7 @@ body {
   padding: 0 10px;
   color: #fff;
   background-color: #aaa;
+  position: relative;
 }
 #player {
   clear: left;
