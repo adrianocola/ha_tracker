@@ -18,7 +18,7 @@
     padding: 25px 10px 5px 10px
     position: absolute
     top: -20px
-    left: 850px
+    left: 750px
     width: 50px
     border-radius(10px)
     transition all 1s ease-in-out
@@ -57,7 +57,7 @@ div.signup-msg, div.login-msg
 
 
 .separator
-    margin: 5px 0 15px 0
+    margin: 10px 0 15px 0
     height: 1px
     border-top: 1px dotted grey
     text-align: center
@@ -80,14 +80,14 @@ div.signup-msg, div.login-msg
     padding: 20px 10px 0 10px
     position: absolute
     top: -10px
-    left: 570px
+    left: 470px
     width: 320px
 
 #login-login
     height: 80px
 
 .login-window:hover
-    height: 130px
+    height: 135px
 
 .login-field
     //border-radius(3px)
@@ -125,7 +125,7 @@ div.signup-msg, div.login-msg
 
 
 .signup-window:hover
-    height: 160px
+    height: 165px
 
 #login-signup
     height: 110px
@@ -185,7 +185,7 @@ button.signup-error:hover span
     padding: 22px 10px 5px 10px
     position: absolute
     top: -20px
-    left: 950px
+    left: 850px
     min-width: 40px
     min-height: 25px
     border-radius(10px)
@@ -198,11 +198,14 @@ button.signup-error:hover span
 #logged-player.dismissed
    top: -70px
 
-a.logout
+a.logout,a.settings
    font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
    width: 0%
    border-left: auto
    border-right: auto
+
+a.settings
+   margin-right: 5px
 
 #logged-player .user_info
     float: right
@@ -212,12 +215,13 @@ img.avatar
     height: 25px
     float: left
     margin-right: 5px
+    margin-top: 2px
 
 //************************
 //******* FACEBOOK *******
 //************************
 
 .fb-login-button
-    margin-left:auto
+    margin-left:25%
     margin-right:auto
-    width: 50%
+    width: 100%

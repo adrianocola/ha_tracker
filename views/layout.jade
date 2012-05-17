@@ -127,12 +127,14 @@ html
 
     script(type="text/template",id="logged-player-template")
         div <%= data.username %>
+        a.link.settings settings
         a.link.logout logout
 
     script(type="text/template",id="facebook-logged-player-template")
         <% print('<img class=\"avatar\" src=\"' + data.avatar + '\"/>'); %>
         div.user_info
             div <%= data.username %>
+            a.link.settings settings
             a.link.logout logout
 
     script(type="text/template",id="enemy-template")
