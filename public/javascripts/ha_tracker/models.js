@@ -208,11 +208,6 @@ var Game = Backbone.Model.extend({
                 this.enemyItems = new Items(this.get('enemyItems'));
             },this);
         }
-
-
-
-
-
     },
 
     select: function(){
@@ -232,8 +227,7 @@ var Games = Backbone.Collection.extend({
 
     select: function(gameId){
 
-
-        //app.GameRouter.navigate(this.enemy.get('name') +  "/" + this.get(gameId).get("num"));
+        app.GameRouter.navigate(this.enemy.get('name') +  "/" + this.get(gameId).get("num"));
 
         app.SelectionManager.setSelectedEnemy(this.enemy);
         app.SelectionManager.setSelectedGame(this.get(gameId));
@@ -259,6 +253,7 @@ var Enemy = Backbone.Model.extend({
         this.games.bind("change:selected",function(){
             this.trigger("change:selected");
         },this);
+
     },
 
     selectGame: function(gameId){

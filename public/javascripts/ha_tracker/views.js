@@ -150,23 +150,30 @@ var LoginView = Backbone.View.extend({
         return this.clickedFacebook;
     },
 
+    logged: function(err){
+
+        this.spinner.stop();
+        this.$("#login-ok").html("Login");
+
+        if(!err){
+            this.dismiss();
+            app.LoggedPlayerView.logged(this.model);
+        }
+
+    },
+
     login_facebook: function(userID, accessToken, expiresIn, startup){
 
         this.$("#login-ok").html(this.spinner.spin().el);
 
         var that = this;
 
-
         this.model.login_facebook(userID,accessToken,expiresIn,startup, function(err,player){
 
-
-            that.spinner.stop();
-            that.$("#login-ok").html("Login");
             if(err){
                 console.log(err);
             }else{
-                that.dismiss();
-                app.LoggedPlayerView.logged(that.model);
+                that.logged();
             }
 
         });
@@ -182,19 +189,12 @@ var LoginView = Backbone.View.extend({
 
         var that = this;
 
-
         this.model.login(username,password, this.$('#keep-logged').attr('checked'), function(err,player){
 
-
-            that.spinner.stop();
-            that.$("#login-ok").html("Login");
             if(err){
                 that.$('.login-error').html(err);
             }else{
-                //that.$('.login-msg').html("OK!");
-
-                that.dismiss();
-                app.LoggedPlayerView.logged(that.model);
+                that.logged();
             }
 
         });
@@ -509,6 +509,8 @@ var EnemyView = Backbone.View.extend({
 
         this.model.games.bind('change:unselected', this.renderUnselected,this);
 
+
+
     },
 
     events: {
@@ -713,14 +715,17 @@ var SelectedGameView = Backbone.View.extend({
     render: function(){
 
         if(this.model){
-
             this.$el.html(this.template(this.model.toJSON()));
 
-            this.$el.append(new PlayerItemsView({collection: this.model.playerItems, model: this.model}).render().el);
-            this.$el.append(new EnemyItemsView({collection: this.model.enemyItems, model: this.model}).render().el);
+            var $items_panel = this.$('.items-panel');
+
+            $items_panel.append(new PlayerItemsView({collection: this.model.playerItems, model: this.model}).render().el);
+            $items_panel.append(new EnemyItemsView({collection: this.model.enemyItems, model: this.model}).render().el);
 
         }else{
             this.$el.html(this.template({}));
+
+            //this.$('.game-info').html('');
         }
 
         return this;

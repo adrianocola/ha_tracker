@@ -85,6 +85,20 @@ body {
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }
+#current-game .game-info {
+  float: right;
+  margin-top: -40px;
+  margin-right: 15px;
+}
+#current-game .game-info input {
+  margin-left: 15px;
+}
+#current-game .game-info span {
+  margin-left: 3px;
+}
+#current-game .game-info select {
+  margin-left: 5px;
+}
 .game {
   width: 220px;
   color: #888;
@@ -245,6 +259,8 @@ body {
   width: 95%;
   margin-left: 10px;
   margin-right: auto;
+  line-height: 20px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 .enemy {
   background-color: #eee;

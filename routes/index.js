@@ -7,9 +7,17 @@ var md5 = require('../public/javascripts/vendor/md5.js');
 
 app.get('/', function(req, res){
 
-    //generates random number to client, for authentication
-    req.session.uuid = uuid.uuid(10);
-    res.render('index', { title: "HA Tracker", uuid: req.session.uuid, salt: env.salt, facebook_app_id: env.facebook_app_id });
+    //If the session is active or the player is with KEEP_LOGGED_IN cookies,
+    //notify the client that he must try to login without credentials
+    if(req.session.playerId || (req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID)){
+        res.render('index', {data: { title: "HA Tracker", uuid: req.session.uuid, salt: env.salt, facebook_app_id: env.facebook_app_id, is_logged: true}});
+
+    //if not, generate the rando session number and render the page
+    }else{
+        //generates random number to client, for authentication
+        req.session.uuid = uuid.uuid(10);
+        res.render('index', {data: { title: "HA Tracker", uuid: req.session.uuid, salt: env.salt, facebook_app_id: env.facebook_app_id }});
+    }
 
 
 
@@ -73,43 +81,9 @@ app.get('/api/logout', function(req, res){
 
 app.get('/api/login', function(req,res){
 
-    if(req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID){
-
-        models.KeepLogged.findById(req.cookies.KEEP_LOGGED_ID,{},common.playerId('MASTER'),function(err,keepLogged){
-
-            if(err) console.log(err);
-
-            if(keepLogged){
-
-                models.Player.findById(keepLogged.playerId,{}, common.playerId('MASTER'), function(err,player){
-
-                    if(err) console.log(err);
-
-                    if(player){
-                        req.session.playerId = player._id;
-
-                        res.send(player.secure());
-                    }else{
-                        res.clearCookie('KEEP_LOGGED_USER');
-                        res.clearCookie('KEEP_LOGGED_ID');
-                        res.send({code: 107, error: "User not exists!"});
-                    }
-                });
-
-            }else{
-
-                res.clearCookie('KEEP_LOGGED_USER');
-                res.clearCookie('KEEP_LOGGED_ID');
-                res.send({code: 106, error: "Session Expired"});
-
-            }
-
-
-        })
-
-    }else{
-
-
+    //if login request have username and password, tries to login using credentials
+    if(req.query.username && req.query.password){
+        console.log("TENTOU LOGIN POR CREDENCIAL: (" + req.query.username + ", " +  req.query.password + ")");
         models.Player.findOne({username: req.query.username},{}, common.playerId('MASTER'), function(err,player){
 
             if(err) console.log(err);
@@ -129,7 +103,8 @@ app.get('/api/login', function(req,res){
 
                         if(err) console.log(err);
 
-                        res.cookie('KEEP_LOGGED_USER', keepLogged.username, { maxAge: 1209600000 });
+                        console.log("KEEP_LOGGED");
+                        res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 1209600000 });
                         res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 1209600000 });
 
                         res.send(player.secure());
@@ -138,6 +113,8 @@ app.get('/api/login', function(req,res){
 
 
                 }else{
+                    res.clearCookie('KEEP_LOGGED_USER');
+                    res.clearCookie('KEEP_LOGGED_ID');
                     res.send(player.secure());
                 }
 
@@ -145,17 +122,66 @@ app.get('/api/login', function(req,res){
 
 
             }else{
+                res.clearCookie('KEEP_LOGGED_USER');
+                res.clearCookie('KEEP_LOGGED_ID');
                 res.send({code: 101, error: "Invalid email or password"});
             }
 
         });
+    //if no credentials were passed in request, tries to login using current session
+    // or KEEL_LOGGED_IN cookies
+    } else{
+        //session is alive, player just closed the browser or refreshed the page
+        if(req.session.playerId){
+            console.log("TENTOU LOGIN POR SESSAO");
+            models.Player.findById(req.session.playerId,{}, common.playerId(req.session.playerId), function(err,player){
+                res.send(player.secure());
+            });
+
+            //player marked option to
+        }else if(req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID){
+            console.log("TENTOU LOGIN POR KEEP LOGGED IN");
+            models.KeepLogged.findById(req.cookies.KEEP_LOGGED_ID,{},common.playerId('MASTER'),function(err,keepLogged){
+
+                if(err) console.log(err);
+
+                if(keepLogged){
+
+                    models.Player.findById(keepLogged.playerId,{}, common.playerId('MASTER'), function(err,player){
+
+                        if(err) console.log(err);
+
+                        if(player){
+                            req.session.playerId = player._id;
+
+                            res.cookie('KEEP_LOGGED_USER', req.cookies.KEEP_LOGGED_USER, { maxAge: 1209600000 });
+                            res.cookie('KEEP_LOGGED_ID', req.cookies.KEEP_LOGGED_ID, { maxAge: 1209600000 });
+
+                            res.send(player.secure());
+                        }else{
+                            res.clearCookie('KEEP_LOGGED_USER');
+                            res.clearCookie('KEEP_LOGGED_ID');
+                            res.send({code: 107, error: "User not exists!"});
+                        }
+                    });
+
+                }else{
+
+                    res.clearCookie('KEEP_LOGGED_USER');
+                    res.clearCookie('KEEP_LOGGED_ID');
+                    res.send({code: 106, error: "Session Expired"});
+
+                }
 
 
+            })
+
+        }else{
+            res.clearCookie('KEEP_LOGGED_USER');
+            res.clearCookie('KEEP_LOGGED_ID');
+            res.send({code: 106, error: "Session Expired"});
+        }
     }
-
-
-
-
 
 });
 
@@ -335,3 +361,13 @@ app.delete('delete',function(){
 //        res.render('index', { title: "HA Tracker", username: doc.username });
 //    });
 //});
+
+app.get('/:enemyId/:gameId', function(req, res){
+
+    //generates random number to client, for authentication
+    req.session.uuid = uuid.uuid(10);
+    res.render('index', { title: "HA Tracker", uuid: req.session.uuid, salt: env.salt, facebook_app_id: env.facebook_app_id });
+
+
+
+});

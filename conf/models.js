@@ -112,7 +112,8 @@ var GameSchema = new Schema({
     playerRace: {type: String, required: true},
     enemyRace: {type: String, required: true},
     playerItems: { type: Schema.ObjectId, ref: 'ItemManager'},
-    enemyItems: { type: Schema.ObjectId, ref: 'ItemManager'}
+    enemyItems: { type: Schema.ObjectId, ref: 'ItemManager'},
+    status: Number
 });
 
 var EnemySchema = new Schema({

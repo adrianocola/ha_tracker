@@ -5,15 +5,16 @@ var GameRouter = Backbone.Router.extend({
 
     routes: {
 
-        ":enemyId/:gameId": "selectGame"
+        ":enemyName/:gameNum": "selectGame"
     },
 
-    selectGame: function(enemyId, gameId){
-        console.log( app.AppPlayer);
-        app.AppPlayer.selectGame(enemyId,gameId);
+    selectGame: function(enemyName, gameNum){
+        console.log( 'COISA');
 
+        this.selectedEnemy = enemyName;
+        this.selectedGame = gameNum;
 
-
+        //app.AppPlayer.selectGame(enemyName,gameNum);
     }
 
 });
