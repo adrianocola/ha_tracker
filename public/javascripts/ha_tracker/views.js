@@ -110,98 +110,31 @@ var LoggedPlayerView = Backbone.View.extend({
 
 });
 
-var LoginView = Backbone.View.extend({
+var SignupView = Backbone.View.extend({
 
-    el: '#login',
+    el: '#signup',
 
     initialize: function(){
 
         _.bindAll(this);
 
-        this.template = _.template($('#login-template').html());
-        this.clickedFacebook = false;
+        this.template = _.template($('#signup-template').html());
 
         this.spinner = new Spinner(opts_small);
+
+        var that = this;
+
+        $("#blanket").click(function(){
+            that.dismiss();
+        });
 
     },
 
     events: {
-
-        'click #login-create': 'renderSignup',
-        'click #signup-cancel': 'renderLogin',
+        'click #blanket': 'dismiss',
         'click #signup-ok': 'signup',
-        'click #login-ok': 'login',
-        'click .fb-login-button': 'setClickedFacebook'
+        'click #signup-cancel': 'dismiss'
     },
-
-    setClickedFacebook: function(){
-        this.clickedFacebook = true;
-
-        FB.getLoginStatus(function(response){
-            if(response.status=="connected"){
-                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
-            }
-
-        });
-
-    },
-
-    clickedFacebookStatus: function(){
-        return this.clickedFacebook;
-    },
-
-    logged: function(err){
-
-        this.spinner.stop();
-        this.$("#login-ok").html("Login");
-
-        if(!err){
-            this.dismiss();
-            app.LoggedPlayerView.logged(this.model);
-        }
-
-    },
-
-    login_facebook: function(userID, accessToken, expiresIn, startup){
-
-        this.$("#login-ok").html(this.spinner.spin().el);
-
-        var that = this;
-
-        this.model.login_facebook(userID,accessToken,expiresIn,startup, function(err,player){
-
-            if(err){
-                console.log(err);
-            }else{
-                that.logged();
-            }
-
-        });
-
-    },
-
-    login: function(){
-
-        var username = this.$('#login-username').val();
-        var password = this.$('#login-password').val();
-
-        this.$("#login-ok").html(this.spinner.spin().el);
-
-        var that = this;
-
-        this.model.login(username,password, this.$('#keep-logged').attr('checked'), function(err,player){
-
-            if(err){
-                that.$('.login-error').html(err);
-            }else{
-                that.logged();
-            }
-
-        });
-
-
-    },
-
 
     signup: function(){
 
@@ -281,15 +214,132 @@ var LoginView = Backbone.View.extend({
 
     },
 
+    dismiss: function(){
+        console.log("BALNKET");
+        $('#blanket').addClass("hidden");
+        this.$el.addClass("hidden");
+    },
+
+    show: function(){
+        $('#blanket').removeClass("hidden");
+        this.$el.removeClass("hidden");
+    },
+
+    render: function(){
+
+        $(this.el).html(this.template({}));
+
+        this.$el.removeClass("hidden");
+        $('#blanket').removeClass("hidden");
+
+        return this;
+    }
+
+
+});
+
+var LoginView = Backbone.View.extend({
+
+    el: '#login',
+
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.template = _.template($('#login-template').html());
+        this.clickedFacebook = false;
+
+        this.spinner = new Spinner(opts_small);
+
+    },
+
+    events: {
+
+        'click #login-create': 'renderSignup',
+        'click #login-ok': 'login',
+        'click .fb-login-button': 'setClickedFacebook'
+    },
+
+    setClickedFacebook: function(){
+        this.clickedFacebook = true;
+
+        FB.getLoginStatus(function(response){
+            if(response.status=="connected"){
+                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+            }
+
+        });
+
+    },
+
+    clickedFacebookStatus: function(){
+        return this.clickedFacebook;
+    },
+
+    logged: function(err){
+
+        this.spinner.stop();
+        this.$("#login-ok").html("Login");
+
+        if(!err){
+            this.dismiss();
+            app.LoggedPlayerView.logged(this.model);
+        }
+
+    },
+
+    login_facebook: function(userID, accessToken, expiresIn, startup){
+
+        this.$("#login-ok").html(this.spinner.spin().el);
+
+        var that = this;
+
+        this.model.login_facebook(userID,accessToken,expiresIn,startup, function(err,player){
+
+            if(err){
+                console.log(err);
+            }
+
+            that.logged(err);
+
+        });
+
+    },
+
+    login: function(){
+
+        var username = this.$('#login-username').val();
+        var password = this.$('#login-password').val();
+
+        this.$("#login-ok").html(this.spinner.spin().el);
+
+        var that = this;
+
+        this.model.login(username,password, this.$('#keep-logged').attr('checked'), function(err,player){
+
+            if(err){
+                that.$('.login-error').html(err);
+            }
+
+            that.logged(err);
+
+        });
+
+
+    },
+
     renderSignup: function(){
 
-        this.$('.fb_button_text').html("Signup with Facebook");
+//        this.$('.fb_button_text').html("Signup with Facebook");
+//
+//        this.$('#login-login').addClass('hidden');
+//        this.$('#login-signup').removeClass('hidden');
+//
+//        this.$el.addClass('signup-window');
+//        this.$el.removeClass('login-window');
 
-        this.$('#login-login').addClass('hidden');
-        this.$('#login-signup').removeClass('hidden');
-
-        this.$el.addClass('signup-window');
-        this.$el.removeClass('login-window');
+        app.SignupView.show();
 
     },
 
@@ -951,13 +1001,16 @@ var ItemView = Backbone.View.extend({
 
 
 $(function(){
+    var LoginModel = new app.Login();
+
     app.PlayerView = PlayerView;
     app.EnemiesView = EnemiesView;
     app.EnemyView = EnemyView;
     app.SelectedGameView = new SelectedGameView();
     app.AddGameView = new AddGameView();
     app.AddEnemyView = new AddEnemyView();
-    app.LoginView = new LoginView({model: new app.Login()});
+    app.SignupView = new SignupView({model: LoginModel});
+    app.LoginView = new LoginView({model: LoginModel});
     app.LoggedPlayerView = new LoggedPlayerView();
 
 

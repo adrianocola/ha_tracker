@@ -13,39 +13,31 @@ app.post('/api/enemies', common.verifySession(function(req,res){
         //update position of all enemies
         u.each(player.enemies,function(enemy){
             enemy.position+=1;
-            console.log("POSITION: " + enemy.position);
         });
 
+        var enemy = new models.Enemy(req.body);
+        enemy.position = 0;
+
+        player.enemies.push(enemy);
 
         player.save(common.playerId(req.session.playerId),function(err){
 
             if(err) console.log(err);
 
-            var enemy = new models.Enemy(req.body);
-            enemy.position = 0;
-
-            player.enemies.push(enemy);
-
-            player.save(common.playerId(req.session.playerId),function(err){
-
-                if(err) console.log(err);
-
-                res.send(enemy);
-
-            });
+            res.send(enemy);
 
         });
-
-
-
 
 
     });
 }));
 
+
 app.delete('/api/enemies/:id', common.verifySession(function(req, res){
 
     models.Player.findById(req.session.playerId,{},common.playerId(req.session.playerId), function(err, player){
+
+        if(err) console.log(err);
 
         var enemy = player.enemies.id(req.params.id);
 
@@ -59,26 +51,14 @@ app.delete('/api/enemies/:id', common.verifySession(function(req, res){
 
         enemy.remove();
 
-        player.save(common.playerId(req.session.playerId),function(err){
-            if (!err) res.send("OK");
-
-            //update positions of remaining enemies
-            u.each(player.enemies,function(loop_enemy){
-                if(loop_enemy.position > enemy.position){
-                    loop_enemy.position -=1;
-                }
-            });
-
-            player.save(common.playerId(req.session.playerId),function(err){});
-
+        //update positions of remaining enemies
+        u.each(player.enemies,function(loop_enemy){
+            if(loop_enemy.position > enemy.position){
+                loop_enemy.position -=1;
+            }
         });
 
-
-
-
-
-
-
+        player.save(common.playerId(req.session.playerId),function(err){});
 
     });
 

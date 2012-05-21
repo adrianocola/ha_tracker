@@ -1,4 +1,4 @@
-!!!
+!!! 5
 html
   head
     title= data.title
@@ -84,48 +84,52 @@ html
 
 
     script(type="text/template",id="login-template")
-        div#inner-login
-            div#login-top
-                div#login-login
-                    div.login-left
-                        input#login-username.login-field(type="text",placeholder="Username")
-                        input#login-password.login-field(type="password",placeholder="Password")
-                        div
-                            input#keep-logged(type="checkbox")
-                            label.login-text Keep me logged in
-                            a#forgot-password.login-text.link Forgot your password?
-                        div.login-error
-                        div.login-msg
-                    div.login-right
-                        button#login-ok.button-01.login-button(title="Login") Login
-                        a#login-create.link Signup
-                div#login-signup.hidden
-                    div.login-left
-                        div.label Username:
-                        input#signup-username.login-field(type="text",placeholder="Username",maxlength="20")
-                        button#username-error-icon.signup-error.button-02.hidden !
-                            span#username-error.tooltip-error
-                        div.label Password:
-                        input#signup-password.login-field(type="password",placeholder="Password")
-                        button#password-error-icon.signup-error.button-02.hidden !
-                            span#password-error.tooltip-error
-                        div.label Verify:
-                        input#signup-repeat-password.login-field(type="password",placeholder="Verify Password")
-                        button#repeat-password-error-icon.signup-error.button-02.hidden !
-                            span#repeat-password-error.tooltip-error
-                        div.label E-mail:
-                        input#signup-email.login-field(type="text",placeholder="E-mail",maxlength="100")
-                        button#email-error-icon.signup-error.button-02.hidden !
-                            span#email-error.tooltip-error
-                        div.signup-error
-                        div.signup-msg
-                    div.login-right
-                        button#signup-ok.button-01.login-button(title="Signup") Signup
-                        button#signup-cancel.button-02.login-button(title="Cancel") Cancel
-            div#login-bottom
-                div.separator
-                    span or
-                div.fb-login-button Login with Facebook
+        div.login-site
+            div.login-left
+                div
+                    input#login-username.login-field(type="text",placeholder="Username")
+                    input#login-password.login-field(type="password",placeholder="Password")
+                div
+                    input#keep-logged(type="checkbox")
+                    label.login-text Keep me logged in
+                    a#forgot-password.login-text.link Forgot your password?
+                div.login-error
+            div.login-right
+                button#login-ok.button-01.login-button(title="Login") Login
+                a#login-create.link Signup
+        div.login-fb
+            div.fb-login-button Login
+            span with facebook
+        div.separator-login
+
+    script(type="text/template",id="signup-template")
+        div.signup-site
+            div.login-left
+                div.label Username:
+                input#signup-username.login-field(type="text",placeholder="Username",maxlength="20")
+                button#username-error-icon.signup-error.button-02.hidden !
+                    span#username-error.tooltip-error
+                div.label Password:
+                input#signup-password.login-field(type="password",placeholder="Password")
+                button#password-error-icon.signup-error.button-02.hidden !
+                    span#password-error.tooltip-error
+                div.label Verify:
+                input#signup-repeat-password.login-field(type="password",placeholder="Verify Password")
+                button#repeat-password-error-icon.signup-error.button-02.hidden !
+                    span#repeat-password-error.tooltip-error
+                div.label E-mail:
+                input#signup-email.login-field(type="text",placeholder="E-mail",maxlength="100")
+                button#email-error-icon.signup-error.button-02.hidden !
+                    span#email-error.tooltip-error
+                div.signup-error
+                div.signup-msg
+            div.login-right
+                button#signup-ok.button-01.login-button(title="Signup") Signup
+                button#signup-cancel.button-02.login-button(title="Cancel") Cancel
+        div.separator-signup
+            span or
+        div.signup-fb
+            div.fb-login-button Signup with Facebook
 
     script(type="text/template",id="logged-player-template")
         div

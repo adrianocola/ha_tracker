@@ -1,51 +1,11 @@
 .login-left {
-  width: 260px;
+  width: 250px;
   float: left;
 }
 .login-right {
-  width: 60px;
-  float: right;
-}
-#login {
-  color: #000;
-  background-color: #fff;
-  padding: 25px 10px 5px 10px;
-  position: absolute;
-  top: -20px;
-  left: 650px;
   width: 50px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  -o-transition: all 1s ease-in-out;
-  -ms-transition: all 1s ease-in-out;
-  overflow: hidden;
-  display: inline;
-  -moz-box-shadow: 0px 2px 8px #000;
-  -webkit-box-shadow: 0px 2px 8px #000;
-  box-shadow: 0px 2px 8px #000;
-}
-#login.dismissed:hover {
-  top: -300px;
-}
-#login.dismissed {
-  top: -70px;
-  height: 25px;
-}
-.login-window,
-.signup-window {
-  height: 25px;
-}
-#inner-login {
-  width: 320px;
-  position: relative;
-  left: -270px;
-  -webkit-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  -o-transition: all 1s ease-in-out;
-  -ms-transition: all 1s ease-in-out;
+  float: right;
+  margin-right: 10px;
 }
 input.required {
   background-color: #fff4f4;
@@ -56,54 +16,54 @@ div.login-error {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
   text-align: center;
 }
-div.signup-msg,
-div.login-msg {
+div.signup-msg {
   color: #008000;
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
   text-align: center;
 }
-.separator {
-  margin: 10px 0 15px 0;
-  height: 1px;
-  border-top: 1px dotted #808080;
-  text-align: center;
+#login {
+  color: #000;
+  background-color: #fff;
+  padding: 5px 10px 5px 10px;
   position: relative;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  overflow: visible;
+  display: inline;
+  width: 400px;
+  margin-top: -60px;
+  margin-bottom: 10px;
+  float: right;
 }
-.separator span {
-  padding: 0px 5px;
+.separator-login {
   position: relative;
-  top: -0.7em;
-  background: #fff;
-  display: inline-block;
+  border-left: 1px dotted #808080;
+  height: 40px;
+  width: 1px;
+  float: right;
+  margin-right: 10px;
 }
-#login:hover {
-  padding: 20px 10px 0 10px;
-  top: -10px;
-  left: 370px;
-  width: 320px;
-}
-#login-login {
-  height: 80px;
-}
-.login-window:hover {
-  height: 135px;
-}
-#login:hover #inner-login {
-  left: 0;
+#login-username {
+  margin-right: 20px;
 }
 #login-username,
 #login-password {
-  width: 90%;
+  width: 40%;
 }
 #login-ok {
-  margin-left: 10px;
+  margin-left: 5px;
+  margin-bottom: 3px;
   width: 50px;
-  height: 25px;
+  height: 20px;
 }
 #login-create {
-  margin-top: 5px;
-  margin-right: 10px;
-  float: right;
+  position: relative;
+  margin-left: 12px;
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 .login-text {
@@ -112,10 +72,44 @@ div.login-msg {
 #forgot-password {
   margin-left: 20px;
 }
-.signup-window:hover {
-  height: 165px;
+div.login-site {
+  float: left;
 }
-#login-signup {
+div.login-fb {
+  float: right;
+}
+div.fb-login-button {
+  margin-bottom: 3px;
+}
+div.login-fb span {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+div#blanket {
+  background-color: #111;
+  opacity: 0.65;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+div#signup {
+  position: absolute;
+  top: 30%;
+  left: 35%;
+  width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  padding: 10px 15px 10px 15px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 0px 2px 8px #000;
+  -webkit-box-shadow: 0px 2px 8px #000;
+  box-shadow: 0px 2px 8px #000;
+}
+div.signup-site {
   height: 110px;
 }
 #signup-username,
@@ -170,6 +164,25 @@ button.signup-error:hover span {
   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.10);
   box-shadow: 5px 5px 5px rgba(0,0,0,0.10);
   padding: 2px;
+}
+.separator-signup {
+  margin: 10px 0 15px 0;
+  height: 1px;
+  border-top: 1px dotted #808080;
+  text-align: center;
+  position: relative;
+}
+.separator-signup span {
+  padding: 0px 5px;
+  position: relative;
+  top: -0.7em;
+  background: #fff;
+  display: inline-block;
+}
+div.signup-fb {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 #logged-player {
   color: #000;
@@ -240,9 +253,4 @@ img.avatar {
   float: right;
   margin-right: 5px;
   margin-top: 2px;
-}
-.fb-login-button {
-  margin-left: 25%;
-  margin-right: auto;
-  width: 100%;
 }

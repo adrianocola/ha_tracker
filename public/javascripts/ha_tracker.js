@@ -14,6 +14,9 @@ app = window.app ? window.app : {};
 //ARRUMAR interferencia de logins. Se tiver marcado keep signed in e facebook juntos pode zuar
 
 
+
+
+
 $(function(){
 
 
@@ -89,6 +92,10 @@ $(function(){
 
     //render the login view
     app.LoginView.render();
+
+    //render the signup view
+    app.SignupView.render().dismiss();
+
 
     //if have "Keep me logged in" cookies, try to login with them
     //if(cookies.readCookie('KEEP_LOGGED_USER') && cookies.readCookie('KEEP_LOGGED_ID')){

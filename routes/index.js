@@ -124,7 +124,7 @@ app.get('/api/login', function(req,res){
             }else{
                 res.clearCookie('KEEP_LOGGED_USER');
                 res.clearCookie('KEEP_LOGGED_ID');
-                res.send({code: 101, error: "Invalid email or password"});
+                res.send({code: 101, error: "Invalid username or password"});
             }
 
         });
