@@ -1,6 +1,7 @@
 app = window.app ? window.app : {};
 
 //TODO
+//SEPARAR player de user, pra deixar o conceito de user mais genérico
 //IMPLEMENTAR AUTO-LOGIN (keep me logged) - FEITO PORCAMENTE! REVISAR!
 //IMPLEMENTAR CONTROLE DE SESSÃO COM REDIS
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
@@ -31,40 +32,33 @@ $(function(){
             oauth      : true
         });
 
-
-        //executed when the user tries to login or signup or is already authenticated in facebook
-        FB.Event.subscribe('auth.statusChange', function(response){
-            if(response.status=="connected")
-            {
-                console.log("The user is logged in and has authenticated your app");
-                app.LoginView.model.login_facebook(response.authResponse.userID
-                        ,response.authResponse.accessToken
-                        ,response.authResponse.expiresIn
-                        ,!app.LoginView.clickedFacebookStatus(),function(err){
-
-
-                        if(!err){
-                            app.LoginView.logged();
-                        }
-
-                    });
-
-
-            } else if (response.status === 'not_authorized') {
-                console.log("The user is logged in to Facebook, but has not authenticated your app");
-            } else {
-                console.log("The user isn't logged in to Facebook");
-            }
-
-        });
-
-        //executed when the user tries to login or signup or is already authenticated in facebook
-//        FB.Event.subscribe('auth.authResponseChange', function(response){
-//            console.log('auth.authResponseChange');
+//        var cont = 0;
+//
+//        //executed when the user tries to login or signup or is already authenticated in facebook
+//        FB.Event.subscribe('auth.statusChange', function(response){
+//            FB.Event.unsubscribe('auth.statusChange');
+//            //auth.authResponseChange
+//
 //            if(response.status=="connected")
 //            {
 //                console.log("The user is logged in and has authenticated your app");
-//                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn);
+//
+//                if($("#is_logged").length > 0){
+//
+//                    app.LoginView.model.login_facebook(response.authResponse.userID
+//                        ,response.authResponse.accessToken
+//                        ,response.authResponse.expiresIn
+//                        ,cont==0?true:false,function(err){
+//
+//                        console.log(err);
+//                        if(!err){
+//                            app.SignupView.logged();
+//                        }
+//
+//                    });
+//                }
+//
+////
 //
 //
 //            } else if (response.status === 'not_authorized') {
@@ -73,7 +67,10 @@ $(function(){
 //                console.log("The user isn't logged in to Facebook");
 //            }
 //
+//            cont += 1;
+//
 //        });
+
 
     };
     (function(d){
@@ -91,23 +88,25 @@ $(function(){
 
 
     //render the login view
-    app.LoginView.render();
+    app.LoginView.render().initial_dismiss();
 
     //render the signup view
-    app.SignupView.render().dismiss();
+    app.SignupView.render().initial_dismiss();
 
 
     //if have "Keep me logged in" cookies, try to login with them
-    //if(cookies.readCookie('KEEP_LOGGED_USER') && cookies.readCookie('KEEP_LOGGED_ID')){
-    if($("#is_logged")){
-        //app.LoginView.login();
-        console.log("TENTA LOGAR");
+    if($("#is_logged").length > 0){
+        //tries to login
         app.LoginView.model.login("","",false,function(err){
-            console.log(err);
-            if(!err){
-                app.LoginView.logged();
+            if(err){
+                app.LoginView.show();
+            }else{
+                //app.LoggedPlayerView.logged(app.LoginView.model);
+                new app.LoggedPlayerView({model: app.LoginView.model });
             }
         });
+    }else{
+        app.LoginView.show();
     }
 
     //app.LoginView.login();

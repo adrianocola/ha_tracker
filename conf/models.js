@@ -14,12 +14,12 @@ var ACL_Plugin = function(schema, options) {
     //request can save the current object
     schema.pre('save', function (next, opt, cb) {
 
-        if(typeof opt == "object" && opt.playerId){
+        if(typeof opt == "object" && opt.userId){
 
             //if is the master user or the object doesn't have ACL
-            if(opt.playerId == 'MASTER' || !this.ACL){
+            if(opt.userId == 'MASTER' || !this.ACL){
                 next(cb);
-            }else if((this.ACL['*'] && this.ACL['*'].write) || (this.ACL[opt.playerId] && this.ACL[opt.playerId].write)){
+            }else if((this.ACL['*'] && this.ACL['*'].write) || (this.ACL[opt.userId] && this.ACL[opt.userId].write)){
                 next(cb);
             }else{
                 next(new Error("{code: 102, error: 'Access not granted'}"));
@@ -36,12 +36,12 @@ var ACL_Plugin = function(schema, options) {
     // if the current requet can access the object
     schema.pre('init', function(next, obj, opt){
 
-        if(opt.options.playerId){
+        if(opt.options.userId){
 
             //if is the master user or the object doesn't have ACL
-            if(opt.options.playerId == 'MASTER' || !obj.ACL){
+            if(opt.options.userId == 'MASTER' || !obj.ACL){
                 next();
-            }else if((obj.ACL['*'] && obj.ACL['*'].read) || (obj.ACL[opt.options.playerId] && obj.ACL[opt.options.playerId].read)){
+            }else if((obj.ACL['*'] && obj.ACL['*'].read) || (obj.ACL[opt.options.userId] && obj.ACL[opt.options.userId].read)){
                 next();
             }else{
                 next(new Error("{code: 102, error: 'Access not granted'}"));
@@ -124,21 +124,26 @@ var EnemySchema = new Schema({
 });
 
 var PlayerSchema = new Schema({
-    username: {type: String, index: { unique: true }},
-    email: {type: String, index: { unique: true }},
-    password: {type: String},
-    facebook: {
-        userID: {type: String, index: { unique: true }},
-        accessToken: String,
-        expiresIn: Date
-    },
+    user:{ type: Schema.ObjectId, ref: 'User', required: true, index: {unique: true}},
     enemies: [EnemySchema]
 });
 PlayerSchema.plugin(ACL_Plugin);
 
+var UserSchema = new Schema({
+    username: {type: String, lowercase: true, index: { unique: true, sparse: true }},
+    email: {type: String, lowercase: true, index: { unique: true, sparse: true }},
+    password: {type: String},
+    facebook: {
+        userID: {type: String, index: { unique: true, sparse: true }},
+        accessToken: String,
+        expiresIn: Date
+    }
+});
+UserSchema.plugin(ACL_Plugin);
+
 var KeepLoggedSchema = new Schema({
     usernameHash: {type: String, index: true , required: true},
-    playerId: {type: String, index: true , required: true}
+    userId: {type: String, index: true , required: true}
 });
 KeepLoggedSchema.plugin(ACL_Plugin);
 
@@ -150,7 +155,7 @@ KeepLoggedSchema.plugin(ACL_Plugin);
  *
  * @return {Object} same object, but without the password field
  */
-PlayerSchema.methods.secure = function(){
+UserSchema.methods.secure = function(){
 
     delete this._doc.password;
 
@@ -159,6 +164,7 @@ PlayerSchema.methods.secure = function(){
 };
 
 exports.KeepLogged = mongoose.model('KeepLogged', KeepLoggedSchema);
+exports.User = mongoose.model('User', UserSchema);
 exports.Player = mongoose.model('Player', PlayerSchema);
 exports.Enemy = mongoose.model('Enemy', EnemySchema);
 exports.Game = mongoose.model('Game', GameSchema);

@@ -45,13 +45,48 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.template = _.template($('#logged-player-template').html());
 
+        this.spinner = new Spinner(opts_small);
+
+        var that = this;
+        var player = new app.Player({id: this.model.get('_id')});
+
+        player.fetch({success: function(){
+            player.loadEnemies();
+            new app.PlayerView({model: player}).render();
+            that.show();
+
+        }});
+
     },
 
     events: {
 
         'click .logout': 'logout',
-        'click a.settings': 'showSettings'
+        'click a.settings': 'showSettings',
+        'click .delete-account': 'deleteAcctount'
 
+    },
+
+    deleteAcctount: function(){
+
+        var that = this;
+
+        this.model.delete(function(err){
+
+            if(err){
+                console.log("ERROR DELETE: " + err);
+                //TODO show error message
+            }else{
+//                $("#player").html("");
+//                app.SelectedGameView.clean();
+//
+//                that.dismiss();
+//                app.LoginView.show();
+
+                window.location.replace('/');
+            }
+
+        });
     },
 
     showSettings: function(){
@@ -64,14 +99,22 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.model.logout(function(err){
             if(err){
-                console.log("ERROR LOGOUT");
+                console.log("ERROR LOGOUT: " + err);
+                //TODO show error message
             }else{
-                console.log("LOGOUT OK");
-                $("#player").html("");
-                app.SelectedGameView.clean();
+//                if(that.model.get('facebook')){
+//                    console.log("FEZ LOGOUT FACEBOOK");
+//                    FB.logout();
+//                }
+//
+//                $("#player").html("");
+//                app.SelectedGameView.clean();
+//
+//                that.dismiss();
+//                app.LoginView.show();
 
-                that.dismiss();
-                app.LoginView.show();
+                //refresh to page
+                window.location = "/";
             }
         });
 
@@ -81,11 +124,12 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.model = model;
 
-        var player = new app.Player(model.toJSON());
+        var player = new app.Player({id: model.get('_id')});
 
-        player.loadEnemies();
-
-        new app.PlayerView({model: player}).render();
+        player.fetch({success: function(){
+            player.loadEnemies();
+            new app.PlayerView({model: player}).render();
+        }});
 
         this.show();
 
@@ -103,7 +147,27 @@ var LoggedPlayerView = Backbone.View.extend({
 
     render: function(){
 
-        $(this.el).html(this.template({data: this.model.toJSON()}));
+        var that = this;
+        var json = this.model.toJSON();
+
+        if(json.facebook){
+            this.$el.html(this.spinner.spin().el);
+
+
+            //need to use getJSON to avoid SOP errors
+            $.getJSON("https://graph.facebook.com/" + json.facebook.userID + "?access_token=" + json.facebook.accessToken + "&callback=?", function( fbUser ) {
+
+                json.username = fbUser.username;
+                json.avatar = "http://graph.facebook.com/" + fbUser.id + "/picture";
+
+                $(that.el).html(that.template({data: json}));
+
+            });
+        }else{
+            $(this.el).html(this.template({data: json}));
+        }
+
+        return this;
 
     }
 
@@ -133,7 +197,55 @@ var SignupView = Backbone.View.extend({
     events: {
         'click #blanket': 'dismiss',
         'click #signup-ok': 'signup',
-        'click #signup-cancel': 'dismiss'
+        'click #signup-cancel': 'dismiss',
+        'keyup body': 'keyPress',
+        'click .fb_button': 'clickedFacebook'
+    },
+
+    keyPress: function(evt){
+        console.log(evt.keyCode);
+        if(evt.keyCode == 27){
+            this.dismiss();
+        }
+    },
+
+    clickedFacebook: function(){
+
+        var that = this;
+
+        FB.login(function(response){
+
+            if(response.status=="connected"){
+                //app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+
+                that.model.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false, function(err,player){
+
+                    if(err){
+                        console.log(err);
+                    }
+
+                    that.logged(err);
+
+                });
+
+            }
+
+        },{ auth_type: 'reauthenticate' , scope: 'user_about_me'});
+
+//        FB.getLoginStatus(function(response){
+//            if(response.status=="connected"){
+//                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+//            }
+//
+//        });
+
+    },
+
+    logged: function(){
+        this.dismiss();
+        app.LoginView.dismiss();
+
+        new app.LoggedPlayerView({model: this.model });
     },
 
     signup: function(){
@@ -201,28 +313,55 @@ var SignupView = Backbone.View.extend({
                 if(err){
                     that.$('.signup-error').html(err);
                 }else{
-                    //that.$('.signup-msg').html("OK!");
-
-                    that.dismiss();
-                    app.LoggedPlayerView.logged(that.model);
+                    that.logged();
                 }
             });
         }
 
 
-
-
     },
 
-    dismiss: function(){
-        console.log("BALNKET");
+    initial_dismiss: function(){
+
         $('#blanket').addClass("hidden");
         this.$el.addClass("hidden");
     },
 
+
+    dismiss: function(){
+
+        var that = this;
+
+        $('#blanket').fadeOut(400);
+        this.$el.fadeOut(400,function(){
+            $('#blanket').addClass("hidden");
+            that.$el.addClass("hidden");
+        });
+
+        //remove the keyup event created in show
+        $(document).unbind('keyup');
+    },
+
     show: function(){
-        $('#blanket').removeClass("hidden");
-        this.$el.removeClass("hidden");
+        this.$('#signup-username').val("");
+        this.$('#signup-email').val("");
+        this.$('#signup-password').val("");
+        this.$('#signup-repeat-password').val("");
+
+        var that = this;
+
+        $('#blanket').fadeIn(400);
+        this.$el.fadeIn(400,function(){
+            $('#blanket').removeClass("hidden");
+            that.$el.removeClass("hidden");
+        });
+
+        //if the user press ESC, dismiss the signup popup
+        $(document).bind('keyup', function(e){
+            if(e.keyCode==27){
+                that.dismiss();
+            }
+        });
     },
 
     render: function(){
@@ -248,7 +387,7 @@ var LoginView = Backbone.View.extend({
         _.bindAll(this);
 
         this.template = _.template($('#login-template').html());
-        this.clickedFacebook = false;
+
 
         this.spinner = new Spinner(opts_small);
 
@@ -258,33 +397,36 @@ var LoginView = Backbone.View.extend({
 
         'click #login-create': 'renderSignup',
         'click #login-ok': 'login',
-        'click .fb-login-button': 'setClickedFacebook'
+        'click .fb_button': 'clickedFacebook'
     },
 
-    setClickedFacebook: function(){
-        this.clickedFacebook = true;
+    clickedFacebook: function(){
 
-        FB.getLoginStatus(function(response){
+        FB.login(function(response){
             if(response.status=="connected"){
                 app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
             }
 
-        });
+        },{ auth_type: 'reauthenticate' , scope: 'user_about_me'});
 
-    },
 
-    clickedFacebookStatus: function(){
-        return this.clickedFacebook;
+//        FB.getLoginStatus(function(response){
+//            if(response.status=="connected"){
+//                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+//            }
+//
+//        });
+
     },
 
     logged: function(err){
-
         this.spinner.stop();
         this.$("#login-ok").html("Login");
 
         if(!err){
             this.dismiss();
-            app.LoggedPlayerView.logged(this.model);
+
+            new app.LoggedPlayerView({model: this.model });
         }
 
     },
@@ -343,24 +485,18 @@ var LoginView = Backbone.View.extend({
 
     },
 
-    renderLogin: function(){
-
-        this.$('.fb_button_text').html("Login with Facebook");
-
-        this.$('#login-signup').addClass('hidden');
-        this.$('#login-login').removeClass('hidden');
-
-        this.$el.addClass('login-window');
-        this.$el.removeClass('signup-window');
-
+    initial_dismiss: function(){
+        this.$el.addClass("hidden");
     },
 
     dismiss: function(){
-        this.$el.addClass('dismissed');
+        this.$el.fadeTo(300,0);
     },
 
     show: function(){
-        this.$el.removeClass('dismissed');
+        this.$('#login-username').val("");
+        this.$('#login-password').val("");
+        this.$el.fadeTo(300,1);
     },
 
     render: function(){
@@ -1011,7 +1147,8 @@ $(function(){
     app.AddEnemyView = new AddEnemyView();
     app.SignupView = new SignupView({model: LoginModel});
     app.LoginView = new LoginView({model: LoginModel});
-    app.LoggedPlayerView = new LoggedPlayerView();
+    //app.LoggedPlayerView = new LoggedPlayerView();
+    app.LoggedPlayerView = LoggedPlayerView;
 
 
 });

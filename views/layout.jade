@@ -98,7 +98,9 @@ html
                 button#login-ok.button-01.login-button(title="Login") Login
                 a#login-create.link Signup
         div.login-fb
-            div.fb-login-button Login
+            div
+                a.fb_button.fb_button_medium
+                    span.fb_button_text Login
             span with facebook
         div.separator-login
 
@@ -129,10 +131,13 @@ html
         div.separator-signup
             span or
         div.signup-fb
-            div.fb-login-button Signup with Facebook
+            div
+                a.fb_button.fb_button_medium
+                    span.fb_button_text Signup with Facebook
+
 
     script(type="text/template",id="logged-player-template")
-        div
+        div.user_panel
             <% if(data.avatar) print('<img class=\"avatar\" src=\"' + data.avatar + '\"/>'); %>
             div.user_info
                 div <%= data.username %>

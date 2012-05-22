@@ -2,8 +2,8 @@ var app = require('../app.js');
 var models = require('../conf/models.js');
 
 
-exports.playerId = function(playerId){
-    return {playerId: playerId};
+exports.userId = function(id){
+    return {userId: id};
 }
 
 
@@ -12,7 +12,7 @@ exports.verifySession = function(cb){
     return function(req, res){
 
         //if have session, player is authenticated
-        if(req.session.playerId){
+        if(req.session.userId){
             cb(req,res);
         }else{
             res.send({code: 100, error: 'Not authorized'});

@@ -227,7 +227,7 @@ var Games = Backbone.Collection.extend({
 
     select: function(gameId){
 
-        app.GameRouter.navigate(this.enemy.get('name') +  "/" + this.get(gameId).get("num"));
+        //app.GameRouter.navigate("enemies/" + this.enemy.get('name') +  "/" + this.get(gameId).get("num"));
 
         app.SelectionManager.setSelectedEnemy(this.enemy);
         app.SelectionManager.setSelectedGame(this.get(gameId));
@@ -295,7 +295,6 @@ var Enemies = Backbone.Collection.extend({
 
 var Player = Backbone.Model.extend({
 
-    idAttribute: "name",
     urlRoot: "/api/players",
 
     initialize: function(){
@@ -359,28 +358,36 @@ var Login = Backbone.Model.extend({
 
         $.ajax({
             data: "userID=" + userID + "&accessToken=" + accessToken + "&expiresIn=" + expiresIn + (startup?"&startup=true":""),
-            url: "/api/login-facebook"
+            url: "/api/user/login-facebook"
         }).success(function( msg ) {
 
             if(msg.error){
                 cb(msg.error, undefined);
             } else{
-                //console.log("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken);
-
-                //need to use getJSON to avoid SOP errors
-                $.getJSON("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken + "&callback=?", function( fbUser ) {
-//                    console.log("fbUser");
-//                    console.log(fbUser);
-
-                    msg.username = fbUser.username;
-                    msg.avatar = "http://graph.facebook.com/" + msg.facebook.userID + "/picture";
-
-                    that.set(msg);
-                    cb(undefined,msg);
-
-                });
+                that.set(msg);
+                cb(undefined,msg);
 
             }
+
+//            if(msg.error){
+//                cb(msg.error, undefined);
+//            } else{
+//                //console.log("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken);
+//
+//                //need to use getJSON to avoid SOP errors
+//                $.getJSON("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken + "&callback=?", function( fbUser ) {
+////                    console.log("fbUser");
+////                    console.log(fbUser);
+//
+//                    msg.username = fbUser.username;
+//                    msg.avatar = "http://graph.facebook.com/" + msg.facebook.userID + "/picture";
+//
+//                    that.set(msg);
+//                    cb(undefined,msg);
+//
+//                });
+//
+//            }
 
         });
 
@@ -393,20 +400,16 @@ var Login = Backbone.Model.extend({
 
         //generate the password hash combining the actual password hash plus the random
         //number the server sends to the client . The client password or hash is never sent
-        //by the wire on the login
+        //on the wire on the login
         var secure_password = md5.hex_md5(md5.hex_md5(username + $.trim($("#salt").html()) + password) + $.trim($("#uuid").html()));
 
         $.ajax({
             data: "username=" + username + "&password=" + secure_password + (keepLogged?"&keepLogged=true":""),
-            url: "/api/login"
+            url: "/api/user/login"
         }).success(function( msg ) {
             if(msg.error){
                 cb(msg.error, undefined);
             } else{
-
-                //clean avatar
-                msg.avatar = undefined;
-
                 that.set(msg);
                 cb(undefined,msg);
 
@@ -421,7 +424,7 @@ var Login = Backbone.Model.extend({
         var that = this;
 
         $.ajax({
-            url: "/api/logout"
+            url: "/api/user/logout"
         }).success(function( msg ) {
                 if(msg.error){
                     cb(msg.error);
@@ -441,7 +444,7 @@ var Login = Backbone.Model.extend({
             contentType: "application/json",
             data: '{"username":"' + username + '","email":"' + email + '", "password":"' +  md5.hex_md5(username + $.trim($("#salt").html()) + password) + '"}',
             type: "POST",
-            url: "/api/signup"
+            url: "/api/user/signup"
         }).success(function( msg ) {
             if(msg.error){
                 cb(msg.error, undefined);
@@ -450,6 +453,22 @@ var Login = Backbone.Model.extend({
                 cb(undefined,msg);
             }
         });
+
+    },
+
+    delete: function(cb){
+
+        $.ajax({
+            type: "DELETE",
+            url: "/api/user/delete"
+        }).success(function( msg ) {
+                if(msg.error){
+                    cb(msg.error);
+                } else{
+                    cb();
+                }
+            });
+
 
     }
 

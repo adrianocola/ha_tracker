@@ -29,6 +29,7 @@ app.configure('development', function(){
 models = require('./conf/models');
 
 [   'index',
+    'user',
     'player',
     'enemy',
     'game',

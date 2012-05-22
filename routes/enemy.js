@@ -6,7 +6,7 @@ var common = require('./common.js');
 
 app.post('/api/enemies', common.verifySession(function(req,res){
 
-    models.Player.findById(req.session.playerId, {},common.playerId(req.session.playerId), function(err, player){
+    models.Player.findById(req.session.userId, {},common.userId(req.session.userId), function(err, player){
 
         if(err) console.log(err);
 
@@ -20,7 +20,7 @@ app.post('/api/enemies', common.verifySession(function(req,res){
 
         player.enemies.push(enemy);
 
-        player.save(common.playerId(req.session.playerId),function(err){
+        player.save(common.userId(req.session.userId),function(err){
 
             if(err) console.log(err);
 
@@ -35,7 +35,7 @@ app.post('/api/enemies', common.verifySession(function(req,res){
 
 app.delete('/api/enemies/:id', common.verifySession(function(req, res){
 
-    models.Player.findById(req.session.playerId,{},common.playerId(req.session.playerId), function(err, player){
+    models.Player.findById(req.session.userId,{},common.userId(req.session.userId), function(err, player){
 
         if(err) console.log(err);
 
@@ -58,7 +58,7 @@ app.delete('/api/enemies/:id', common.verifySession(function(req, res){
             }
         });
 
-        player.save(common.playerId(req.session.playerId),function(err){});
+        player.save(common.userId(req.session.userId),function(err){});
 
     });
 

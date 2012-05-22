@@ -7,7 +7,7 @@ var common = require('./common.js');
 
 app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
-    models.Player.findById(req.session.playerId,{}, common.playerId(req.session.playerId), function(err, player){
+    models.Player.findById(req.session.userId,{}, common.userId(req.session.userId), function(err, player){
 
         var enemy = player.enemies.id(req.params.enemy);
         enemy.gameCount+=1;
@@ -30,9 +30,9 @@ app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
                 },this);
 
-                playerItemManager.addACL(req.session.playerId,true,true);
+                playerItemManager.addACL(req.session.userId,true,true);
 
-                playerItemManager.save(common.playerId(req.session.playerId),function(err){
+                playerItemManager.save(common.userId(req.session.userId),function(err){
                     if(err) console.log(err);
                 });
 
@@ -55,9 +55,9 @@ app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
                 },this);
 
-                enemyItemManager.addACL(req.session.playerId,true,true);
+                enemyItemManager.addACL(req.session.userId,true,true);
 
-                enemyItemManager.save(common.playerId(req.session.playerId),function(err){
+                enemyItemManager.save(common.userId(req.session.userId),function(err){
                     if(err) console.log(err);
                 });
 
@@ -69,7 +69,7 @@ app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
         enemy.games.push(game);
 
-        player.save(common.playerId(req.session.playerId),function(err){
+        player.save(common.userId(req.session.userId),function(err){
             if (!err) res.send(game);
         });
 
@@ -80,7 +80,7 @@ app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
 app.delete('/api/enemies/:enemy/games/:id', common.verifySession(function(req, res){
 
-    models.Player.findById(req.session.playerId,{}, common.playerId(req.session.playerId), function(err, player){
+    models.Player.findById(req.session.userId,{}, common.userId(req.session.userId), function(err, player){
 
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
@@ -95,7 +95,7 @@ app.delete('/api/enemies/:enemy/games/:id', common.verifySession(function(req, r
 
         game.remove();
 
-        player.save(common.playerId(req.session.playerId), function(err){
+        player.save(common.userId(req.session.userId), function(err){
             if (!err) res.send("OK");
         });
 

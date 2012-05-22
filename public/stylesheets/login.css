@@ -34,7 +34,6 @@ div.signup-msg {
   -o-transition: all 1s ease-in-out;
   -ms-transition: all 1s ease-in-out;
   overflow: visible;
-  display: inline;
   width: 400px;
   margin-top: -60px;
   margin-bottom: 10px;
@@ -209,7 +208,7 @@ div.signup-fb {
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 #logged-player.with_settings {
-  height: 290px;
+  height: 280px;
 }
 #logged-player.dismissed {
   top: -70px;
@@ -230,11 +229,8 @@ a.settings {
 a.logout {
   float: right;
 }
-div.settings {
-  display: none;
-}
-#logged-player.with_settings div.settings {
-  display: inline-block;
+div.user_panel {
+  height: 25px;
 }
 #logged-player div.user_info {
   float: left;
