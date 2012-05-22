@@ -1,8 +1,6 @@
 app = window.app ? window.app : {};
 
 //TODO
-//IMPLEMENTAR AUTO-LOGIN (keep me logged) - FEITO PORCAMENTE! REVISAR!
-//IMPLEMENTAR CONTROLE DE SESSÃO COM REDIS
 //IMPLEMENTAR spin quando adiciona enemy ou game
 //IMPLEMENTAR LOGIN COM FACEBOOK E CONTAGEM DE LIKE E +1
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
@@ -14,6 +12,21 @@ app = window.app ? window.app : {};
 
 //ARRUMAR layouts, css
 //ARRUMAR interferencia de logins. Se tiver marcado keep signed in e facebook juntos pode zuar
+
+
+//variable to control the login flow. There are 2 types of login:
+//email and facebook. Each attempt of login by one of those mettods
+//add 1 to the verified_login_count variable. The last one to add
+//is responsible to open the login panel, if there was no successsful login
+var verified_login_count = 0;
+
+function tryOpenLoginPanel(){
+    if(verified_login_count>0){
+        app.LoginView.show();
+    }else{
+        verified_login_count += 1;
+    }
+};
 
 
 $(function(){
@@ -37,13 +50,11 @@ $(function(){
             if(response.status=="connected")
             {
 
-
-
-
                 console.log("The user is logged in and has authenticated your app");
 
 
                 if(app.LoggedPlayerView.model == undefined){
+
                     app.LoginView.model.login_facebook(response.authResponse.userID
                         ,response.authResponse.accessToken
                         ,response.authResponse.expiresIn
@@ -51,15 +62,22 @@ $(function(){
 
                             console.log(err);
                             if(!err){
-                                app.SignupView.logged();
+                                new app.LoggedPlayerView({model: app.LoginView.model });
+
+                            }else{
+                                tryOpenLoginPanel();
                             }
 
                         });
+                }else{
+                    tryOpenLoginPanel();
                 }
 
             } else if (response.status === 'not_authorized') {
+                tryOpenLoginPanel();
                 console.log("The user is logged in to Facebook, but has not authenticated your app");
             } else {
+                tryOpenLoginPanel();
                 console.log("The user isn't logged in to Facebook");
             }
         });
@@ -139,12 +157,12 @@ $(function(){
                 if(!app.LoginView.model.toJSON().facebook){
                     new app.LoggedPlayerView({model: app.LoginView.model });
                 }else{
-                    app.LoginView.show();
+                    tryOpenLoginPanel();
                 }
             }
         });
     }else{
-        app.LoginView.show();
+        tryOpenLoginPanel();
     }
 
     //app.LoginView.login();
