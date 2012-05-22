@@ -7,6 +7,7 @@ var express = require('express')
 // isso permitirá outros arquivos manipular app (ex: adicionar rotas)
 var app = module.exports = express();
 
+
 app.configure(function(){
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
@@ -17,21 +18,23 @@ app.configure(function(){
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
-    app.use(app.router);
 
 });
 
 app.configure('development', function(){
-    console.log("development");
+
+    //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 60000 }}));
+
+    app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 600000 } }));
+
+
+    app.use(app.router);
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 10000 }}));
-    //app.use(express.session({ secret: env.secrets.session}));
-    app.use(express.session({ secret: env.secrets.session, store: new RedisStore }));
 });
 
 
 app.configure('production', function(){
-    app.use(express.errorHandler());
+
 
     //redis connection
     rtg = require("url").parse(env.redis_url);
@@ -47,6 +50,10 @@ app.configure('production', function(){
             maxAge: 60000
         }
     }));
+
+
+    app.use(app.router);
+    app.use(express.errorHandler());
 
 
 });

@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "3.0.0alpha4",
     "mongoose": "2.6.3",
+    "connect-redis": "*",
     "jade": "*",
     "stylus": "*",
     "underscore": "*"
