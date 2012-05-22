@@ -1,6 +1,7 @@
 app = window.app ? window.app : {};
 
 //TODO
+//ARRUMAR SPINNERS, para que tenham regras de CSS que envolvam o pai
 //IMPLEMENTAR LOGIN COM FACEBOOK E CONTAGEM DE LIKE E +1
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
 
@@ -61,6 +62,7 @@ $(function(){
 
                             console.log(err);
                             if(!err){
+                                app.LoginView.dismiss();
                                 new app.LoggedPlayerView({model: app.LoginView.model });
 
                             }else{
@@ -139,7 +141,7 @@ $(function(){
 
 
     //render the login view
-    app.LoginView.render().initial_dismiss();
+    app.LoginView.render_loading();//.initial_dismiss();
 
     //render the signup view
     app.SignupView.render().initial_dismiss();
@@ -154,6 +156,7 @@ $(function(){
             }else{
                 //if it' NOT a facebook try to login, else let the facebook try to login
                 if(!app.LoginView.model.toJSON().facebook){
+                    app.LoginView.dismiss();
                     new app.LoggedPlayerView({model: app.LoginView.model });
                 }else{
                     tryOpenLoginPanel();
