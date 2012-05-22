@@ -19,24 +19,9 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
 
-});
-
-app.configure('development', function(){
-
     //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 60000 }}));
+    //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 600000 } }));
 
-    app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 600000 } }));
-
-
-    app.use(app.router);
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-
-app.configure('production', function(){
-
-
-    //redis connection
     rtg = require("url").parse(env.redis_url);
     redis_url = env.redis_url;
     app.use(express.session({
@@ -51,10 +36,20 @@ app.configure('production', function(){
         }
     }));
 
-
     app.use(app.router);
-    app.use(express.errorHandler());
 
+});
+
+app.configure('development', function(){
+
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+
+});
+
+
+app.configure('production', function(){
+
+    app.use(express.errorHandler());
 
 });
 
