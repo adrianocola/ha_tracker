@@ -1,29 +1,54 @@
 var express = require('express')
   , http = require('http')
-  , env = require('./conf/env');
-  //, RedisStore = require('connect-redis')(express);
+  , env = require('./conf/env')
+  , RedisStore = require('connect-redis')(express);
 
 // faz com que o retorno desse arquivo no método require seja a variável app
 // isso permitirá outros arquivos manipular app (ex: adicionar rotas)
 var app = module.exports = express();
 
 app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(require('stylus').middleware({ src: __dirname + '/public' }));
-  app.use(express.static(__dirname + '/public'));
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser("very secret name"));
-  //app.use(express.session({ secret: "nome muito secreto da sessão", store: new RedisStore }));
-  app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 1000 }}));
-  app.use(app.router);
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.use(express.favicon());
+    app.use(express.logger('dev'));
+    app.use(require('stylus').middleware({ src: __dirname + '/public' }));
+    app.use(express.static(__dirname + '/public'));
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(express.cookieParser(env.secrets.session));
+    app.use(app.router);
+
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler());
+    console.log("development");
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 10000 }}));
+    //app.use(express.session({ secret: env.secrets.session}));
+    app.use(express.session({ secret: env.secrets.session, store: new RedisStore }));
+});
+
+
+app.configure('production', function(){
+    app.use(express.errorHandler());
+
+    //redis connection
+    rtg = require("url").parse(env.redis_url);
+    redis_url = env.redis_url;
+    app.use(express.session({
+        secret: env.secrets.session,
+        store: new RedisStore({
+            port: rtg.port,
+            host: rtg.hostname,
+            pass: rtg.auth?rtg.auth.split(":")[1]:''
+        }),
+        cookie: {
+            maxAge: 60000
+        }
+    }));
+
+
 });
 
 models = require('./conf/models');

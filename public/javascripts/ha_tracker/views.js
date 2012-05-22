@@ -83,7 +83,7 @@ var LoggedPlayerView = Backbone.View.extend({
 //                that.dismiss();
 //                app.LoginView.show();
 
-                window.location.replace('/');
+                window.location = '/';
             }
 
         });
@@ -211,24 +211,37 @@ var SignupView = Backbone.View.extend({
 
         var that = this;
 
+
+
         FB.login(function(response){
 
             if(response.status=="connected"){
-                //app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
 
-                that.model.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false, function(err,player){
+                FB.getLoginStatus(function(response){
 
-                    if(err){
-                        console.log(err);
-                    }
+                        //app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+                        if(response.status=="connected"){
+                            that.model.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false, function(err,player){
 
-                    that.logged(err);
+                                if(err){
+                                    console.log(err);
+                                }
 
-                });
+                                that.logged(err);
+
+                            });
+                        }
+
+
+                },true);
 
             }
 
-        },{ auth_type: 'reauthenticate' , scope: 'user_about_me'});
+
+
+
+        }, { auth_type: 'reauthenticate' ,scope: 'user_about_me'});
+        //{ auth_type: 'reauthenticate' ,scope: 'user_about_me'}
 
 //        FB.getLoginStatus(function(response){
 //            if(response.status=="connected"){
@@ -409,11 +422,22 @@ var LoginView = Backbone.View.extend({
     clickedFacebook: function(){
 
         FB.login(function(response){
-            if(response.status=="connected"){
-                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
-            }
 
-        },{ auth_type: 'reauthenticate' , scope: 'user_about_me'});
+                if(response.status=="connected"){
+
+                    FB.getLoginStatus(function(response){
+
+                        if(response.status=="connected"){
+
+                            app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+                        }
+
+                    },true);
+
+                }
+
+        },{auth_type: 'reauthenticate'});
+        //auth_type: 'reauthenticate' , scope: 'user_about_me'
 
 
 //        FB.getLoginStatus(function(response){

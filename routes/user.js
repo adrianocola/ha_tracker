@@ -47,9 +47,7 @@ app.get('/api/user/logout', function(req, res){
 
             }
 
-            req.session.userId = undefined;
-            res.clearCookie('KEEP_LOGGED_USER');
-            res.clearCookie('KEEP_LOGGED_ID');
+            clearSession(req,res);
 
             res.send({});
 
@@ -85,9 +83,9 @@ app.get('/api/user/login', function(req,res){
 
                         if(err) console.log(err);
 
-                        //2 weeks = 1209600000 seconds
-                        res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 20000 });
-                        res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 20000 });
+                        //2 weeks = 1209600000 ms
+                        res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 1209600000 });
+                        res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 1209600000 });
 
                         res.send(user.secure());
 
@@ -134,9 +132,9 @@ app.get('/api/user/login', function(req,res){
                         if(user){
                             req.session.userId = user._id;
 
-                            //2 weeks = 1209600000 seconds
-                            res.cookie('KEEP_LOGGED_USER', req.cookies.KEEP_LOGGED_USER, { maxAge: 20000 });
-                            res.cookie('KEEP_LOGGED_ID', req.cookies.KEEP_LOGGED_ID, { maxAge: 20000 });
+                            //2 weeks = 1209600000 ms
+                            res.cookie('KEEP_LOGGED_USER', req.cookies.KEEP_LOGGED_USER, { maxAge: 1209600000 });
+                            res.cookie('KEEP_LOGGED_ID', req.cookies.KEEP_LOGGED_ID, { maxAge: 1209600000 });
 
                             res.send(user.secure());
                         }else{
@@ -233,7 +231,8 @@ app.post("/api/user/signup", function(req, res){
 app.get("/api/user/login-facebook", function(req, res){
 
     models.User.findOne({"facebook.userID": req.query.userID},{}, common.userId('MASTER'), function(err,user){
-
+        console.log("ACHOU 1:");
+        console.log(user);
         if(err){
             console.log(err);
             res.send(err);
@@ -249,13 +248,14 @@ app.get("/api/user/login-facebook", function(req, res){
 
                         res.send(user.secure());
                     }else{
-                        res.send({code: 106, error: "Session Expired"});
+                        res.send({code: 109, error: "Facebook Session Expired or User Logged out"});
                     }
 
-                    //if the user is authenticated in facebook but logged off
-                    // he can click on facebook button again and login
+                //if the user is authenticated in facebook but logged off
+                // he can click on facebook button again and login
                 }else{
 
+                    console.log("TOKEN: " + req.query.accessToken);
                     user.facebook.accessToken = req.query.accessToken;
                     user.facebook.expiresIn = req.query.expiresIn;
 
@@ -329,7 +329,7 @@ app.get("/api/user/login-facebook", function(req, res){
 });
 
 
-app.delete('/api/user/delete',function(req, res){
+app.delete('/api/user/delete',common.verifySession(function(req, res){
 
 
     models.User.findById(req.session.userId,{},common.userId(req.session.userId),function(err, user){
@@ -338,6 +338,7 @@ app.delete('/api/user/delete',function(req, res){
         if(err) console.log(err);
 
         //remove from facebook
+        console.log(user);
         if(user.facebook.userID){
             //https://developers.facebook.com/docs/reference/api/user/
             var request = https.request({
@@ -374,4 +375,4 @@ app.delete('/api/user/delete',function(req, res){
     });
 
 
-});
+}));
