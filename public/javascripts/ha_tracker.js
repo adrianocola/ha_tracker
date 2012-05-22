@@ -2,6 +2,8 @@ app = window.app ? window.app : {};
 
 //TODO
 //ARRUMAR SPINNERS, para que tenham regras de CSS que envolvam o pai
+//COLOCAR algum timer que verifica se o login não apareceu, mostrá-lo na força. Mexer no setTimout lá embaixo
+
 //IMPLEMENTAR LOGIN COM FACEBOOK E CONTAGEM DE LIKE E +1
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
 
@@ -175,6 +177,14 @@ $(function(){
 
     app.GameRouter = new GameRouter();
     Backbone.history.start({pushState: true});
+
+    //verify if after 10 seconds the login screen was shown or not
+    setTimeout(function(){
+        if(verified_login_count!=0 && app.LoggedPlayerView.model == undefined){
+            app.LoginView.initial_dismiss();
+            app.LoginView.show();
+        }
+    },5000);
 
 
 //    PRECISO VERIFICAR APÓS O LOGIN SE TEM ALGO NO ROUTER E ENTÃO PEDIR

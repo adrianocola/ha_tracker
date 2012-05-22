@@ -434,6 +434,8 @@ var LoginView = Backbone.View.extend({
 
         this.template = _.template($('#login-template').html());
 
+        this.spinner = new Spinner(opts_small);
+
     },
 
     events: {
