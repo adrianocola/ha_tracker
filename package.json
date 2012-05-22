@@ -10,7 +10,7 @@
     "npm":  "1.x"
     },
   "dependencies": {
-    "express": "3.0.0alpha4",
+    "express": "3.0.0alpha1",
     "mongoose": "2.6.3",
     "connect-redis": "*",
     "jade": "*",
