@@ -36,11 +36,14 @@ $(function(){
 
             if(response.status=="connected")
             {
-                app.FB_AccessToken = response.authResponse.accessToken;
+
+
+
 
                 console.log("The user is logged in and has authenticated your app");
-                if($("#is_logged").length == 0){
 
+
+                if(app.LoggedPlayerView.model == undefined){
                     app.LoginView.model.login_facebook(response.authResponse.userID
                         ,response.authResponse.accessToken
                         ,response.authResponse.expiresIn
@@ -53,9 +56,6 @@ $(function(){
 
                         });
                 }
-
-//
-
 
             } else if (response.status === 'not_authorized') {
                 console.log("The user is logged in to Facebook, but has not authenticated your app");
