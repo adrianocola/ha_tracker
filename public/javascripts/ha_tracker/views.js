@@ -112,10 +112,9 @@ var LoggedPlayerView = Backbone.View.extend({
 //
 //                that.dismiss();
 //                app.LoginView.show();
-
-                //refresh to page
-                window.location = "/";
             }
+            //refresh to page
+            window.location = "/";
         });
 
     },
@@ -203,7 +202,6 @@ var SignupView = Backbone.View.extend({
     },
 
     keyPress: function(evt){
-        console.log(evt.keyCode);
         if(evt.keyCode == 27){
             this.dismiss();
         }
@@ -397,7 +395,15 @@ var LoginView = Backbone.View.extend({
 
         'click #login-create': 'renderSignup',
         'click #login-ok': 'login',
-        'click .fb_button': 'clickedFacebook'
+        'click .fb_button': 'clickedFacebook',
+        'keyup #login-password': 'pressedEnter'
+    },
+
+    pressedEnter: function(evt){
+        if(evt.keyCode == 13){
+            this.login();
+        }
+
     },
 
     clickedFacebook: function(){

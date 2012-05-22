@@ -1,16 +1,17 @@
 app = window.app ? window.app : {};
 
 //TODO
-//SEPARAR player de user, pra deixar o conceito de user mais genérico
 //IMPLEMENTAR AUTO-LOGIN (keep me logged) - FEITO PORCAMENTE! REVISAR!
 //IMPLEMENTAR CONTROLE DE SESSÃO COM REDIS
-//IMPLEMENTAR BOOKMARK COM HISTÓRICO
+//IMPLEMENTAR spin quando adiciona enemy ou game
 //IMPLEMENTAR LOGIN COM FACEBOOK E CONTAGEM DE LIKE E +1
+//IMPLEMENTAR BOOKMARK COM HISTÓRICO
+
 //IMPLEMENTAR MODO SEM LOGIN, COM STORAGE LOCAL
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR CAPTCHA de criação de usuário (ou algo do tipo, pra não existir spam)
 //IMPLEMENTAR purge de AUTO-LOGIN (keep me logged in)
-//IMPLEMENTAR spin quando adiciona enemy ou game
+
 //ARRUMAR layouts, css
 //ARRUMAR interferencia de logins. Se tiver marcado keep signed in e facebook juntos pode zuar
 
@@ -101,7 +102,6 @@ $(function(){
             if(err){
                 app.LoginView.show();
             }else{
-                //app.LoggedPlayerView.logged(app.LoginView.model);
                 new app.LoggedPlayerView({model: app.LoginView.model });
             }
         });

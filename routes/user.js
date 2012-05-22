@@ -15,11 +15,21 @@ function clearCookies(res){
 
 function clearSession(req, res){
 
-    req.session.userId = undefined;
+    //req.session.userId = undefined;
+    req.session.destroy();
 
     clearCookies(res);
 
 };
+
+app.get('/api/nonce', function(req, res){
+
+    //generates a nonce for password cryptography
+    //mode details: http://en.wikipedia.org/wiki/Cryptographic_nonce
+    req.session.nonce = uuid.uuid(10);
+    res.send(req.session.nonce);
+
+});
 
 
 app.get('/api/user/logout', function(req, res){
@@ -61,24 +71,23 @@ app.get('/api/user/login', function(req,res){
 
             if(err) console.log(err);
 
-            if(user && req.query.password == md5.hex_md5(user.password + req.session.uuid)){
+            if(user && req.query.password == md5.hex_md5(user.password + req.session.nonce)){
                 req.session.userId = user._id;
 
                 if(req.query.keepLogged){
-
                     var keepLogged = new models.KeepLogged();
 
                     keepLogged.usernameHash = md5.hex_md5(env.salt + user.username + env.salt);
-                    keepLogged.iserId = user._id;
+                    keepLogged.userId = user._id;
 
 
                     keepLogged.save(common.userId('MASTER'),function(err){
 
                         if(err) console.log(err);
 
-                        console.log("KEEP_LOGGED");
-                        res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 1209600000 });
-                        res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 1209600000 });
+                        //2 weeks = 1209600000 seconds
+                        res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 20000 });
+                        res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 20000 });
 
                         res.send(user.secure());
 
@@ -125,8 +134,9 @@ app.get('/api/user/login', function(req,res){
                         if(user){
                             req.session.userId = user._id;
 
-                            res.cookie('KEEP_LOGGED_USER', req.cookies.KEEP_LOGGED_USER, { maxAge: 1209600000 });
-                            res.cookie('KEEP_LOGGED_ID', req.cookies.KEEP_LOGGED_ID, { maxAge: 1209600000 });
+                            //2 weeks = 1209600000 seconds
+                            res.cookie('KEEP_LOGGED_USER', req.cookies.KEEP_LOGGED_USER, { maxAge: 20000 });
+                            res.cookie('KEEP_LOGGED_ID', req.cookies.KEEP_LOGGED_ID, { maxAge: 20000 });
 
                             res.send(user.secure());
                         }else{

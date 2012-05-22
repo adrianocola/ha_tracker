@@ -16,9 +16,9 @@ app.configure(function(){
   app.use(express.static(__dirname + '/public'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.cookieParser("nome muito secreto da sessão"));
+  app.use(express.cookieParser("very secret name"));
   //app.use(express.session({ secret: "nome muito secreto da sessão", store: new RedisStore }));
-  app.use(express.session({ secret: "nome muito secreto da sessão"}));
+  app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 1000 }}));
   app.use(app.router);
 });
 

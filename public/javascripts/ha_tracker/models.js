@@ -398,23 +398,34 @@ var Login = Backbone.Model.extend({
 
         var that = this;
 
-        //generate the password hash combining the actual password hash plus the random
-        //number the server sends to the client . The client password or hash is never sent
-        //on the wire on the login
-        var secure_password = md5.hex_md5(md5.hex_md5(username + $.trim($("#salt").html()) + password) + $.trim($("#uuid").html()));
-
+        //first get the nonce from the server
         $.ajax({
-            data: "username=" + username + "&password=" + secure_password + (keepLogged?"&keepLogged=true":""),
-            url: "/api/user/login"
-        }).success(function( msg ) {
-            if(msg.error){
-                cb(msg.error, undefined);
-            } else{
-                that.set(msg);
-                cb(undefined,msg);
+            url: "/api/nonce"
+        }).success(function( nonce ) {
 
-            }
-        });
+                //generate the password hash combining the actual password hash plus the random
+                //number the server sends to the client (nonce) . The client password or hash is never sent
+                //on the wire on the login
+                var secure_password = md5.hex_md5(md5.hex_md5(username + $.trim($("#salt").html()) + password) + nonce);
+
+                $.ajax({
+                    data: "username=" + username + "&password=" + secure_password + (keepLogged?"&keepLogged=true":""),
+                    url: "/api/user/login"
+                }).success(function( msg ) {
+                        if(msg.error){
+                            cb(msg.error, undefined);
+                        } else{
+                            that.set(msg);
+                            cb(undefined,msg);
+
+                        }
+                    });
+
+
+            });
+
+
+
 
 
     },
