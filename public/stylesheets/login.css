@@ -159,9 +159,9 @@ button.signup-error:hover span {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.10);
-  -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.10);
-  box-shadow: 5px 5px 5px rgba(0,0,0,0.10);
+  -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
   padding: 2px;
 }
 .separator-signup {
