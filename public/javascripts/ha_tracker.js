@@ -1,7 +1,6 @@
 app = window.app ? window.app : {};
 
 //TODO
-//IMPLEMENTAR spin quando adiciona enemy ou game
 //IMPLEMENTAR LOGIN COM FACEBOOK E CONTAGEM DE LIKE E +1
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
 

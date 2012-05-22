@@ -1,6 +1,24 @@
 app = window.app ? window.app : {};
 
 
+var opts_mini = {
+    lines: 6, // The number of lines to draw
+    length: 0, // The length of each line
+    width: 3, // The line thickness
+    radius: 4, // The radius of the inner circle
+    rotate: 0, // The rotation offset
+    color: '#000000', // #rgb or #rrggbb
+    speed: 1, // Rounds per second
+    trail: 37, // Afterglow percentage
+    shadow: false, // Whether to render a shadow
+    hwaccel: false, // Whether to use hardware acceleration
+    className: 'spinner-mini', // The CSS class to assign to the spinner
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
+    top: 'auto', // Top position relative to parent in px
+    left: 'auto' // Left position relative to parent in px
+};
+
+
 var opts_small = {
     lines: 7, // The number of lines to draw
     length: 0, // The length of each line
@@ -661,6 +679,8 @@ var AddEnemyView = Backbone.View.extend({
 
         this.template = _.template($("#add-enemy-template").html());
 
+        this.spinner = new Spinner(opts_small);
+
     },
 
     events:{
@@ -678,6 +698,8 @@ var AddEnemyView = Backbone.View.extend({
     },
 
     confirmAddEnemy: function(){
+
+        this.$(".confirm-add-enemy").html(this.spinner.spin().el);
 
         this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true});
 
@@ -794,6 +816,8 @@ var AddGameView = Backbone.View.extend({
 
         this.template = _.template($("#add-game-template").html());
 
+        this.spinner = new Spinner(opts_mini);
+
     },
 
     events:{
@@ -802,6 +826,8 @@ var AddGameView = Backbone.View.extend({
     },
 
     confirmAddGame: function(){
+
+
         var playerRace = this.$(".add-game-player-race option:selected").text();
         var enemyRace = this.$(".add-game-enemy-race option:selected").text();
 
@@ -811,6 +837,8 @@ var AddGameView = Backbone.View.extend({
         });
 
         gameModel.bind("sync",this.createdGame,this);
+
+        this.$(".confirm-add-game").html(this.spinner.spin().el);
 
         this.games.create(gameModel, {wait: true});
 
