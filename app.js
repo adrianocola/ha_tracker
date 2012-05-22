@@ -6,6 +6,7 @@ var express = require('express')
 // faz com que o retorno desse arquivo no método require seja a variável app
 // isso permitirá outros arquivos manipular app (ex: adicionar rotas)
 var app = module.exports = express();
+//var app = module.exports = express.createServer();
 
 
 app.configure(function(){
@@ -66,5 +67,7 @@ models = require('./conf/models');
 });
 
 http.createServer(app).listen(env.port);
+//app.listen(env.port);
+
 
 console.log("Express server listening on port " + env.port);
