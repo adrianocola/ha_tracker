@@ -251,3 +251,10 @@ img.avatar {
   margin-right: 5px;
   margin-top: 2px;
 }
+div.social {
+  display: inline-block;
+  float: right;
+  margin-top: -55px;
+  width: 100px;
+  height: 60px;
+}
