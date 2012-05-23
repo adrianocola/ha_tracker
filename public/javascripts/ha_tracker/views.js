@@ -291,7 +291,7 @@ var SignupView = Backbone.View.extend({
         this.dismiss();
         app.LoginView.dismiss();
 
-        new app.LoggedPlayerView({model: this.model });
+        app.CurrentPlayerView = new app.LoggedPlayerView({model: this.model });
     },
 
     signup: function(){
@@ -436,6 +436,8 @@ var LoginView = Backbone.View.extend({
 
         this.spinner = new Spinner(opts_small);
 
+        this.visible = false;
+
     },
 
     events: {
@@ -490,7 +492,7 @@ var LoginView = Backbone.View.extend({
         if(!err){
             this.dismiss();
 
-            new app.LoggedPlayerView({model: this.model });
+            app.CurrentPlayerView = new app.LoggedPlayerView({model: this.model });
         }
 
     },
@@ -550,16 +552,19 @@ var LoginView = Backbone.View.extend({
     },
 
     initial_dismiss: function(){
+        this.visible = false;
         this.$el.addClass("hidden");
     },
 
     dismiss: function(){
+        this.visible = false;
         this.$el.fadeTo(300,0);
     },
 
     show: function(){
         //this.$('#login-username').val("");
         //this.$('#login-password').val("");
+        this.visible = true;
         this.render();
         this.$el.fadeTo(300,1);
     },

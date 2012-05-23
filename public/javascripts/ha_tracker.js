@@ -65,7 +65,7 @@ $(function(){
                             console.log(err);
                             if(!err){
                                 app.LoginView.dismiss();
-                                new app.LoggedPlayerView({model: app.LoginView.model });
+                                app.CurrentPlayerView = new app.LoggedPlayerView({model: app.LoginView.model });
 
                             }else{
                                 tryOpenLoginPanel();
@@ -159,7 +159,7 @@ $(function(){
                 //if it' NOT a facebook try to login, else let the facebook try to login
                 if(!app.LoginView.model.toJSON().facebook){
                     app.LoginView.dismiss();
-                    new app.LoggedPlayerView({model: app.LoginView.model });
+                    app.CurrentPlayerView =  new app.LoggedPlayerView({model: app.LoginView.model });
                 }else{
                     tryOpenLoginPanel();
                 }
@@ -178,9 +178,10 @@ $(function(){
     app.GameRouter = new GameRouter();
     Backbone.history.start({pushState: true});
 
-    //verify if after 10 seconds the login screen was shown or not
+    //verify if after some seconds the login screen was shown or not
     setTimeout(function(){
-        if(verified_login_count!=0 && app.LoggedPlayerView.model == undefined){
+        //if the login is NOT visible (is loading) and there is no player defined
+        if(!app.LoginView.visible && app.CurrentPlayerView == undefined){
             app.LoginView.initial_dismiss();
             app.LoginView.show();
         }
