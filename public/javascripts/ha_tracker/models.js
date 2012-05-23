@@ -467,6 +467,13 @@ var Login = Backbone.Model.extend({
 
     },
 
+    reset: function(cb){
+
+        console.log(this.toJSON());
+
+    },
+
+
     delete: function(cb){
 
         $.ajax({
@@ -479,7 +486,6 @@ var Login = Backbone.Model.extend({
                     cb();
                 }
             });
-
 
     }
 

@@ -1,17 +1,20 @@
 app = window.app ? window.app : {};
 
 //TODO
+//CRIAR MIDDLEWARES de deleçao automática de modelos no mongoose
+//FAZER as funções de login do LoginModel devolverem um modelo de Player.
+    // Organizar melhor essa parte. A view tá fazendo coisa que não é dela
+    // Quem deveria ter essa parte no server? User ou Player?
+//IMPLEMENTAR "reset account"
+//IMPLEMENTAR "forgot password"
+//IMPLEMENTAR "change password" (para usuários com e-mail)
+
 //ARRUMAR SPINNERS, para que tenham regras de CSS que envolvam o pai
 //COLOCAR algum timer que verifica se o login não apareceu, mostrá-lo na força. Mexer no setTimout lá embaixo
 
-//IMPLEMENTAR LOGIN COM FACEBOOK E CONTAGEM DE LIKE E +1
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
-
 //IMPLEMENTAR MODO SEM LOGIN, COM STORAGE LOCAL
-//IMPLEMENTAR "forgot password"
-//IMPLEMENTAR CAPTCHA de criação de usuário (ou algo do tipo, pra não existir spam)
 //IMPLEMENTAR purge de AUTO-LOGIN (keep me logged in)
-
 //ARRUMAR layouts, css
 //ARRUMAR interferencia de logins. Se tiver marcado keep signed in e facebook juntos pode zuar
 

@@ -199,7 +199,8 @@ div.signup-fb
     top: -20px
     right: 80px
     min-width: 40px
-    height: 25px
+    max-height: 25px
+    min-height: 25px
     border-radius(10px)
     transition all 1s ease-in-out
     overflow-x: visible
@@ -209,8 +210,8 @@ div.signup-fb
     font: 12px "Lucida Grande", Helvetica, Arial, sans-serif
 
 #logged-player.with_settings
-    height: 280px
-
+    //overflow-y: visible
+    max-height: 1000px
 
 #logged-player.dismissed
    top: -70px
@@ -240,6 +241,21 @@ div.user_panel
     display: block
     width: 100%
     margin-bottom: 10px
+
+div.confirm-delete, div.confirm-reset
+    width: 100%
+    font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
+    margin-bottom: 10px
+
+div.confirm-delete div, div.confirm-reset div
+    color: red
+    text-align: center
+
+a.delete-no, a.delete-yes, a.reset-no, a.reset-yes
+    display: inline-block
+    width: 50%
+    text-align: center
+    margin-top: 5px
 
 img.avatar
     width: 25px

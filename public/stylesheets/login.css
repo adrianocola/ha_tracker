@@ -192,7 +192,8 @@ div.signup-fb {
   top: -20px;
   right: 80px;
   min-width: 40px;
-  height: 25px;
+  max-height: 25px;
+  min-height: 25px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -209,7 +210,7 @@ div.signup-fb {
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 #logged-player.with_settings {
-  height: 280px;
+  max-height: 1000px;
 }
 #logged-player.dismissed {
   top: -70px;
@@ -243,6 +244,26 @@ div.user_panel {
   display: block;
   width: 100%;
   margin-bottom: 10px;
+}
+div.confirm-delete,
+div.confirm-reset {
+  width: 100%;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin-bottom: 10px;
+}
+div.confirm-delete div,
+div.confirm-reset div {
+  color: #f00;
+  text-align: center;
+}
+a.delete-no,
+a.delete-yes,
+a.reset-no,
+a.reset-yes {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+  margin-top: 5px;
 }
 img.avatar {
   width: 25px;

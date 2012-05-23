@@ -98,12 +98,23 @@ var LoggedPlayerView = Backbone.View.extend({
 
         'click .logout': 'logout',
         'click a.settings': 'showSettings',
-        'click .delete-account': 'deleteAcctount'
+        'click .delete-account': 'deleteAcctount',
+        'click .delete-yes': 'confirmDelete',
+        'click .delete-no': 'denyDelete',
+        'click .reset-account': 'resetAcctount',
+        'click .reset-yes': 'confirmReset',
+        'click .reset-no': 'denyReset'
 
     },
 
     deleteAcctount: function(){
+        this.denyReset();
+        this.$('.confirm-delete').slideDown();
+        //this.$('.confirm-delete').toggleClass('hidden');
 
+    },
+
+    confirmDelete: function(){
         var that = this;
 
         this.model.delete(function(err){
@@ -124,8 +135,31 @@ var LoggedPlayerView = Backbone.View.extend({
         });
     },
 
+    denyDelete: function(){
+        this.$('.confirm-delete').slideUp();
+    },
+
+    resetAcctount: function(){
+        this.denyDelete();
+        this.$('.confirm-reset').slideDown();
+        //this.$('.confirm-delete').toggleClass('hidden');
+
+    },
+
+    confirmReset: function(){
+        var that = this;
+
+        this.model.reset();
+    },
+
+    denyReset: function(){
+        this.$('.confirm-reset').slideUp();
+    },
+
     showSettings: function(){
         this.$el.toggleClass('with_settings');
+        this.$('.confirm-delete').hide();
+        this.$('.confirm-reset').hide();
     },
 
     logout: function(){

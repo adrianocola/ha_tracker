@@ -87,7 +87,15 @@ block templates
             button.button-01.change-password(title="Change Password") Change Password
             div.separator
             button.button-02.reset-account(title="Reset Account") Reset Account
+            div.confirm-reset.hidden
+                div Are you sure?
+                a.reset-yes.link(href="#") Yes
+                a.reset-no.link(href="#") No
             button.button-02.delete-account(title="Delete Account") Delete Account
+            div.confirm-delete.hidden
+                div Are you sure?
+                a.delete-yes.link(href="#") Yes
+                a.delete-no.link(href="#") No
             div.separator
             a.link.settings close
 
