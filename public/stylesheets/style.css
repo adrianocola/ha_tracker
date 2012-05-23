@@ -63,6 +63,7 @@ body {
   float: left;
   width: 960px;
   background-color: #fff;
+  padding-bottom: 10px;
 }
 #header {
   float: left;
@@ -71,6 +72,15 @@ body {
   color: #fff;
   background-color: #aaa;
   position: relative;
+}
+#footer {
+  float: left;
+  width: 940px;
+  padding: 10px 10px;
+  color: #fff;
+  background-color: #aaa;
+  position: relative;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 #player {
   clear: left;

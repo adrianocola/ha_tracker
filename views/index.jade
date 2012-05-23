@@ -1,33 +1,193 @@
 extends layout
 
+block scripts-vendor
+    script(src='/javascripts/vendor/jquery.js')
+    script(src='/javascripts/vendor/underscore.js')
+    script(src='/javascripts/vendor/backbone.js')
+    script(src='/javascripts/vendor/spin.js')
+    script(src='/javascripts/vendor/md5.js')
+    script(src='/javascripts/vendor/sha1.js')
+    script(src='/javascripts/vendor/cookies.js')
+    script(type="text/javascript",src="https://apis.google.com/js/plusone.js")
 
 
-block content
-    div#main
-        div#main-container
-            div#header
-                h1 Hero Academy Tracker
-                div#login.login-window
-                div#logged-player.logged-window.dismissed
-                div.social
-                    div.g-plusone(data-size="medium")
-                    div.fb-like(data-send="false",data-layout="button_count",data-width="450",data-show-faces="true")
-            div#main-layout
-                div#player
-                    h2 Create Account or Login
-                div#current-game
-                div.st
-                    span.st_pinterest(displayText='Pinterest')
-                    span.st_googleplus(displayText='Google +')
-                    span.st_delicious(displayText='Delicious')
-                    span.st_sharethis(displayText='ShareThis')
-                    span.st_facebook(displayText='Facebook')
-                    span.st_twitter(displayText='Tweet')
-                    span.st_linkedin(displayText='LinkedIn')
-                    span.st_email(displayText='Email')
-                    span.st_digg(displayText='Digg')
-            div#blanket.hidden
+block scripts-site
+    script(src='/javascripts/ha_tracker/routes.js')
+    script(src='/javascripts/ha_tracker/models.js')
+    script(src='/javascripts/ha_tracker/collections.js')
+    script(src='/javascripts/ha_tracker/views.js')
+    script(src='/javascripts/ha_tracker.js')
+
+block templates
+    script(type="text/template",id="login-template")
+        div.login-site
+            div.login-left
+                div
+                    input#login-username.login-field(type="text",placeholder="Username")
+                    input#login-password.login-field(type="password",placeholder="Password")
+                div
+                    input#keep-logged(type="checkbox")
+                    label.login-text Keep me logged in
+                    a#forgot-password.login-text.link Forgot your password?
+                div.login-error
+            div.login-right
+                button#login-ok.button-01.login-button(title="Login") Login
+                a#login-create.link Signup
+        div.login-fb
+            div
+                a.fb_button.fb_button_medium
+                    span.fb_button_text Login
+            span with facebook
+        div.separator-login
+
+    script(type="text/template",id="signup-template")
+        div.signup-site
+            div.login-left
+                div.label Username:
+                input#signup-username.login-field(type="text",placeholder="Username",maxlength="20")
+                button#username-error-icon.signup-error.button-02.hidden !
+                    span#username-error.tooltip-error
+                div.label Password:
+                input#signup-password.login-field(type="password",placeholder="Password")
+                button#password-error-icon.signup-error.button-02.hidden !
+                    span#password-error.tooltip-error
+                div.label Verify:
+                input#signup-repeat-password.login-field(type="password",placeholder="Verify Password")
+                button#repeat-password-error-icon.signup-error.button-02.hidden !
+                    span#repeat-password-error.tooltip-error
+                div.label E-mail:
+                input#signup-email.login-field(type="text",placeholder="E-mail",maxlength="100")
+                button#email-error-icon.signup-error.button-02.hidden !
+                    span#email-error.tooltip-error
+                div.signup-error
+                div.signup-msg
+            div.login-right
+                button#signup-ok.button-01.login-button(title="Signup") Signup
+                button#signup-cancel.button-02.login-button(title="Cancel") Cancel
+        div.separator-signup
+            span or
+        div.signup-fb
+            div
+                a.fb_button.fb_button_medium
+                    span.fb_button_text Signup with Facebook
+
+
+    script(type="text/template",id="logged-player-template")
+        div.user_panel
+            <% if(data.avatar) print('<img class=\"avatar\" src=\"' + data.avatar + '\"/>'); %>
+            div.user_info
+                div <%= data.username %>
+                a.link.settings settings
+                a.link.logout logout
+        div.settings
+            div.separator
+            input#change-username-current.change-field(type="text",placeholder="Current Password")
+            input#change-password-new.change-field(type="password",placeholder="New Password")
+            input#change-password-repeat.change-field(type="password",placeholder="Repeat Password")
+            button.button-01.change-password(title="Change Password") Change Password
+            div.separator
+            button.button-02.reset-account(title="Reset Account") Reset Account
+            button.button-02.delete-account(title="Delete Account") Delete Account
+            div.separator
+            a.link.settings close
+
+    script(type="text/template",id="enemy-template")
+        div
+            span.enemyName <%= name %>
+            button.deleteEnemy.button-02(title="Delete Enemy") X
+            button.add-game.button-01(title="Add Game") +
+        ul.games
+
+    script(type="text/template", id="enemies-template")
+        h2 Enemies
+        button#add-enemy Add Enemy
+        input#filter(type="text",placeholder="Filter Enemies")
+        ul.enemies
+
+    script(type="text/template",id="add-enemy-template")
+        input#add-enemy-name(type="text",placeholder="Enemy Name")
+        button.cancel-add-enemy.button-02(title="Cancel") X
+        button.confirm-add-enemy.button-01(title="Confirm") L
+
+
+    script(type="text/template",id="add-game-template")
+        div.add-game-label Player:
+        select.add-game-player-race
+            option(value="Council") Council
+            option(value="Dark Elves") Dark Elves
+            option(value="Dwarves") Dwarves
+            option(value="Tribe") Tribe
+        br
+        div.add-game-label Enemy:
+        select.add-game-enemy-race
+            option(value="Council") Council
+            option(value="Dark Elves") Dark Elves
+            option(value="Dwarves") Dwarves
+            option(value="Tribe") Tribe
+        button.cancel-add-game.button-02(title="Cancel") X
+        button.confirm-add-game.button-01(title="Confirm") L
+
+    script(type="text/template",id="game-template")
+        //<%= num %>  - <%= playerRace %> vs <%= enemyRace %>
+        div.gameNum <%= num %>
+        div.gamePanel
+            <% print('<img class=\"raceIcon\" src=\"' + playerRaceIcon + '\"/>'); %>
+            span vs
+            <% print('<img class=\"raceIcon\" src=\"' + enemyRaceIcon + '\"/>'); %>
+        button.deleteGame.button-02(title="Delete Game") -
+
+
+    script(type="text/template",id="selected-game-template")
+        //
+            div.game-info
+                input(type="radio",name="game-status",checked)
+                span In Progress
+                input(type="radio",name="game-status")
+                span Won
+                select
+                    option(value="Crystal") Crystal
+                    option(value="Items") Items
+                    option(value="Other") Other
+                input(type="radio",name="game-status")
+                span Lost
+                select
+                    option(value="Crystal") Crystal
+                    option(value="Items") Items
+                    option(value="Other") Other
+        div.items-panel
+
+    script(type="text/template", id="player-items-template")
+        <% print('<img class=\"raceTitle\" src=\"' + playerRaceTitle + '\"/>'); %>
+        ul.items
+        h3 Remaining:
+
+    script(type="text/template", id="enemy-items-template")
+        <% print('<img class=\"raceTitle\" src=\"' + enemyRaceTitle + '\"/>'); %>
+        ul.items
+        h3 Remaining:
+
+    script(type="text/template", id="item-template")
+        <% print('<img class=\"itemImg\" src=\"' + itemImg + '\"/>'); %>
+        span.itemName <%= itemName %>
+        span.itemCount <%= itemCount %>
+        button.itemSub.button-02 -
+        button.itemAdd.button-01 +
+
+
+block header
+    div#login.login-window
+    div#logged-player.logged-window.dismissed
+
+block main-layout
+    div#player
+        h2 Create Account or Login
+    div#current-game
+
+block main-page
+    div#blanket.hidden
     div#signup.hidden
+
+
 
 
 
