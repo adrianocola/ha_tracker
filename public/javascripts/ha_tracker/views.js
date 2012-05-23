@@ -191,7 +191,7 @@ var LoggedPlayerView = Backbone.View.extend({
             //need to use getJSON to avoid SOP errors
             $.getJSON("https://graph.facebook.com/" + json.facebook.userID + "?access_token=" + json.facebook.accessToken + "&callback=?", function( fbUser ) {
 
-                json.username = fbUser.username;
+                json.username = fbUser.name;
                 json.avatar = "http://graph.facebook.com/" + fbUser.id + "/picture";
 
                 $(that.el).html(that.template({data: json}));
