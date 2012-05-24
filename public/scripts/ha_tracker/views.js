@@ -70,6 +70,48 @@ var opts_big = {
     left: 'auto' // Left position relative to parent in px
 };
 
+var ErrorView = Backbone.View.extend({
+
+    el: '#error',
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.template = _.template($('#error-template').html());
+
+    },
+
+    show: function(){
+
+        var that = this;
+
+        $('#blanket').fadeIn(400);
+        this.$el.fadeIn(400,function(){
+            $('#blanket').removeClass("hidden");
+            that.$el.removeClass("hidden");
+        });
+
+        //if the user press ESC, dismiss the signup popup
+        $(document).bind('keyup', function(e){
+            if(e.keyCode==27){
+                that.dismiss();
+            }
+        });
+    },
+
+    render: function(){
+
+        $(this.el).html(this.template({error: this.options.error}));
+
+        this.$el.removeClass("hidden");
+        $('#blanket').removeClass("hidden");
+
+        return this;
+    }
+
+});
+
 var LoggedPlayerView = Backbone.View.extend({
 
     el: '#logged-player',
@@ -94,6 +136,8 @@ var LoggedPlayerView = Backbone.View.extend({
             new app.PlayerView({model: player}).render();
 
         }});
+
+
 
     },
 
@@ -694,6 +738,7 @@ var EnemiesView = Backbone.View.extend({
 
     addEnemy: function(){
 
+
         var $enemies = this.$(".enemies")
 
         app.AddEnemyView.enemies = this.collection;
@@ -758,10 +803,22 @@ var AddEnemyView = Backbone.View.extend({
     },
 
     nameKeyPress: function(evt){
+
+        //ENTER
         if(evt.keyCode == 13){
-            this.confirmAddEnemy();
+            if(this.$('#add-enemy-name').val().length != 0){
+                this.confirmAddEnemy();
+            }
+        //ESC
         }else if(evt.keyCode == 27){
             this.cancelAddEnemy();
+        }else{
+            if(this.$('#add-enemy-name').val().length == 0){
+                this.$('.confirm-add-enemy').attr('disabled', 'disabled');
+            }else{
+                this.$('.confirm-add-enemy').removeAttr('disabled');
+            }
+
         }
     },
 
@@ -789,6 +846,9 @@ var AddEnemyView = Backbone.View.extend({
 
         this.$el.hide();
         this.$el.html(this.template({}));
+
+        this.$('.confirm-add-enemy').attr('disabled', 'disabled');
+
         this.$el.fadeIn();
 
         //force event delegation for the created UI elements
@@ -926,7 +986,7 @@ var AddGameView = Backbone.View.extend({
     },
 
     confirmAddGame: function(){
-
+        console.log("COISA");
 
         var playerRace = this.$(".add-game-player-race option:selected").text();
         var enemyRace = this.$(".add-game-enemy-race option:selected").text();
@@ -957,6 +1017,7 @@ var AddGameView = Backbone.View.extend({
     },
 
     render: function(){
+
         this.$el.hide();
         $(this.el).html(this.template({}));
         this.$el.fadeIn();
@@ -1305,9 +1366,8 @@ $(function(){
     app.AddEnemyView = new AddEnemyView();
     app.SignupView = new SignupView({model: LoginModel});
     app.LoginView = new LoginView({model: LoginModel});
-    //app.LoggedPlayerView = new LoggedPlayerView();
     app.LoggedPlayerView = LoggedPlayerView;
-
+    app.ErrorView = new ErrorView();
 
 });
 

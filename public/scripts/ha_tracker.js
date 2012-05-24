@@ -1,11 +1,12 @@
 app = window.app ? window.app : {};
 
 //TODO
-//IMPLEMENTAR e-mail, pra poder fazer verificação de e-mail e reset password
 //IMPLEMENTAR "forgot password"
-//IMPLEMENTAR "change password" (para usuários com e-mail)
+//IMPLEMENTAR "change password"
 //IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
 //IMPLEMENTAR verificação de nome de enemy criado no player (vazio e se tem igual)
+
+//PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
 
 //ARRUMAR SPINNERS, para que tenham regras de CSS que envolvam o pai
 
@@ -84,6 +85,7 @@ $(function(){
                 console.log("The user isn't logged in to Facebook");
             }
         });
+
 
 //        FB.Event.subscribe('auth.statusChange', function(response){
 //            console.log("MUDOU STATUS: " + response.status);

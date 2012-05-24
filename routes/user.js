@@ -3,7 +3,7 @@ var models = require('../conf/models.js');
 var env = require('../conf/env.js');
 var common = require('./common.js');
 var uuid = require('../api/uuid.js');
-var md5 = require('../public/javascripts/vendor/md5.js');
+var md5 = require('../api/md5.js');
 var u = require('underscore');
 var https = require('https');
 
@@ -22,6 +22,12 @@ function clearSession(req, res){
     clearCookies(res);
 
 };
+
+app.get('/api/salt', function(req, res){
+
+    res.send(env.salt);
+
+});
 
 app.get('/api/nonce', function(req, res){
 

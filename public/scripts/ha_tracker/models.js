@@ -254,6 +254,11 @@ var Enemy = Backbone.Model.extend({
             this.trigger("change:selected");
         },this);
 
+
+        this.bind("error", function(err){
+            console.log(err);
+        });
+
     },
 
     selectGame: function(gameId){

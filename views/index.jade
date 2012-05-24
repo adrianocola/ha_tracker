@@ -1,24 +1,27 @@
 extends layout
 
 block scripts-vendor
-    script(src='/javascripts/vendor/jquery.js')
-    script(src='/javascripts/vendor/underscore.js')
-    script(src='/javascripts/vendor/backbone.js')
-    script(src='/javascripts/vendor/spin.js')
-    script(src='/javascripts/vendor/md5.js')
-    script(src='/javascripts/vendor/sha1.js')
-    script(src='/javascripts/vendor/cookies.js')
+    script(src='/scripts/vendor/jquery.js')
+    script(src='/scripts/vendor/underscore.js')
+    script(src='/scripts/vendor/backbone.js')
+    script(src='/scripts/vendor/spin.js')
+    script(src='/scripts/vendor/md5.js')
+    script(src='/scripts/vendor/sha1.js')
+    script(src='/scripts/vendor/cookies.js')
     script(type="text/javascript",src="https://apis.google.com/js/plusone.js")
 
 
 block scripts-site
-    script(src='/javascripts/ha_tracker/routes.js')
-    script(src='/javascripts/ha_tracker/models.js')
-    script(src='/javascripts/ha_tracker/collections.js')
-    script(src='/javascripts/ha_tracker/views.js')
-    script(src='/javascripts/ha_tracker.js')
+    script(src='/scripts/ha_tracker/routes.js')
+    script(src='/scripts/ha_tracker/models.js')
+    script(src='/scripts/ha_tracker/views.js')
+    script(src='/scripts/ha_tracker.js')
 
 block templates
+    script(type="text/template",id="error-template")
+        h2 '=/'
+        div <%= error %>
+
     script(type="text/template",id="login-template")
         div.login-site
             div.login-left
@@ -196,6 +199,7 @@ block main-layout
 block main-page
     div#blanket.hidden
     div#signup.hidden
+    div#error.hidden
 
 
 
