@@ -1,9 +1,6 @@
 app = window.app ? window.app : {};
 
 //TODO
-//FAZER as funções de login do LoginModel devolverem um modelo de Player.
-    // Organizar melhor essa parte. A view tá fazendo coisa que não é dela
-    // Quem deveria ter essa parte no server? User ou Player?
 //IMPLEMENTAR rename de enemy
 //IMPLEMENTAR "reset account"
 //IMPLEMENTAR "forgot password"

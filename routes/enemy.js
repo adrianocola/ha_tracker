@@ -33,6 +33,28 @@ app.post('/api/enemies', common.verifySession(function(req,res){
 }));
 
 
+app.put('/api/enemies/:id', common.verifySession(function(req,res){
+
+    models.Player.findOne({user: req.session.userId}, {},common.userId(req.session.userId), function(err, player){
+
+        if(err) console.log(err);
+
+        var enemy = player.enemies.id(req.params.id);
+        enemy.name = req.body.name;
+
+        player.save(common.userId(req.session.userId),function(err){
+
+            if(err) console.log(err);
+
+            res.send(enemy);
+
+        });
+
+
+    });
+}));
+
+
 app.delete('/api/enemies/:id', common.verifySession(function(req, res){
 
     models.Player.findOne({user: req.session.userId},{},common.userId(req.session.userId), function(err, player){

@@ -102,6 +102,7 @@ block templates
     script(type="text/template",id="enemy-template")
         div
             span.enemyName <%= name %>
+            input.newEnemyName.hidden(type="text")
             button.deleteEnemy.button-02(title="Delete Enemy") X
             button.add-game.button-01(title="Add Game") +
         ul.games

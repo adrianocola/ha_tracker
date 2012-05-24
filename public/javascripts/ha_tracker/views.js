@@ -83,14 +83,15 @@ var LoggedPlayerView = Backbone.View.extend({
         this.spinner = new Spinner(opts_small);
 
         var that = this;
-        console.log("PLAYER: " + this.model.get('player'));
+
+        //fetch the player
         var player = new app.Player({id: this.model.get('player')});
 
         player.fetch({success: function(){
+            that.show();
+
             player.loadEnemies();
             new app.PlayerView({model: player}).render();
-
-            that.show();
 
         }});
 
@@ -807,13 +808,15 @@ var EnemyView = Backbone.View.extend({
 
         this.model.games.bind('change:unselected', this.renderUnselected,this);
 
-
+        this.spinner = new Spinner(opts_small);
 
     },
 
     events: {
         'click .add-game':  'addGame',
-        'click .deleteEnemy': 'deleteEnemy'
+        'click .deleteEnemy': 'deleteEnemy',
+        'dblclick .enemyName': 'renameEnemy',
+        'keyup .newEnemyName': 'confirmRenameEnemy'
     },
 
 
@@ -826,6 +829,36 @@ var EnemyView = Backbone.View.extend({
     deleteEnemy: function(){
         this.model.destroy();
         this.$el.remove();
+    },
+
+    renameEnemy: function(){
+
+        this.$('.newEnemyName').val(this.$('.enemyName').html());
+
+        this.$('.enemyName').addClass('hidden');
+        this.$('.newEnemyName').removeClass('hidden');
+    },
+
+    confirmRenameEnemy: function(evt){
+
+        var that = this;
+
+        if(evt.keyCode == 13){
+
+            this.$('.newEnemyName').addClass('hidden');
+            this.$('.enemyName').removeClass('hidden');
+
+            this.$('.enemyName').html(this.spinner.spin().el);
+
+            this.model.save({name: this.$('.newEnemyName').val()},{success: function(){
+
+                //that.spinner.stop();
+
+                that.$('.enemyName').html(that.model.get('name'));
+            }});
+
+
+        }
     },
 
     renderSelected: function(){
