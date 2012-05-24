@@ -163,6 +163,13 @@ var LoggedPlayerView = Backbone.View.extend({
     },
 
     showSettings: function(){
+
+        //if its a facebook account don't offer to change password
+        if(this.model.toJSON().facebook){
+            this.$('.change-password').hide();
+        }
+
+
         this.$el.toggleClass('with_settings');
         this.$('.confirm-delete').hide();
         this.$('.confirm-reset').hide();

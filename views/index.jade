@@ -81,11 +81,12 @@ block templates
                 a.link.logout logout
         div.settings
             div.separator
-            input#change-username-current.change-field(type="text",placeholder="Current Password")
-            input#change-password-new.change-field(type="password",placeholder="New Password")
-            input#change-password-repeat.change-field(type="password",placeholder="Repeat Password")
-            button.button-01.change-password(title="Change Password") Change Password
-            div.separator
+            div.change-password
+                input#change-password-current.change-field(type="text",placeholder="Current Password")
+                input#change-password-new.change-field(type="password",placeholder="New Password")
+                input#change-password-repeat.change-field(type="password",placeholder="Repeat Password")
+                button.button-01.change-password(title="Change Password") Change Password
+                div.separator
             button.button-02.reset-account(title="Reset Account") Reset Account
             div.confirm-reset.hidden
                 div Are you sure?
