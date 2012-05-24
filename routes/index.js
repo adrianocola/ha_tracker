@@ -5,7 +5,6 @@ var common = require('./common.js');
 var uuid = require('../api/uuid.js');
 
 app.get('/', function(req, res){
-    console.log(req.session);
     //If the session is active or the user is with KEEP_LOGGED_IN cookies,
     //notify the client that he must try to login without credentials
     if(req.session.userId || (req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID)){

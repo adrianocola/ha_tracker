@@ -506,7 +506,7 @@ var LoginView = Backbone.View.extend({
 
                 }
 
-        },{auth_type: 'reauthenticate'});
+        },{auth_type: 'reauthenticate', scope: 'user_about_me'});
         //auth_type: 'reauthenticate' , scope: 'user_about_me'
 
 

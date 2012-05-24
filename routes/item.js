@@ -7,6 +7,8 @@ var common = require('./common.js');
 
 app.get('/api/itemmanager/:id/items', common.verifySession(function(req, res){
 
+    console.log("ITEM: " + req.session.userId);
+
     models.ItemManager.findById(req.params.id,{}, common.userId(req.session.userId), function(err,itemManager){
 
         var items = [];

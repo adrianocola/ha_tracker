@@ -128,6 +128,28 @@ var PlayerSchema = new Schema({
     enemies: [EnemySchema]
 });
 PlayerSchema.plugin(ACL_Plugin);
+//if removing the player, remove the games
+PlayerSchema.pre('remove',function(next){
+
+    var that = this;
+
+    var itemsIdsArray = [];
+
+    u.each(this.enemies,function(enemy){
+        u.each(enemy.games,function(game){
+            itemsIdsArray.push({_id: game.playerItems});
+            itemsIdsArray.push({_id: game.enemyItems});
+        });
+    });
+
+    console.log(itemsIdsArray);
+
+    exports.ItemManager.find().or(itemsIdsArray).remove();
+
+    next();
+
+});
+
 
 var UserSchema = new Schema({
     username: {type: String, lowercase: true, index: { unique: true, sparse: true }},
@@ -140,6 +162,22 @@ var UserSchema = new Schema({
     }
 });
 UserSchema.plugin(ACL_Plugin);
+//if removing the user, remove the player
+UserSchema.pre('remove',function(next){
+
+    console.log("REMOVE USER");
+
+    //exports.Player.findById(this._id).remove();
+
+    exports.Player.findById(this._id,{},{userId: 'MASTER'}, function(err, player){
+        player.remove();
+    });
+
+    next();
+
+});
+
+
 
 var KeepLoggedSchema = new Schema({
     usernameHash: {type: String, index: true , required: true},

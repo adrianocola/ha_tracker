@@ -1,6 +1,8 @@
 app = window.app ? window.app : {};
 
 //TODO
+//ARRUMAR bug que a tela de setting aparece em baixo do número dos itens! (CSS)
+//PARECE que após criar uma conta o usuário não fica logado, a sessão perde, sei lá!
 //CRIAR MIDDLEWARES de deleçao automática de modelos no mongoose
 //FAZER as funções de login do LoginModel devolverem um modelo de Player.
     // Organizar melhor essa parte. A view tá fazendo coisa que não é dela
@@ -57,8 +59,8 @@ $(function(){
 
                 console.log("The user is logged in and has authenticated your app");
 
-
-                if(app.LoggedPlayerView.model == undefined){
+                //try to login with facebook only if player is not logged by others means
+                if(app.CurrentPlayerView == undefined){
 
                     app.LoginView.model.login_facebook(response.authResponse.userID
                         ,response.authResponse.accessToken

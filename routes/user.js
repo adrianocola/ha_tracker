@@ -113,7 +113,18 @@ app.get('/api/user/login', function(req,res){
         if(req.session.userId){
             console.log("TENTOU LOGIN POR SESSAO");
             models.User.findById(req.session.userId,{}, common.userId(req.session.userId), function(err,user){
-                res.send(user.secure());
+
+                if(err){
+                    console.log(err);
+                }
+
+                if(user){
+                    res.send(user.secure());
+                }else{
+                    res.send({code: 107, error: "User not exists!"});
+                }
+
+
             });
 
             //user marked option to
@@ -205,6 +216,8 @@ app.post("/api/user/signup", function(req, res){
                         console.log(err);
                         res.send(err);
                     }else{
+                        clearCookies(res);
+
                         req.session.userId = user._id;
 
                         res.send(user.secure());
@@ -231,8 +244,6 @@ app.post("/api/user/signup", function(req, res){
 app.get("/api/user/login-facebook", function(req, res){
 
     models.User.findOne({"facebook.userID": req.query.userID},{}, common.userId('MASTER'), function(err,user){
-        console.log("ACHOU 1:");
-        console.log(user);
         if(err){
             console.log(err);
             res.send(err);
@@ -255,7 +266,6 @@ app.get("/api/user/login-facebook", function(req, res){
                 // he can click on facebook button again and login
                 }else{
 
-                    console.log("TOKEN: " + req.query.accessToken);
                     user.facebook.accessToken = req.query.accessToken;
                     user.facebook.expiresIn = req.query.expiresIn;
 
@@ -361,9 +371,7 @@ app.delete('/api/user/delete',common.verifySession(function(req, res){
 
             if(err) console.log(err);
 
-            req.session.userId = undefined;
-            res.clearCookie('KEEP_LOGGED_USER');
-            res.clearCookie('KEEP_LOGGED_ID');
+            clearSession(req,res);
 
             res.send('true');
 
