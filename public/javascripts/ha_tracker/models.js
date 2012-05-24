@@ -423,11 +423,24 @@ var Login = Backbone.Model.extend({
 
 
             });
+    },
 
 
+    continue_login: function(cb){
 
+        var that = this;
 
+        $.ajax({
+            url: "/api/user/continue_login"
+        }).success(function( msg ) {
+                if(msg.error){
+                    cb(msg.error, undefined);
+                } else{
+                    that.set(msg);
+                    cb(undefined,msg);
 
+                }
+            });
     },
 
     logout: function(cb){
@@ -479,6 +492,21 @@ var Login = Backbone.Model.extend({
         $.ajax({
             type: "DELETE",
             url: "/api/user/delete"
+        }).success(function( msg ) {
+                if(msg.error){
+                    cb(msg.error);
+                } else{
+                    cb();
+                }
+            });
+
+    },
+
+    reset: function(cb){
+
+        $.ajax({
+            type: "DELETE",
+            url: "/api/user/reset"
         }).success(function( msg ) {
                 if(msg.error){
                     cb(msg.error);

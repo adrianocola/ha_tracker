@@ -26,7 +26,7 @@ var ACL_Plugin = function(schema, options) {
             }
 
         }else{
-            next(new Error("{code: 100, error: 'Missing credentials'}"));
+            next(new Error("{code: 100, error: 'Missing ACL credentials'}"));
         }
 
 
@@ -48,7 +48,7 @@ var ACL_Plugin = function(schema, options) {
             }
 
         }else{
-            next(new Error("{code: 100, error: 'Missing credentials'}"));
+            next(new Error("{code: 100, error: 'Missing ACL credentials'}"));
         }
 
     });
@@ -128,7 +128,8 @@ var PlayerSchema = new Schema({
     enemies: [EnemySchema]
 });
 PlayerSchema.plugin(ACL_Plugin);
-//if removing the player, remove the games
+
+//if asked to remove the player, remove the games
 PlayerSchema.pre('remove',function(next){
 
     var that = this;
@@ -159,17 +160,14 @@ var UserSchema = new Schema({
         userID: {type: String, index: { unique: true, sparse: true }},
         accessToken: String,
         expiresIn: Date
-    }
+    },
+    player:{ type: Schema.ObjectId, ref: 'Player', required: true, index: {unique: true}}
 });
 UserSchema.plugin(ACL_Plugin);
 //if removing the user, remove the player
 UserSchema.pre('remove',function(next){
 
-    console.log("REMOVE USER");
-
-    //exports.Player.findById(this._id).remove();
-
-    exports.Player.findById(this._id,{},{userId: 'MASTER'}, function(err, player){
+    exports.Player.findOne({user: this._id},{},{userId: this._id}, function(err, player){
         player.remove();
     });
 

@@ -1,18 +1,17 @@
 app = window.app ? window.app : {};
 
 //TODO
-//ARRUMAR bug que a tela de setting aparece em baixo do número dos itens! (CSS)
-//PARECE que após criar uma conta o usuário não fica logado, a sessão perde, sei lá!
-//CRIAR MIDDLEWARES de deleçao automática de modelos no mongoose
 //FAZER as funções de login do LoginModel devolverem um modelo de Player.
     // Organizar melhor essa parte. A view tá fazendo coisa que não é dela
     // Quem deveria ter essa parte no server? User ou Player?
+//IMPLEMENTAR rename de enemy
 //IMPLEMENTAR "reset account"
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password" (para usuários com e-mail)
+//IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
+//IMPLEMENTAR verificação de nome de enemy criado no player (vazio e se tem igual)
 
 //ARRUMAR SPINNERS, para que tenham regras de CSS que envolvam o pai
-//COLOCAR algum timer que verifica se o login não apareceu, mostrá-lo na força. Mexer no setTimout lá embaixo
 
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
 //IMPLEMENTAR MODO SEM LOGIN, COM STORAGE LOCAL
@@ -157,7 +156,7 @@ $(function(){
     //verify if server thinks client is connect
     if($("#is_logged").length > 0){
         //tries to login
-        app.LoginView.model.login("","",false,function(err){
+        app.LoginView.model.continue_login(function(err){
             if(err){
                 app.LoginView.show();
             }else{

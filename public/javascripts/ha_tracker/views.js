@@ -83,11 +83,13 @@ var LoggedPlayerView = Backbone.View.extend({
         this.spinner = new Spinner(opts_small);
 
         var that = this;
-        var player = new app.Player({id: this.model.get('_id')});
+        console.log("PLAYER: " + this.model.get('player'));
+        var player = new app.Player({id: this.model.get('player')});
 
         player.fetch({success: function(){
             player.loadEnemies();
             new app.PlayerView({model: player}).render();
+
             that.show();
 
         }});
@@ -123,12 +125,6 @@ var LoggedPlayerView = Backbone.View.extend({
                 console.log("ERROR DELETE: " + err);
                 //TODO show error message
             }else{
-//                $("#player").html("");
-//                app.SelectedGameView.clean();
-//
-//                that.dismiss();
-//                app.LoginView.show();
-
                 window.location = '/';
             }
 
@@ -149,7 +145,16 @@ var LoggedPlayerView = Backbone.View.extend({
     confirmReset: function(){
         var that = this;
 
-        this.model.reset();
+        this.model.reset(function(err){
+
+            if(err){
+                console.log("ERROR RESET: " + err);
+                //TODO show error message
+            }else{
+                window.location = '/';
+            }
+
+        });
     },
 
     denyReset: function(){
@@ -491,6 +496,10 @@ var LoginView = Backbone.View.extend({
 
     clickedFacebook: function(){
 
+        var that = this;
+
+        //user clicked on facebook button. Must authenticate the user with
+        //facebook before login
         FB.login(function(response){
 
                 if(response.status=="connected"){
@@ -499,7 +508,7 @@ var LoginView = Backbone.View.extend({
 
                         if(response.status=="connected"){
 
-                            app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
+                            that.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
                         }
 
                     },true);
@@ -507,15 +516,6 @@ var LoginView = Backbone.View.extend({
                 }
 
         },{auth_type: 'reauthenticate', scope: 'user_about_me'});
-        //auth_type: 'reauthenticate' , scope: 'user_about_me'
-
-
-//        FB.getLoginStatus(function(response){
-//            if(response.status=="connected"){
-//                app.LoginView.login_facebook(response.authResponse.userID,response.authResponse.accessToken,response.authResponse.expiresIn,false);
-//            }
-//
-//        });
 
     },
 

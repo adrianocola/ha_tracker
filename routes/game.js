@@ -7,7 +7,7 @@ var common = require('./common.js');
 
 app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
-    models.Player.findById(req.session.userId,{}, common.userId(req.session.userId), function(err, player){
+    models.Player.findOne({user: req.session.userId},{}, common.userId(req.session.userId), function(err, player){
 
         var enemy = player.enemies.id(req.params.enemy);
         enemy.gameCount+=1;
@@ -80,7 +80,7 @@ app.post('/api/enemies/:enemy/games', common.verifySession(function(req, res){
 
 app.delete('/api/enemies/:enemy/games/:id', common.verifySession(function(req, res){
 
-    models.Player.findById(req.session.userId,{}, common.userId(req.session.userId), function(err, player){
+    models.Player.findOne({user: req.session.userId},{}, common.userId(req.session.userId), function(err, player){
 
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
@@ -96,7 +96,7 @@ app.delete('/api/enemies/:enemy/games/:id', common.verifySession(function(req, r
         game.remove();
 
         player.save(common.userId(req.session.userId), function(err){
-            if (!err) res.send("OK");
+            if (!err) res.send("true");
         });
 
 
