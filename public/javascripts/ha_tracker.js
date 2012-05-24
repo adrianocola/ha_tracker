@@ -1,8 +1,7 @@
 app = window.app ? window.app : {};
 
 //TODO
-//IMPLEMENTAR rename de enemy
-//IMPLEMENTAR "reset account"
+//IMPLEMENTAR e-mail, pra poder fazer verificação de e-mail e reset password
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password" (para usuários com e-mail)
 //IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
