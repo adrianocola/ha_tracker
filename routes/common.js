@@ -15,7 +15,7 @@ exports.verifySession = function(cb){
         if(req.session.userId){
             cb(req,res);
         }else{
-            res.send({code: 100, error: 'Not authorized'});
+            res.json(401,{code: 100, error: 'Not authorized'});
             console.log({code: 100, error: 'Not authorized'});
         }
 

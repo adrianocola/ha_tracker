@@ -82,22 +82,29 @@ var ErrorView = Backbone.View.extend({
 
     },
 
-    show: function(){
+    events: {
+        'click a': 'dismiss'
+    },
+
+    dismiss: function(){
+
+        window.location = "/";
+    },
+
+    show: function(msg){
 
         var that = this;
 
-        $('#blanket').fadeIn(400);
+        console.log(msg);
+
+        $(this.el).html(this.template(JSON.parse(msg)));
+
+        $('#error-blanket').fadeIn(400);
         this.$el.fadeIn(400,function(){
-            $('#blanket').removeClass("hidden");
+            $('#error-blanket').removeClass("hidden");
             that.$el.removeClass("hidden");
         });
 
-        //if the user press ESC, dismiss the signup popup
-        $(document).bind('keyup', function(e){
-            if(e.keyCode==27){
-                that.dismiss();
-            }
-        });
     },
 
     render: function(){
@@ -105,7 +112,7 @@ var ErrorView = Backbone.View.extend({
         $(this.el).html(this.template({error: this.options.error}));
 
         this.$el.removeClass("hidden");
-        $('#blanket').removeClass("hidden");
+        $('#error-blanket').removeClass("hidden");
 
         return this;
     }
@@ -487,9 +494,9 @@ var SignupView = Backbone.View.extend({
 
         var that = this;
 
-        $('#blanket').fadeIn(400);
+        $('#singup-blanket').fadeIn(400);
         this.$el.fadeIn(400,function(){
-            $('#blanket').removeClass("hidden");
+            $('#singup-blanket').removeClass("hidden");
             that.$el.removeClass("hidden");
         });
 
@@ -506,7 +513,7 @@ var SignupView = Backbone.View.extend({
         $(this.el).html(this.template({}));
 
         this.$el.removeClass("hidden");
-        $('#blanket').removeClass("hidden");
+        $('#singup-blanket').removeClass("hidden");
 
         return this;
     }
@@ -894,7 +901,9 @@ var EnemyView = Backbone.View.extend({
     },
 
     deleteEnemy: function(){
-        this.model.destroy();
+        this.model.destroy({error: function(model, err){
+            app.ErrorView.show(err.responseText);
+        }});
         this.$el.remove();
     },
 

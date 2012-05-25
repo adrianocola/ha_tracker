@@ -19,8 +19,12 @@ block scripts-site
 
 block templates
     script(type="text/template",id="error-template")
-        h2 '=/'
-        div <%= error %>
+        h2 Some error have ocurred \=/
+        div.error
+            b Error:
+                <%= error %>
+        div.dismiss
+            a.link reload page
 
     script(type="text/template",id="login-template")
         div.login-site
@@ -197,7 +201,8 @@ block main-layout
     div#current-game
 
 block main-page
-    div#blanket.hidden
+    div#signup-blanket.hidden
+    div#error-blanket.hidden
     div#signup.hidden
     div#error.hidden
 

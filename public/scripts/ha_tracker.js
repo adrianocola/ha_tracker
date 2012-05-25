@@ -189,6 +189,8 @@ $(function(){
         }
     },5000);
 
+    //app.ErrorView.show({code: 1, error: 'dummy'});
+
 
 //    PRECISO VERIFICAR APÓS O LOGIN SE TEM ALGO NO ROUTER E ENTÃO PEDIR
 //    PRA SELECIONAR O GAME DO ROUTER
