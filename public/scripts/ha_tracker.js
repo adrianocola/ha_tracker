@@ -1,6 +1,9 @@
 app = window.app ? window.app : {};
 
 //TODO
+//IMPLEMENTAR autenticaçÃo via token ao invés de cookie! ( token no header!) - ESTUDAR
+//TERMINAR DE IMPLEMENTAR
+
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
 //IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá

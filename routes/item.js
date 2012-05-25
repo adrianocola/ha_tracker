@@ -5,7 +5,7 @@ var u = require('underscore');
 var common = require('./common.js');
 
 
-app.get('/api/itemmanager/:id/items', common.verifySession(function(req, res){
+app.get('/api/itemmanager/:id/items', common.verifyUser,function(req, res){
 
     console.log("ITEM: " + req.session.userId);
 
@@ -29,12 +29,12 @@ app.get('/api/itemmanager/:id/items', common.verifySession(function(req, res){
     });
 
 
-}));
+});
 
 
 
 
-app.put('/api/itemmanager/:manager/items/:id', common.verifySession(function(req, res){
+app.put('/api/itemmanager/:manager/items/:id', common.verifyUser, function(req, res){
 
     models.ItemManager.findById(req.params.manager,{}, common.userId(req.session.userId), function(err, itemManager){
 
@@ -47,5 +47,5 @@ app.put('/api/itemmanager/:manager/items/:id', common.verifySession(function(req
         });
 
     });
-}));
+});
 

@@ -1,6 +1,7 @@
 var express = require('express')
   , http = require('http')
   , env = require('./conf/env')
+  , mysession = require('./routes/mysession')
   , RedisStore = require('connect-redis')(express);
 
 // faz com que o retorno desse arquivo no método require seja a variável app
@@ -20,12 +21,15 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
 
+
+
 });
 
 app.configure('development', function(){
 
     //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 60000 }}));
-    app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 5000 } }));
+    //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 5000 } }));
+    app.use(mysession({store: new RedisStore()}));
 
     app.use(app.router);
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));

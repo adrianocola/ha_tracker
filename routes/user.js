@@ -4,8 +4,10 @@ var env = require('../conf/env.js');
 var common = require('./common.js');
 var uuid = require('../api/uuid.js');
 var md5 = require('../api/md5.js');
+var sha1 = require('../api/sha1.js');
 var u = require('underscore');
 var https = require('https');
+var redis = require('redis-url').connect(env.redis_url);
 
 function clearCookies(res){
 
@@ -19,9 +21,57 @@ function clearSession(req, res){
     //req.session.userId = undefined;
     req.session.destroy();
 
+
     clearCookies(res);
 
 };
+
+
+
+app.get('/api/token', function(req, res){
+
+    if(req.session){
+        console.log("TESTE");
+        console.log(req.session.access);
+        if(req.session.access != undefined){
+            console.log("+1");
+            req.session.access += 1;
+        }else{
+            console.log("0");
+            req.session.access = 0;
+        }
+
+
+
+
+        res.send(JSON.stringify(req.session));
+
+
+    }else{
+        req.generateSession(function(session){
+
+            session.merda = "bosta";
+
+            res.send(JSON.stringify(session.id));
+        });
+    }
+
+
+
+
+
+//    common.generateSession({coisa: 'lixo'},function(err,token){
+//        //res.send(token);
+//
+//        common.getSession(token,function(err,value){
+//            res.send(value);
+//        });
+//
+//
+//    });
+
+
+});
 
 app.get('/api/salt', function(req, res){
 
@@ -345,7 +395,7 @@ app.get("/api/user/login-facebook", function(req, res){
 });
 
 
-app.delete('/api/user/delete',common.verifySession(function(req, res){
+app.delete('/api/user/delete',common.verifyUser, function(req, res){
 
 
     models.User.findById(req.session.userId,{},common.userId(req.session.userId),function(err, user){
@@ -382,10 +432,10 @@ app.delete('/api/user/delete',common.verifySession(function(req, res){
 
     });
 
-}));
+});
 
 
-app.delete('/api/user/reset',common.verifySession(function(req, res){
+app.delete('/api/user/reset',common.verifyUser, function(req, res){
 
 
 
@@ -481,4 +531,4 @@ app.delete('/api/user/reset',common.verifySession(function(req, res){
 
     });
 
-}));
+});

@@ -4,7 +4,7 @@ var u = require('underscore');
 var common = require('./common.js');
 
 
-app.post('/api/enemies', common.verifySession(function(req,res){
+app.post('/api/enemies', common.verifyUser, function(req,res){
 
     models.Player.findOne({user: req.session.userId}, {},common.userId(req.session.userId), function(err, player){
 
@@ -30,10 +30,10 @@ app.post('/api/enemies', common.verifySession(function(req,res){
 
 
     });
-}));
+});
 
 
-app.put('/api/enemies/:id', common.verifySession(function(req,res){
+app.put('/api/enemies/:id', common.verifyUser, function(req,res){
 
     models.Player.findOne({user: req.session.userId}, {},common.userId(req.session.userId), function(err, player){
 
@@ -52,10 +52,10 @@ app.put('/api/enemies/:id', common.verifySession(function(req,res){
 
 
     });
-}));
+});
 
 
-app.delete('/api/enemies/:id', common.verifySession(function(req, res){
+app.delete('/api/enemies/:id', common.verifyUser, function(req, res){
 
     models.Player.findOne({user: req.session.userId},{},common.userId(req.session.userId), function(err, player){
 
@@ -86,4 +86,4 @@ app.delete('/api/enemies/:id', common.verifySession(function(req, res){
 
     });
 
-}));
+});
