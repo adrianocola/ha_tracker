@@ -28,8 +28,8 @@ app.configure(function(){
 app.configure('development', function(){
 
     //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 60000 }}));
-    //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 5000 } }));
-    app.use(authorization({store: new RedisStore(), cookie: { maxAge: 5000 }}));
+    app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 300000 } }));
+    //app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 300000 }}));
 
     app.use(app.router);
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -42,25 +42,27 @@ app.configure('production', function(){
     rtg = require("url").parse(env.redis_url);
     redis_url = env.redis_url;
 
-//    app.use(express.session({
-//        secret: env.secrets.session,
-//        store: new RedisStore({
-//            port: rtg.port,
-//            host: rtg.hostname,
-//            pass: rtg.auth?rtg.auth.split(":")[1]:''
-//        }),
-//        cookie: {
-//            maxAge: 7200000
-//        }
-//    }));
-
-
-    app.use(authorization({store: new RedisStore({
+    app.use(express.session({
+        secret: env.secrets.session,
+        store: new RedisStore({
             port: rtg.port,
             host: rtg.hostname,
             pass: rtg.auth?rtg.auth.split(":")[1]:''
-            }),
-            cookie: { maxAge: 7200000 }}));
+        }),
+        cookie: {
+            maxAge: 7200000
+        }
+    }));
+
+
+//    app.use(authorization({
+//            secret: env.secrets.session,
+//            store: new RedisStore({
+//                port: rtg.port,
+//                host: rtg.hostname,
+//                pass: rtg.auth?rtg.auth.split(":")[1]:''
+//            }),
+//            cookie: { maxAge: 7200000 }}));
 
 
     app.use(app.router);

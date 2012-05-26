@@ -95,12 +95,15 @@ var pause = function(obj){
 
 exports = module.exports = function(options){
 
+    var key = options.key || 'connect.sid';
+    var cookie = options.cookie || { path: '/', httpOnly: true, maxAge: 14400000 };
+
     //require the store
     if(!options || !options.store){
         throw new Error('missing store');
     }
 
-    var cookie = options.cookie || { path: '/', httpOnly: true, maxAge: 14400000 };
+
 
     cookie.originalMaxAge = cookie.maxAge;
 
@@ -109,15 +112,44 @@ exports = module.exports = function(options){
 
 
     return function authsession(req, res, next) {
-        console.log("AUTHORIZATION");
-        console.log(req.authorization);
-
 
         // self-awareness
         if (req.authorization) return next();
 
+        // ensure secret is available or bail
+        if (!req.secret) throw new Error('connect.cookieParser("secret") required for security when using sessions');
+
         // expose store
         req.sessionStore = store;
+
+
+        // set-cookie
+        res.on('header', function(){
+//            if (!req.authorization) return;
+//            var cookie = req.authorization.cookie
+//                , proto = (req.headers['x-forwarded-proto'] || '').toLowerCase()
+//                , isNew = req.signedCookies[key] != req.sessionToken;
+//
+//            // browser-session length cookie
+//            if (null == cookie.expires) {
+//                if (!isNew) return debug('already set browser-session cookie');
+//                // compare hashes
+//            } else if (originalHash == hash(req.authorization)) {
+//                return debug('unmodified session');
+//            }
+//
+//            var val = cookie.serialize(key, req.sessionToken);
+//            debug('set-cookie %s', val);
+//            res.setHeader('Set-Cookie', val);
+
+
+            if (!req.authorization) return;
+
+            res.cookie('X-HATracker-Token',req.sessionToken,req.authorization.cookie);
+
+        });
+
+
 
         req.generateSession = function(fn){
 
@@ -184,11 +216,11 @@ exports = module.exports = function(options){
                 }
             // no authorization
             } else if (!sess) {
-                console.log('no authorization found');
+                //console.log('no authorization found');
                 next();
             // populate req.authorization
             } else {
-                console.log('authorization found');
+                //console.log('authorization found');
 
                 req.authorization = new Authorization(req,sess);
 
