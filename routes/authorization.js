@@ -7,6 +7,8 @@ var redis = require('redis-url').connect(env.redis_url);
 
 exports.title = "authorization";
 
+redis.flushall();
+
 redis.on("error", function (err) {
     console.log("Redis Error " + err);
 });
