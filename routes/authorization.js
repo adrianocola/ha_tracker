@@ -2,16 +2,14 @@ var app = require('../app.js');
 var models = require('../conf/models.js');
 var env = require('../conf/env.js');
 var crypto = require('crypto');
-var redis = require('redis-url').connect(env.redis_url);
+
 
 
 exports.title = "authorization";
 
-redis.flushall();
-
-redis.on("error", function (err) {
-    console.log("Redis Error " + err);
-});
+//redis.on("error", function (err) {
+//    console.log("Redis Error " + err);
+//});
 
 var Authorization = function Authorization(req, data) {
     Object.defineProperty(this, 'req', { value: req });
@@ -110,6 +108,10 @@ exports = module.exports = function(options){
 
 
     return function authsession(req, res, next) {
+        console.log("AUTHORIZATION");
+        console.log(req.authorization);
+
+
         // self-awareness
         if (req.authorization) return next();
 

@@ -53,12 +53,14 @@ app.configure('production', function(){
 //            maxAge: 7200000
 //        }
 //    }));
+
+
     app.use(authorization({store: new RedisStore({
             port: rtg.port,
             host: rtg.hostname,
             pass: rtg.auth?rtg.auth.split(":")[1]:''
             }),
-            cookie: { maxAge: 5000 }}));
+            cookie: { maxAge: 7200000 }}));
 
 
     app.use(app.router);
