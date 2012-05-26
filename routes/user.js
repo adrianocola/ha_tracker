@@ -30,21 +30,19 @@ function clearSession(req, res){
 
 app.get('/api/token', function(req, res){
 
-    if(req.session){
-        console.log("TESTE");
-        console.log(req.session.access);
-        if(req.session.access != undefined){
+    if(req.authorization){
+        if(req.authorization.access != undefined){
             console.log("+1");
-            req.session.access += 1;
+            req.authorization.access += 1;
         }else{
             console.log("0");
-            req.session.access = 0;
+            req.authorization.access = 0;
         }
 
 
 
 
-        res.send(JSON.stringify(req.session));
+        res.send(JSON.stringify(req.authorization));
 
 
     }else{
