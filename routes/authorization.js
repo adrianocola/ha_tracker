@@ -107,6 +107,7 @@ exports = module.exports = function(options){
     var store = options.store;
 
 
+
     return function authsession(req, res, next) {
         console.log("AUTHORIZATION");
         console.log(req.authorization);
