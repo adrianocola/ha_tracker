@@ -5,7 +5,6 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
 //IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
-//IMPLEMENTAR verificação de nome de enemy criado no player (vazio e se tem igual)
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
 

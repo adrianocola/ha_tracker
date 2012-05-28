@@ -84,7 +84,7 @@ div.fb-login-button {
 div.login-fb span {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-div#singup-blanket,
+div#signup-blanket,
 div#error-blanket {
   background-color: #111;
   opacity: 0.65;

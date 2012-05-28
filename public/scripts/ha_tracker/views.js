@@ -320,14 +320,14 @@ var SignupView = Backbone.View.extend({
 
         var that = this;
 
-        $("#blanket").click(function(){
+        $("#signup-blanket").click(function(){
             that.dismiss();
         });
 
     },
 
     events: {
-        'click #blanket': 'dismiss',
+        'click #signup-blanket': 'dismiss',
         'click #signup-ok': 'signup',
         'click #signup-cancel': 'dismiss',
         'keyup body': 'keyPress',
@@ -467,7 +467,7 @@ var SignupView = Backbone.View.extend({
 
     initial_dismiss: function(){
 
-        $('#blanket').addClass("hidden");
+        $('#signup-blanket').addClass("hidden");
         this.$el.addClass("hidden");
     },
 
@@ -476,9 +476,9 @@ var SignupView = Backbone.View.extend({
 
         var that = this;
 
-        $('#blanket').fadeOut(400);
+        $('#signup-blanket').fadeOut(400);
         this.$el.fadeOut(400,function(){
-            $('#blanket').addClass("hidden");
+            $('#signup-blanket').addClass("hidden");
             that.$el.addClass("hidden");
         });
 
@@ -494,9 +494,9 @@ var SignupView = Backbone.View.extend({
 
         var that = this;
 
-        $('#singup-blanket').fadeIn(400);
+        $('#signup-blanket').fadeIn(400);
         this.$el.fadeIn(400,function(){
-            $('#singup-blanket').removeClass("hidden");
+            $('#signup-blanket').removeClass("hidden");
             that.$el.removeClass("hidden");
         });
 
@@ -513,7 +513,7 @@ var SignupView = Backbone.View.extend({
         $(this.el).html(this.template({}));
 
         this.$el.removeClass("hidden");
-        $('#singup-blanket').removeClass("hidden");
+        $('#signup-blanket').removeClass("hidden");
 
         return this;
     }
