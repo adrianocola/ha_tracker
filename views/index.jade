@@ -124,7 +124,7 @@ block templates
     script(type="text/template",id="add-enemy-template")
         input#add-enemy-name(type="text",placeholder="Enemy Name")
         button.cancel-add-enemy.button-02(title="Cancel") X
-        button.confirm-add-enemy.button-01(title="Confirm") L
+        button.confirm-add-enemy.button-01(title="Confirm") &#x2713;
         div.enemyExists.hidden Enemy already exists!
 
 
@@ -143,7 +143,7 @@ block templates
             option(value="Dwarves") Dwarves
             option(value="Tribe") Tribe
         button.cancel-add-game.button-02(title="Cancel") X
-        button.confirm-add-game.button-01(title="Confirm") L
+        button.confirm-add-game.button-01(title="Confirm") &#x2713;
 
     script(type="text/template",id="game-template")
         //<%= num %>  - <%= playerRace %> vs <%= enemyRace %>

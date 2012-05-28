@@ -5,6 +5,7 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
 //IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
+//PEGAR versões min das bibliotecas
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
 

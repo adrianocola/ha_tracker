@@ -46,8 +46,6 @@ var Item = Backbone.Model.extend({
            this.set("itemCount",sum);
        }
 
-        this.save();
-
     },
 
     subCount: function(){
@@ -57,8 +55,6 @@ var Item = Backbone.Model.extend({
         }else{
             this.set("itemCount",sub);
         }
-
-        this.save();
 
     },
 
@@ -415,6 +411,8 @@ var Login = Backbone.Model.extend({
             url: "/api/nonce"
         }).success(function( nonce ) {
 
+                username = username.toLowerCase();
+
                 //generate the password hash combining the actual password hash plus the random
                 //number the server sends to the client (nonce) . The client password or hash is never sent
                 //on the wire on the login
@@ -467,13 +465,12 @@ var Login = Backbone.Model.extend({
         var that = this;
 
         $.ajax({
-            url: "/api/user/logout"
+            url: "/api/user/logout",
+            headers: {'X-HATracker-Token': app.HATrackerToken}
         }).success(function( msg ) {
-                if(msg.error){
-                    cb(msg.error);
-                } else{
-                    cb(undefined);
-                }
+                cb();
+            }).fail(function(msg){
+                cb(msg);
             });
 
 
@@ -499,24 +496,17 @@ var Login = Backbone.Model.extend({
 
     },
 
-    reset: function(cb){
-
-        console.log(this.toJSON());
-
-    },
-
 
     delete: function(cb){
 
         $.ajax({
             type: "DELETE",
-            url: "/api/user/delete"
+            url: "/api/user/delete",
+            headers: {'X-HATracker-Token': app.HATrackerToken}
         }).success(function( msg ) {
-                if(msg.error){
-                    cb(msg.error);
-                } else{
-                    cb();
-                }
+                cb();
+            }).fail(function(msg){
+                cb(msg);
             });
 
     },
@@ -525,13 +515,12 @@ var Login = Backbone.Model.extend({
 
         $.ajax({
             type: "DELETE",
-            url: "/api/user/reset"
+            url: "/api/user/reset",
+            headers: {'X-HATracker-Token': app.HATrackerToken}
         }).success(function( msg ) {
-                if(msg.error){
-                    cb(msg.error);
-                } else{
-                    cb();
-                }
+                cb();
+            }).fail(function(msg){
+                cb(msg);
             });
 
     }

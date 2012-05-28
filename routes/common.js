@@ -14,8 +14,8 @@ exports.verifyAuthorization = function(req, res, next){
     if(req.authorization){
         next();
     }else{
-        res.json(401,{code: 100, error: 'Not authorized'});
-        console.log({code: 100, error: 'Not authorized'});
+        res.json(401,{code: 100, error: 'Not authorized or Session Expired'});
+        console.log({code: 100, error: 'Not authorized or Session Expired'});
     }
 
 };

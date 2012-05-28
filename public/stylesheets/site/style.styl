@@ -1,4 +1,4 @@
-@import 'common'
+@import '../common'
 
 body
     width:100%
@@ -175,9 +175,12 @@ body
     float: right
     width: 20px
     height: 20px
-    border: 0
     margin: -8px 5px 0 0
     border-radius(25px)
+    line-height: 12px
+    font-size: 12px
+    text-align: center
+    padding: 0 0 0 0
 
 .confirm-add-game
     float: right
@@ -185,11 +188,10 @@ body
     height: 20px
     margin: -8px 5px 0 0
     border-radius(25px)
-    -moz-transform: scaleX(-1) rotate(-45deg); /* Gecko */
-    -o-transform: scaleX(-1) rotate(-45deg); /* Operah */
-    -webkit-transform: scaleX(-1) rotate(-45deg); /* webkit */
-    transform: scaleX(-1) rotate(-45deg); /* standard */
-
+    line-height: 12px
+    font-size: 12px
+    text-align: center
+    padding: 0 0 0 0
 
 .deleteGame
     float: right
@@ -282,9 +284,8 @@ body
 
 #filter
     border-radius(6px)
-    width: 95%
+    width: 265px
     margin-left: 10px
-    margin-right: auto
     line-height: 20px
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
 
@@ -321,7 +322,6 @@ body
     border-radius(25px)
     font-family:arial
     font-size:15px
-    font-weight:bold
     padding:2px 0
     width: 25px
     height: 25px
@@ -335,12 +335,10 @@ body
     margin: 2px 0 0 0
     font-family:arial
     font-size:15px
+    line-height: 12px
     font-weight:bold
     border-radius(25px)
-    -moz-transform: scaleX(-1) rotate(-45deg); /* Gecko */
-    -o-transform: scaleX(-1) rotate(-45deg); /* Operah */
-    -webkit-transform: scaleX(-1) rotate(-45deg); /* webkit */
-    transform: scaleX(-1) rotate(-45deg); /* standard */
+    padding: 0 0 0 0
 
 .enemyExists
     font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
@@ -436,15 +434,15 @@ img-size = 40px
 
 .add-game
     border-radius(25px)
-    font-family:arial
     font-size:20px
     font-weight:bold
-    padding: 1px 5px
-    margin: 2px 0 0 20px
+    line-height: 20px
+    text-align: center
     width: 25px
     height: 25px
     float: right
     display: none
+    padding: 0 0 5px 0
 
 .enemy:hover .add-game
     display: block
@@ -483,13 +481,14 @@ img-size = 40px
     border-radius(25px)
     font-family:arial
     font-size:15px
-    font-weight:bold
-    padding:2px 0
+    line-height: 8px
+    text-align: center
     width: 25px
     height: 25px
     float: right
-    margin: 2px 5px 0 10px
+    margin: 0 5px 0 10px
     display: none
+    padding: 0 0 0 0
 
 .enemy:hover .deleteEnemy
     display: block

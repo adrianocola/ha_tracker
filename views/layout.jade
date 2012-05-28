@@ -18,9 +18,11 @@ html
 
 
     <!-- Styles -->
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/table.css')
-    link(rel='stylesheet', href='/stylesheets/login.css')
+    if data.mobile
+        link(rel='stylesheet', href='/stylesheets/mobile.css')
+    else
+        link(rel='stylesheet', href='/stylesheets/site.css')
+
 
 
     <!-- ShareThis -->

@@ -128,10 +128,10 @@ app.get('/api/nonce', function(req, res){
 });
 
 
-app.get('/api/user/logout', function(req, res){
+app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
 
-    if(req.authorization.userId){
-
+    if(req.authorization){
+        console.log("TEM SESSAO");
         models.User.findById(req.authorization.userId,{}, common.userId('MASTER'), function(err,user){
 
             //if is a facebook user, clean facebook access token
@@ -151,7 +151,8 @@ app.get('/api/user/logout', function(req, res){
         });
 
     }else{
-        res.send({code: 105, error: "Not logged"});
+        console.log("NÃO TEM SESSAO");
+        res.send(401, {code: 105, error: "Not logged"});
     }
 });
 
@@ -331,7 +332,7 @@ app.post("/api/user/signup", function(req, res){
         var user = new models.User();
         var player = new models.Player();
 
-        user.username = req.body.username;
+        user.username = req.body.username.toLowerCase();
         user.password = req.body.password;
         user.email = req.body.email;
         user.player = player;

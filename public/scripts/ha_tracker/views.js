@@ -70,6 +70,11 @@ var opts_big = {
     left: 'auto' // Left position relative to parent in px
 };
 
+var simpleErrorHandler = function(model, err){
+    app.ErrorView.show(err.responseText);
+};
+
+
 var ErrorView = Backbone.View.extend({
 
     el: '#error',
@@ -164,7 +169,6 @@ var LoggedPlayerView = Backbone.View.extend({
     deleteAcctount: function(){
         this.denyReset();
         this.$('.confirm-delete').slideDown();
-        //this.$('.confirm-delete').toggleClass('hidden');
 
     },
 
@@ -174,8 +178,7 @@ var LoggedPlayerView = Backbone.View.extend({
         this.model.delete(function(err){
 
             if(err){
-                console.log("ERROR DELETE: " + err);
-                //TODO show error message
+                simpleErrorHandler(undefined,err);
             }else{
                 window.location = '/';
             }
@@ -190,7 +193,6 @@ var LoggedPlayerView = Backbone.View.extend({
     resetAcctount: function(){
         this.denyDelete();
         this.$('.confirm-reset').slideDown();
-        //this.$('.confirm-delete').toggleClass('hidden');
 
     },
 
@@ -200,8 +202,7 @@ var LoggedPlayerView = Backbone.View.extend({
         this.model.reset(function(err){
 
             if(err){
-                console.log("ERROR RESET: " + err);
-                //TODO show error message
+                simpleErrorHandler(undefined,err);
             }else{
                 window.location = '/';
             }
@@ -232,22 +233,13 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.model.logout(function(err){
             if(err){
-                console.log("ERROR LOGOUT: " + err);
-                //TODO show error message
+                console.log(err);
+                simpleErrorHandler(undefined,err);
             }else{
-//                if(that.model.get('facebook')){
-//                    console.log("FEZ LOGOUT FACEBOOK");
-//                    FB.logout();
-//                }
-//
-//                $("#player").html("");
-//                app.SelectedGameView.clean();
-//
-//                that.dismiss();
-//                app.LoginView.show();
+                //refresh to page
+                window.location = "/";
             }
-            //refresh to page
-            window.location = "/";
+
         });
 
     },
@@ -840,7 +832,7 @@ var AddEnemyView = Backbone.View.extend({
 
         this.$(".confirm-add-enemy").html(this.spinner.spin().el);
 
-        this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true});
+        this.enemies.create({name: this.$("#add-enemy-name").val()},{at:0, wait:true, error: simpleErrorHandler});
 
     },
 
@@ -908,9 +900,7 @@ var EnemyView = Backbone.View.extend({
     },
 
     deleteEnemy: function(){
-        this.model.destroy({error: function(model, err){
-            app.ErrorView.show(err.responseText);
-        }});
+        this.model.destroy({error: simpleErrorHandler});
         this.$el.remove();
     },
 
@@ -938,7 +928,7 @@ var EnemyView = Backbone.View.extend({
                 //that.spinner.stop();
 
                 that.$('.enemyName').html(that.model.get('name'));
-            }});
+            }, error: simpleErrorHandler});
 
 
         }
@@ -1016,7 +1006,7 @@ var AddGameView = Backbone.View.extend({
 
         this.$(".confirm-add-game").html(this.spinner.spin().el);
 
-        this.games.create(gameModel, {wait: true});
+        this.games.create(gameModel, {wait: true, error: simpleErrorHandler});
 
     },
 
@@ -1075,7 +1065,7 @@ var GameView = Backbone.View.extend({
     },
 
     deleteGame: function(){
-        this.model.destroy();
+        this.model.destroy({error: simpleErrorHandler});
     },
 
     renderSelected: function(){
@@ -1304,11 +1294,17 @@ var ItemView = Backbone.View.extend({
 
     sub: function(){
         this.model.subCount();
+
+        this.model.save({},{error: simpleErrorHandler});
+
         this.$(".itemCount").html(this.model.get("itemCount"));
     },
 
     add: function(){
         this.model.addCount();
+
+        this.model.save({},{error: simpleErrorHandler});
+
         this.$(".itemCount").html(this.model.get("itemCount"));
     },
 
