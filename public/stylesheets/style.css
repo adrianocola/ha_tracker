@@ -376,6 +376,13 @@ body {
   -ms-transform: scaleX(-1) rotate(-45deg);
 /* standard */
 }
+.enemyExists {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #f00;
+  margin-top: 1px;
+  text-align: center;
+  width: 100%;
+}
 .player-items {
   float: left;
   width: 280px;

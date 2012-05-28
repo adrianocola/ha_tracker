@@ -813,7 +813,7 @@ var AddEnemyView = Backbone.View.extend({
 
         //ENTER
         if(evt.keyCode == 13){
-            if(this.$('#add-enemy-name').val().length != 0){
+            if(this.$('#add-enemy-name').val().length != 0 && !this.enemies.exists(this.$('#add-enemy-name').val())){
                 this.confirmAddEnemy();
             }
         //ESC
@@ -823,7 +823,14 @@ var AddEnemyView = Backbone.View.extend({
             if(this.$('#add-enemy-name').val().length == 0){
                 this.$('.confirm-add-enemy').attr('disabled', 'disabled');
             }else{
-                this.$('.confirm-add-enemy').removeAttr('disabled');
+                if(this.enemies.exists(this.$('#add-enemy-name').val())){
+                    this.$('.confirm-add-enemy').attr('disabled', 'disabled');
+                    this.$('.enemyExists').removeClass('hidden');
+                }else{
+                    this.$('.confirm-add-enemy').removeAttr('disabled');
+                    this.$('.enemyExists').addClass('hidden');
+
+                }
             }
 
         }

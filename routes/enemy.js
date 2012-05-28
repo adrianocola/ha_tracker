@@ -13,7 +13,7 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res){
         if(err) console.log(err);
 
         //first verify if there is an enemy with the same name
-        var foundEnemy = u.find(player.enemies, function(enemy){ return enemy.name == req.body.name; });
+        var foundEnemy = u.find(player.enemies, function(enemy){ return enemy.name.toLowerCase() == req.body.name.toLowerCase(); });
 
         if(foundEnemy){
             res.send({code: 201, error: "Enemy already exists"});
