@@ -42,27 +42,27 @@ app.configure('production', function(){
     rtg = require("url").parse(env.redis_url);
     redis_url = env.redis_url;
 
-    app.use(express.session({
-        secret: env.secrets.session,
-        store: new RedisStore({
-            port: rtg.port,
-            host: rtg.hostname,
-            pass: rtg.auth?rtg.auth.split(":")[1]:''
-        }),
-        cookie: {
-            maxAge: 7200000
-        }
-    }));
+//    app.use(express.session({
+//        secret: env.secrets.session,
+//        store: new RedisStore({
+//            port: rtg.port,
+//            host: rtg.hostname,
+//            pass: rtg.auth?rtg.auth.split(":")[1]:''
+//        }),
+//        cookie: {
+//            maxAge: 7200000
+//        }
+//    }));
 
 
-//    app.use(authorization({
-//            secret: env.secrets.session,
-//            store: new RedisStore({
-//                port: rtg.port,
-//                host: rtg.hostname,
-//                pass: rtg.auth?rtg.auth.split(":")[1]:''
-//            }),
-//            cookie: { maxAge: 7200000 }}));
+    app.use(authorization({
+            secret: env.secrets.session,
+            store: new RedisStore({
+                port: rtg.port,
+                host: rtg.hostname,
+                pass: rtg.auth?rtg.auth.split(":")[1]:''
+            }),
+            cookie: { maxAge: 7200000 }}));
 
 
     app.use(app.router);
