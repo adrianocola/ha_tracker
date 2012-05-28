@@ -13,18 +13,42 @@ function clearCookies(res){
 
     res.clearCookie('KEEP_LOGGED_USER');
     res.clearCookie('KEEP_LOGGED_ID');
+    res.clearCookie('X-HATracker-Token');
 
 };
 
-function clearSession(req, res){
+function clearAuthorization(req, res){
 
-    //req.session.userId = undefined;
-    req.session.destroy();
-
+    if(req.authorization){
+        req.authorization.destroy();
+    }
 
     clearCookies(res);
 
 };
+
+/**
+ * Validate the generated nonce, to make sure the nonce the client
+ * passes to the server was the one created on the server
+ * @param nonce nonce to validate
+ * @param fn return true or false in callback
+ */
+function validateNonce(nonce, fn){
+
+    redis.get('nonce:' + nonce, function(err,value){
+        if(!err && value!=null){
+            //if the nonce is valid remove it from the valid nonces list, so it
+            //cannot be used again to try to relogin
+            redis.del('nonce:' + nonce,function(){
+                fn(true);
+            });
+        }else{
+            fn(false);
+        }
+
+    });
+
+}
 
 
 
@@ -46,11 +70,11 @@ app.get('/api/token', function(req, res){
 
 
     }else{
-        req.generateSession(function(session){
+        req.generateAuthorization(function(authorization){
 
-            session.merda = "bosta";
+            authorization.merda = "bosta";
 
-            res.send(JSON.stringify(session.id));
+            res.send(JSON.stringify(authorization.id));
         });
     }
 
@@ -58,7 +82,7 @@ app.get('/api/token', function(req, res){
 
 
 
-//    common.generateSession({coisa: 'lixo'},function(err,token){
+//    common.generateAuthorization({coisa: 'lixo'},function(err,token){
 //        //res.send(token);
 //
 //        common.getSession(token,function(err,value){
@@ -77,21 +101,38 @@ app.get('/api/salt', function(req, res){
 
 });
 
+/**
+ * generates a nonce for password cryptography
+ * more details: http://en.wikipedia.org/wiki/Cryptographic_nonce
+ */
 app.get('/api/nonce', function(req, res){
 
-    //generates a nonce for password cryptography
-    //mode details: http://en.wikipedia.org/wiki/Cryptographic_nonce
-    req.session.nonce = uuid.uuid(10);
-    res.send(req.session.nonce);
+    var nonce = uuid.uuid(10);
+
+    redis.multi();
+
+    redis.set('nonce:' + nonce, '');
+    redis.expire('nonce:' + nonce, 60);
+
+    redis.exec(function(err,value){
+
+        if(err) console.log(err);
+
+        res.send(nonce);
+
+    });
+
+    //req.authorization.nonce = uuid.uuid(10);
+    //res.send(req.authorization.nonce);
 
 });
 
 
 app.get('/api/user/logout', function(req, res){
 
-    if(req.session.userId){
+    if(req.authorization.userId){
 
-        models.User.findById(req.session.userId,{}, common.userId('MASTER'), function(err,user){
+        models.User.findById(req.authorization.userId,{}, common.userId('MASTER'), function(err,user){
 
             //if is a facebook user, clean facebook access token
             if(user.facebook.userID){
@@ -102,7 +143,7 @@ app.get('/api/user/logout', function(req, res){
 
             }
 
-            clearSession(req,res);
+            clearAuthorization(req,res);
 
             res.send({});
 
@@ -117,72 +158,102 @@ app.get('/api/user/logout', function(req, res){
 
 app.get('/api/user/login', function(req,res){
 
-    //if login request have username and password, tries to login using credentials
-    if(req.query.username && req.query.password){
-        console.log("TENTOU LOGIN POR CREDENCIAL: (" + req.query.username + ", " +  req.query.password + ")");
-        models.User.findOne({username: req.query.username.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
+    //validate nonce
+    validateNonce(req.query.nonce, function(valid){
 
-            if(err) console.log(err);
+        if(valid){
+            //if login request have username and password, tries to login using credentials
+            if(req.query.username && req.query.password){
+                console.log("TENTOU LOGIN POR CREDENCIAL: (" + req.query.username + ", " +  req.query.password + ")");
+                models.User.findOne({username: req.query.username.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
-            if(user && req.query.password == md5.hex_md5(user.password + req.session.nonce)){
-                req.session.userId = user._id;
+                    if(err) console.log(err);
 
-                if(req.query.keepLogged){
-                    var keepLogged = new models.KeepLogged();
+                    if(user && req.query.password == md5.hex_md5(user.password + req.query.nonce)){
 
-                    keepLogged.usernameHash = md5.hex_md5(env.salt + user.username + env.salt);
-                    keepLogged.userId = user._id;
+                        req.generateAuthorization(function(authorization){
 
+                            req.authorization.userId = user._id;
 
-                    keepLogged.save(common.userId('MASTER'),function(err){
+                            if(req.query.keepLogged){
+                                var keepLogged = new models.KeepLogged();
 
-                        if(err) console.log(err);
-
-                        //2 weeks = 1209600000 ms
-                        res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 1209600000 });
-                        res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 1209600000 });
-
-                        res.send(user.secure());
-
-                    });
+                                keepLogged.usernameHash = md5.hex_md5(env.salt + user.username + env.salt);
+                                keepLogged.userId = user._id;
 
 
-                }else{
-                    clearCookies(res);
-                    res.send(user.secure());
-                }
+                                keepLogged.save(common.userId('MASTER'),function(err){
+
+                                    if(err) console.log(err);
+
+                                    //2 weeks = 1209600000 ms
+                                    res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 1209600000 });
+                                    res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 1209600000 });
+
+                                    var secureUser = user.secure();
+                                    secureUser._doc.token = req.sessionToken;
+
+                                    res.send(secureUser);
+
+                                });
 
 
+                            }else{
+                                clearCookies(res);
+
+                                var secureUser = user.secure();
+                                secureUser._doc.token = req.sessionToken;
+
+                                res.send(secureUser);
+                            }
 
 
-            }else{
-                clearCookies(res);
-                res.send({code: 101, error: "Invalid username or password"});
+                        });
+
+                    }else{
+                        clearCookies(res);
+                        res.send({code: 101, error: "Invalid username or password"});
+                    }
+
+                });
+                //if no credentials were passed in request, tries to login using current authorization
+                // or KEEL_LOGGED_IN cookies
+            } else{
+                clearAuthorization(req,res);
+                res.send({code: 109, error: "Missing Login Credentials"});
             }
 
-        });
-        //if no credentials were passed in request, tries to login using current session
-        // or KEEL_LOGGED_IN cookies
-    } else{
-        clearSession(req,res);
-        res.send({code: 109, error: "Missing Login Credentials"});
-    }
+        }else{
+            clearAuthorization(req,res);
+            res.send({code: 110, error: "Invalid Nonce"});
+        }
+    });
+
+
+
 
 });
 
 
 app.get('/api/user/continue_login', function(req,res){
-
-    if(req.session.userId){
+    console.log(req.cookies);
+    if(req.authorization){
         console.log("TENTOU LOGIN POR SESSAO");
-        models.User.findById(req.session.userId,{}, common.userId(req.session.userId), function(err,user){
+        models.User.findById(req.authorization.userId,{}, common.userId(req.authorization.userId), function(err,user){
 
             if(err){
                 console.log(err);
             }
 
             if(user){
-                res.send(user.secure());
+
+                req.authorization.userId = user._id;
+
+                var secureUser = user.secure();
+                secureUser._doc.token = req.sessionToken;
+
+                res.send(secureUser);
+
             }else{
                 res.send({code: 107, error: "User not exists!"});
             }
@@ -190,7 +261,7 @@ app.get('/api/user/continue_login', function(req,res){
 
         });
 
-        //user marked option to
+    //user marked option "Keep logged in"
     }else if(req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID){
         console.log("TENTOU LOGIN POR KEEP LOGGED IN");
         models.KeepLogged.findById(req.cookies.KEEP_LOGGED_ID,{},common.userId('MASTER'),function(err,keepLogged){
@@ -204,21 +275,33 @@ app.get('/api/user/continue_login', function(req,res){
                     if(err) console.log(err);
 
                     if(user){
-                        req.session.userId = user._id;
 
                         //2 weeks = 1209600000 ms
                         res.cookie('KEEP_LOGGED_USER', req.cookies.KEEP_LOGGED_USER, { maxAge: 1209600000 });
                         res.cookie('KEEP_LOGGED_ID', req.cookies.KEEP_LOGGED_ID, { maxAge: 1209600000 });
 
-                        res.send(user.secure());
+
+                        req.generateAuthorization(function(authorization){
+
+                            req.authorization.userId = user._id;
+
+                            var secureUser = user.secure();
+                            secureUser._doc.token = req.sessionToken;
+
+                            res.send(secureUser);
+
+
+                        });
+
+
                     }else{
-                        clearSession(req,res);
+                        clearAuthorization(req,res);
                         res.send({code: 107, error: "User not exists!"});
                     }
                 });
 
             }else{
-                clearSession(req,res);
+                clearAuthorization(req,res);
                 res.send({code: 106, error: "Session Expired"});
 
             }
@@ -227,7 +310,7 @@ app.get('/api/user/continue_login', function(req,res){
         })
 
     }else{
-        clearSession(req,res);
+        clearAuthorization(req,res);
         res.send({code: 106, error: "Session Expired"});
     }
 
@@ -280,9 +363,18 @@ app.post("/api/user/signup", function(req, res){
                     }else{
                         clearCookies(res);
 
-                        req.session.userId = user._id;
+                        req.generateAuthorization(function(authorization){
 
-                        res.send(user.secure());
+                            req.authorization.userId = user._id;
+
+                            var secureUser = user.secure();
+                            secureUser._doc.token = req.sessionToken;
+
+                            res.send(secureUser);
+
+
+                        });
+
                     }
 
                 });
@@ -309,9 +401,18 @@ app.get("/api/user/login-facebook", function(req, res){
                 if(req.query.startup){
                     //check if the user is authenticated here (didn't made logoff)
                     if(user.facebook.accessToken == req.query.accessToken){
-                        req.session.userId = user._id;
 
-                        res.send(user.secure());
+                        req.generateAuthorization(function(){
+
+                            req.authorization.userId = user._id;
+
+                            var secureUser = user.secure();
+                            secureUser._doc.token = req.sessionToken;
+
+                            res.send(secureUser);
+
+                        });
+
                     }else{
                         res.send({code: 109, error: "Facebook Session Expired or User Logged out"});
                     }
@@ -327,9 +428,17 @@ app.get("/api/user/login-facebook", function(req, res){
 
                         if(err) console.log(err);
 
-                        req.session.userId = user._id;
+                        req.generateAuthorization(function(){
 
-                        res.send(user.secure());
+                            req.authorization.userId = user._id;
+
+                            var secureUser = user.secure();
+                            secureUser._doc.token = req.sessionToken;
+
+                            res.send(secureUser);
+
+
+                        });
 
                     });
                 }
@@ -368,9 +477,18 @@ app.get("/api/user/login-facebook", function(req, res){
                                 res.send(err.message);
                             }else{
 
-                                req.session.userId = user._id;
+                                req.generateAuthorization(function(){
 
-                                res.send(user.secure());
+                                    req.authorization.userId = user._id;
+
+                                    var secureUser = user.secure();
+                                    secureUser._doc.token = req.sessionToken;
+
+                                    res.send(secureUser);
+
+
+                                });
+
                             }
 
                         });
@@ -380,7 +498,7 @@ app.get("/api/user/login-facebook", function(req, res){
                 //user is logged in facebook ,don' have account here but is startup
                 //so I can' create an account here.
             }else{
-                clearSession(req,res);
+                clearAuthorization(req,res);
                 res.send({code: 108, error: "Facebook user not authenticated!"});
             }
         }
@@ -393,10 +511,10 @@ app.get("/api/user/login-facebook", function(req, res){
 });
 
 
-app.delete('/api/user/delete',common.verifyUser, function(req, res){
+app.delete('/api/user/delete',common.verifyAuthorization, function(req, res){
 
 
-    models.User.findById(req.session.userId,{},common.userId(req.session.userId),function(err, user){
+    models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
 
         if(err) console.log(err);
 
@@ -422,7 +540,7 @@ app.delete('/api/user/delete',common.verifyUser, function(req, res){
 
             if(err) console.log(err);
 
-            clearSession(req,res);
+            clearAuthorization(req,res);
 
             res.send('true');
 
@@ -433,17 +551,17 @@ app.delete('/api/user/delete',common.verifyUser, function(req, res){
 });
 
 
-app.delete('/api/user/reset',common.verifyUser, function(req, res){
+app.delete('/api/user/reset',common.verifyAuthorization, function(req, res){
 
 
 
 
-    models.User.findById(req.session.userId,{},common.userId(req.session.userId),function(err, user){
+    models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
 
         if(err) console.log(err);
 
 
-        models.Player.findOne({user: req.session.userId},{},common.userId(req.session.userId),function(err, player){
+        models.Player.findOne({user: req.authorization.userId},{},common.userId(req.authorization.userId),function(err, player){
 
             player.remove(function(err){
 
@@ -478,7 +596,7 @@ app.delete('/api/user/reset',common.verifyUser, function(req, res){
                             }else{
                                 clearCookies(res);
 
-                                req.session.userId = user._id;
+                                req.authorization.userId = user._id;
 
                                 res.send(true);
                             }
@@ -493,39 +611,6 @@ app.delete('/api/user/reset',common.verifyUser, function(req, res){
         });
 
 
-
-
-
-
-
-        //player.enemies = [];
-
-        //player.enemies.remove();
-
-//        player.enemies.forEach( function (enemy) {
-//            console.log("ENEMY: " + enemy.name);
-//            enemy.remove();
-//        });
-
-//        var i;
-//        for(i = 0; i < player.enemies.length; i++){
-//            console.log("ENEMY: " + player.enemies[0].name);
-//            player.enemies[0].remove();
-//        }
-
-//        u.each(player.enemies, function(enemy){
-//            console.log("ENEMY: " + enemy.name);
-//            enemy.remove();
-//        });
-
-
-//        player.save(common.userId(req.session.userId),function(err){
-//
-//            if(err) console.log(err);
-//
-//            res.send('true');
-//
-//        });
 
     });
 

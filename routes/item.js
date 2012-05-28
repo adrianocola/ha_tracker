@@ -5,11 +5,11 @@ var u = require('underscore');
 var common = require('./common.js');
 
 
-app.get('/api/itemmanager/:id/items', common.verifyUser,function(req, res){
+app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, res){
 
-    console.log("ITEM: " + req.session.userId);
+    console.log("ITEM: " + req.authorization.userId);
 
-    models.ItemManager.findById(req.params.id,{}, common.userId(req.session.userId), function(err,itemManager){
+    models.ItemManager.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err,itemManager){
 
         var items = [];
 
@@ -34,15 +34,15 @@ app.get('/api/itemmanager/:id/items', common.verifyUser,function(req, res){
 
 
 
-app.put('/api/itemmanager/:manager/items/:id', common.verifyUser, function(req, res){
+app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, function(req, res){
 
-    models.ItemManager.findById(req.params.manager,{}, common.userId(req.session.userId), function(err, itemManager){
+    models.ItemManager.findById(req.params.manager,{}, common.userId(req.authorization.userId), function(err, itemManager){
 
         var item = itemManager.items.id(req.params.id);
 
         item.itemCount = req.body.itemCount;
 
-        itemManager.save(common.userId(req.session.userId), function(err){
+        itemManager.save(common.userId(req.authorization.userId), function(err){
             res.send(item);
         });
 

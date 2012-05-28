@@ -414,12 +414,19 @@ var Login = Backbone.Model.extend({
                 var secure_password = md5.hex_md5(md5.hex_md5(username + $.trim($("#salt").html()) + password) + nonce);
 
                 $.ajax({
-                    data: "username=" + username + "&password=" + secure_password + (keepLogged?"&keepLogged=true":""),
+                    data: "username=" + username + "&password=" + secure_password + "&nonce=" + nonce + (keepLogged?"&keepLogged=true":""),
                     url: "/api/user/login"
                 }).success(function( msg ) {
+                        console.log(msg);
+
                         if(msg.error){
                             cb(msg.error, undefined);
                         } else{
+
+                            //set the token to be used in authenticated requests
+                            app.HATrackerToken = msg.token;
+
+
                             that.set(msg);
                             cb(undefined,msg);
 

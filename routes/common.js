@@ -9,23 +9,9 @@ exports.userId = function(id){
     return {userId: id};
 };
 
-exports.verifyUser = function(req, res, next){
-
-    //if have session, player is authenticated
-    if(req.session.userId){
-        next();
-    }else{
-        res.json(401,{code: 100, error: 'Not authorized'});
-        console.log({code: 100, error: 'Not authorized'});
-    }
-
-};
-
-
-exports.verifySession = function(req, res, next){
-
-    //if have session, player is authenticated
-    if(req.session){
+exports.verifyAuthorization = function(req, res, next){
+    //if have authorization, player is authenticated
+    if(req.authorization){
         next();
     }else{
         res.json(401,{code: 100, error: 'Not authorized'});

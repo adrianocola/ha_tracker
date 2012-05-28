@@ -4,11 +4,22 @@ var u = require('underscore');
 var common = require('./common.js');
 
 
-app.post('/api/enemies', common.verifyUser, function(req,res){
+app.post('/api/enemies', common.verifyAuthorization, function(req,res){
 
-    models.Player.findOne({user: req.session.userId}, {},common.userId(req.session.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId}, {},common.userId(req.authorization.userId), function(err, player){
+
+
 
         if(err) console.log(err);
+
+        //first verify if there is an enemy with the same name
+        var foundEnemy = u.find(player.enemies, function(enemy){ return enemy.name == req.body.name; });
+
+        if(foundEnemy){
+            res.send({code: 201, error: "Enemy already exists"});
+            return;
+        }
+
 
         //update position of all enemies
         u.each(player.enemies,function(enemy){
@@ -20,7 +31,7 @@ app.post('/api/enemies', common.verifyUser, function(req,res){
 
         player.enemies.push(enemy);
 
-        player.save(common.userId(req.session.userId),function(err){
+        player.save(common.userId(req.authorization.userId),function(err){
 
             if(err) console.log(err);
 
@@ -33,16 +44,16 @@ app.post('/api/enemies', common.verifyUser, function(req,res){
 });
 
 
-app.put('/api/enemies/:id', common.verifyUser, function(req,res){
+app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res){
 
-    models.Player.findOne({user: req.session.userId}, {},common.userId(req.session.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId}, {},common.userId(req.authorization.userId), function(err, player){
 
         if(err) console.log(err);
 
         var enemy = player.enemies.id(req.params.id);
         enemy.name = req.body.name;
 
-        player.save(common.userId(req.session.userId),function(err){
+        player.save(common.userId(req.authorization.userId),function(err){
 
             if(err) console.log(err);
 
@@ -55,9 +66,9 @@ app.put('/api/enemies/:id', common.verifyUser, function(req,res){
 });
 
 
-app.delete('/api/enemies/:id', common.verifyUser, function(req, res){
+app.delete('/api/enemies/:id', common.verifyAuthorization, function(req, res){
 
-    models.Player.findOne({user: req.session.userId},{},common.userId(req.session.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId},{},common.userId(req.authorization.userId), function(err, player){
 
         if(err) console.log(err);
 
@@ -80,7 +91,7 @@ app.delete('/api/enemies/:id', common.verifyUser, function(req, res){
             }
         });
 
-        player.save(common.userId(req.session.userId),function(err){
+        player.save(common.userId(req.authorization.userId),function(err){
             res.send('true');
         });
 

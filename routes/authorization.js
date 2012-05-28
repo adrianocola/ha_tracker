@@ -151,7 +151,7 @@ exports = module.exports = function(options){
 
 
 
-        req.generateSession = function(fn){
+        req.generateAuthorization = function(fn){
 
             crypto.randomBytes(48, function(ex, buf) {
                 req.sessionToken = buf.toString('hex');
@@ -165,6 +165,7 @@ exports = module.exports = function(options){
             });
 
         };
+
 
         // proxy end() to commit the authorization
         var end = res.end;
@@ -182,8 +183,13 @@ exports = module.exports = function(options){
             });
         };
 
-        // get the sessionToken from the cookie
+        // get the sessionToken from the header
         req.sessionToken = req.header('X-HATracker-Token');
+
+        if(!req.sessionToken){
+            //if not found in the header, thy the cookie
+            req.sessionToken = req.cookies['X-HATracker-Token'];
+        }
 
         // check if there is a authorization.
         if (!req.sessionToken) {

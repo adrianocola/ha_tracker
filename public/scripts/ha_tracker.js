@@ -1,8 +1,6 @@
 app = window.app ? window.app : {};
 
 //TODO
-//IMPLEMENTAR autenticaçÃo via token ao invés de cookie! ( token no header!) - ESTUDAR
-//TERMINAR DE IMPLEMENTAR
 
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
@@ -33,6 +31,20 @@ function tryOpenLoginPanel(){
         verified_login_count += 1;
     }
 };
+
+
+//Override the Backbone.sync function to pass the authorization token on each request
+//made to the server. If the variable with the token is not empty fill the header with the token
+Backbone.old_sync = Backbone.sync
+Backbone.sync = function(method, model, options) {
+    var new_options =  _.extend({
+        beforeSend: function(xhr) {
+            if (app.HATrackerToken) xhr.setRequestHeader('X-HATracker-Token', app.HATrackerToken);
+        }
+    }, options)
+    Backbone.old_sync(method, model, new_options);
+};
+
 
 
 $(function(){

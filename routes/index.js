@@ -7,9 +7,7 @@ var uuid = require('../api/uuid.js');
 app.get('/', function(req, res){
     //If the session is active or the user is with KEEP_LOGGED_IN cookies,
     //notify the client that he must try to login without credentials
-
-
-    if(req.session.userId || (req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID)){
+    if(req.cookies['X-HATracker-Token'] || (req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID)){
         res.render('index', {data: { salt: env.salt, facebook_app_id: env.facebook_app_id, is_logged: true}});
 
     }else{
@@ -24,7 +22,7 @@ app.get('/enemies/:enemyId/:gameId', function(req, res){
 
     //If the session is active or the user is with KEEP_LOGGED_IN cookies,
     //notify the client that he must try to login without credentials
-    if(req.session.userId || (req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID)){
+    if(req.cookies['X-HATracker-Token'] || (req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID)){
         res.render('index', {data: { salt: env.salt, facebook_app_id: env.facebook_app_id, is_logged: true}});
 
     }else{

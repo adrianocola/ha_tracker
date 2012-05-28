@@ -3,9 +3,9 @@ var models = require('../conf/models.js');
 var common = require('./common.js');
 
 
-app.get('/api/players/:id', common.verifyUser ,function(req, res){
+app.get('/api/players/:id', common.verifyAuthorization ,function(req, res){
 
-    models.Player.findById(req.params.id,{}, common.userId(req.session.userId), function(err, player){
+    models.Player.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err, player){
 
         if(err) console.log(err);
 
