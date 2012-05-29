@@ -1323,6 +1323,8 @@ var ItemView = Backbone.View.extend({
         this.template = _.template($("#item-template").html())
 
         this.model.bind("sync", this.renderSync, this);
+
+        this.canEdit = true;
     },
 
     events: {
@@ -1348,6 +1350,11 @@ var ItemView = Backbone.View.extend({
     },
 
     imgClick: function(){
+        //only allow one update of item count
+        if(!this.canEdit){
+            return;
+        }
+
 
         this.sub();
 
@@ -1356,6 +1363,8 @@ var ItemView = Backbone.View.extend({
         this.$(".itemCount").addClass('zero');
         //start spinner
         this.$(".itemCount").html(this.spinner.spin().el);
+
+        this.canEdit = false;
 
     },
 
@@ -1366,6 +1375,8 @@ var ItemView = Backbone.View.extend({
         this.spinner.stop();
         this.$(".itemCount").html(this.model.get("itemCount"));
         this.renderItemCount();
+
+        this.canEdit = true;
     },
 
     renderItemCount: function(){

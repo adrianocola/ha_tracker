@@ -6,11 +6,12 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR "change password"
 //IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
 //PEGAR versões min das bibliotecas
-//NÃO PERMITIR que o usuário atualize os item com 2 cliques, rapidÃo
+//NÃO PERMITIR que o usuário atualize os items com 2 cliques, rapidÃo
 //IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
 //COMO mandar um erro HTTP e apenas uma mensagem JSON
-//ENTENDER porque está demorando pra aparecer a janela de login
 //Mudar icone da aplicação
+//IMPLEMENTAR algum esquema de imagesheet, pra deixar o loading de imagens mais rápido
+
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
 
