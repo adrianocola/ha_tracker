@@ -1,5 +1,3 @@
-require('nodetime').profile();
-
 var express = require('express')
   , http = require('http')
   , env = require('./conf/env')

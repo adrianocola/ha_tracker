@@ -15,7 +15,6 @@
     "connect-redis": "*",
     "hiredis": "0.1.x",
     "redis-url": "0.1.x",
-    "nodetime": "*",
     "jade": "*",
     "stylus": "*",
     "underscore": "*"
