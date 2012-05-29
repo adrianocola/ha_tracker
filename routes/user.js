@@ -110,12 +110,12 @@ app.get('/api/nonce', function(req, res){
 
     var nonce = uuid.uuid(10);
 
-    redis.multi();
+    var multi = redis.multi();
 
-    redis.set('nonce:' + nonce, '');
-    redis.expire('nonce:' + nonce, 60);
+    multi.set('nonce:' + nonce, '');
+    multi.expire('nonce:' + nonce, 60);
 
-    redis.exec(function(err,value){
+    multi.exec(function(err,value){
 
         if(err) console.log(err);
 

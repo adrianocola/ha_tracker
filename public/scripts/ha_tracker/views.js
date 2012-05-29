@@ -1084,6 +1084,8 @@ var GameView = Backbone.View.extend({
 
         this.model.bind("change:unselected", this.renderUnselected,this);
 
+        this.model.bind("error", this.error,this);
+
     },
 
     events:{
@@ -1099,6 +1101,10 @@ var GameView = Backbone.View.extend({
 
     deleteGame: function(){
         this.model.destroy({error: simpleErrorHandler});
+    },
+
+    error: function(msg){
+        simpleErrorHandler(undefined, msg);
     },
 
     renderSelected: function(){
