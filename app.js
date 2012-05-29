@@ -18,7 +18,6 @@ app.configure(function(){
     app.use(require('stylus').middleware({ src: __dirname + '/public' }));
     app.use(express.static(__dirname + '/public'));
     app.use(express.static(__dirname + '/public-cached', { maxAge: 86400000 }));
-    app.use(express.favicon('/public/favicon.ico'));
     app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
@@ -34,6 +33,7 @@ app.configure('development', function(){
     //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 300000 } }));
     app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 300000 }}));
 
+    app.use(express.favicon('/public/favicondev.ico'));
     app.use(app.router);
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
@@ -68,6 +68,7 @@ app.configure('production', function(){
             cookie: { maxAge: 7200000 }}));
 
 
+    app.use(express.favicon('/public/favicon.ico'));
     app.use(app.router);
     app.use(express.errorHandler());
 
