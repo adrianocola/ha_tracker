@@ -43,7 +43,7 @@ app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, funct
         itemManager.save(common.userId(req.authorization.userId), function(err){
             res.send(item);
 
-            common.statsMix(4322,1);
+            common.statsMix(4322,1,{item: consts.Items[item.itemId].itemName});
         });
 
     });

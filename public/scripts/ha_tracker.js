@@ -10,6 +10,7 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
 //COMO mandar um erro HTTP e apenas uma mensagem JSON
 //ENTENDER porque está demorando pra aparecer a janela de login
+//Mudar icone da aplicação
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
 

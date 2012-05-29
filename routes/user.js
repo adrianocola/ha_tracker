@@ -197,7 +197,7 @@ app.get('/api/user/login', function(req,res){
 
                                     res.send(secureUser);
 
-                                    common.statsMix(4321,1);
+                                    common.statsMix(4321,1,{type: 'email'});
 
                                 });
 
@@ -210,7 +210,7 @@ app.get('/api/user/login', function(req,res){
 
                                 res.send(secureUser);
 
-                                common.statsMix(4321,1);
+                                common.statsMix(4321,1,{type: 'email'});
                             }
 
 
@@ -260,7 +260,7 @@ app.get('/api/user/continue_login', function(req,res){
 
                 res.send(secureUser);
 
-                common.statsMix(4321,1);
+                common.statsMix(4321,1,{type: 'email'});
 
             }else{
                 res.json(400, {code: 107, error: "User not exists!"});
@@ -298,7 +298,7 @@ app.get('/api/user/continue_login', function(req,res){
 
                             res.send(secureUser);
 
-                            common.statsMix(4321,1);
+                            common.statsMix(4321,1,{type: 'email'});
 
 
                         });
@@ -384,7 +384,7 @@ app.post("/api/user/signup", function(req, res){
                             res.send(secureUser);
 
 
-                            common.statsMix(4320,1);
+                            common.statsMix(4320,1,{type: 'email'});
 
                         });
 
@@ -424,7 +424,7 @@ app.get("/api/user/login-facebook", function(req, res){
 
                             res.send(secureUser);
 
-                            common.statsMix(4321,1,{facebook: true});
+                            common.statsMix(4321,1,{type: 'facebook'});
 
                         });
 
@@ -452,7 +452,7 @@ app.get("/api/user/login-facebook", function(req, res){
 
                             res.send(secureUser);
 
-                            common.statsMix(4321,1,{facebook: true});
+                            common.statsMix(4321,1,{type: 'facebook'});
 
 
                         });
@@ -503,7 +503,7 @@ app.get("/api/user/login-facebook", function(req, res){
 
                                     res.send(secureUser);
 
-                                    common.statsMix(4320,1,{facebook: true});
+                                    common.statsMix(4320,1,{type: 'facebook'});
 
 
                                 });
