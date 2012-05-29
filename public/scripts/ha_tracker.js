@@ -4,11 +4,9 @@ app = window.app ? window.app : {};
 
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
-//PEGAR versões min das bibliotecas
 //IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
 //Mudar icone da aplicação
-//IMPLEMENTAR algum esquema de imagesheet, pra deixar o loading de imagens mais rápido
-//VERIFICAR se é bom comprimir as páginas
+//IMPLEMENTAR estratégia do expressjs pra deixar meu cookie de sessão seguro
 
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
