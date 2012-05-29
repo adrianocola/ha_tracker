@@ -17,7 +17,7 @@ app.configure(function(){
     app.use(express.logger('dev'));
     app.use(require('stylus').middleware({ src: __dirname + '/public' }));
     app.use(express.static(__dirname + '/public'));
-    app.use(express.static(__dirname + '/public/images', { maxAge: 86400000 }));
+    app.use(express.static(__dirname + '/public-cached', { maxAge: 86400000 }));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
