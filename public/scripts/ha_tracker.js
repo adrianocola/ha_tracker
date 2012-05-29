@@ -6,6 +6,10 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR "change password"
 //IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
 //PEGAR versões min das bibliotecas
+//NÃO PERMITIR que o usuário atualize os item com 2 cliques, rapidÃo
+//IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
+//COMO mandar um erro HTTP e apenas uma mensagem JSON
+//ENTENDER porque está demorando pra aparecer a janela de login
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
 
@@ -78,7 +82,7 @@ $(function(){
                         ,response.authResponse.expiresIn
                         ,true,function(err){
 
-                            console.log(err);
+
                             if(!err){
                                 app.LoginView.dismiss();
                                 app.CurrentPlayerView = new app.LoggedPlayerView({model: app.LoginView.model });

@@ -7,8 +7,6 @@ var common = require('./common.js');
 
 app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, res){
 
-    console.log("ITEM: " + req.authorization.userId);
-
     models.ItemManager.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err,itemManager){
 
         var items = [];
@@ -44,6 +42,8 @@ app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, funct
 
         itemManager.save(common.userId(req.authorization.userId), function(err){
             res.send(item);
+
+            common.statsMix(4322,1);
         });
 
     });

@@ -375,35 +375,12 @@ var Login = Backbone.Model.extend({
             url: "/api/user/login-facebook"
         }).success(function( msg ) {
 
-            if(msg.error){
-                cb(msg.error, undefined);
-            } else{
-                that.set(msg);
-                cb(undefined,msg);
+            that.set(msg);
+            cb(undefined,msg);
 
-            }
-
-//            if(msg.error){
-//                cb(msg.error, undefined);
-//            } else{
-//                //console.log("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken);
-//
-//                //need to use getJSON to avoid SOP errors
-//                $.getJSON("https://graph.facebook.com/" + msg.facebook.userID + "?access_token=" + accessToken + "&callback=?", function( fbUser ) {
-////                    console.log("fbUser");
-////                    console.log(fbUser);
-//
-//                    msg.username = fbUser.username;
-//                    msg.avatar = "http://graph.facebook.com/" + msg.facebook.userID + "/picture";
-//
-//                    that.set(msg);
-//                    cb(undefined,msg);
-//
-//                });
-//
-//            }
-
-        });
+        }).fail(function(err){
+                cb(err.responseText);
+            });
 
     },
 
@@ -428,21 +405,22 @@ var Login = Backbone.Model.extend({
                     data: "username=" + username + "&password=" + secure_password + "&nonce=" + nonce + (keepLogged?"&keepLogged=true":""),
                     url: "/api/user/login"
                 }).success(function( msg ) {
-                        console.log(msg);
 
-                        if(msg.error){
-                            cb(msg.error, undefined);
-                        } else{
+                        //set the token to be used in authenticated requests
+                        app.HATrackerToken = msg.token;
 
-                            //set the token to be used in authenticated requests
-                            app.HATrackerToken = msg.token;
+                        that.set(msg);
+                        cb(undefined,msg);
 
-
-                            that.set(msg);
-                            cb(undefined,msg);
-
+                    }).fail(function(err){
+                        try{
+                            cb(JSON.parse(err.responseText).error);
+                        } catch(e){
+                            cb(err.responseText);
                         }
+
                     });
+
 
 
             });
@@ -456,13 +434,12 @@ var Login = Backbone.Model.extend({
         $.ajax({
             url: "/api/user/continue_login"
         }).success(function( msg ) {
-                if(msg.error){
-                    cb(msg.error, undefined);
-                } else{
-                    that.set(msg);
-                    cb(undefined,msg);
 
-                }
+                that.set(msg);
+                cb(undefined,msg);
+
+            }).fail(function(err){
+                cb(err.responseText);
             });
     },
 
@@ -475,8 +452,8 @@ var Login = Backbone.Model.extend({
             headers: {'X-HATracker-Token': app.HATrackerToken}
         }).success(function( msg ) {
                 cb();
-            }).fail(function(msg){
-                cb(msg);
+            }).fail(function(err){
+                cb(err.responseText);
             });
 
 
@@ -492,13 +469,15 @@ var Login = Backbone.Model.extend({
             type: "POST",
             url: "/api/user/signup"
         }).success(function( msg ) {
-            if(msg.error){
-                cb(msg.error, undefined);
-            } else{
                 that.set(msg);
                 cb(undefined,msg);
-            }
-        });
+        }).fail(function(err){
+                try{
+                    cb(JSON.parse(err.responseText).error);
+                } catch(e){
+                    cb(err.responseText);
+                }
+            });
 
     },
 
@@ -511,8 +490,8 @@ var Login = Backbone.Model.extend({
             headers: {'X-HATracker-Token': app.HATrackerToken}
         }).success(function( msg ) {
                 cb();
-            }).fail(function(msg){
-                cb(msg);
+            }).fail(function(err){
+                cb(err.responseText);
             });
 
     },
@@ -525,8 +504,8 @@ var Login = Backbone.Model.extend({
             headers: {'X-HATracker-Token': app.HATrackerToken}
         }).success(function( msg ) {
                 cb();
-            }).fail(function(msg){
-                cb(msg);
+            }).fail(function(err){
+                cb(err.responseText);
             });
 
     }

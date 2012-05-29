@@ -17,7 +17,7 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res){
 
 
         if(foundEnemy){
-            res.send(409, {code: 201, error: "Enemy already exists"});
+            res.json(409, {code: 201, error: "Enemy already exists"});
             return;
         }
 
@@ -55,7 +55,7 @@ app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res){
         var foundEnemy = u.find(player.enemies, function(enemy){ return enemy.name.toLowerCase() == req.body.name.toLowerCase(); });
 
         if(foundEnemy){
-            res.send(409, {code: 201, error: "Enemy already exists"});
+            res.json(409, {code: 201, error: "Enemy already exists"});
             return;
         }
 

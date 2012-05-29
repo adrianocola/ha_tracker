@@ -27,5 +27,6 @@ if (env.development) {
     env.sesson_expire = 7200; //seconds
     env.salt = 'I8~*8Ri:D69U/2etE5C';
     env.facebook_app_id = '349808971750591';
+    env.statsmix_key = process.env.STATSMIX_KEY;
 
 }

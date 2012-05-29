@@ -7,6 +7,7 @@ var md5 = require('../api/md5.js');
 var sha1 = require('../api/sha1.js');
 var u = require('underscore');
 var https = require('https');
+var http = require('http');
 var redis = require('redis-url').connect(env.redis_url);
 
 function clearCookies(res){
@@ -152,7 +153,7 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
 
     }else{
         console.log("NÃO TEM SESSAO");
-        res.send(401, {code: 105, error: "Not logged"});
+        res.json(401, {code: 105, error: "Not logged"});
     }
 });
 
@@ -196,6 +197,8 @@ app.get('/api/user/login', function(req,res){
 
                                     res.send(secureUser);
 
+                                    common.statsMix(4321,1);
+
                                 });
 
 
@@ -206,6 +209,8 @@ app.get('/api/user/login', function(req,res){
                                 secureUser._doc.token = req.sessionToken;
 
                                 res.send(secureUser);
+
+                                common.statsMix(4321,1);
                             }
 
 
@@ -213,7 +218,7 @@ app.get('/api/user/login', function(req,res){
 
                     }else{
                         clearCookies(res);
-                        res.send(403, {code: 101, error: "Invalid username or password"});
+                        res.json(403, {code: 101, error: "Invalid username or password"});
                     }
 
                 });
@@ -221,12 +226,12 @@ app.get('/api/user/login', function(req,res){
                 // or KEEL_LOGGED_IN cookies
             } else{
                 clearAuthorization(req,res);
-                res.send(400, {code: 109, error: "Missing Login Credentials"});
+                res.json(400, {code: 109, error: "Missing Login Credentials"});
             }
 
         }else{
             clearAuthorization(req,res);
-            res.send(400, {code: 110, error: "Invalid Nonce"});
+            res.json(400, {code: 110, error: "Invalid Nonce"});
         }
     });
 
@@ -255,8 +260,10 @@ app.get('/api/user/continue_login', function(req,res){
 
                 res.send(secureUser);
 
+                common.statsMix(4321,1);
+
             }else{
-                res.send(400, {code: 107, error: "User not exists!"});
+                res.json(400, {code: 107, error: "User not exists!"});
             }
 
 
@@ -291,19 +298,21 @@ app.get('/api/user/continue_login', function(req,res){
 
                             res.send(secureUser);
 
+                            common.statsMix(4321,1);
+
 
                         });
 
 
                     }else{
                         clearAuthorization(req,res);
-                        res.send(400, {code: 107, error: "User not exists!"});
+                        res.json(400, {code: 107, error: "User not exists!"});
                     }
                 });
 
             }else{
                 clearAuthorization(req,res);
-                res.send(401, {code: 106, error: "Session Expired"});
+                res.json(401, {code: 106, error: "Session Expired"});
 
             }
 
@@ -312,7 +321,7 @@ app.get('/api/user/continue_login', function(req,res){
 
     }else{
         clearAuthorization(req,res);
-        res.send(401, {code: 106, error: "Session Expired"});
+        res.json(401, {code: 106, error: "Session Expired"});
     }
 
 
@@ -323,8 +332,9 @@ app.get('/api/user/continue_login', function(req,res){
 
 app.post("/api/user/signup", function(req, res){
 
+
     if(!req.body.username || !req.body.password || !req.body.email){
-        res.send(400, {code: 107, error: "Missing username, email or password"});
+        res.json(400, {code: 107, error: "Missing username, email or password"});
     } else{
 
 
@@ -347,7 +357,7 @@ app.post("/api/user/signup", function(req, res){
             if(err){
                 console.log(err);
                 if(err.code == 11000){
-                    res.send(409, {code: 103, error: "Username or Email already registered"});
+                    res.json(409, {code: 103, error: "Username or Email already registered"});
                 }else{
                     res.send(err);
                 }
@@ -373,6 +383,8 @@ app.post("/api/user/signup", function(req, res){
 
                             res.send(secureUser);
 
+
+                            common.statsMix(4320,1);
 
                         });
 
@@ -412,10 +424,12 @@ app.get("/api/user/login-facebook", function(req, res){
 
                             res.send(secureUser);
 
+                            common.statsMix(4321,1,{facebook: true});
+
                         });
 
                     }else{
-                        res.send(401, {code: 109, error: "Facebook Session Expired or User Logged out"});
+                        res.json(401, {code: 109, error: "Facebook Session Expired or User Logged out"});
                     }
 
                 //if the user is authenticated in facebook but logged off
@@ -437,6 +451,8 @@ app.get("/api/user/login-facebook", function(req, res){
                             secureUser._doc.token = req.sessionToken;
 
                             res.send(secureUser);
+
+                            common.statsMix(4321,1,{facebook: true});
 
 
                         });
@@ -487,6 +503,8 @@ app.get("/api/user/login-facebook", function(req, res){
 
                                     res.send(secureUser);
 
+                                    common.statsMix(4320,1,{facebook: true});
+
 
                                 });
 
@@ -500,7 +518,7 @@ app.get("/api/user/login-facebook", function(req, res){
                 //so I can' create an account here.
             }else{
                 clearAuthorization(req,res);
-                res.send(401, {code: 108, error: "Facebook user not authenticated!"});
+                res.json(401, {code: 108, error: "Facebook user not authenticated!"});
             }
         }
 
@@ -580,7 +598,7 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res){
                     if(err){
                         console.log(err);
                         if(err.code == 11000){
-                            res.send(400,{code: 103, error: "Username or Email already registered"});
+                            res.json(400,{code: 103, error: "Username or Email already registered"});
                         }else{
                             res.send(err);
                         }

@@ -70,8 +70,14 @@ var opts_big = {
     left: 'auto' // Left position relative to parent in px
 };
 
+
 var simpleErrorHandler = function(model, err){
-    app.ErrorView.show(err.responseText);
+    if(err.responseText){
+        app.ErrorView.show(err.responseText);
+    }else{
+        app.ErrorView.show(err);
+    }
+
 };
 
 
@@ -99,8 +105,6 @@ var ErrorView = Backbone.View.extend({
     show: function(msg){
 
         var that = this;
-
-        console.log(msg);
 
         $(this.el).html(this.template(JSON.parse(msg)));
 
@@ -233,7 +237,6 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.model.logout(function(err){
             if(err){
-                console.log(err);
                 simpleErrorHandler(undefined,err);
             }else{
                 //refresh to page
@@ -444,6 +447,7 @@ var SignupView = Backbone.View.extend({
             var that = this;
 
             this.model.signup(username,email,password, function(err,player){
+
                 that.spinner.stop();
                 that.$("#signup-ok").html("Signup");
                 if(err){
@@ -591,10 +595,12 @@ var LoginView = Backbone.View.extend({
         this.model.login_facebook(userID,accessToken,expiresIn,startup, function(err,player){
 
             if(err){
-                console.log(err);
+                simpleErrorHandler(undefined,err);
+            }else{
+                that.logged(err);
             }
 
-            that.logged(err);
+
 
         });
 
