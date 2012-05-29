@@ -4,11 +4,8 @@ app = window.app ? window.app : {};
 
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
-//IMPLEMENTAR algum tratamento de erro genérico, um popup ou sei lá
 //PEGAR versões min das bibliotecas
-//NÃO PERMITIR que o usuário atualize os items com 2 cliques, rapidÃo
 //IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
-//COMO mandar um erro HTTP e apenas uma mensagem JSON
 //Mudar icone da aplicação
 //IMPLEMENTAR algum esquema de imagesheet, pra deixar o loading de imagens mais rápido
 
