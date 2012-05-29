@@ -727,11 +727,11 @@ var EnemiesView = Backbone.View.extend({
 
         _.each(this.collection.sortBy('position',this),function(enemy) {
             if(enemy.visible){
-                var view = new EnemyView({ model: enemy});
+                var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
             }
 
-        })
+        },this);
 
     },
 
@@ -764,11 +764,12 @@ var EnemiesView = Backbone.View.extend({
 
         _.each(this.collection.sortBy('position',this),function(enemy) {
             if(enemy.visible){
-                var view = new EnemyView({ model: enemy});
+                console.log(this);
+                var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
             }
 
-        })
+        },this)
 
 //        this.collection.each(function(enemy) {
 //            var view = new EnemyView({ model: enemy});
@@ -910,28 +911,54 @@ var EnemyView = Backbone.View.extend({
 
         this.$('.enemyName').addClass('hidden');
         this.$('.newEnemyName').removeClass('hidden');
+
+        this.$('.newEnemyName').focus();
     },
+
+    cancelRenameEnemy: function(){
+
+        this.$('.newEnemyName').addClass('hidden');
+        this.$('.enemyName').removeClass('hidden');
+
+        this.$('.enemyExists').addClass('hidden');
+
+    },
+
 
     confirmRenameEnemy: function(evt){
 
         var that = this;
 
+        //ENTER
         if(evt.keyCode == 13){
+            if(this.$('.newEnemyName').val().length != 0 && !this.collection.exists(this.$('.newEnemyName').val())){
 
-            this.$('.newEnemyName').addClass('hidden');
-            this.$('.enemyName').removeClass('hidden');
+                this.$('.newEnemyName').addClass('hidden');
+                this.$('.enemyName').removeClass('hidden');
 
-            this.$('.enemyName').html(this.spinner.spin().el);
+                this.$('.enemyName').html(this.spinner.spin().el);
 
-            this.model.save({name: this.$('.newEnemyName').val()},{success: function(){
+                this.model.save({name: this.$('.newEnemyName').val()},{success: function(){
 
-                //that.spinner.stop();
+                    this.$('.enemyExists').addClass('hidden');
 
-                that.$('.enemyName').html(that.model.get('name'));
-            }, error: simpleErrorHandler});
+                    that.$('.enemyName').html(that.model.get('name'));
+                }, error: simpleErrorHandler});
 
 
+            }
+            //ESC
+        }else if(evt.keyCode == 27){
+            this.cancelRenameEnemy();
+        }else{
+            if(this.$('.newEnemyName').val().length != 0 && this.collection.exists(this.$('.newEnemyName').val())){
+                this.$('.enemyExists').removeClass('hidden');
+            }else{
+                this.$('.enemyExists').addClass('hidden');
+
+            }
         }
+
     },
 
     renderSelected: function(){

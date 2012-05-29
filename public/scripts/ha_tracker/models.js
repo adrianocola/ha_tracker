@@ -292,8 +292,14 @@ var Enemies = Backbone.Collection.extend({
 
     //verify if exists an enemy with the same name
     exists: function(enemyName){
-        enemyName = enemyName.toLowerCase();
-        return this.find(function(enemy){return enemy.get('name').toLowerCase() == enemyName })? true : false;
+
+        if(enemyName){
+            enemyName = enemyName.toLowerCase();
+            return this.find(function(enemy){return enemy.get('name').toLowerCase() == enemyName })? true : false;
+        }
+
+        return true;
+
 
     }
 

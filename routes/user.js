@@ -213,7 +213,7 @@ app.get('/api/user/login', function(req,res){
 
                     }else{
                         clearCookies(res);
-                        res.send({code: 101, error: "Invalid username or password"});
+                        res.send(403, {code: 101, error: "Invalid username or password"});
                     }
 
                 });
@@ -221,12 +221,12 @@ app.get('/api/user/login', function(req,res){
                 // or KEEL_LOGGED_IN cookies
             } else{
                 clearAuthorization(req,res);
-                res.send({code: 109, error: "Missing Login Credentials"});
+                res.send(400, {code: 109, error: "Missing Login Credentials"});
             }
 
         }else{
             clearAuthorization(req,res);
-            res.send({code: 110, error: "Invalid Nonce"});
+            res.send(400, {code: 110, error: "Invalid Nonce"});
         }
     });
 
@@ -256,7 +256,7 @@ app.get('/api/user/continue_login', function(req,res){
                 res.send(secureUser);
 
             }else{
-                res.send({code: 107, error: "User not exists!"});
+                res.send(400, {code: 107, error: "User not exists!"});
             }
 
 
@@ -297,13 +297,13 @@ app.get('/api/user/continue_login', function(req,res){
 
                     }else{
                         clearAuthorization(req,res);
-                        res.send({code: 107, error: "User not exists!"});
+                        res.send(400, {code: 107, error: "User not exists!"});
                     }
                 });
 
             }else{
                 clearAuthorization(req,res);
-                res.send({code: 106, error: "Session Expired"});
+                res.send(401, {code: 106, error: "Session Expired"});
 
             }
 
@@ -312,7 +312,7 @@ app.get('/api/user/continue_login', function(req,res){
 
     }else{
         clearAuthorization(req,res);
-        res.send({code: 106, error: "Session Expired"});
+        res.send(401, {code: 106, error: "Session Expired"});
     }
 
 
@@ -324,7 +324,7 @@ app.get('/api/user/continue_login', function(req,res){
 app.post("/api/user/signup", function(req, res){
 
     if(!req.body.username || !req.body.password || !req.body.email){
-        res.send({code: 107, error: "Missing username, email or password"});
+        res.send(400, {code: 107, error: "Missing username, email or password"});
     } else{
 
 
@@ -347,7 +347,7 @@ app.post("/api/user/signup", function(req, res){
             if(err){
                 console.log(err);
                 if(err.code == 11000){
-                    res.send({code: 103, error: "Username or Email already registered"});
+                    res.send(409, {code: 103, error: "Username or Email already registered"});
                 }else{
                     res.send(err);
                 }
@@ -415,7 +415,7 @@ app.get("/api/user/login-facebook", function(req, res){
                         });
 
                     }else{
-                        res.send({code: 109, error: "Facebook Session Expired or User Logged out"});
+                        res.send(401, {code: 109, error: "Facebook Session Expired or User Logged out"});
                     }
 
                 //if the user is authenticated in facebook but logged off
@@ -500,7 +500,7 @@ app.get("/api/user/login-facebook", function(req, res){
                 //so I can' create an account here.
             }else{
                 clearAuthorization(req,res);
-                res.send({code: 108, error: "Facebook user not authenticated!"});
+                res.send(401, {code: 108, error: "Facebook user not authenticated!"});
             }
         }
 
@@ -580,7 +580,7 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res){
                     if(err){
                         console.log(err);
                         if(err.code == 11000){
-                            res.send({code: 103, error: "Username or Email already registered"});
+                            res.send(400,{code: 103, error: "Username or Email already registered"});
                         }else{
                             res.send(err);
                         }

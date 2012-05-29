@@ -15,8 +15,9 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res){
         //first verify if there is an enemy with the same name
         var foundEnemy = u.find(player.enemies, function(enemy){ return enemy.name.toLowerCase() == req.body.name.toLowerCase(); });
 
+
         if(foundEnemy){
-            res.send({code: 201, error: "Enemy already exists"});
+            res.send(409, {code: 201, error: "Enemy already exists"});
             return;
         }
 
@@ -49,6 +50,14 @@ app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res){
     models.Player.findOne({user: req.authorization.userId}, {},common.userId(req.authorization.userId), function(err, player){
 
         if(err) console.log(err);
+
+        //first verify if there is an enemy with the same name
+        var foundEnemy = u.find(player.enemies, function(enemy){ return enemy.name.toLowerCase() == req.body.name.toLowerCase(); });
+
+        if(foundEnemy){
+            res.send(409, {code: 201, error: "Enemy already exists"});
+            return;
+        }
 
         var enemy = player.enemies.id(req.params.id);
         enemy.name = req.body.name;
