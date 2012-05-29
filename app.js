@@ -33,7 +33,7 @@ app.configure('development', function(){
     //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 300000 } }));
     app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 300000 }}));
 
-    app.use(express.favicon('/public/favicondev.ico'));
+    app.use(express.favicon('/public/favicon-dev.ico'));
     app.use(app.router);
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
