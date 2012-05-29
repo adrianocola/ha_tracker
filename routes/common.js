@@ -23,6 +23,12 @@ exports.verifyAuthorization = function(req, res, next){
 
 };
 
+exports.isMobile = function(req){
+
+    return req.headers['user-agent'].indexOf("Mobile") > -1;
+};
+
+
 
 exports.statsMix = function(metric_id, value, meta){
 
