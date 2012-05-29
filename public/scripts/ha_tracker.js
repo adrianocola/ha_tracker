@@ -8,6 +8,7 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
 //Mudar icone da aplicação
 //IMPLEMENTAR algum esquema de imagesheet, pra deixar o loading de imagens mais rápido
+//VERIFICAR se é bom comprimir as páginas
 
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
