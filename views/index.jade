@@ -27,6 +27,7 @@ block templates
 
     script(type="text/template",id="forgot-password-template")
         h3 Reset Your Password
+        div.forgot-info Inform the e-mail address you used to register to receive an e-mail with instructions to reset your password.
         input#forgot-password-email.login-field(type="text",placeholder="e-mail")
         div.forgot-error
         div.forgot-msg
@@ -75,6 +76,7 @@ block templates
                 input#signup-email.login-field(type="text",placeholder="E-mail",maxlength="100")
                 button#email-error-icon.signup-error.button-02.hidden !
                     span#email-error.tooltip-error
+                div.text e-mail is only used to recover a lost password
                 div.signup-error
                 div.signup-msg
             div.login-right
