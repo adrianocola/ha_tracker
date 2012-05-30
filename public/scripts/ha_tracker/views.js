@@ -193,7 +193,7 @@ var ForgotPasswordView = Backbone.View.extend({
                 this.$('.forgot-error').html(err);
                 this.$('.forgot-error').removeClass('hidden');
 
-                this.$('#forgot-send').html("Send e-mail");
+                //this.$('#forgot-send').html("Send e-mail");
                 this.canSend = true;
             }else{
                 this.$('.forgot-msg').html('E-mail sent with success!');
