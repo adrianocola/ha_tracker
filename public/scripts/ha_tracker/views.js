@@ -163,6 +163,7 @@ var ForgotPasswordView = Backbone.View.extend({
             this.confirmSendMail();
         }else{
             this.$('.forgot-error').addClass('hidden');
+            this.canSend = true;
         }
     },
 
