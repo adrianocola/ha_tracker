@@ -32,6 +32,29 @@ app.get('/enemies/:enemyId/:gameId', function(req, res){
 
 });
 
+app.get('/reset_password', function(req, res){
+
+    //get user
+    app.redis.get("resetpw:" + req.query.confirmation, function(err,value){
+
+        if(err) console.log(err);
+
+        console.log(value);
+        if(!value){
+
+            res.render('reset_password_expired', {data: { salt: env.salt, facebook_app_id: env.facebook_app_id, mobile: common.isMobile(req) }});
+
+            return;
+        }
+
+        res.render('reset_password', {data: { salt: env.salt, facebook_app_id: env.facebook_app_id, mobile: common.isMobile(req) }});
+
+    });
+
+
+
+});
+
 
 app.get('/terms_privacy', function(req, res){
 

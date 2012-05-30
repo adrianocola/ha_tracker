@@ -21,7 +21,10 @@ if (env.development) {
 } else {
 
     env.secrets = {
-        session: process.env.EXPRESS_SESSION_KEY
+        session: process.env.EXPRESS_SESSION_KEY,
+        mail_username: process.env.MAIL_USERNAME,
+        mail_password: process.env.MAIL_PASSWORD
+
     };
 
     env.sesson_expire = 7200; //seconds

@@ -128,6 +128,128 @@ var ErrorView = Backbone.View.extend({
 
 });
 
+
+var ForgotPasswordView = Backbone.View.extend({
+
+    el: '#forgot-password-panel',
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+        this.template = _.template($('#forgot-password-template').html());
+
+        this.spinner = new Spinner(opts_small);
+
+        this.canSend = true;
+
+        var that = this;
+
+        $("#error-blanket").click(function(){
+            that.dismiss();
+        });
+
+    },
+
+    events: {
+        'click #forgot-cancel': 'dismiss',
+        'click #forgot-ok': 'dismiss',
+        'click #forgot-send': 'confirmSendMail',
+        'keyup #forgot-password-email': 'keyPress'
+    },
+
+    keyPress: function(evt){
+        if(evt.keyCode == 13){
+            this.confirmSendMail();
+        }else{
+            this.$('.forgot-error').addClass('hidden');
+        }
+    },
+
+    confirmSendMail: function(){
+
+        if(!this.canSend){
+            return;
+        }
+
+        if(!this.$('#forgot-password-email').val()){
+            this.$('.forgot-error').html('E-mail is Required');
+            this.$('.forgot-error').removeClass('hidden');
+            return;
+        }
+
+        if(!this.$('#forgot-password-email').val().match(/\S+@\S+\.\S+/)){
+            this.$('.forgot-error').html('Not a valid e-mail address');
+            this.$('.forgot-error').removeClass('hidden');
+            return;
+        }
+
+        this.$('#forgot-send').html(this.spinner.spin().el);
+
+        this.canSend = false;
+
+        new app.Login().forgot_password(this.$('#forgot-password-email').val(),function(err){
+            if(err){
+                this.$('.forgot-error').html(err);
+                this.$('.forgot-error').removeClass('hidden');
+
+                this.$('#forgot-send').html("Send");
+                this.canSend = true;
+            }else{
+                this.$('.forgot-msg').html('E-mail sent with success!');
+                this.$('.forgot-msg').removeClass('hidden');
+
+                this.$('#forgot-password-email').attr('disabled', 'disabled');
+                this.$('#forgot-ok').removeClass('hidden');
+                this.$('#forgot-ok').focus();
+                this.$('#forgot-send').addClass('hidden');
+                this.$('#forgot-cancel').addClass('hidden');
+
+            }
+        });
+
+    },
+
+    dismiss: function(){
+
+        var that = this;
+
+        $('#error-blanket').fadeOut(400);
+        this.$el.fadeOut(400,function(){
+            $('#error-blanket').addClass("hidden");
+            that.$el.addClass("hidden");
+        });
+
+        //remove the keyup event created in show
+        $(document).unbind('keyup');
+    },
+
+    render: function(){
+
+        var that = this;
+
+        $(this.el).html(this.template());
+
+        $('#error-blanket').fadeIn(400);
+        this.$el.fadeIn(400,function(){
+            $('#error-blanket').removeClass("hidden");
+            that.$el.removeClass("hidden");
+        });
+
+        //if the user press ESC, dismiss the signup popup
+        $(document).bind('keyup', function(e){
+            if(e.keyCode==27){
+                that.dismiss();
+            }
+        });
+
+        this.$('#forgot-password-email').focus();
+
+        return this;
+    }
+
+});
+
 var LoggedPlayerView = Backbone.View.extend({
 
     el: '#logged-player',
@@ -236,12 +358,7 @@ var LoggedPlayerView = Backbone.View.extend({
         var that = this;
 
         this.model.logout(function(err){
-            if(err){
-                simpleErrorHandler(undefined,err);
-            }else{
-                //refresh to page
-                window.location = "/";
-            }
+            window.location = "/";
 
         });
 
@@ -502,6 +619,8 @@ var SignupView = Backbone.View.extend({
                 that.dismiss();
             }
         });
+
+        this.$('#signup-username').focus();
     },
 
     render: function(){
@@ -539,8 +658,15 @@ var LoginView = Backbone.View.extend({
         'click #login-create': 'renderSignup',
         'click #login-ok': 'login',
         'click .fb_button': 'clickedFacebook',
+        'click #forgot-password': 'forgot_password',
         'keyup #login-password': 'pressedEnter'
     },
+
+    forgot_password: function(){
+        console.log("FORGOT");
+        new ForgotPasswordView().render();
+    },
+
 
     pressedEnter: function(evt){
         if(evt.keyCode == 13){

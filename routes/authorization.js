@@ -143,7 +143,9 @@ exports = module.exports = function(options){
 //            res.setHeader('Set-Cookie', val);
 
 
-            if (!req.authorization) return;
+            if(!req.authorization) return;
+
+            if(req.cookies['X-HATracker-Token'] && req.cookies['X-HATracker-Token']==req.sessionToken) return;
 
             res.cookie('X-HATracker-Token',req.sessionToken,req.authorization.cookie);
 

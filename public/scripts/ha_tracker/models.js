@@ -456,10 +456,8 @@ var Login = Backbone.Model.extend({
         $.ajax({
             url: "/api/user/logout",
             headers: {'X-HATracker-Token': app.HATrackerToken}
-        }).success(function( msg ) {
+        }).always(function( msg ) {
                 cb();
-            }).fail(function(err){
-                cb(err.responseText);
             });
 
 
@@ -486,6 +484,61 @@ var Login = Backbone.Model.extend({
             });
 
     },
+
+    forgot_password: function(email, cb){
+        $.ajax({
+            contentType: "application/json",
+            data: '{"email":"' + email + '"}',
+            type: "POST",
+            url: "/api/user/forgot_password"
+        }).success(function( msg ) {
+                cb();
+            }).fail(function(err){
+                try{
+                    cb(JSON.parse(err.responseText).error);
+                } catch(e){
+                    cb(err.responseText);
+                }
+            });
+    },
+
+    reset_password: function(password, confirmation, cb){
+
+        //first get the user
+        $.ajax({
+            url: "/api/user/reset_password_username?confirmation=" + confirmation
+        }).success(function( msg ) {
+
+                $.ajax({
+                    contentType: "application/json",
+                    data: '{"confirmation":"' + confirmation + '","password":"' +  md5.hex_md5(msg.username + $.trim($("#salt").html()) + password) + '"}',
+                    type: "PUT",
+                    url: "/api/user/reset_password"
+                }).success(function( msg ) {
+                        cb();
+
+                    }).fail(function(err){
+                        try{
+                            cb(JSON.parse(err.responseText).error);
+                        } catch(e){
+                            cb(err.responseText);
+                        }
+                    });
+
+
+
+
+            }).fail(function(err){
+                try{
+                    cb(JSON.parse(err.responseText).error);
+                } catch(e){
+                    cb(err.responseText);
+                }
+            });
+
+
+    },
+
 
 
     delete: function(cb){

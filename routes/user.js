@@ -8,7 +8,21 @@ var sha1 = require('../api/sha1.js');
 var u = require('underscore');
 var https = require('https');
 var http = require('http');
-var redis = require('redis-url').connect(env.redis_url);
+var nodemailer = require('nodemailer');
+var crypto = require('crypto');
+
+
+// create reusable transport method (opens pool of SMTP connections)
+var smtpTransport = nodemailer.createTransport("SMTP",{
+    host : "smtp.gmail.com",
+    port : "465",
+    secureConnection: true,
+    auth: {
+        user: env.secrets.mail_username,
+        pass: env.secrets.mail_password
+    }
+});
+
 
 function clearCookies(res){
 
@@ -36,11 +50,11 @@ function clearAuthorization(req, res){
  */
 function validateNonce(nonce, fn){
 
-    redis.get('nonce:' + nonce, function(err,value){
+    app.redis.get('nonce:' + nonce, function(err,value){
         if(!err && value!=null){
             //if the nonce is valid remove it from the valid nonces list, so it
             //cannot be used again to try to relogin
-            redis.del('nonce:' + nonce,function(){
+            app.redis.del('nonce:' + nonce,function(){
                 fn(true);
             });
         }else{
@@ -50,51 +64,6 @@ function validateNonce(nonce, fn){
     });
 
 }
-
-
-
-app.get('/api/token', function(req, res){
-
-    if(req.authorization){
-        if(req.authorization.access != undefined){
-            console.log("+1");
-            req.authorization.access += 1;
-        }else{
-            console.log("0");
-            req.authorization.access = 0;
-        }
-
-
-
-
-        res.send(JSON.stringify(req.authorization));
-
-
-    }else{
-        req.generateAuthorization(function(authorization){
-
-            authorization.merda = "bosta";
-
-            res.send(JSON.stringify(authorization.id));
-        });
-    }
-
-
-
-
-
-//    common.generateAuthorization({coisa: 'lixo'},function(err,token){
-//        //res.send(token);
-//
-//        common.getSession(token,function(err,value){
-//            res.send(value);
-//        });
-//
-//
-//    });
-
-
-});
 
 app.get('/api/salt', function(req, res){
 
@@ -110,7 +79,7 @@ app.get('/api/nonce', function(req, res){
 
     var nonce = uuid.uuid(10);
 
-    var multi = redis.multi();
+    var multi = app.redis.multi();
 
     multi.set('nonce:' + nonce, '');
     multi.expire('nonce:' + nonce, 60);
@@ -132,7 +101,7 @@ app.get('/api/nonce', function(req, res){
 app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
 
     if(req.authorization){
-        console.log("TEM SESSAO");
+
         models.User.findById(req.authorization.userId,{}, common.userId('MASTER'), function(err,user){
 
             //if is a facebook user, clean facebook access token
@@ -152,7 +121,6 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
         });
 
     }else{
-        console.log("NÃO TEM SESSAO");
         res.json(401, {code: 105, error: "Not logged"});
     }
 });
@@ -397,6 +365,183 @@ app.post("/api/user/signup", function(req, res){
         });
 
     }
+});
+
+app.get("/api/user/confirm", function(req, res){
+
+//    criar algum token pra confirmar o e-mail
+//    manter nas setting um botão pra resend do email de confirmação.
+//    ou não implementar isso e que se dane o usuário!
+});
+
+app.post("/api/user/forgot_password", function(req, res){
+
+    models.User.findOne({"email": req.body.email},{}, common.userId('MASTER'), function(err,user){
+
+        if(err) console.log(err);
+
+        if(!user){
+            res.json(401, {code: 111, error: "Email not registered!"});
+
+            return;
+        }
+
+        crypto.randomBytes(24, function(ex, buf) {
+            var confirmation = buf.toString('hex');
+
+            var multi = app.redis.multi();
+
+            //if any previous reset password request has made first invalidate it
+            if(user.reset_password){
+                multi.del("resetpw:" + user.reset_password);
+            }
+
+            multi.set("resetpw:" + confirmation, user._id);
+            multi.expire("resetpw:" + confirmation, 86400);
+
+            multi.exec(function(err,value){
+
+                if(err) console.log(err);
+
+                //set the user with the confirmation number
+                user.reset_password = confirmation;
+
+                user.save(common.userId(user._id),function(err){
+
+                    //setup e-mail data with unicode symbols
+                    var mailOptions = {
+                        from: env.secrets.mail_username,
+                        to: user.email,
+                        subject: "HATracker - Recover Password",
+                        text: "Link: http://" + req.headers.host + "/reset_password?confirmation=" + confirmation
+                        //html: "<b>Hello world</b>"
+                    };
+
+                    // send mail with defined transport object
+                    smtpTransport.sendMail(mailOptions, function(error, response){
+                        if(error){
+                            console.log(error);
+                        }else{
+                            console.log("Message sent: " + response.message);
+                        }
+
+                    });
+
+
+                    res.send('true');
+
+
+                });
+
+
+
+
+
+            });
+
+
+
+        });
+
+
+
+
+    });
+
+
+
+});
+
+app.get("/api/user/reset_password_username", function(req, res){
+
+    //get user
+    app.redis.get("resetpw:" + req.query.confirmation, function(err,value){
+
+        if(err) console.log(err);
+
+        if(!value){
+            res.json(401,{code: 412, error: 'Expired password reset confirmation'});
+            return;
+        }
+
+
+        models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
+
+
+
+            if(err) console.log(err);
+
+            if(!value){
+                res.json(401,{code: 413, error: 'Invalid user for password reset'});
+                return;
+            }
+
+            res.json({username: user.username});
+
+        });
+
+
+
+    });
+
+
+
+});
+
+
+app.put("/api/user/reset_password", function(req, res){
+
+    if(!req.body.password){
+        res.json(401,{code: 414, error: 'Must provide password for password reset'});
+        return;
+    }
+
+
+    //get user
+    app.redis.get("resetpw:" + req.body.confirmation, function(err,value){
+
+        if(err) console.log(err);
+
+        if(!value){
+            res.json(401,{code: 412, error: 'Expired password reset confirmation'});
+            return;
+        }
+
+
+        models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
+
+            if(err) console.log(err);
+
+            if(!value){
+                res.json(401,{code: 413, error: 'Invalid user for password reset'});
+                return;
+            }
+
+            user.password = req.body.password;
+            delete user.reset_password;
+
+
+
+            user.save(common.userId(user._id),function(err){
+
+                if(err) console.log(err);
+
+                res.send('true');
+
+                //invalidate current change password token
+                app.redis.del("resetpw:" + req.body.confirmation);
+
+            });
+
+
+
+        });
+
+
+
+    });
+
+
 });
 
 

@@ -1,0 +1,17 @@
+Hey {{username}},
+
+
+Welcome to HATracker!
+
+Please click the link below or past it in your web browser to confirm your account.
+
+{{link}}
+
+
+Thank you for using HATracker! If you have any problems send an email to {{mail}}
+
+
+http://www.hatracker.com
+
+
+

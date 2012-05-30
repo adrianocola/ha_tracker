@@ -336,6 +336,90 @@ div.github,
 div.ref {
   margin-top: 10px;
 }
+div#forgot-password-panel {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  padding: 10px 15px 10px 15px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 0px 2px 8px #000;
+  -webkit-box-shadow: 0px 2px 8px #000;
+  box-shadow: 0px 2px 8px #000;
+  z-index: 1000;
+}
+#forgot-password-email {
+  display: block;
+  width: 97%;
+}
+#forgot-send,
+#forgot-cancel,
+#forgot-ok {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+#forgot-send {
+  float: left;
+}
+#forgot-cancel {
+  float: right;
+}
+#forgot-ok {
+  width: 20%;
+  margin-left: 40%;
+}
+div.forgot-error {
+  color: #f00;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin-top: 5px;
+}
+div.forgot-msg {
+  color: #008000;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin-top: 5px;
+}
+div.reset_layout {
+  margin-left: 20px;
+  width: 180px;
+  margin-left: auto;
+  margin-right: auto;
+}
+input#reset-password,
+input#reset-repeat-password {
+  display: block;
+  margin-top: 20px;
+  width: 100%;
+}
+#reset-ok,
+#reset-cancel {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+#reset-ok {
+  float: left;
+}
+#reset-cancel {
+  float: right;
+}
+div.reset-error {
+  color: #f00;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin-top: 5px;
+}
+div.reset-msg {
+  color: #008000;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin-top: 5px;
+}
 body {
   width: 100%;
   height: 100%;

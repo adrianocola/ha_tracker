@@ -2,13 +2,17 @@ var express = require('express')
   , http = require('http')
   , env = require('./conf/env')
   , authorization = require('./routes/authorization')
-  , RedisStore = require('connect-redis')(express);
+  , RedisStore = require('connect-redis')(express)
+  , redis = require('redis-url').connect(env.redis_url);
+
 
 // faz com que o retorno desse arquivo no método require seja a variável app
 // isso permitirá outros arquivos manipular app (ex: adicionar rotas)
 var app = module.exports = express();
 //var app = module.exports = express.createServer();
 
+//expose redis
+app.redis = redis;
 
 app.configure(function(){
     app.set('views', __dirname + '/views');
@@ -31,7 +35,7 @@ app.configure('development', function(){
 
     //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 60000 }}));
     //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 300000 } }));
-    app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 300000 }}));
+    app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 1000 }}));
 
     app.use(express.favicon('/public/favicon-dev.ico'));
     app.use(app.router);

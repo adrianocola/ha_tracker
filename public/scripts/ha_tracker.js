@@ -4,9 +4,8 @@ app = window.app ? window.app : {};
 
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
+//IMPLEMENTAR tamanho mínimo de senha e username
 //IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
-//Mudar icone da aplicação
-//IMPLEMENTAR estratégia do expressjs pra deixar meu cookie de sessão seguro
 
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...

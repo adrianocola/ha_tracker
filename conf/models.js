@@ -156,6 +156,7 @@ var UserSchema = new Schema({
     username: {type: String, lowercase: true, index: { unique: true, sparse: true }},
     email: {type: String, lowercase: true, index: { unique: true, sparse: true }},
     password: {type: String},
+    reset_password: {type: String},
     facebook: {
         userID: {type: String, index: { unique: true, sparse: true }},
         accessToken: String,

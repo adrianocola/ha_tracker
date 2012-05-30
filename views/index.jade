@@ -18,12 +18,22 @@ block scripts-site
 
 block templates
     script(type="text/template",id="error-template")
-        h2 Some error have ocurred \=/
+        h2 Some error have ocurred =/
         div.error
             b Error:
                 <%= error %>
         div.dismiss
             a.link reload page
+
+    script(type="text/template",id="forgot-password-template")
+        h3 Reset Your Password
+        input#forgot-password-email.login-field(type="text",placeholder="e-mail")
+        div.forgot-error
+        div.forgot-msg
+        button#forgot-send.button-01.login-button(title="Send") Send e-mail
+        button#forgot-cancel.button-02.login-button(title="Cancel") Cancel
+        button#forgot-ok.button-01.login-button.hidden(title="OK") OK
+
 
     script(type="text/template",id="login-template")
         div.login-site
@@ -206,6 +216,7 @@ block main-page
     div#error-blanket.hidden
     div#signup.hidden
     div#error.hidden
+    div#forgot-password-panel.hidden
 
 
 
