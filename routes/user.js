@@ -112,6 +112,7 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
             res.send({});
 
 
+
         });
 
     }else{

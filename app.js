@@ -27,6 +27,7 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
 
+    app.set('json spaces',3);
 
 
 });
