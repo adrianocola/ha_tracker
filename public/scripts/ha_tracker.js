@@ -6,6 +6,10 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR "change password"
 //IMPLEMENTAR tamanho mínimo de senha e username
 //IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
+//VERIFICAR se quando o reset password foi feito com sucesso foi deletado do user o reset_password
+//VERIFICAR se relogar está renovando o timeout da sessão! (ver no facebook tb)
+//MELHORAR efeito de mouse over em um item... aquele resize tá muito feio!
+
 
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...

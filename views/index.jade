@@ -131,6 +131,8 @@ block templates
         h2 Enemies
         button#add-enemy Add Enemy
         input#filter(type="text",placeholder="Filter Enemies")
+        input#showActive(type="checkbox")
+        span.showActiveText Show only active games and players
         ul.enemies
 
     script(type="text/template",id="add-enemy-template")
@@ -168,23 +170,34 @@ block templates
 
 
     script(type="text/template",id="selected-game-template")
-        //
-            div.game-info
-                input(type="radio",name="game-status",checked)
+        <% if(data) { %>
+        div.game-info
+            //div.game-info-text Game state:
+            div.state-box.in_progress
+                input#state_in_progress(type="radio",name="game-status")
                 span In Progress
-                input(type="radio",name="game-status")
+            div.state-box.won
+                input#state_won(type="radio",name="game-status")
                 span Won
-                select
-                    option(value="Crystal") Crystal
-                    option(value="Items") Items
-                    option(value="Other") Other
-                input(type="radio",name="game-status")
+                select#state_select_won
+                    option(value="Won - Crystal") Destroyed Crystal
+                    option(value="Won - Heroes") Killed Heroes
+                    option(value="Won - Surrender") Surrendered
+                    option(value="Won - Timeout") Stopped playing
+            div.state-box.lost
+                input#state_lost(type="radio",name="game-status")
                 span Lost
-                select
-                    option(value="Crystal") Crystal
-                    option(value="Items") Items
-                    option(value="Other") Other
+                select#state_select_lost
+                    option(value="Lost - Crystal") Destroyed Crystal
+                    option(value="Lost - Heroes") Killed Heroes
+                    option(value="Lost - Surrender") Surrendered
+                    option(value="Lost - Timeout") Stopped playing
+        <% } %>
         div.items-panel
+            div.player-items-mask.hidden
+                div.read-only-items Read-Only
+            div.enemy-items-mask.hidden
+                div.read-only-items Read-Only
 
     script(type="text/template", id="player-items-template")
         <% print('<img class=\"raceTitle\" src=\"' + playerRaceTitle + '\"/>'); %>

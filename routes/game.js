@@ -77,6 +77,24 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
 });
 
+app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res){
+
+    models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
+
+        var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
+
+        game.state = req.body.state;
+
+        player.save(common.userId(req.authorization.userId), function(err){
+            if (!err) res.send("true");
+        });
+
+
+    });
+
+
+});
+
 
 app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res){
 

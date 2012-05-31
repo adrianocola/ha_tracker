@@ -29,7 +29,6 @@ app.configure(function(){
 
     //formats the json output with 3 spaces of identation
     app.set('json spaces',3);
-    //app.set('json replacer',undefined);
 
 
 });
@@ -38,7 +37,7 @@ app.configure('development', function(){
 
     //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 60000 }}));
     //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 300000 } }));
-    app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 1000 }}));
+    app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 300000 }}));
 
     app.use(express.favicon('/public/favicon-dev.ico'));
     app.use(app.router);

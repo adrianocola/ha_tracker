@@ -113,7 +113,7 @@ var GameSchema = new Schema({
     enemyRace: {type: String, required: true},
     playerItems: { type: Schema.ObjectId, ref: 'ItemManager'},
     enemyItems: { type: Schema.ObjectId, ref: 'ItemManager'},
-    status: Number
+    state: {type: Number, default: 0}
 });
 
 var EnemySchema = new Schema({
@@ -196,6 +196,7 @@ UserSchema.methods.secure = function(){
 
     delete this._doc.password;
     delete this._doc.ACL;
+    delete this._doc.reset_password;
 
     return this;
 

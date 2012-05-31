@@ -234,3 +234,16 @@ exports.Tribe = {
 }
 
 exports.Races = [exports.Council, exports.DarkElves, exports.Dwarves, exports.Tribe];
+
+
+exports.States = {
+    0: 'In Progress',
+    1: 'Won - Crystal',
+    2: 'Won - Heroes',
+    3: 'Won - Surrender',
+    4: 'Won - Timeout',
+    5: 'Lost - Crystal',
+    6: 'Lost - Heroes',
+    7: 'Lost - Surrender',
+    8: 'Lost - Timeout'
+}

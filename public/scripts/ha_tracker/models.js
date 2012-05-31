@@ -206,6 +206,14 @@ var Game = Backbone.Model.extend({
         }
     },
 
+    validate: function(attrs){
+
+        if(attrs.state < 0 || attrs.state > 8){
+            return 'Invalid state';
+        }
+
+    },
+
     select: function(){
 
         var that = this;
