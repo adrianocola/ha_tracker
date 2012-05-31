@@ -125,7 +125,7 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
     }
 });
 
-app.get('/api/user/:name', function(req,res){
+app.get('/api/user/test/:name', function(req,res){
 
     models.User.findOne({username: req.params.name.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
@@ -135,21 +135,10 @@ app.get('/api/user/:name', function(req,res){
             res.json({});
         }
 
-
     });
 
 });
 
-app.get('/api/dummy', function(req,res){
-
-    res.send({
-        "player": "4fc40a425996820000000005",
-        "password": "46b8c5a47a42cf688584484bd3f0cf95",
-        "username": "a",
-        "_id": "4fc40a425996820000000004"
-    });
-
-});
 
 
 app.get('/api/user/login', function(req,res){
@@ -252,7 +241,7 @@ app.get('/api/user/continue_login', function(req,res){
                 var secureUser = user.secure();
                 secureUser._doc.token = req.sessionToken;
 
-                res.send(secureUser);
+                res.json(secureUser);
 
                 common.statsMix(4321,1,{type: 'relogin', platform: common.isMobile(req)?"mobile":"web"});
 
@@ -290,7 +279,7 @@ app.get('/api/user/continue_login', function(req,res){
                             var secureUser = user.secure();
                             secureUser._doc.token = req.sessionToken;
 
-                            res.send(secureUser);
+                            res.json(secureUser);
 
                             common.statsMix(4321,1,{type: 'relogin', platform: common.isMobile(req)?"mobile":"web"});
 
@@ -375,7 +364,7 @@ app.post("/api/user/signup", function(req, res){
                             var secureUser = user.secure();
                             secureUser._doc.token = req.sessionToken;
 
-                            res.send(secureUser);
+                            res.json(secureUser);
 
 
                             common.statsMix(4320,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
