@@ -163,7 +163,7 @@ app.get('/api/user/login', function(req,res){
                                     var secureUser = user.secure();
                                     secureUser._doc.token = req.sessionToken;
 
-                                    res.send(secureUser);
+                                    res.json(secureUser);
 
                                     common.statsMix(4321,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
 
@@ -176,7 +176,7 @@ app.get('/api/user/login', function(req,res){
                                 var secureUser = user.secure();
                                 secureUser._doc.token = req.sessionToken;
 
-                                res.send(secureUser);
+                                res.json(secureUser);
 
                                 common.statsMix(4321,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
                             }
