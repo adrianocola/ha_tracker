@@ -125,7 +125,10 @@ app.get('/api/user/test/:name', function(req,res){
     models.User.findOne({username: req.params.name.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
         if(user){
-            res.json(user.secure());
+            var secure = user.secure();
+            secure._doc.token = uuid.uuid(64);
+
+            res.json(secure);
             //res.send(user);
         }else{
             res.json({});
