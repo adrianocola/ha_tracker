@@ -27,13 +27,9 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
 
+    //formats the json output with 3 spaces of identation
     app.set('json spaces',3);
-//    app.set('json replacer',function(k,v){
-//        console.log("KEY: " + k + ", VAL: " + v);
-//        return v;
-//    });
-
-    app.set('json replacer',undefined);
+    //app.set('json replacer',undefined);
 
 
 });
