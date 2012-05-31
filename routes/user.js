@@ -65,12 +65,6 @@ function validateNonce(nonce, fn){
 
 }
 
-app.get('/api/salt', function(req, res){
-
-    res.json({salt: env.salt, coisa: 'bosta'});
-
-});
-
 /**
  * generates a nonce for password cryptography
  * more details: http://en.wikipedia.org/wiki/Cryptographic_nonce
@@ -130,24 +124,12 @@ app.get('/api/user/test/:name', function(req,res){
     models.User.findOne({username: req.params.name.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
         if(user){
-            res.json(user.toObject({}));
+            res.json(user._doc);
             //res.send(user);
         }else{
             res.json({});
         }
 
-    });
-
-});
-
-app.get('/api/user/dummy', function(req,res){
-
-    res.json(
-        {"player": "4fc40a425996820000000005",
-        "email": "a@a.a",
-        "password": "46b8c5a47a42cf688584484bd3f0cf95",
-        "username": "a",
-        "_id": "4fc40a425996820000000004"
     });
 
 });
