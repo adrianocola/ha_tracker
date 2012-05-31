@@ -67,7 +67,7 @@ function validateNonce(nonce, fn){
 
 app.get('/api/salt', function(req, res){
 
-    res.send(env.salt);
+    res.json({salt: env.salt});
 
 });
 
