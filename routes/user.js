@@ -125,6 +125,32 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
     }
 });
 
+app.get('/api/user/:name', function(req,res){
+
+    models.User.findOne({username: req.params.name.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
+
+        if(user){
+            res.json(user);
+        }else{
+            res.json({});
+        }
+
+
+    });
+
+});
+
+app.get('/api/dummy', function(req,res){
+
+    res.send({
+        "player": "4fc40a425996820000000005",
+        "password": "46b8c5a47a42cf688584484bd3f0cf95",
+        "username": "a",
+        "_id": "4fc40a425996820000000004"
+    });
+
+});
+
 
 app.get('/api/user/login', function(req,res){
 

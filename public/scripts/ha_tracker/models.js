@@ -411,6 +411,7 @@ var Login = Backbone.Model.extend({
                     data: "username=" + username + "&password=" + secure_password + "&nonce=" + nonce + (keepLogged?"&keepLogged=true":""),
                     url: "/api/user/login"
                 }).success(function( msg ) {
+                        console.log(msg)
                         //set the token to be used in authenticated requests
                         app.HATrackerToken = msg.token;
 
