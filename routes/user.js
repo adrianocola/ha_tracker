@@ -129,14 +129,24 @@ app.get('/api/user/test/:name', function(req,res){
 
     models.User.findOne({username: req.params.name.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
-        res.header('Content-Type','text/javascript; charset=UTF-8');
-
         if(user){
             res.json(user);
         }else{
-            res.json({});
+            res.send({});
         }
 
+    });
+
+});
+
+app.get('/api/user/dummy', function(req,res){
+
+    res.json(
+        {"player": "4fc40a425996820000000005",
+        "email": "a@a.a",
+        "password": "46b8c5a47a42cf688584484bd3f0cf95",
+        "username": "a",
+        "_id": "4fc40a425996820000000004"
     });
 
 });
