@@ -28,6 +28,12 @@ app.configure(function(){
     app.use(express.cookieParser(env.secrets.session));
 
     app.set('json spaces',3);
+//    app.set('json replacer',function(k,v){
+//        console.log("KEY: " + k + ", VAL: " + v);
+//        return v;
+//    });
+
+    app.set('json replacer',undefined);
 
 
 });
