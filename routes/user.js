@@ -130,6 +130,8 @@ app.get('/api/user/test/:name', function(req,res){
     models.User.findOne({username: req.params.name.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
         if(user){
+
+            res.header('Content-Type','text/javascript; charset=UTF-8' );
             res.send(JSON.stringify(user));
         }else{
             res.send({});
