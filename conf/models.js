@@ -195,6 +195,7 @@ KeepLoggedSchema.plugin(ACL_Plugin);
 UserSchema.methods.secure = function(){
 
     delete this._doc.password;
+    delete this._doc.ACL;
 
     return this;
 
