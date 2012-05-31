@@ -22,7 +22,7 @@ app.configure(function(){
     app.use(require('stylus').middleware({ src: __dirname + '/public' }));
     app.use(express.static(__dirname + '/public'));
     app.use(express.static(__dirname + '/public-cached', { maxAge: 86400000 }));
-    app.use(express.compress());
+    //app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
