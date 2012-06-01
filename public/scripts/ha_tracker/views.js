@@ -833,7 +833,7 @@ var PlayerView = Backbone.View.extend({
 
         _.bindAll(this);
 
-        this.model.bind("change",this.render,this);
+        //this.model.bind("change",this.render,this);
 
     },
 
@@ -871,12 +871,41 @@ var EnemiesView = Backbone.View.extend({
     events: {
         'click #add-enemy':  'addEnemy',
         'keyup #filter': 'filter',
-        'change #showActive': 'setShowOnlyActive'
+        'change #showActive': 'setShowOnlyActive',
+        'change #showState': 'setShowState'
     },
 
     setShowOnlyActive: function(){
 
-        this.showOnlyActive = !this.showOnlyActive;
+        var showOnlyActive = this.$('#showActive').attr('checked')?true:false;
+
+        if(showOnlyActive){
+            this.$('#showState').attr('disabled','disabled');
+        }else{
+            this.$('#showState').removeAttr('disabled');
+        }
+
+        this.collection.showOnlyActive(showOnlyActive);
+
+        this.collection.player.save({showOnlyActive: showOnlyActive});
+
+        this.filter();
+
+    },
+
+    setShowState: function(){
+
+        var showState = this.$('#showState').attr('checked')?true:false;
+
+        if(showState){
+            $('.game.won').addClass('showState');
+            $('.game.lost').addClass('showState');
+        }else{
+            $('.game.won.showState').removeClass('showState');
+            $('.game.lost.showState').removeClass('showState');
+        }
+
+        this.collection.player.save({showState: showState});
 
     },
 
@@ -889,12 +918,18 @@ var EnemiesView = Backbone.View.extend({
         $enemies.html('');
 
         _.each(this.collection.sortBy('position',this),function(enemy) {
-            if(enemy.visible){
+            if(enemy.isVisible()){
                 var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
             }
 
         },this);
+
+        //verify if the player have the option "Show state" marked
+        if(this.collection.player.get('showState')){
+            this.$('.game.won').addClass('showState');
+            this.$('.game.lost').addClass('showState');
+        }
 
     },
 
@@ -926,19 +961,30 @@ var EnemiesView = Backbone.View.extend({
         $(this.el).html(this.template({}));
         $enemies = this.$(".enemies");
 
+        //verify if the player have the option "Show only active" marked
+        if(this.collection.player.get('showOnlyActive')){
+            this.collection.showOnlyActive(true);
+            this.$('#showActive').attr('checked',true);
+            this.$('#showState').attr('disabled','disabled');
+        }
+
+        //render all enemies
         _.each(this.collection.sortBy('position',this),function(enemy) {
-            if(enemy.visible){
-                console.log(this);
+            if(enemy.isVisible()){
                 var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
             }
 
-        },this)
+        },this);
 
-//        this.collection.each(function(enemy) {
-//            var view = new EnemyView({ model: enemy});
-//            $enemies.append(view.render().el);
-//        });
+        //verify if the player have the option "Show state" marked
+        if(this.collection.player.get('showState')){
+            console.log("DEVERIA PINTAR");
+            this.$('#showState').attr('checked',true);
+            this.$('.game.won').addClass('showState');
+            this.$('.game.lost').addClass('showState');
+        }
+
 
         return this;
     }
@@ -1152,8 +1198,10 @@ var EnemyView = Backbone.View.extend({
         $games = this.$(".games");
 
         this.model.games.each(function(game) {
-            var view = new GameView({ model: game, collection: gamesCollection });
-            $games.append(view.render().el);
+            if(game.isVisible()){
+                var view = new GameView({ model: game, collection: gamesCollection });
+                $games.append(view.render().el);
+            }
         },this);
 
 
@@ -1242,6 +1290,8 @@ var GameView = Backbone.View.extend({
 
         this.model.bind("change:unselected", this.renderUnselected,this);
 
+        this.model.bind("change:state", this.renderState,this);
+
         this.model.bind("error", this.error,this);
 
     },
@@ -1284,8 +1334,40 @@ var GameView = Backbone.View.extend({
 
     },
 
+    renderState: function(){
+
+        if(this.model.isWon()){
+            this.$el.removeClass('lost');
+            this.$el.addClass('won');
+        }else if(this.model.isLost()){
+            this.$el.removeClass('won');
+            this.$el.addClass('lost');
+        }else{
+            this.$el.removeClass('won');
+            this.$el.removeClass('lost');
+        }
+
+
+        if($('#showState').attr('checked')){
+            console.log('AKI');
+            this.$el.addClass('showState');
+        }
+
+
+        return this;
+
+    },
+
     render: function(){
-        $(this.el).html(this.template(this.model.toJSON()));
+        this.$el.html(this.template(this.model.toJSON()));
+
+        this.renderState();
+
+        //verify if is rendering the selected game. If is, also
+        //render the game as selected
+        if(this.model == app.SelectionManager.selectedGame){
+            this.renderSelected();
+        }
 
         return this;
     }

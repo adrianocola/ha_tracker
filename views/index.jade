@@ -132,7 +132,9 @@ block templates
         button#add-enemy Add Enemy
         input#filter(type="text",placeholder="Filter Enemies")
         input#showActive(type="checkbox")
-        span.showActiveText Show only active games and players
+        span.showActiveText Show only active
+        input#showState(type="checkbox")
+        span.showStateText Show state
         ul.enemies
 
     script(type="text/template",id="add-enemy-template")

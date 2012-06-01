@@ -654,6 +654,16 @@ div.game-info select {
   list-style: none;
   cursor: pointer;
 }
+.game.won.showState .gameNum {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
+  background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
+  background-color: #b8e356;
+}
+.game.lost.showState .gameNum {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
+  background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
+  background-color: #fc8d83;
+}
 .game:hover {
   color: #fff;
   background-color: #888;
@@ -758,6 +768,15 @@ div.game-info select {
   background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
   background-color: #b8e356;
   border: 1px solid #83c41a;
+  -moz-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  -moz-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea));
+  background: -moz-linear-gradient(center top, #bddbfa 5%, #80b5ea 100%);
+  background-color: #bddbfa;
+  border: 1px solid #84bbf3;
 }
 .raceIcon {
   width: 30px;
@@ -807,13 +826,21 @@ div.game-info select {
   line-height: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-#showActive {
-  margin-left: 10px;
+#showActive,
+#showState {
   margin-top: 5px;
 }
-span.showActiveText {
+#showActive {
+  margin-left: 10px;
+}
+#showState {
+  margin-left: 20px;
+}
+span.showActiveText,
+span.showStateText {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #808080;
+  margin-left: 1px;
 }
 .enemy {
   background-color: #eee;

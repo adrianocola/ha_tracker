@@ -125,6 +125,8 @@ var EnemySchema = new Schema({
 
 var PlayerSchema = new Schema({
     user:{ type: Schema.ObjectId, ref: 'User', required: true, index: {unique: true}},
+    showOnlyActive: {type: Boolean, default: 0},
+    showState: {type: Boolean, default: 0},
     enemies: [EnemySchema]
 });
 PlayerSchema.plugin(ACL_Plugin);

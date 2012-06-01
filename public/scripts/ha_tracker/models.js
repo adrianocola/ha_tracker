@@ -181,6 +181,7 @@ var Game = Backbone.Model.extend({
     initialize: function(){
 
         this.selected = false;
+        this.active = true;
 
         var playerRace = _.find(Races, function(race){ return race.raceName === this.get("playerRace")},this);
         this.set("playerRaceIcon",playerRace.raceIcon);
@@ -214,6 +215,23 @@ var Game = Backbone.Model.extend({
 
     },
 
+    isWon: function(){
+        if(this.get('state') >=1 && this.get('state') <=4) {
+            return true;
+        }else{
+            return false;
+        }
+    },
+
+    isLost: function(){
+        if(this.get('state') >=5 && this.get('state') <=8) {
+            return true;
+        }else{
+            return false;
+        }
+    },
+
+
     select: function(){
 
         var that = this;
@@ -227,9 +245,21 @@ var Game = Backbone.Model.extend({
         }});
     },
 
-    isActive: function(){
+    isVisible: function(){
 
-        return this.get('state')==0 ? true : false;
+        return this.active;
+
+    },
+
+    showOnlyActive: function(showOnlyActive){
+
+        if(showOnlyActive && this.get('state')==0){
+            this.active = true;
+        }else if(!showOnlyActive){
+            this.active = true;
+        }else{
+            this.active = false;
+        }
 
     }
 
@@ -250,6 +280,7 @@ var Games = Backbone.Collection.extend({
 
     }
 
+
 });
 
 
@@ -259,10 +290,12 @@ var Enemy = Backbone.Model.extend({
 
     initialize: function(){
 
+        this.inFilter = true;
         this.visible = true;
 
         this.games = new Games(this.get('games'));
         this.games.enemy = this;
+        this.active = true;
 
 
         this.games.bind("change:selected",function(){
@@ -281,13 +314,38 @@ var Enemy = Backbone.Model.extend({
         this.games.select(gameId);
     },
 
-    setVisible: function(visibility){
-        this.visible = visibility;
+    setInFilter: function(inFilter){
+        this.inFilter = inFilter;
     },
 
-    isActive: function(){
+    isVisible: function(){
+        if(this.inFilter && this.active){
+            return true;
+        }else{
+            return false;
+        }
 
-        return this.games.any(function(game){ return game.isActive(); });
+    },
+
+    showOnlyActive: function(showOnlyActive){
+
+        this.games.each(function(game){
+            game.showOnlyActive(showOnlyActive);
+        });
+
+        if(showOnlyActive){
+            var isAnyGameVisible = this.games.any(function(game){ return game.active; });
+
+            if(isAnyGameVisible){
+                this.active = true;
+            }else{
+                this.active = false;
+            }
+
+        }else{
+            this.active = true;
+        }
+
     }
 
 
@@ -304,11 +362,11 @@ var Enemies = Backbone.Collection.extend({
         this.each(function(enemy){
             //contains key
             if(enemy.get('name').toLowerCase().indexOf(key)!=-1){
-                enemy.setVisible(true);
+                enemy.setInFilter(true);
 
             //not contains key
             }else{
-                enemy.setVisible(false);
+                enemy.setInFilter(false);
             }
 
 
@@ -327,7 +385,15 @@ var Enemies = Backbone.Collection.extend({
         return true;
 
 
+    },
+
+    showOnlyActive: function(showOnlyActive){
+
+        this.each(function(enemy){
+            enemy.showOnlyActive(showOnlyActive);
+        });
     }
+
 
 
 
@@ -346,6 +412,8 @@ var Player = Backbone.Model.extend({
 
     loadEnemies: function(){
         this.enemies = new app.Enemies(this.get('enemies'));
+
+        this.enemies.player = this;
     },
 
     selectGame: function(enemyId, gameId){
@@ -353,6 +421,8 @@ var Player = Backbone.Model.extend({
         //this.enemies.get(enemyId).selectGame(gameId);
 
     }
+
+
 
 
 });
