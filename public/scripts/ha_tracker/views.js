@@ -1188,8 +1188,9 @@ var EnemyView = Backbone.View.extend({
 
         //ENTER
         if(evt.keyCode == 13){
-            if(this.$('.newEnemyName').val().length != 0 && !this.collection.exists(this.$('.newEnemyName').val())){
 
+            if(this.$('.newEnemyName').val().length != 0 && !this.collection.exists(this.$('.newEnemyName').val())){
+                console.log("ENTER1");
                 this.$('.newEnemyName').addClass('hidden');
                 this.$('.enemyName').removeClass('hidden');
 
@@ -1197,18 +1198,26 @@ var EnemyView = Backbone.View.extend({
 
                 this.model.save({name: this.$('.newEnemyName').val()},{success: function(){
 
-                    this.$('.enemyExists').addClass('hidden');
+                    that.$('.enemyExists').addClass('hidden');
 
                     that.$('.enemyName').html(that.model.get('name'));
                 }, error: simpleErrorHandler});
 
+            }else if(this.$('.newEnemyName').val() == this.$('.enemyName').html()){
+                this.$('.enemyExists').addClass('hidden');
 
+                this.$('.newEnemyName').addClass('hidden');
+                this.$('.enemyName').removeClass('hidden');
+
+                //this.$('.enemyName').html(that.model.get('name'));
             }
-            //ESC
+
+
+        //ESC
         }else if(evt.keyCode == 27){
             this.cancelRenameEnemy();
         }else{
-            if(this.$('.newEnemyName').val().length != 0 && this.collection.exists(this.$('.newEnemyName').val())){
+            if(this.$('.newEnemyName').val().length != 0 && this.$('.newEnemyName').val() != this.$('.enemyName').html() && this.collection.exists(this.$('.newEnemyName').val())){
                 this.$('.enemyExists').removeClass('hidden');
             }else{
                 this.$('.enemyExists').addClass('hidden');
