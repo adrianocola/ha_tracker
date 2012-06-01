@@ -216,7 +216,7 @@ div.game-info select
     //background-color:#b8e356
     //color: white
 
-.game.won.showState .gameNum
+.game.won.showState:not(.selected-game) .gameNum
     //color: #25aa2a
     //text-shadow:1px 1px 0px #bbbbbb
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52) )
@@ -235,7 +235,7 @@ div.game-info select
     //background-color:#fc8d83;
     //color: white
 
-.game.lost.showState .gameNum
+.game.lost.showState:not(.selected-game) .gameNum
     //color: #cc2424
     //text-shadow:1px 1px 0px #aaaaaa
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d) );
@@ -325,21 +325,10 @@ div.game-info select
     background-color: #555555
 
 .selected-game .gameNum
-    //color: black
-    background-color: #bbffbb
     width: 30px
     height: 36px
     margin: -4px 0 0 -8px
     border-right: 2px solid #666666
-    -moz-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-    -webkit-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-    box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52) )
-    background:-moz-linear-gradient( center top, #b8e356 5%, #a5cc52 100% )
-    //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8e356', endColorstr='#a5cc52')
-    background-color:#b8e356
-    border:1px solid #83c41a
-    //
     -moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
     -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
     box-shadow:inset 0px 1px 0px 0px #dcecfb;

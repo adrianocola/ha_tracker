@@ -931,6 +931,14 @@ var EnemiesView = Backbone.View.extend({
             this.$('.game.lost').addClass('showState');
         }
 
+        //control to hide the selectect game if it is not visible after aplying a filter or active only filter
+        if(!app.SelectionManager.selectedEnemy.isVisible() || !app.SelectionManager.selectedGame.isVisible()){
+            app.SelectedGameView.hide();
+        }else{
+            app.SelectedGameView.show();
+        }
+
+
     },
 
 
@@ -1318,7 +1326,7 @@ var GameView = Backbone.View.extend({
     renderSelected: function(){
 
         this.$el.addClass('selected-game',true);
-        this.$el.removeClass('game',false);
+        //this.$el.removeClass('game',false);
 
         return this;
 
@@ -1326,7 +1334,7 @@ var GameView = Backbone.View.extend({
 
     renderUnselected: function(){
 
-        this.$el.addClass('game');
+        //this.$el.addClass('game');
         this.$el.removeClass('selected-game',false);
 
 
@@ -1349,7 +1357,6 @@ var GameView = Backbone.View.extend({
 
 
         if($('#showState').attr('checked')){
-            console.log('AKI');
             this.$el.addClass('showState');
         }
 
@@ -1466,13 +1473,24 @@ var SelectedGameView = Backbone.View.extend({
         this.render();
     },
 
+    hide: function(){
+        this.$el.hide();
+    },
+
+    show: function(){
+        this.$el.show();
+    },
+
     clean: function(){
 
         this.model = undefined;
-        this.render();
+        return this.render();
     },
 
+
     render: function(){
+
+        this.show();
 
         if(this.model){
             var json = this.model.toJSON();
