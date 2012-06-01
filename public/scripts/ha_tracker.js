@@ -11,6 +11,7 @@ app = window.app ? window.app : {};
 //ADICIONAR telas de welcome
 //ADICIONAR confirmação ao remover enemy e game
 //ARRUMAR fogo da aplicaçãi que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
+//COLOCAR um gratiente nas fitas de deleção de enemy e de game
 
 
 

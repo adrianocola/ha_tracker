@@ -1209,7 +1209,6 @@ var EnemyView = Backbone.View.extend({
                 this.$('.newEnemyName').addClass('hidden');
                 this.$('.enemyName').removeClass('hidden');
 
-                //this.$('.enemyName').html(that.model.get('name'));
             }
 
 
