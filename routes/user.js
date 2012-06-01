@@ -385,6 +385,53 @@ app.get("/api/user/confirm", function(req, res){
 //    ou não implementar isso e que se dane o usuário!
 });
 
+app.put("/api/user/change_password",common.verifyAuthorization, function(req, res){
+    console.log(req.body);
+
+    validateNonce(req.body.nonce, function(valid){
+
+        if(valid){
+
+            models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
+
+                if(err) console.log(err);
+
+                if(user && req.body.old_password == md5.hex_md5(user.password + req.body.nonce)){
+
+                    user.password = req.body.new_password;
+
+                    user.save(common.userId(req.authorization.userId),function(err){
+
+                        if(err){
+                            console.log(err);
+                            res.send(err);
+                        }else{
+                            res.send(true);
+                        }
+
+                    });
+
+
+                }else{
+                    res.json(414, {code: 114, error: "Wrong password"});
+                };
+
+
+            });
+
+        }else{
+            res.json(400, {code: 110, error: "Invalid Nonce"});
+        }
+
+
+    });
+
+
+
+
+});
+
+
 app.post("/api/user/forgot_password", function(req, res){
 
     models.User.findOne({"email": req.body.email},{}, common.userId('MASTER'), function(err,user){

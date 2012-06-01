@@ -299,8 +299,6 @@ var LoggedPlayerView = Backbone.View.extend({
 
         }});
 
-
-
     },
 
     events: {
@@ -312,11 +310,22 @@ var LoggedPlayerView = Backbone.View.extend({
         'click .delete-no': 'denyDelete',
         'click .reset-account': 'resetAcctount',
         'click .reset-yes': 'confirmReset',
-        'click .reset-no': 'denyReset'
+        'click .reset-no': 'denyReset',
+        'click button.change-password': 'changePassword'
+
+    },
+
+    changePassword: function(){
+
+        this.model.change_password(this.$('#change-password-current').val(),this.$('#change-password-new').val(),function(err,msg){
+            console.log(err);
+            console.log(msg);
+        });
 
     },
 
     deleteAcctount: function(){
+
         this.denyReset();
         this.$('.confirm-delete').slideDown();
 
@@ -643,7 +652,7 @@ var SignupView = Backbone.View.extend({
                 that.dismiss();
             }
         });
-
+        console.log("FOCUS1");
         this.$('#signup-username').focus();
     },
 
@@ -730,7 +739,6 @@ var LoginView = Backbone.View.extend({
 
         if(!err){
             this.dismiss();
-
             app.CurrentPlayerView = new app.LoggedPlayerView({model: this.model });
         }
 
@@ -1002,7 +1010,7 @@ var EnemiesView = Backbone.View.extend({
 var AddEnemyView = Backbone.View.extend({
 
     tagName: "li",
-    className: "enemy addEnemyPanel",
+    className: "enemy-container addEnemyPanel",
 
     initialize: function(){
 
@@ -1087,14 +1095,14 @@ var AddEnemyView = Backbone.View.extend({
 
 var EnemyView = Backbone.View.extend({
     tagName:"li",
-    className: "enemy",
+    className: "enemy-container",
 
     initialize: function() {
         this.template = _.template($("#enemy-template").html())
 
         _.bindAll(this);
 
-        this.model.games.bind('add remove', this.render, this);
+        this.model.games.bind('add', this.render, this);
 
         this.model.games.bind('change:selected', this.renderSelected,this);
 
@@ -1107,6 +1115,8 @@ var EnemyView = Backbone.View.extend({
     events: {
         'click .add-game':  'addGame',
         'click .deleteEnemy': 'deleteEnemy',
+        'click .delete-enemy-yes': 'confirmDeleteEnemy',
+        'click .delete-enemy-no': 'denyDeleteEnemy',
         'dblclick .enemyName': 'renameEnemy',
         'keyup .newEnemyName': 'confirmRenameEnemy'
     },
@@ -1115,13 +1125,42 @@ var EnemyView = Backbone.View.extend({
     addGame: function(){
 
         app.AddGameView.games = this.model.games;
-        this.$(".games").append(app.AddGameView.render().el);
+        this.$(".games").prepend(app.AddGameView.render().el);
     },
 
     deleteEnemy: function(){
-        this.model.destroy({error: simpleErrorHandler});
-        this.$el.remove();
+        var that = this;
+
+        this.$('div.enemyDeleteMask').fadeIn();
+        this.$('div.enemyDeleteText').slideDown();
+
+        this.cancelTimeout = setTimeout(function(){
+            that.denyDeleteEnemy();
+        },10000);
     },
+
+    confirmDeleteEnemy: function(){
+        clearTimeout(this.cancelTimeout);
+
+        var that = this;
+
+        this.model.destroy({error: simpleErrorHandler, success: function(){
+            that.$el.slideUp(function(){
+                that.remove();
+            });
+
+        }});
+    },
+
+    denyDeleteEnemy: function(){
+        clearTimeout(this.cancelTimeout);
+
+
+        this.$('div.enemyDeleteMask').fadeOut();
+        this.$('div.enemyDeleteText').slideUp();
+
+    },
+
 
     renameEnemy: function(){
 
@@ -1221,7 +1260,7 @@ var EnemyView = Backbone.View.extend({
 var AddGameView = Backbone.View.extend({
 
     tagName: "li",
-    className: 'game addGamePanel',
+    className: 'game-container addGamePanel',
 
     initialize: function(){
 
@@ -1239,7 +1278,6 @@ var AddGameView = Backbone.View.extend({
     },
 
     confirmAddGame: function(){
-        console.log("COISA");
 
         var playerRace = this.$(".add-game-player-race option:selected").text();
         var enemyRace = this.$(".add-game-enemy-race option:selected").text();
@@ -1253,13 +1291,13 @@ var AddGameView = Backbone.View.extend({
 
         this.$(".confirm-add-game").html(this.spinner.spin().el);
 
-        this.games.create(gameModel, {wait: true, error: simpleErrorHandler});
+        this.games.create(gameModel, {at:0, wait: true, error: simpleErrorHandler});
 
     },
 
     createdGame: function(){
 
-        var game = this.games.last();
+        var game = this.games.first();
 
         this.games.select(game.id);
         app.SelectedGameView.selected(game);
@@ -1267,6 +1305,7 @@ var AddGameView = Backbone.View.extend({
 
     cancelAddGame: function(){
         this.$el.fadeOut('fast');
+        //this.$el.slideUp();
     },
 
     render: function(){
@@ -1274,6 +1313,7 @@ var AddGameView = Backbone.View.extend({
         this.$el.hide();
         $(this.el).html(this.template({}));
         this.$el.fadeIn();
+        //this.$el.slideDown();
 
         //força a delegação de eventos
         this.delegateEvents();
@@ -1286,7 +1326,7 @@ var AddGameView = Backbone.View.extend({
 
 var GameView = Backbone.View.extend({
     tagName:"li",
-    className:'game',
+    className:'game-container',
 
 
     initialize: function() {
@@ -1302,21 +1342,56 @@ var GameView = Backbone.View.extend({
 
         this.model.bind("error", this.error,this);
 
+        this.cancelTimeout = undefined;
+
     },
 
     events:{
-        'click': 'selectGame',
-        'click .deleteGame': 'deleteGame'
+        'click .gameNum': 'selectGame',
+        'click .gamePanel': 'selectGame',
+        'click .deleteGame': 'deleteGame',
+        'click .delete-game-yes': 'confirmDeleteGame',
+        'click .delete-game-no': 'denyDeleteGame'
     },
 
     selectGame: function(){
-
         this.collection.select(this.model.id);
         app.SelectedGameView.selected(this.model);
     },
 
     deleteGame: function(){
-        this.model.destroy({error: simpleErrorHandler});
+
+        var that = this;
+
+        this.$('div.gameDeleteMask').fadeIn();
+        this.$('div.gameDeleteText').slideDown();
+
+        this.cancelTimeout = setTimeout(function(){
+            that.denyDeleteGame();
+        },10000);
+
+    },
+
+    confirmDeleteGame: function(){
+        clearTimeout(this.cancelTimeout);
+
+        var that = this;
+
+        this.model.destroy({error: simpleErrorHandler, success: function(){
+            that.$el.slideUp(function(){
+                that.remove();
+            });
+
+        }});
+    },
+
+    denyDeleteGame: function(){
+        clearTimeout(this.cancelTimeout);
+
+
+        this.$('div.gameDeleteMask').fadeOut();
+        this.$('div.gameDeleteText').slideUp();
+
     },
 
     error: function(msg){
@@ -1325,7 +1400,7 @@ var GameView = Backbone.View.extend({
 
     renderSelected: function(){
 
-        this.$el.addClass('selected-game',true);
+        this.$('.game').addClass('selected-game',true);
         //this.$el.removeClass('game',false);
 
         return this;
@@ -1335,7 +1410,7 @@ var GameView = Backbone.View.extend({
     renderUnselected: function(){
 
         //this.$el.addClass('game');
-        this.$el.removeClass('selected-game',false);
+        this.$('.game').removeClass('selected-game',false);
 
 
         return this;
@@ -1345,19 +1420,19 @@ var GameView = Backbone.View.extend({
     renderState: function(){
 
         if(this.model.isWon()){
-            this.$el.removeClass('lost');
-            this.$el.addClass('won');
+            this.$('.game').removeClass('lost');
+            this.$('.game').addClass('won');
         }else if(this.model.isLost()){
-            this.$el.removeClass('won');
-            this.$el.addClass('lost');
+            this.$('.game').removeClass('won');
+            this.$('.game').addClass('lost');
         }else{
-            this.$el.removeClass('won');
-            this.$el.removeClass('lost');
+            this.$('.game').removeClass('won');
+            this.$('.game').removeClass('lost');
         }
 
 
         if($('#showState').attr('checked')){
-            this.$el.addClass('showState');
+            this.$('.game').addClass('showState');
         }
 
 

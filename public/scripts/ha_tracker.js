@@ -4,11 +4,13 @@ app = window.app ? window.app : {};
 
 //IMPLEMENTAR "forgot password"
 //IMPLEMENTAR "change password"
+//IMPLEMENTAR placar de partidas por enemy
 //IMPLEMENTAR tamanho mínimo de senha e username
-//IMPLEMENTAR fim de partida e arquivamento de jogos e inimigos
 //VERIFICAR se quando o reset password foi feito com sucesso foi deletado do user o reset_password
-//VERIFICAR se relogar está renovando o timeout da sessão! (ver no facebook tb)
 //MELHORAR efeito de mouse over em um item... aquele resize tá muito feio!
+//ADICIONAR telas de welcome
+//ADICIONAR confirmação ao remover enemy e game
+//ARRUMAR fogo da aplicaçãi que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
 
 
 

@@ -119,13 +119,19 @@ block templates
             a.link.settings close
 
     script(type="text/template",id="enemy-template")
-        div
-            span.enemyName <%= name %>
-            input.newEnemyName.hidden(type="text")
-            button.deleteEnemy.button-02(title="Delete Enemy") X
-            button.add-game.button-01(title="Add Game") +
-            div.enemyExists.hidden Enemy already exists!
-        ul.games
+        div.enemy
+            div
+                span.enemyName <%= name %>
+                input.newEnemyName.hidden(type="text")
+                button.deleteEnemy.button-02(title="Delete Enemy") X
+                button.add-game.button-01(title="Add Game") +
+                div.enemyExists.hidden Enemy already exists!
+            ul.games
+        div.enemyDeleteMask.hidden
+        div.enemyDeleteText.hidden
+            span Are you sure?
+            a.delete-enemy-yes Yes
+            a.delete-enemy-no No
 
     script(type="text/template", id="enemies-template")
         h2 Enemies
@@ -163,13 +169,19 @@ block templates
 
     script(type="text/template",id="game-template")
         //<%= num %>  - <%= playerRace %> vs <%= enemyRace %>
-        div.gameNum <%= num %>
-        div.gamePanel
-            <% print('<img class=\"raceIcon\" src=\"' + playerRaceIcon + '\"/>'); %>
-            span vs
-            <% print('<img class=\"raceIcon\" src=\"' + enemyRaceIcon + '\"/>'); %>
-        button.deleteGame.button-02(title="Delete Game") -
-
+        div.game
+            div.gameNum <%= num %>
+            button.deleteGame.button-02(title="Delete Game") -
+            div.gamePanel
+                div
+                    <% print('<img class=\"raceIcon\" src=\"' + playerRaceIcon + '\"/>'); %>
+                    span vs
+                    <% print('<img class=\"raceIcon\" src=\"' + enemyRaceIcon + '\"/>'); %>
+        div.gameDeleteMask.hidden
+        div.gameDeleteText.hidden
+            span Are you sure?
+            a.delete-game-yes Yes
+            a.delete-game-no No
 
     script(type="text/template",id="selected-game-template")
         <% if(data) { %>

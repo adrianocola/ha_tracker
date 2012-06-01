@@ -501,7 +501,7 @@ var Login = Backbone.Model.extend({
                     data: "username=" + username + "&password=" + secure_password + "&nonce=" + nonce + (keepLogged?"&keepLogged=true":""),
                     url: "/api/user/login"
                 }).success(function( msg ) {
-                        console.log(msg)
+
                         //set the token to be used in authenticated requests
                         app.HATrackerToken = msg.token;
 
@@ -572,6 +572,51 @@ var Login = Backbone.Model.extend({
                     cb(err.responseText);
                 }
             });
+
+    },
+
+    change_password: function(old_password, new_password, cb){
+        console.log(old_password);
+        console.log(new_password);
+        var that = this;
+
+        var username = this.get('username').toLowerCase();
+        console.log("USERNAME: " + username);
+
+        //first get the nonce from the server
+        $.ajax({
+            url: "/api/nonce"
+        }).success(function( nonce ) {
+
+                //generate the password hash combining the actual password hash plus the random
+                //number the server sends to the client (nonce) . The client password or hash is never sent
+                //on the wire on the login
+                var secure_old_password = md5.hex_md5(md5.hex_md5(username + $.trim($("#salt").html()) + old_password) + nonce);
+
+                var secure_new_password = md5.hex_md5(username + $.trim($("#salt").html()) + new_password);
+
+                $.ajax({
+                    contentType: "application/json",
+                    data: '{"nonce":"'+ nonce + '","old_password":"' + secure_old_password + '","new_password":"' + secure_new_password + '"}',
+                    type: "PUT",
+                    url: "/api/user/change_password"
+                }).success(function( msg ) {
+
+                        cb(undefined,msg);
+
+                    }).fail(function(err){
+                        try{
+                            cb(JSON.parse(err.responseText).error);
+                        } catch(e){
+                            cb(err.responseText);
+                        }
+
+                    });
+
+
+
+            });
+
 
     },
 

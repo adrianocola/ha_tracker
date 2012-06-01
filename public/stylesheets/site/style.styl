@@ -198,64 +198,71 @@ div.game-info select
     padding-bottom: 5px
 
 
+li.game-container
+    list-style: none
+    position: relative
+    margin: 5px 5px 0 -20px
 
 .game
     width: 220px
     color: #888888
     background-color: white
     line-height: 30px
-    margin: 5px 5px 0 -20px
     border: 1px solid grey
     border-radius(10px)
-    list-style: none
     cursor: pointer
 
-.game.won.showState
-    //background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52) )
-    //background:-moz-linear-gradient( center top, #b8e356 5%, #a5cc52 100% )
-    //background-color:#b8e356
-    //color: white
-
 .game.won.showState:not(.selected-game) .gameNum
-    //color: #25aa2a
-    //text-shadow:1px 1px 0px #bbbbbb
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52) )
     background:-moz-linear-gradient( center top, #b8e356 5%, #a5cc52 100% )
     background-color:#b8e356
 
-.game.won:hover .gameNum
-   //color: #22e528
-
-.game.lost.showState
-    //-moz-box-shadow:inset 0px 1px 0px 0px #f7c5c0;
-    //-webkit-box-shadow:inset 0px 1px 0px 0px #f7c5c0;
-    //box-shadow:inset 0px 1px 0px 0px #f7c5c0;
-    //background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d) );
-    //background:-moz-linear-gradient( center top, #fc8d83 5%, #e4685d 100% );
-    //background-color:#fc8d83;
-    //color: white
-
 .game.lost.showState:not(.selected-game) .gameNum
-    //color: #cc2424
-    //text-shadow:1px 1px 0px #aaaaaa
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d) );
     background:-moz-linear-gradient( center top, #fc8d83 5%, #e4685d 100% );
     background-color:#fc8d83;
-
-.game.lost:hover .gameNum
-   //color: #ffb7b7
 
 .game:hover
     color: white
     background-color: #888888
     border: 1px solid black
 
+div.gameDeleteMask
+    position: absolute
+    top: 0px
+    left: -2px
+    width: 225px
+    height: 100%
+    border-radius(10px)
+    background-color: black
+    opacity: 0.4
+    transition width 1s ease-in-out
+
+div.gameDeleteText
+    line-height: 15px
+    position: absolute
+    top: 10px
+    left: -2px
+    width: 225px
+    color: white
+    font-weight:bold
+    text-align: center
+    background-color: red
+    opacity: 0.9
+
+div.gameDeleteText a
+    margin-left: 10px
+    color: #aaaaaa
+
+div.gameDeleteText a:hover
+    font-weight:bold
+    color: white
+
 .selected-game
     width: 208px
     color: white
     list-style: none
     padding: 3px 6px 3px 6px
-    margin: 5px 5px 0 -20px
     background-color: #bbbbbb
     line-height: 30px
     height: 30px
@@ -345,6 +352,10 @@ div.game-info select
     margin: 0 5px 3px 5px
 
 .gamePanel
+    width: 100%
+    height: 100%
+
+.gamePanel div
     display: inline
     margin-left: 30px
 
@@ -397,13 +408,14 @@ span.showActiveText, span.showStateText
     color: gray
     margin-left: 1px
 
-.enemy
+.enemy-container
+    position:relative
+    list-style: none
     background-color: #EEEEEE
     border: 1px solid grey
     padding: 5px 0 15px 5px
     margin: 10px 0 0 -30px
     line-height: 30px
-    list-style: none
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff
     box-shadow:inset 0px 1px 0px 0px #ffffff
@@ -461,7 +473,7 @@ div.player-items-mask, div.enemy-items-mask
     //background-color: #ffffff
     height: 500px
     //opacity: 0.2
-    z-index: 100
+    z-index: 50
     border-radius(6px)
     //coisa
     border: 1px solid rgba(0,0,0,0.5);
@@ -600,11 +612,17 @@ img-size = 40px
     display: block
     height: 55px
     line-height: 25px
+    width: 220px
+    color: #888888
+    background-color: white
+    border: 1px solid grey
+    border-radius(10px)
+    cursor: pointer
 
 
 .addGamePanel:hover
     border: 1px solid grey
-    margin: 5px 5px 0 -20px
+    //margin: 5px 5px 0 -20px
     line-height: 25px
 
 .addGamePanel .add-game-label
@@ -624,6 +642,37 @@ img-size = 40px
     text-decoration:none
     text-shadow:1px 1px 0px #ffffff
 
+div.enemyDeleteMask
+    position: absolute
+    top: 0px
+    left: -2px
+    width: 100%
+    height: 100%
+    border-radius(10px)
+    background-color: black
+    opacity: 0.4
+    transition width 1s ease-in-out
+
+div.enemyDeleteText
+    line-height: 15px
+    position: absolute
+    top: 10px
+    left: -2px
+    width: 100%
+    color: white
+    font-weight:bold
+    text-align: center
+    background-color: red
+    opacity: 0.9
+
+div.enemyDeleteText a
+    margin-left: 10px
+    color: #dddddd
+
+div.enemyDeleteText a:hover
+    font-weight:bold
+    color: white
+
 
 
 .deleteEnemy
@@ -641,6 +690,12 @@ img-size = 40px
 
 .enemy:hover .deleteEnemy
     display: block
+
+.deleteEnemyConfirmation
+    float: right
+    top: 20px
+    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif
+    color: red
 
 #add-enemy
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
