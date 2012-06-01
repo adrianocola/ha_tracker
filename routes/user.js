@@ -185,7 +185,7 @@ app.get('/api/user/login', function(req,res){
 
 
                             }else{
-                                clearCookies(res);
+                                //clearCookies(res);
 
                                 var secureUser = user.secure();
                                 secureUser._doc.token = req.sessionToken;
