@@ -225,6 +225,12 @@ var Game = Backbone.Model.extend({
         this.enemyItems.fetch({error: function(model, err){
             that.trigger('error',err);
         }});
+    },
+
+    isActive: function(){
+
+        return this.get('state')==0 ? true : false;
+
     }
 
 });
@@ -243,7 +249,6 @@ var Games = Backbone.Collection.extend({
         app.SelectionManager.setSelectedGame(this.get(gameId));
 
     }
-
 
 });
 
@@ -278,7 +283,14 @@ var Enemy = Backbone.Model.extend({
 
     setVisible: function(visibility){
         this.visible = visibility;
+    },
+
+    isActive: function(){
+
+        return this.games.any(function(game){ return game.isActive(); });
     }
+
+
 
 });
 
@@ -300,7 +312,7 @@ var Enemies = Backbone.Collection.extend({
             }
 
 
-        },this)
+        },this);
 
     },
 

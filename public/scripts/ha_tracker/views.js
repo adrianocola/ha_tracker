@@ -870,7 +870,14 @@ var EnemiesView = Backbone.View.extend({
 
     events: {
         'click #add-enemy':  'addEnemy',
-        'keyup #filter': 'filter'
+        'keyup #filter': 'filter',
+        'change #showActive': 'setShowOnlyActive'
+    },
+
+    setShowOnlyActive: function(){
+
+        this.showOnlyActive = !this.showOnlyActive;
+
     },
 
     filter: function(){
@@ -890,6 +897,7 @@ var EnemiesView = Backbone.View.extend({
         },this);
 
     },
+
 
     addEnemy: function(){
 

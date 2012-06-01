@@ -125,10 +125,7 @@ app.get('/api/user/test/:name', function(req,res){
     models.User.findOne({username: req.params.name.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
         if(user){
-            var secure = user.secure();
-            secure._doc.token = uuid.uuid(64);
-
-            res.json(secure);
+            res.json(user.secure());
             //res.send(user);
         }else{
             res.json({});
@@ -145,7 +142,7 @@ app.get('/api/user/login', function(req,res){
     //validate nonce
     validateNonce(req.query.nonce, function(valid){
 
-        if(true){//if(valid){
+        if(valid){
             //if login request have username and password, tries to login using credentials
             if(req.query.username && req.query.password){
                 console.log("TENTOU LOGIN POR CREDENCIAL: (" + req.query.username + ", " +  req.query.password + ")");
@@ -153,7 +150,7 @@ app.get('/api/user/login', function(req,res){
 
                     if(err) console.log(err);
 
-                    if(true){//if(user && req.query.password == md5.hex_md5(user.password + req.query.nonce)){
+                    if(user && req.query.password == md5.hex_md5(user.password + req.query.nonce)){
 
                         req.generateAuthorization(function(authorization){
 
@@ -185,10 +182,10 @@ app.get('/api/user/login', function(req,res){
 
 
                             }else{
-                                //clearCookies(res);
+                                clearCookies(res);
 
                                 var secureUser = user.secure();
-                                //secureUser._doc.token = req.sessionToken;
+                                secureUser._doc.token = req.sessionToken;
 
                                 res.json(secureUser);
 

@@ -147,7 +147,7 @@ exports = module.exports = function(options){
 
             if(req.cookies['X-HATracker-Token'] && req.cookies['X-HATracker-Token']==req.sessionToken) return;
 
-            //res.cookie('X-HATracker-Token',req.sessionToken,req.authorization.cookie);
+            res.cookie('X-HATracker-Token',req.sessionToken,req.authorization.cookie);
 
         });
 
