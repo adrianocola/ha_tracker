@@ -518,6 +518,19 @@ body {
   position: relative;
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+.example-info {
+  color: #888;
+  margin-top: -1px;
+  text-align: center;
+  line-height: 20px;
+}
+img.enemies-example {
+  margin-left: -10px;
+}
+img.game-example {
+  margin-left: -25px;
+  margin-top: -25px;
+}
 #player {
   clear: left;
   float: left;
@@ -711,7 +724,7 @@ div.gameDeleteText {
 }
 div.gameDeleteText a {
   margin-left: 10px;
-  color: #aaa;
+  color: #ccc;
 }
 div.gameDeleteText a:hover {
   font-weight: bold;

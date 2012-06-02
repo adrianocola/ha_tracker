@@ -408,6 +408,9 @@ var LoggedPlayerView = Backbone.View.extend({
             new app.PlayerView({model: player}).render();
         }});
 
+        //clean the selected game view
+        app.SelectedGameView.render().clean();
+
         this.show();
 
     },
@@ -533,6 +536,9 @@ var SignupView = Backbone.View.extend({
     logged: function(){
         this.dismiss();
         app.LoginView.dismiss();
+
+        //clean the selected game view
+        app.SelectedGameView.render().clean();
 
         app.CurrentPlayerView = new app.LoggedPlayerView({model: this.model });
     },
@@ -684,6 +690,12 @@ var LoginView = Backbone.View.extend({
 
         this.visible = false;
 
+        var that = this;
+
+        $('#example-signup').click(function(){
+            that.renderSignup();
+        });
+
     },
 
     events: {
@@ -739,6 +751,10 @@ var LoginView = Backbone.View.extend({
 
         if(!err){
             this.dismiss();
+
+
+            //clean the selected game view
+            app.SelectedGameView.render().clean();
             app.CurrentPlayerView = new app.LoggedPlayerView({model: this.model });
         }
 

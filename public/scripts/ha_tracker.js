@@ -9,9 +9,13 @@ app = window.app ? window.app : {};
 //VERIFICAR se quando o reset password foi feito com sucesso foi deletado do user o reset_password
 //MELHORAR efeito de mouse over em um item... aquele resize tá muito feio!
 //ADICIONAR telas de welcome
-//ADICIONAR confirmação ao remover enemy e game
 //ARRUMAR fogo da aplicaçãi que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
 //COLOCAR um gratiente nas fitas de deleção de enemy e de game
+//FAZER tratamento de erros no change password e exibir confirmação
+//IMPLEMENTAR change e-mail
+//IMPLEMENTAR terms and privacy
+//IMPLEMENTAR email de forgot password bonitinho
+
 
 
 
@@ -89,6 +93,10 @@ $(function(){
 
                             if(!err){
                                 app.LoginView.dismiss();
+
+                                //clean the selected game view
+                                app.SelectedGameView.render().clean();
+
                                 app.CurrentPlayerView = new app.LoggedPlayerView({model: app.LoginView.model });
 
                             }else{
@@ -184,6 +192,10 @@ $(function(){
                 //if it' NOT a facebook try to login, else let the facebook try to login
                 if(!app.LoginView.model.toJSON().facebook){
                     app.LoginView.dismiss();
+
+                    //clean the selected game view
+                    app.SelectedGameView.render().clean();
+
                     app.CurrentPlayerView =  new app.LoggedPlayerView({model: app.LoginView.model });
                 }else{
                     tryOpenLoginPanel();
@@ -196,9 +208,6 @@ $(function(){
 
     //app.LoginView.login();
     //}
-
-    var selectedGameView = app.SelectedGameView;
-    selectedGameView.render();
 
     app.GameRouter = new GameRouter();
     Backbone.history.start({pushState: true});

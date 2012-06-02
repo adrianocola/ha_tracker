@@ -237,8 +237,16 @@ block header
 
 block main-layout
     div#player
-        h2 Create Account or Login
+        //h2 Create Account or Login
+        h4.example-info Manage your games, keeping track of wins, losses and games in progress
+        img.enemies-example(src='/images/enemies.png')
     div#current-game
+        h4.example-info
+            div.
+                Manage items and heroes you and your enemy have left in a game
+            div.
+                <a id='example-signup' class='link'>Signup</a> or login and start using HA Tracker right now!
+        img.game-example(src='/images/game.png')
 
 block main-page
     div#signup-blanket.hidden
