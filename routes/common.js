@@ -6,6 +6,43 @@ var http = require('http');
 var redis = require('redis-url').connect(env.redis_url);
 
 
+function miniStackTrace(){
+
+    var stackLines = new Error().stack.split(/\r\n|\r|\n/);
+
+    var miniStackTrace = "";
+    var i;
+
+    for(i = 5; i > 2; i--){
+        var pathSplit = stackLines[i].replace(')','').split('/');
+
+        if(miniStackTrace == ""){
+            miniStackTrace += pathSplit[pathSplit.length-1];
+        }else{
+            miniStackTrace += " - " + pathSplit[pathSplit.length-1];
+        }
+
+    }
+
+    return miniStackTrace;
+
+}
+
+
+exports.sendError = function(res, code, error, context){
+
+    //res.json(400, {code: code, error: error});
+    console.log(miniStackTrace() + "{code: " + code + ", error: " + error + "} " + context);
+    //console.log(miniStackTrace());
+
+};
+
+
+exports.unexpectedError = function(res, error, context){
+    res.json(500,{code: -1, error: 'Unexpected Server Error'});
+    console.log('Unexpected Server Error');
+};
+
 exports.userId = function(id){
     return {userId: id};
 };

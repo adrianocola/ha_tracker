@@ -12,6 +12,9 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR email de forgot password bonitinho
 //MELHORAR error de signup, janelinha de aviso tá muito feia e ruim de ler
 //IMPLEMENTAR algum erro 500 genérico no server pra ser chamdo em caso de pau genérico com o MongoDB (em commons.js)
+//IMPLEMENTAR maneira de avisar para o usuário que um item zerado pode ser reinicado
+//SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes
+
 
 
 

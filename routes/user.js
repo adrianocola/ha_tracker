@@ -95,7 +95,6 @@ app.get('/api/nonce', function(req, res){
 app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
 
 
-
     if(!req.authorization){
         res.json(401, {code: 105, error: "Not logged"});
         return;
@@ -142,8 +141,6 @@ app.get('/api/user/login', function(req,res){
             return;
         }
 
-
-        console.log("TENTOU LOGIN POR CREDENCIAL: (" + req.query.username + ", " +  req.query.password + ")");
         models.User.findOne({username: req.query.username.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
             if(err) console.log(err);
