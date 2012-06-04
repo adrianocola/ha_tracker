@@ -27,6 +27,8 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser(env.secrets.session));
 
+
+
     //formats the json output with 3 spaces of identation
     app.set('json spaces',3);
 
@@ -42,6 +44,18 @@ app.configure('development', function(){
     app.use(express.logger('dev'));
     app.use(express.favicon('/public/favicon-dev.ico'));
     app.use(app.router);
+
+
+    app.use(function(err, req, res, next){
+
+        if (err.code && err.error) {
+            console.log({code: err.code, error: err.error});
+            res.json({code: err.code, error: err.error});
+        } else {
+            next(err);
+        }
+    });
+
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 });
@@ -76,12 +90,14 @@ app.configure('production', function(){
             cookie: { maxAge: 7200000 }}));
 
 
-    app.use(express.logger('tiny'));
     app.use(express.favicon('/public/favicon.ico'));
     app.use(app.router);
     app.use(express.errorHandler());
 
 });
+
+
+
 
 models = require('./conf/models');
 

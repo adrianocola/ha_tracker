@@ -37,6 +37,15 @@ exports.sendError = function(res, code, error, context){
 
 };
 
+exports.ExpectedError = function(code, error){
+    this.code = code;
+    this.error = error;
+    Error.call(this, error);
+    Error.captureStackTrace(this, arguments.callee);
+}
+
+exports.ExpectedError.prototype.__proto__ = Error.prototype;
+
 
 exports.unexpectedError = function(res, error, context){
     res.json(500,{code: -1, error: 'Unexpected Server Error'});
