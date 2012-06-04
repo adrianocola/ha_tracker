@@ -12,12 +12,13 @@ exports.userId = function(id){
 
 exports.verifyAuthorization = function(req, res, next){
     //if have authorization, player is authenticated
-    if(req.authorization){
-        next();
-    }else{
+    if(!req.authorization){
         res.json(401,{code: 100, error: 'Not authorized or Session Expired'});
         console.log({code: 100, error: 'Not authorized or Session Expired'});
+        return;
     }
+
+    next();
 
 };
 

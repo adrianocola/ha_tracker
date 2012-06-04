@@ -11,6 +11,7 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR terms and privacy
 //IMPLEMENTAR email de forgot password bonitinho
 //MELHORAR error de signup, janelinha de aviso tá muito feia e ruim de ler
+//IMPLEMENTAR algum erro 500 genérico no server pra ser chamdo em caso de pau genérico com o MongoDB (em commons.js)
 
 
 
