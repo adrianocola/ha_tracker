@@ -5,9 +5,14 @@ var u = require('underscore');
 var common = require('./common.js');
 
 
-app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, res){
+app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, res, next){
 
     models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         var enemy = player.enemies.id(req.params.enemy);
         enemy.gameCount+=1;
@@ -69,23 +74,40 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
         enemy.games.push(game);
 
         player.save(common.userId(req.authorization.userId),function(err){
-            if (!err) res.send(game);
+
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
+
+            res.send(game);
         });
 
     });
 
 });
 
-app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res){
+app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res, next){
 
     models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
         game.state = req.body.state;
 
         player.save(common.userId(req.authorization.userId), function(err){
-            if (!err) res.send("true");
+
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
+
+            res.send("true");
         });
 
 
@@ -95,9 +117,14 @@ app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(re
 });
 
 
-app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res){
+app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res, next){
 
     models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
@@ -113,7 +140,13 @@ app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function
         game.remove();
 
         player.save(common.userId(req.authorization.userId), function(err){
-            if (!err) res.send("true");
+
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
+
+            res.send("true");
         });
 
 

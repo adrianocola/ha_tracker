@@ -14,6 +14,36 @@ var app = module.exports = express();
 //expose redis
 app.redis = redis;
 
+app.ExpectedError = function(code, error){
+    this.code = code;
+    this.error = error;
+    Error.call(this, error);
+    Error.captureStackTrace(this, arguments.callee);
+}
+
+app.ExpectedError.prototype.__proto__ = Error.prototype;
+
+app.UnexpectedError = function(error){
+    this.error = error;
+    Error.call(this, error);
+    Error.captureStackTrace(this, arguments.callee);
+}
+
+app.UnexpectedError.prototype.__proto__ = Error.prototype;
+
+
+var errorsHandler = function(err, req, res, next){
+    if (err instanceof app.ExpectedError) {
+        console.log("EXPECTED ERROR: " + err.code + " - " + err.error);
+        res.json(400,{code: err.code, error: err.error});
+    }else if (err instanceof app.UnexpectedError) {
+        console.log("UNEXPECTED ERROR: " + err.error);
+        res.json(500,{code: -1, error: "Unexpected Error: " + err.error});
+    } else {
+        next(err);
+    }
+}
+
 app.configure(function(){
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
@@ -39,21 +69,13 @@ app.configure('development', function(){
 
     //app.use(express.session({ secret: "very secret name", cookie: { path: '/', httpOnly: true, maxAge: 60000 }}));
     //app.use(express.session({ secret: env.secrets.session, store: new RedisStore(), cookie: { path: '/', httpOnly: true, maxAge: 300000 } }));
-    app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 300000 }}));
+    app.use(authorization({ secret: env.secrets.session, store: new RedisStore(), cookie: { maxAge: 10000 }}));
 
     app.use(express.logger('dev'));
     app.use(express.favicon('/public/favicon-dev.ico'));
     app.use(app.router);
 
-    app.use(function(err, req, res, next){
-
-        if (err.code && err.error) {
-            console.log({code: err.code, error: err.error});
-            res.json(400,{code: err.code, error: err.error});
-        } else {
-            next(err);
-        }
-    });
+    app.use(errorsHandler);
 
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
@@ -93,15 +115,7 @@ app.configure('production', function(){
     app.use(app.router);
 
 
-    app.use(function(err, req, res, next){
-
-        if (err.code && err.error) {
-            console.log({code: err.code, error: err.error});
-            res.json(400,{code: err.code, error: err.error});
-        } else {
-            next(err);
-        }
-    });
+    app.use(errorsHandler);
 
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     //app.use(express.errorHandler());

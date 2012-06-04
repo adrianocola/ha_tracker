@@ -5,9 +5,14 @@ var u = require('underscore');
 var common = require('./common.js');
 
 
-app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, res){
+app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, res, next){
 
     models.ItemManager.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err,itemManager){
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         var items = [];
 
@@ -32,15 +37,26 @@ app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, r
 
 
 
-app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, function(req, res){
+app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, function(req, res, next){
 
     models.ItemManager.findById(req.params.manager,{}, common.userId(req.authorization.userId), function(err, itemManager){
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         var item = itemManager.items.id(req.params.id);
 
         item.itemCount = req.body.itemCount;
 
         itemManager.save(common.userId(req.authorization.userId), function(err){
+
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
+
             res.send(item);
 
             common.statsMix(4322,1,{item: consts.Items[item.itemId].itemName});

@@ -48,10 +48,16 @@ function clearAuthorization(req, res){
  * @param nonce nonce to validate
  * @param fn return true or false in callback
  */
-function validateNonce(nonce, fn){
+function validateNonce(nonce, next, fn){
 
     app.redis.get('nonce:' + nonce, function(err,value){
-        if(!err && value!=null){
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(value!=null){
             //if the nonce is valid remove it from the valid nonces list, so it
             //cannot be used again to try to relogin
             app.redis.del('nonce:' + nonce,function(){
@@ -69,10 +75,7 @@ function validateNonce(nonce, fn){
  * generates a nonce for password cryptography
  * more details: http://en.wikipedia.org/wiki/Cryptographic_nonce
  */
-app.get('/api/nonce', function(req, res){
-
-    //throw new common.ExpectedError(100,"Teste Muito Doido");
-    //throw new Error("Teste Muito Doido");
+app.get('/api/nonce', function(req, res, next){
 
     var nonce = uuid.uuid(10);
 
@@ -83,23 +86,23 @@ app.get('/api/nonce', function(req, res){
 
     multi.exec(function(err,value){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         res.send(nonce);
 
     });
 
-    //req.authorization.nonce = uuid.uuid(10);
-    //res.send(req.authorization.nonce);
-
 });
 
 
-app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
+app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next){
 
 
     if(!req.authorization){
-        res.json(401, {code: 105, error: "Not logged"});
+        next(new app.ExpectedError(105, "Not logged"));
         return;
     }
 
@@ -111,7 +114,11 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
             user.facebook.accessToken = undefined;
             user.facebook.expiresIn = undefined;
 
-            user.save(common.userId('MASTER'),function(err){});
+            user.save(common.userId('MASTER'),function(err){
+
+                if(err) next(new app.UnexpectedError(err));
+
+            });
 
         }
 
@@ -126,32 +133,35 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res){
 });
 
 
-app.get('/api/user/login', function(req,res){
+app.get('/api/user/login', function(req,res,next){
 
     //validate nonce
-    validateNonce(req.query.nonce, function(valid){
+    validateNonce(req.query.nonce, next, function(valid){
 
         if(!valid){
             clearAuthorization(req,res);
-            res.json(400, {code: 110, error: "Invalid Nonce"});
+            next(new app.ExpectedError(110,"Invalid Nonce"));
             return;
         }
 
         //if login request have username and password, tries to login using credentials
         if(!req.query.username || !req.query.password){
             clearAuthorization(req,res);
-            res.json(400, {code: 109, error: "Missing Login Credentials"});
+            next(new app.ExpectedError(109,"Missing Login Credentials"));
             return;
         }
 
         models.User.findOne({username: req.query.username.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
-            if(err) console.log(err);
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
             if(!user || req.query.password != md5.hex_md5(user.password + req.query.nonce)){
 
                 clearCookies(res);
-                res.json(403, {code: 101, error: "Invalid username or password"});
+                next(new app.ExpectedError(101,"Invalid username or password"));
 
                 return;
 
@@ -170,7 +180,10 @@ app.get('/api/user/login', function(req,res){
 
                     keepLogged.save(common.userId('MASTER'),function(err){
 
-                        if(err) console.log(err);
+                        if(err){
+                            next(new app.UnexpectedError(err));
+                            return;
+                        }
 
                         //2 weeks = 1209600000 ms
                         res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 1209600000 });
@@ -211,17 +224,18 @@ app.get('/api/user/login', function(req,res){
 });
 
 
-app.get('/api/user/continue_login', function(req,res){
+app.get('/api/user/continue_login', function(req,res,next){
 
     if(req.authorization){
         models.User.findById(req.authorization.userId,{}, common.userId(req.authorization.userId), function(err,user){
 
             if(err){
-                console.log(err);
+                next(new app.UnexpectedError(err));
+                return;
             }
 
             if(!user){
-                res.json(400, {code: 107, error: "User not exists!"});
+                next(new app.ExpectedError(107,"User not exists!"));
                 return;
             }
 
@@ -240,21 +254,27 @@ app.get('/api/user/continue_login', function(req,res){
     }else if(req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID){
         models.KeepLogged.findById(req.cookies.KEEP_LOGGED_ID,{},common.userId('MASTER'),function(err,keepLogged){
 
-            if(err) console.log(err);
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
             if(!keepLogged){
                 clearAuthorization(req,res);
-                res.json(401, {code: 106, error: "Session Expired"});
+                next(new app.ExpectedError(106,"Session Expired"));
                 return;
             }
 
             models.User.findById(keepLogged.userId,{}, common.userId('MASTER'), function(err,user){
 
-                if(err) console.log(err);
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
 
                 if(!user){
                     clearAuthorization(req,res);
-                    res.json(400, {code: 107, error: "User not exists!"});
+                    next(new app.ExpectedError(107,"User not exists!"));
                     return;
                 }
 
@@ -282,13 +302,13 @@ app.get('/api/user/continue_login', function(req,res){
 
     }else{
         clearAuthorization(req,res);
-        res.json(401, {code: 106, error: "Session Expired"});
+        next(new app.ExpectedError(106,"Session Expired"));
     }
 
 });
 
 
-app.post("/api/user/signup", function(req, res){
+app.post("/api/user/signup", function(req, res, next){
 
     var reqsError = "";
 
@@ -302,11 +322,9 @@ app.post("/api/user/signup", function(req, res){
     if(req.body.password == undefined || req.body.password == "") reqsError += "Password is Required. ";
     else if(req.body.password.length < 4) reqsError += "Password must have at least 4 characters. ";
 
-    console.log("USERNAME: " + req.body.username);
 
     if(reqsError.length > 0){
-        res.json(400, {code: 107, error: reqsError});
-
+        next(new app.ExpectedError(107,reqsError));
         return;
     }
 
@@ -330,9 +348,9 @@ app.post("/api/user/signup", function(req, res){
         if(err){
             console.log(err);
             if(err.code == 11000){
-                res.json(409, {code: 103, error: "Username or Email already registered"});
+                next(new app.ExpectedError(103,"Username or Email already registered"));
             }else{
-                res.send(err);
+                next(new app.UnexpectedError(err));
             }
 
             return;
@@ -343,26 +361,26 @@ app.post("/api/user/signup", function(req, res){
         player.save(common.userId('MASTER'),function(err){
 
             if(err){
-                console.log(err);
-                res.send(err);
-            }else{
-                clearCookies(res);
-
-                req.generateAuthorization(function(authorization){
-
-                    req.authorization.userId = user._id;
-
-                    var secureUser = user.secure();
-                    secureUser._doc.token = req.sessionToken;
-
-                    res.json(secureUser);
-
-
-                    common.statsMix(4320,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
-
-                });
-
+                next(new app.UnexpectedError(err));
+                return;
             }
+
+            clearCookies(res);
+
+            req.generateAuthorization(function(authorization){
+
+                req.authorization.userId = user._id;
+
+                var secureUser = user.secure();
+                secureUser._doc.token = req.sessionToken;
+
+                res.json(secureUser);
+
+
+                common.statsMix(4320,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
+
+            });
+
 
         });
 
@@ -372,21 +390,24 @@ app.post("/api/user/signup", function(req, res){
 
 });
 
-app.put("/api/user/change_password",common.verifyAuthorization, function(req, res){
+app.put("/api/user/change_password",common.verifyAuthorization, function(req, res, next){
 
-    validateNonce(req.body.nonce, function(valid){
+    validateNonce(req.body.nonce, next, function(valid){
 
         if(!valid){
-            res.json(400, {code: 110, error: "Invalid Nonce"});
+            next(new app.ExpectedError(110,"Invalid Nonce"));
             return;
         }
 
         models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
 
-            if(err) console.log(err);
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
             if(!user || req.body.old_password != md5.hex_md5(user.password + req.body.nonce)){
-                res.json(414, {code: 114, error: "Wrong password"});
+                next(new app.ExpectedError(114,"Wrong password"));
                 return;
             }
 
@@ -395,11 +416,11 @@ app.put("/api/user/change_password",common.verifyAuthorization, function(req, re
             user.save(common.userId(req.authorization.userId),function(err){
 
                 if(err){
-                    console.log(err);
-                    res.send(err);
-                }else{
-                    res.send(true);
+                    next(new app.UnexpectedError(err));
+                    return;
                 }
+
+                res.send(true);
 
             });
 
@@ -413,15 +434,17 @@ app.put("/api/user/change_password",common.verifyAuthorization, function(req, re
 });
 
 
-app.post("/api/user/forgot_password", function(req, res){
+app.post("/api/user/forgot_password", function(req, res, next){
 
     models.User.findOne({"email": req.body.email},{}, common.userId('MASTER'), function(err,user){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         if(!user){
-            res.json(401, {code: 111, error: "Email not registered!"});
-
+            next(new app.ExpectedError(111,"Email not registered!"));
             return;
         }
 
@@ -440,12 +463,21 @@ app.post("/api/user/forgot_password", function(req, res){
 
             multi.exec(function(err,value){
 
-                if(err) console.log(err);
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
 
                 //set the user with the confirmation number
                 user.reset_password = confirmation;
 
                 user.save(common.userId(user._id),function(err){
+
+                    if(err){
+                        next(new app.UnexpectedError(err));
+                        return;
+                    }
+
 
                     //setup e-mail data with unicode symbols
                     var mailOptions = {
@@ -456,11 +488,10 @@ app.post("/api/user/forgot_password", function(req, res){
                     };
 
                     // send mail with defined transport object
-                    smtpTransport.sendMail(mailOptions, function(error, response){
+                    smtpTransport.sendMail(mailOptions, function(err, response){
 
-                        if(error){
-                            console.log(error);
-                            res.json(500, {code: 115, error: error});
+                        if(err){
+                            next(new app.UnexpectedError(err));
                             return;
                         }
 
@@ -480,25 +511,31 @@ app.post("/api/user/forgot_password", function(req, res){
 
 });
 
-app.get("/api/user/reset_password_username", function(req, res){
+app.get("/api/user/reset_password_username", function(req, res, next){
 
     //get user
     app.redis.get("resetpw:" + req.query.confirmation, function(err,value){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         if(!value){
-            res.json(401,{code: 412, error: 'Expired password reset confirmation'});
+            next(new app.ExpectedError(112, 'Expired password reset confirmation'));
             return;
         }
 
 
         models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
 
-            if(err) console.log(err);
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
             if(!value){
-                res.json(401,{code: 413, error: 'Invalid user for password reset'});
+                next(new app.ExpectedError(113, 'Invalid user for password reset'));
                 return;
             }
 
@@ -511,29 +548,35 @@ app.get("/api/user/reset_password_username", function(req, res){
 });
 
 
-app.put("/api/user/reset_password", function(req, res){
+app.put("/api/user/reset_password", function(req, res, next){
 
     if(!req.body.password){
-        res.json(401,{code: 414, error: 'Must provide password for password reset'});
+        next(new app.ExpectedError(114, 'Must provide password for password reset'));
         return;
     }
 
     //get user
     app.redis.get("resetpw:" + req.body.confirmation, function(err,value){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         if(!value){
-            res.json(401,{code: 412, error: 'Expired password reset confirmation'});
+            next(new app.ExpectedError(112, 'Expired password reset confirmation'));
             return;
         }
 
         models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
 
-            if(err) console.log(err);
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
             if(!value){
-                res.json(401,{code: 413, error: 'Invalid user for password reset'});
+                next(new app.ExpectedError(413,'Invalid user for password reset'));
                 return;
             }
 
@@ -542,7 +585,10 @@ app.put("/api/user/reset_password", function(req, res){
 
             user.save(common.userId(user._id),function(err){
 
-                if(err) console.log(err);
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
 
                 res.send('true');
 
@@ -558,10 +604,15 @@ app.put("/api/user/reset_password", function(req, res){
 });
 
 
-app.get("/api/user/login-facebook", function(req, res){
+app.get("/api/user/login-facebook", function(req, res, next){
 
     models.User.findOne({"facebook.userID": req.query.userID},{}, common.userId('MASTER'), function(err,user){
-        if(err) console.log(err);
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
+
 
         //found existing user
         if(user){
@@ -570,7 +621,7 @@ app.get("/api/user/login-facebook", function(req, res){
             if(req.query.startup){
                 //check if the user is authenticated here (didn't made logoff)
                 if(user.facebook.accessToken != req.query.accessToken){
-                    res.json(401, {code: 109, error: "Facebook Session Expired or User Logged out from Facebook"});
+                    next(new app.ExpectedError(109,"Facebook Session Expired or User Logged out from Facebook"));
                     return;
                 }
 
@@ -594,9 +645,12 @@ app.get("/api/user/login-facebook", function(req, res){
                 user.facebook.accessToken = req.query.accessToken;
                 user.facebook.expiresIn = req.query.expiresIn;
 
-                user.save(common.userId('MASTER'),function(){
+                user.save(common.userId('MASTER'),function(err){
 
-                    if(err) console.log(err);
+                    if(err){
+                        next(new app.UnexpectedError(err));
+                        return;
+                    }
 
                     req.generateAuthorization(function(){
 
@@ -637,43 +691,40 @@ app.get("/api/user/login-facebook", function(req, res){
             user.save( common.userId('MASTER'),function(err){
 
                 if(err){
-                    console.log(err);
-                    res.send(err);
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
 
-                }else{
+                player.save( common.userId('MASTER'),function(err){
 
-                    player.save( common.userId('MASTER'),function(err){
+                    if(err){
+                        next(new app.UnexpectedError(err));
+                        return;
+                    }
 
-                        if(err){
-                            console.log(err);
-                            res.send(err.message);
-                        }else{
+                    req.generateAuthorization(function(){
 
-                            req.generateAuthorization(function(){
+                        req.authorization.userId = user._id;
 
-                                req.authorization.userId = user._id;
+                        var secureUser = user.secure();
+                        secureUser._doc.token = req.sessionToken;
 
-                                var secureUser = user.secure();
-                                secureUser._doc.token = req.sessionToken;
+                        res.send(secureUser);
 
-                                res.send(secureUser);
+                        common.statsMix(4320,1,{type: 'facebook', platform: common.isMobile(req)?"mobile":"web"});
 
-                                common.statsMix(4320,1,{type: 'facebook', platform: common.isMobile(req)?"mobile":"web"});
-
-
-                            });
-
-                        }
 
                     });
-                }
+
+                });
+
 
             });
             //user is logged in facebook ,don' have account here but is startup
             //so I can' create an account here.
         }else{
             clearAuthorization(req,res);
-            res.json(401, {code: 108, error: "Facebook user not authenticated!"});
+            next(new app.ExpectedError(108, "Facebook user not authenticated!"));
         }
 
 
@@ -682,12 +733,15 @@ app.get("/api/user/login-facebook", function(req, res){
 });
 
 
-app.delete('/api/user/delete',common.verifyAuthorization, function(req, res){
+app.delete('/api/user/delete',common.verifyAuthorization, function(req, res, next){
 
 
     models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         //remove from facebook
         if(user.facebook.userID){
@@ -709,7 +763,10 @@ app.delete('/api/user/delete',common.verifyAuthorization, function(req, res){
 
         user.remove(function(err){
 
-            if(err) console.log(err);
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
             clearAuthorization(req,res);
 
@@ -722,19 +779,25 @@ app.delete('/api/user/delete',common.verifyAuthorization, function(req, res){
 });
 
 
-app.delete('/api/user/reset',common.verifyAuthorization, function(req, res){
+app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next){
 
 
     models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
 
         models.Player.findOne({user: req.authorization.userId},{},common.userId(req.authorization.userId),function(err, player){
 
             player.remove(function(err){
 
-                if(err) console.log(err);
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
 
                 var player = new models.Player();
                 player.user = user;
@@ -746,11 +809,14 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res){
                 user.save( common.userId('MASTER'),function(err){
 
                     if(err){
-                        console.log(err);
+
                         if(err.code == 11000){
-                            res.json(400,{code: 103, error: "Username or Email already registered"});
-                            return;
+                            next(new app.ExpectedError(103,"Username or Email already registered") );
+                        }else{
+                            next(new app.UnexpectedError(err));
                         }
+
+                        return;
 
                     }
 
@@ -758,15 +824,16 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res){
                     player.save(common.userId('MASTER'),function(err){
 
                         if(err){
-                            console.log(err);
-                            res.send(err);
-                        }else{
-                            clearCookies(res);
-
-                            req.authorization.userId = user._id;
-
-                            res.send(true);
+                            next(new app.UnexpectedError(err));
+                            return;
                         }
+
+                        clearCookies(res);
+
+                        req.authorization.userId = user._id;
+
+                        res.send(true);
+
 
                     });
 

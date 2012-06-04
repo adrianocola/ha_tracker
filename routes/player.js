@@ -3,7 +3,7 @@ var models = require('../conf/models.js');
 var common = require('./common.js');
 
 
-app.get('/api/players/:id', common.verifyAuthorization ,function(req, res){
+app.get('/api/players/:id', common.verifyAuthorization ,function(req, res, next){
 
     models.Player.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err, player){
 
@@ -16,11 +16,14 @@ app.get('/api/players/:id', common.verifyAuthorization ,function(req, res){
 });
 
 
-app.put('/api/players/:id', common.verifyAuthorization ,function(req, res){
+app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next){
 
     models.Player.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err, player){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
 
         if(req.body.showOnlyActive!=undefined){
             player.showOnlyActive = req.body.showOnlyActive;
@@ -33,7 +36,10 @@ app.put('/api/players/:id', common.verifyAuthorization ,function(req, res){
 
         player.save(common.userId(req.authorization.userId),function(err){
 
-            if(err) console.log(err);
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
             res.send(true);
 

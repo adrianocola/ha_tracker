@@ -28,30 +28,6 @@ function miniStackTrace(){
 
 }
 
-
-exports.sendError = function(res, code, error, context){
-
-    //res.json(400, {code: code, error: error});
-    console.log(miniStackTrace() + "{code: " + code + ", error: " + error + "} " + context);
-    //console.log(miniStackTrace());
-
-};
-
-exports.ExpectedError = function(code, error){
-    this.code = code;
-    this.error = error;
-    Error.call(this, error);
-    Error.captureStackTrace(this, arguments.callee);
-}
-
-exports.ExpectedError.prototype.__proto__ = Error.prototype;
-
-
-exports.unexpectedError = function(res, error, context){
-    res.json(500,{code: -1, error: 'Unexpected Server Error'});
-    console.log('Unexpected Server Error');
-};
-
 exports.userId = function(id){
     return {userId: id};
 };
@@ -60,7 +36,7 @@ exports.verifyAuthorization = function(req, res, next){
     //if have authorization, player is authenticated
     if(!req.authorization){
         res.json(401,{code: 100, error: 'Not authorized or Session Expired'});
-        console.log({code: 100, error: 'Not authorized or Session Expired'});
+        console.log("AUTH ERROR: " + 100 + " - Not authorized or Session Expired");
         return;
     }
 
