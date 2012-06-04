@@ -71,7 +71,7 @@ function validateNonce(nonce, fn){
  */
 app.get('/api/nonce', function(req, res){
 
-    throw new common.ExpectedError(100,"Teste Muito Doido");
+    //throw new common.ExpectedError(100,"Teste Muito Doido");
     //throw new Error("Teste Muito Doido");
 
     var nonce = uuid.uuid(10);
