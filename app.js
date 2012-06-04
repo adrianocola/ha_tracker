@@ -45,7 +45,6 @@ app.configure('development', function(){
     app.use(express.favicon('/public/favicon-dev.ico'));
     app.use(app.router);
 
-
     app.use(function(err, req, res, next){
 
         if (err.code && err.error) {
@@ -90,11 +89,26 @@ app.configure('production', function(){
             cookie: { maxAge: 7200000 }}));
 
 
+    app.use(express.logger('tiny'));
     app.use(express.favicon('/public/favicon.ico'));
     app.use(app.router);
+
+
+    app.use(function(err, req, res, next){
+
+        if (err.code && err.error) {
+            console.log({code: err.code, error: err.error});
+            res.json({code: err.code, error: err.error});
+        } else {
+            next(err);
+        }
+    });
+
     app.use(express.errorHandler());
 
 });
+
+
 
 
 
