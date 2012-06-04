@@ -49,7 +49,7 @@ app.configure('development', function(){
 
         if (err.code && err.error) {
             console.log({code: err.code, error: err.error});
-            res.json({code: err.code, error: err.error});
+            res.json(400,{code: err.code, error: err.error});
         } else {
             next(err);
         }
@@ -98,7 +98,7 @@ app.configure('production', function(){
 
         if (err.code && err.error) {
             console.log({code: err.code, error: err.error});
-            res.json({code: err.code, error: err.error});
+            res.json(400,{code: err.code, error: err.error});
         } else {
             next(err);
         }
