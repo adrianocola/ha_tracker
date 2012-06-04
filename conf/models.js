@@ -100,11 +100,11 @@ var ACL_Plugin = function(schema, options) {
 var ItemSchema = new Schema({
     itemId: Number,
     itemCount: Number
-});
+},{ strict: true });
 
 var ItemManagerSchema = new Schema({
     items: [ItemSchema]
-});
+},{ strict: true });
 ItemManagerSchema.plugin(ACL_Plugin);
 
 var GameSchema = new Schema({
@@ -114,21 +114,21 @@ var GameSchema = new Schema({
     playerItems: { type: Schema.ObjectId, ref: 'ItemManager'},
     enemyItems: { type: Schema.ObjectId, ref: 'ItemManager'},
     state: {type: Number, default: 0}
-});
+},{ strict: true });
 
 var EnemySchema = new Schema({
     name: {type: String, index: true , required: true},
     gameCount: {type: Number, default: 0},
     position: {type: Number, required: true},
     games: [GameSchema]
-});
+},{ strict: true });
 
 var PlayerSchema = new Schema({
     user:{ type: Schema.ObjectId, ref: 'User', required: true, index: {unique: true}},
     showOnlyActive: {type: Boolean, default: 0},
     showState: {type: Boolean, default: 0},
     enemies: [EnemySchema]
-});
+},{ strict: true });
 PlayerSchema.plugin(ACL_Plugin);
 
 //if asked to remove the player, remove the games
@@ -151,7 +151,7 @@ PlayerSchema.pre('remove',function(next){
 
     next();
 
-});
+},{ strict: true });
 
 
 var UserSchema = new Schema({
@@ -165,7 +165,7 @@ var UserSchema = new Schema({
         expiresIn: Date
     },
     player:{ type: Schema.ObjectId, ref: 'Player', required: true, index: {unique: true}}
-});
+},{ strict: true });
 UserSchema.plugin(ACL_Plugin);
 //if removing the user, remove the player
 UserSchema.pre('remove',function(next){
@@ -183,7 +183,7 @@ UserSchema.pre('remove',function(next){
 var KeepLoggedSchema = new Schema({
     usernameHash: {type: String, index: true , required: true},
     userId: {type: String, index: true , required: true}
-});
+},{ strict: true });
 KeepLoggedSchema.plugin(ACL_Plugin);
 
 

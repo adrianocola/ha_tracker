@@ -1001,7 +1001,7 @@ var EnemiesView = Backbone.View.extend({
         }
 
         //render all enemies
-        _.each(this.collection.sortBy('position',this),function(enemy) {
+        this.collection.each(function(enemy) {
             if(enemy.isVisible()){
                 var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
@@ -1315,7 +1315,7 @@ var AddGameView = Backbone.View.extend({
 
         this.$(".confirm-add-game").html(this.spinner.spin().el);
 
-        this.games.create(gameModel, {at:0, wait: true, error: simpleErrorHandler});
+        this.games.create(gameModel, {wait: true, error: simpleErrorHandler});
 
     },
 

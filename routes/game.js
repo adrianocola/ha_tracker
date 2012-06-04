@@ -66,9 +66,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
             }
         })
 
-        enemy.games.splice(0,0,game);
-
-        //enemy.games.push(game);
+        enemy.games.push(game);
 
         player.save(common.userId(req.authorization.userId),function(err){
             if (!err) res.send(game);

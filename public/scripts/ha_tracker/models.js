@@ -278,6 +278,12 @@ var Games = Backbone.Collection.extend({
         app.SelectionManager.setSelectedEnemy(this.enemy);
         app.SelectionManager.setSelectedGame(this.get(gameId));
 
+    },
+
+    comparator: function(game){
+
+        return -game.get('num');
+
     }
 
 
@@ -371,6 +377,12 @@ var Enemies = Backbone.Collection.extend({
 
 
         },this);
+
+    },
+
+    comparator: function(enemy){
+
+        return enemy.get('position');
 
     },
 
