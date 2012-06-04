@@ -45,15 +45,15 @@ app.configure('development', function(){
     app.use(express.favicon('/public/favicon-dev.ico'));
     app.use(app.router);
 
-    app.use(function(err, req, res, next){
-
-        if (err.code && err.error) {
-            console.log({code: err.code, error: err.error});
-            res.json(400,{code: err.code, error: err.error});
-        } else {
-            next(err);
-        }
-    });
+//    app.use(function(err, req, res, next){
+//
+//        if (err.code && err.error) {
+//            console.log({code: err.code, error: err.error});
+//            res.json(400,{code: err.code, error: err.error});
+//        } else {
+//            next(err);
+//        }
+//    });
 
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
@@ -94,17 +94,18 @@ app.configure('production', function(){
     app.use(app.router);
 
 
-    app.use(function(err, req, res, next){
+//    app.use(function(err, req, res, next){
+//
+//        if (err.code && err.error) {
+//            console.log({code: err.code, error: err.error});
+//            res.json(400,{code: err.code, error: err.error});
+//        } else {
+//            next(err);
+//        }
+//    });
 
-        if (err.code && err.error) {
-            console.log({code: err.code, error: err.error});
-            res.json(400,{code: err.code, error: err.error});
-        } else {
-            next(err);
-        }
-    });
-
-    app.use(express.errorHandler());
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    //app.use(express.errorHandler());
 
 });
 
