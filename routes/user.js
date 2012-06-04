@@ -312,70 +312,92 @@ app.get('/api/user/continue_login', function(req,res){
 app.post("/api/user/signup", function(req, res){
 
 
-    if(!req.body.username || !req.body.password || !req.body.email){
-        res.json(400, {code: 107, error: "Missing username, email or password"});
-    } else{
+//    if(!req.body.username || !req.body.password || !req.body.email){
+//        res.json(400, {code: 107, error: "Missing username, email or password"});
+//
+//        return;
+//    }
+
+    var reqsError = "";
+
+    if(req.body.username == undefined || req.body.username == "") reqsError += "Username is Required. ";
+    else if(req.body.username.length < 3) reqsError += "Username must have at least 3 characters. ";
+    else if(req.body.username.match(/[\<\>!@#\$%^&\*, ]+/i)) reqsError += "Username cannot have white spaces or < > ! @ # $ % ^ & *. ";
+
+    if(req.body.email == undefined || req.body.email == "") reqsError += "E-mail is Required. ";
+    else if(!req.body.email.match(/\S+@\S+\.\S+/)) reqsError += "Not a valid e-mail address. ";
+
+    if(req.body.password == undefined || req.body.password == "") reqsError += "Password is Required. ";
+    else if(req.body.password.length < 4) reqsError += "Password must have at least 4 characters. ";
+
+    console.log("USERNAME: " + req.body.username);
+
+    if(reqsError.length > 0){
+        res.json(400, {code: 107, error: reqsError});
+
+        return;
+    }
 
 
 
-        var user = new models.User();
-        var player = new models.Player();
+    var user = new models.User();
+    var player = new models.Player();
 
-        user.username = req.body.username.toLowerCase();
-        user.password = req.body.password;
-        user.email = req.body.email;
-        user.player = player;
-        user.addACL(user._id,true,true);
+    user.username = req.body.username.toLowerCase();
+    user.password = req.body.password;
+    user.email = req.body.email;
+    user.player = player;
+    user.addACL(user._id,true,true);
 
-        player.user = user;
-        player.addACL(user._id,true,true);
+    player.user = user;
+    player.addACL(user._id,true,true);
 
-        //save user
-        user.save( common.userId('MASTER'),function(err){
+    //save user
+    user.save( common.userId('MASTER'),function(err){
 
-            if(err){
-                console.log(err);
-                if(err.code == 11000){
-                    res.json(409, {code: 103, error: "Username or Email already registered"});
-                }else{
-                    res.send(err);
-                }
-
-
+        if(err){
+            console.log(err);
+            if(err.code == 11000){
+                res.json(409, {code: 103, error: "Username or Email already registered"});
             }else{
-
-                //save player
-                player.save(common.userId('MASTER'),function(err){
-
-                    if(err){
-                        console.log(err);
-                        res.send(err);
-                    }else{
-                        clearCookies(res);
-
-                        req.generateAuthorization(function(authorization){
-
-                            req.authorization.userId = user._id;
-
-                            var secureUser = user.secure();
-                            secureUser._doc.token = req.sessionToken;
-
-                            res.json(secureUser);
-
-
-                            common.statsMix(4320,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
-
-                        });
-
-                    }
-
-                });
-
+                res.send(err);
             }
 
-        });
 
-    }
+        }else{
+
+            //save player
+            player.save(common.userId('MASTER'),function(err){
+
+                if(err){
+                    console.log(err);
+                    res.send(err);
+                }else{
+                    clearCookies(res);
+
+                    req.generateAuthorization(function(authorization){
+
+                        req.authorization.userId = user._id;
+
+                        var secureUser = user.secure();
+                        secureUser._doc.token = req.sessionToken;
+
+                        res.json(secureUser);
+
+
+                        common.statsMix(4320,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
+
+                    });
+
+                }
+
+            });
+
+        }
+
+    });
+
+
 });
 
 app.get("/api/user/confirm", function(req, res){

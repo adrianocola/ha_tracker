@@ -782,12 +782,35 @@ var LoginView = Backbone.View.extend({
 
     login: function(){
 
+        var that = this;
+
         var username = this.$('#login-username').val();
+
+
+        var withError = false;
+
+        //verify if its a valid username before sending to the server
+        this.model.set({username: username}, {error: function(model,error){
+            that.$('.login-error').html(error);
+
+            withError = true;
+        }});
+
+        if(withError) return;
+
         var password = this.$('#login-password').val();
+
+        //verify if its a valid username before sending to the server
+        this.model.set({password: password}, {error: function(model,error){
+            that.$('.login-error').html(error);
+
+            withError = true;
+        }});
+
+        if(withError) return;
 
         this.$("#login-ok").html(this.spinner.spin().el);
 
-        var that = this;
 
         this.model.login(username,password, this.$('#keep-logged').attr('checked'), function(err,player){
 
