@@ -440,6 +440,8 @@ var Login = Backbone.Model.extend({
         if(attrs.username != undefined){
             if(attrs.username == "") return "Username is Required";
 
+            if(attrs.username.length < 3) return "Must have at least 3 characters";
+
             if(attrs.username.match(/[\<\>!@#\$%^&\*, ]+/i)) return "Cannot use white spaces or < > ! @ # $ % ^ & *";
         }
 
@@ -452,6 +454,8 @@ var Login = Backbone.Model.extend({
 
         if(attrs.password != undefined){
             if(attrs.password == "") return "Password is Required";
+
+            if(attrs.password.length < 4) return "Must have at least 4 characters";
         }
 
         if(attrs.rpassword != undefined){

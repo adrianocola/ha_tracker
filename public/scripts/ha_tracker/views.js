@@ -409,7 +409,7 @@ var LoggedPlayerView = Backbone.View.extend({
         }});
 
         //clean the selected game view
-        app.SelectedGameView.render().clean();
+        $('.example').fadeOut();;
 
         this.show();
 
@@ -538,7 +538,7 @@ var SignupView = Backbone.View.extend({
         app.LoginView.dismiss();
 
         //clean the selected game view
-        app.SelectedGameView.render().clean();
+        $('.example').fadeOut();
 
         app.CurrentPlayerView = new app.LoggedPlayerView({model: this.model });
     },
@@ -754,7 +754,7 @@ var LoginView = Backbone.View.extend({
 
 
             //clean the selected game view
-            app.SelectedGameView.render().clean();
+            $('.example').fadeOut();
             app.CurrentPlayerView = new app.LoggedPlayerView({model: this.model });
         }
 
