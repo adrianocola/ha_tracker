@@ -159,6 +159,7 @@ var UserSchema = new Schema({
     email: {type: String, lowercase: true, index: { unique: true, sparse: true }},
     password: {type: String},
     reset_password: {type: String},
+    keep_logged: {type: String},
     facebook: {
         userID: {type: String, index: { unique: true, sparse: true }},
         accessToken: String,
@@ -178,16 +179,6 @@ UserSchema.pre('remove',function(next){
 
 });
 
-
-
-var KeepLoggedSchema = new Schema({
-    usernameHash: {type: String, index: true , required: true},
-    userId: {type: String, index: true , required: true}
-},{ strict: true });
-KeepLoggedSchema.plugin(ACL_Plugin);
-
-
-
 /**
  *
  * Removes the passworld field to send to the client
@@ -204,7 +195,6 @@ UserSchema.methods.secure = function(){
 
 };
 
-exports.KeepLogged = mongoose.model('KeepLogged', KeepLoggedSchema);
 exports.User = mongoose.model('User', UserSchema);
 exports.Player = mongoose.model('Player', PlayerSchema);
 exports.Enemy = mongoose.model('Enemy', EnemySchema);

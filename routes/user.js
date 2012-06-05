@@ -26,8 +26,7 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
 
 function clearCookies(res){
 
-    res.clearCookie('KEEP_LOGGED_USER');
-    res.clearCookie('KEEP_LOGGED_ID');
+    res.clearCookie('KEEP_LOGGED_HASH');
     res.clearCookie('X-HATracker-Token');
 
 };
@@ -109,18 +108,35 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next)
 
     models.User.findById(req.authorization.userId,{}, common.userId('MASTER'), function(err,user){
 
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
+
         //if is a facebook user, clean facebook access token
         if(user.facebook.userID){
+
             user.facebook.accessToken = undefined;
             user.facebook.expiresIn = undefined;
 
             user.save(common.userId('MASTER'),function(err){
+
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
 
                 if(err) next(new app.UnexpectedError(err));
 
             });
 
         }
+
+        if(req.cookies.KEEP_LOGGED_HASH){
+            app.redis.del("keeplogged:" + req.cookies.KEEP_LOGGED_HASH);
+        }
+
+
 
         clearAuthorization(req,res);
 
@@ -172,13 +188,15 @@ app.get('/api/user/login', function(req,res,next){
                 req.authorization.userId = user._id;
 
                 if(req.query.keepLogged){
-                    var keepLogged = new models.KeepLogged();
 
-                    keepLogged.usernameHash = md5.hex_md5(env.salt + user.username + env.salt);
-                    keepLogged.userId = user._id;
+                    var keep_logged_hash = uuid.uuid(48);
 
+                    var multi = app.redis.multi();
 
-                    keepLogged.save(common.userId('MASTER'),function(err){
+                    multi.set('keeplogged:' + keep_logged_hash, user._id);
+                    multi.expire('keeplogged:' + keep_logged_hash, 1209600); //2 weeks = 1209600 s
+
+                    multi.exec(function(err,value){
 
                         if(err){
                             next(new app.UnexpectedError(err));
@@ -186,8 +204,8 @@ app.get('/api/user/login', function(req,res,next){
                         }
 
                         //2 weeks = 1209600000 ms
-                        res.cookie('KEEP_LOGGED_USER', keepLogged.usernameHash, { maxAge: 1209600000 });
-                        res.cookie('KEEP_LOGGED_ID', keepLogged._id.toString(), { maxAge: 1209600000 });
+                        res.cookie('KEEP_LOGGED_HASH', keep_logged_hash, { maxAge: 1209600000 });
+
 
                         var secureUser = user.secure();
                         secureUser._doc.token = req.sessionToken;
@@ -197,7 +215,6 @@ app.get('/api/user/login', function(req,res,next){
                         common.statsMix(4321,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
 
                     });
-
 
                 }else{
                     clearCookies(res);
@@ -251,21 +268,22 @@ app.get('/api/user/continue_login', function(req,res,next){
         });
 
     //user marked option "Keep logged in"
-    }else if(req.cookies.KEEP_LOGGED_USER && req.cookies.KEEP_LOGGED_ID){
-        models.KeepLogged.findById(req.cookies.KEEP_LOGGED_ID,{},common.userId('MASTER'),function(err,keepLogged){
+    }else if(req.cookies.KEEP_LOGGED_HASH){
+
+        app.redis.get('keeplogged:' + req.cookies.KEEP_LOGGED_HASH,function(err,value){
 
             if(err){
                 next(new app.UnexpectedError(err));
                 return;
             }
 
-            if(!keepLogged){
+            if(value==null){
                 clearAuthorization(req,res);
                 next(new app.ExpectedError(106,"Session Expired"));
                 return;
             }
 
-            models.User.findById(keepLogged.userId,{}, common.userId('MASTER'), function(err,user){
+            models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
 
                 if(err){
                     next(new app.UnexpectedError(err));
@@ -277,10 +295,6 @@ app.get('/api/user/continue_login', function(req,res,next){
                     next(new app.ExpectedError(107,"User not exists!"));
                     return;
                 }
-
-                //2 weeks = 1209600000 ms
-                res.cookie('KEEP_LOGGED_USER', req.cookies.KEEP_LOGGED_USER, { maxAge: 1209600000 });
-                res.cookie('KEEP_LOGGED_ID', req.cookies.KEEP_LOGGED_ID, { maxAge: 1209600000 });
 
 
                 req.generateAuthorization(function(authorization){
@@ -298,7 +312,8 @@ app.get('/api/user/continue_login', function(req,res,next){
 
             });
 
-        })
+        });
+
 
     }else{
         clearAuthorization(req,res);

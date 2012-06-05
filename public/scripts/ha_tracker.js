@@ -8,18 +8,12 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR terms and privacy
 //SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes - percebi no PC
 //ARRUMAR jeito de minimizar e juntar os javascripts
-//COLOCAR auto-login no redis, e não no MongoDB
-
-
 
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
-
 //ARRUMAR SPINNERS, para que tenham regras de CSS que envolvam o pai
-
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
 //IMPLEMENTAR MODO SEM LOGIN, COM STORAGE LOCAL
-//IMPLEMENTAR purge de AUTO-LOGIN (keep me logged in)
 //ARRUMAR layouts, css
 //ARRUMAR interferencia de logins. Se tiver marcado keep signed in e facebook juntos pode zuar
 

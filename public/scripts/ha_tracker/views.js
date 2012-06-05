@@ -693,7 +693,7 @@ var SignupView = Backbone.View.extend({
                 that.dismiss();
             }
         });
-        console.log("FOCUS1");
+
         this.$('#signup-username').focus();
     },
 
@@ -898,6 +898,8 @@ var LoginView = Backbone.View.extend({
     render: function(){
 
         $(this.el).html(this.template({}));
+
+        this.$('#login-username').focus();
 
         return this;
     }
