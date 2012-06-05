@@ -610,12 +610,10 @@ var Login = Backbone.Model.extend({
     },
 
     change_password: function(old_password, new_password, cb){
-        console.log(old_password);
-        console.log(new_password);
+
         var that = this;
 
         var username = this.get('username').toLowerCase();
-        console.log("USERNAME: " + username);
 
         //first get the nonce from the server
         $.ajax({
@@ -635,8 +633,7 @@ var Login = Backbone.Model.extend({
                     type: "PUT",
                     url: "/api/user/change_password"
                 }).success(function( msg ) {
-
-                        cb(undefined,msg);
+                        cb(undefined);
 
                     }).fail(function(err){
                         try{

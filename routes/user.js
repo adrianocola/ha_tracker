@@ -406,7 +406,7 @@ app.put("/api/user/change_password",common.verifyAuthorization, function(req, re
             }
 
             if(!user || req.body.old_password != md5.hex_md5(user.password + req.body.nonce)){
-                next(new app.ExpectedError(114,"Wrong password"));
+                next(new app.ExpectedError(114,"Wrong current password"));
                 return;
             }
 

@@ -38,6 +38,7 @@ var errorsHandler = function(err, req, res, next){
         res.json(400,{code: err.code, error: err.error});
     }else if (err instanceof app.UnexpectedError) {
         console.log("UNEXPECTED ERROR: " + err.error);
+        console.log(err.stack);
         res.json(500,{code: -1, error: "Unexpected Error: " + err.error});
     } else {
         next(err);

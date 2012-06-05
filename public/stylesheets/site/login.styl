@@ -286,10 +286,21 @@ div.user_panel
 #logged-player div.user_info
     float: left
 
-.reset-account, .delete-account, .change-field, .change-password
+.reset-account, .delete-account
     display: block
     width: 100%
     margin-bottom: 10px
+
+.change-field, .change-password
+    display: block
+    width: 100%
+    margin-top: 10px
+
+button.change-password
+    height: 20px
+
+.reset-error
+    margin-top: -10px
 
 div.confirm-delete, div.confirm-reset
     width: 100%
@@ -365,7 +376,7 @@ div#forgot-password-panel
 
 div.forgot-info
     font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
-    color: blue
+    color: grey
     margin-top: -5px
     margin-bottom: 10px
 

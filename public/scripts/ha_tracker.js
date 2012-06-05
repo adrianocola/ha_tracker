@@ -2,10 +2,8 @@ app = window.app ? window.app : {};
 
 //TODO
 //IMPLEMENTAR placar de partidas por enemy
-//VERIFICAR se quando o reset password foi feito com sucesso foi deletado do user o reset_password
 //MELHORAR efeito de mouse over em um item... aquele resize tá muito feio!
 //ARRUMAR load da aplicação que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
-//FAZER tratamento de erros no change password e exibir confirmação
 //IMPLEMENTAR change e-mail
 //IMPLEMENTAR terms and privacy
 //SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes - percebi no PC

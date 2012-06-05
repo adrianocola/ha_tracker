@@ -267,6 +267,8 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.spinner = new Spinner(opts_small);
 
+        this.can_change_password = true;
+
         var that = this;
 
         //fetch the player
@@ -298,9 +300,61 @@ var LoggedPlayerView = Backbone.View.extend({
 
     changePassword: function(){
 
-        this.model.change_password(this.$('#change-password-current').val(),this.$('#change-password-new').val(),function(err,msg){
-            console.log(err);
-            console.log(msg);
+        this.$('.reset-error').addClass('hidden');
+        this.$('.reset-msg').addClass('hidden');
+
+        if(!this.can_change_password){
+            return;
+        }
+
+        if(this.$('#change-password-current').val()=="" || this.$('#change-password-new').val()==""){
+            this.$('.reset-error').html("Password can't be empty");
+            this.$('.reset-error').removeClass('hidden');
+            return;
+        }
+
+        if(this.$('#change-password-current').val().length < 4 || this.$('#change-password-new').val().length < 4){
+            this.$('.reset-error').html("Password too short (<4)");
+            this.$('.reset-error').removeClass('hidden');
+            return;
+        }
+
+        if(this.$('#change-password-new').val() != this.$('#change-password-repeat').val()){
+            this.$('.reset-error').html("Passwords don't match ");
+            this.$('.reset-error').removeClass('hidden');
+            return;
+        }
+
+
+        var old_text = this.$('button.change-password').html();
+        this.$('button.change-password').html(this.spinner.spin().el);
+
+        var that = this;
+
+
+        this.can_change_password = false;
+
+        this.model.change_password(this.$('#change-password-current').val(),this.$('#change-password-new').val(),function(err){
+
+
+            if(err){
+                this.$('.reset-error').html(err);
+                this.$('.reset-error').removeClass('hidden');
+            }else{
+                this.$('#change-password-current').val("");
+                this.$('#change-password-new').val("");
+                this.$('#change-password-repeat').val("");
+
+
+                this.$('.reset-msg').html("Changed with success!");
+                this.$('.reset-msg').removeClass('hidden');
+            }
+
+            that.spinner.stop();
+            that.$('button.change-password').html(old_text);
+            that.can_change_password = true;
+
+
         });
 
     },
