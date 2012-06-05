@@ -1,29 +1,5 @@
 app = window.app ? window.app : {};
 
-var States = {
-    0: 'In Progress',
-    1: 'Won - Crystal',
-    2: 'Won - Heroes',
-    3: 'Won - Surrender',
-    4: 'Won - Timeout',
-    5: 'Lost - Crystal',
-    6: 'Lost - Heroes',
-    7: 'Lost - Surrender',
-    8: 'Lost - Timeout'
-};
-
-var States_Inverse = {
-    'In Progress': 0,
-    'Won - Crystal': 1,
-    'Won - Heroes': 2,
-    'Won - Surrender': 3,
-    'Won - Timeout': 4,
-    'Lost - Crystal': 5,
-    'Lost - Heroes': 6,
-    'Lost - Surrender': 7,
-    'Lost - Timeout': 8
-};
-
 var opts_mini = {
     lines: 6, // The number of lines to draw
     length: 0, // The length of each line
@@ -1560,7 +1536,7 @@ var SelectedGameView = Backbone.View.extend({
         this.$('div.state-box.won').addClass('selected');
         this.$('div.state-box.lost').removeClass('selected');
 
-        this.model.save({state: States_Inverse[this.$('#state_select_won').val()]},{error: simpleErrorHandler});
+        this.model.save({state: consts.States_Inverse[this.$('#state_select_won').val()]},{error: simpleErrorHandler});
 
     },
 
@@ -1577,16 +1553,16 @@ var SelectedGameView = Backbone.View.extend({
         this.$('div.state-box.won').removeClass('selected');
         this.$('div.state-box.lost').addClass('selected');
 
-        this.model.save({state: States_Inverse[this.$('#state_select_lost').val()]},{error: simpleErrorHandler});
+        this.model.save({state: consts.States_Inverse[this.$('#state_select_lost').val()]},{error: simpleErrorHandler});
 
     },
 
     select_won: function(){
-        this.model.save({state: States_Inverse[this.$('#state_select_won').val()]},{error: simpleErrorHandler});
+        this.model.save({state: consts.States_Inverse[this.$('#state_select_won').val()]},{error: simpleErrorHandler});
     },
 
     select_lost: function(){
-        this.model.save({state: States_Inverse[this.$('#state_select_lost').val()]},{error: simpleErrorHandler});
+        this.model.save({state: consts.States_Inverse[this.$('#state_select_lost').val()]},{error: simpleErrorHandler});
     },
 
     selected: function(game){
@@ -1639,7 +1615,7 @@ var SelectedGameView = Backbone.View.extend({
             }else if(json.state >= 1 && json.state <= 4){
                 this.$('#state_select_won').removeAttr('disabled');
                 this.$('#state_select_lost').attr('disabled', 'disabled');
-                this.$('#state_select_won').val(States[json.state]);
+                this.$('#state_select_won').val(consts.States[json.state]);
                 this.$('#state_won').attr('checked', 'checked');
 
                 this.$('.player-items-mask').removeClass('hidden');
@@ -1652,7 +1628,7 @@ var SelectedGameView = Backbone.View.extend({
             }else if(json.state >= 5 && json.state <= 8){
                 this.$('#state_select_lost').removeAttr('disabled');
                 this.$('#state_select_won').attr('disabled', 'disabled');
-                this.$('#state_select_lost').val(States[json.state]);
+                this.$('#state_select_lost').val(consts.States[json.state]);
                 this.$('#state_lost').attr('checked', 'checked');
 
                 this.$('.player-items-mask').removeClass('hidden');
@@ -1905,7 +1881,7 @@ var ItemView = Backbone.View.extend({
 
     render: function(){
 
-        $(this.el).html(this.template(this.model.toJSON()));
+        $(this.el).html(this.template(this.model.formatToJSON()));
 
         this.renderItemCount();
 

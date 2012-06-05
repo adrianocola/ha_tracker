@@ -1,6 +1,6 @@
 var app = require('../app.js');
 var models = require('../conf/models.js');
-var consts = require('../conf/consts.js');
+var consts = require('../public/scripts/shared/consts.js');
 var u = require('underscore');
 var common = require('./common.js');
 

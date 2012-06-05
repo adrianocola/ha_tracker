@@ -10,7 +10,7 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR terms and privacy
 //IMPLEMENTAR email de forgot password bonitinho
 //SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes
-//BUG tenhi a impressão de que as vezes a sessão ainda não está sendo renovada!
+//ARRUMAR jeito de minimizar e juntar os javascripts
 
 
 

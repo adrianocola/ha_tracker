@@ -36,11 +36,13 @@ var Item = Backbone.Model.extend({
 
         _.bindAll(this);
 
+        this.realItem = consts.Items[this.get('itemId')];
+
     },
 
     addCount: function(){
        var sum = this.get("itemCount")+1;
-       if(sum > this.get("itemCountMax")){
+       if(sum > this.realItem.itemCountMax){
            this.set("itemCount",0);
        }else{
            this.set("itemCount",sum);
@@ -51,7 +53,7 @@ var Item = Backbone.Model.extend({
     subCount: function(){
         var sub = this.get("itemCount")-1;
         if(sub < 0){
-            this.set("itemCount",this.get("itemCountMax"));
+            this.set("itemCount",this.realItem.itemCountMax);
         }else{
             this.set("itemCount",sub);
         }
@@ -59,7 +61,7 @@ var Item = Backbone.Model.extend({
     },
 
     canAdd: function(){
-        return this.get("itemCount")===this.get("itemCountMax")?false:true;
+        return this.get("itemCount")===this.realItem.itemCountMax?false:true;
     },
 
     canSub: function(){
@@ -67,16 +69,26 @@ var Item = Backbone.Model.extend({
     },
 
     validate: function(attrs){
-        if(attrs.itemCount > attrs.itemCountMax){
-            return "Cannot have more than " + attrs.itemCountMax + " of item " + attrs.itemName + "!";
+        if(!this.realItem){
+            return;
+        }
+
+        if(attrs.itemCount > this.realItem.itemCountMax){
+            return "Cannot have more than " + this.realItem.itemCountMax + " of item " + attrs.itemName + "!";
         }
 
         if(attrs.itemCount < 0){
             return "Cannot have more less than 0 of item " + attrs.itemName + "!";
         }
+    },
+
+    formatToJSON: function(){
+
+        var item = _.clone(this.realItem);
+        item.itemCount = this.get('itemCount');
+        return item;
+
     }
-
-
 
 });
 
@@ -244,8 +256,6 @@ var Game = Backbone.Model.extend({
 
         this.playerItems.fetch({error: function(model, err){
             that.trigger('error',err);
-        }, success: function(model){
-            console.log(model);
         }});
 
         this.enemyItems.fetch({error: function(model, err){
