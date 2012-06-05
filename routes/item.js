@@ -55,7 +55,7 @@ app.get('/api/itemmanager/:id/items2', common.verifyAuthorization,function(req, 
 
         });
 
-        res.send({items: items});
+        res.send({data: items});
 
 
     });
