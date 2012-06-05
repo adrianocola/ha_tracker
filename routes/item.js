@@ -34,6 +34,35 @@ app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, r
 
 });
 
+app.get('/api/itemmanager/:id/items2', common.verifyAuthorization,function(req, res, next){
+
+    models.ItemManager.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err,itemManager){
+
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
+
+        var items = [];
+
+        u.each(itemManager.items,function(item){
+
+            var returnItem = u.clone(consts.Items[item.itemId]);
+            returnItem.itemCount = item.itemCount;
+            returnItem._id = item._id;
+
+            items.push(returnItem);
+
+        });
+
+        res.send({items: items});
+
+
+    });
+
+
+});
+
 
 
 
