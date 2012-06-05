@@ -104,6 +104,12 @@ var Items = Backbone.Collection.extend({
 
         return count;
 
+    },
+
+    parse: function(response){
+
+        return response.data;
+
     }
 
 });
