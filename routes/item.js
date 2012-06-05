@@ -20,6 +20,7 @@ app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, r
 
             var returnItem = u.clone(consts.Items[item.itemId]);
             returnItem.itemCount = item.itemCount;
+            returnItem.itemId = item.itemId;
             returnItem._id = item._id;
 
             items.push(returnItem);
