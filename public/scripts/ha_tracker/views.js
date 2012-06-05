@@ -1827,6 +1827,7 @@ var ItemView = Backbone.View.extend({
 
     events: {
         'click .itemSub': 'sub',
+        'click .click-to-reset': 'sub',
         'click .itemAdd': 'add',
         'click .itemImg': 'imgClick'
     },
@@ -1891,11 +1892,11 @@ var ItemView = Backbone.View.extend({
         }
 
         if(this.model.get("itemCount") == 0){
-            this.$(".itemCount").addClass('zero');
-            this.$(".itemImg").fadeTo(0,0.5);
+            this.$el.addClass('zero');
+            this.$(".itemImg").fadeTo(400,0.5);
         }else{
-            this.$(".itemCount").removeClass('zero');
-            this.$(".itemImg").fadeTo(0,1);
+            this.$el.removeClass('zero');
+            this.$(".itemImg").fadeTo(400,1);
         }
 
         return this;

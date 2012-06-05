@@ -236,8 +236,10 @@ var Game = Backbone.Model.extend({
 
         var that = this;
 
-        this.playerItems.fetch({error: function(mode, err){
+        this.playerItems.fetch({error: function(model, err){
             that.trigger('error',err);
+        }, success: function(model){
+            console.log(model);
         }});
 
         this.enemyItems.fetch({error: function(model, err){

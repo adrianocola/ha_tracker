@@ -224,7 +224,8 @@ block templates
         h3 Remaining:
 
     script(type="text/template", id="item-template")
-        <% print('<img class=\"itemImg\" src=\"' + itemImg + '\"/>'); %>
+        | <img class="itemImg" src="<%= itemImg %>"/>
+        div.click-to-reset Click to reset
         span.itemName <%= itemName %>
         span.itemCount <%= itemCount %>
         button.itemSub.button-02 -

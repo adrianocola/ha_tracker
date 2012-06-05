@@ -1,6 +1,7 @@
 @import '../common'
 
 .items li
+    position: relative
     display: inline
     list-style: none
     width: 70px
@@ -13,6 +14,32 @@
     height: 100px
     vertical-align: -5px
 
+.click-to-reset
+    line-height: 10px
+    position: absolute
+    cursor: pointer
+    top: 55px
+    left: 17px
+    width: 70px
+    color: white
+    font-weight:bold
+    text-align: center
+    font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
+    //opacity: 0.9
+    -moz-box-shadow:inset 0px 1px 0px 0px #f7c5c0;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #f7c5c0;
+    box-shadow:inset 0px 1px 0px 0px #f7c5c0;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d) );
+    background:-moz-linear-gradient( center top, #fc8d83 5%, #e4685d 100% );
+    //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fc8d83', endColorstr='#e4685d');
+    background-color:#fc8d83;
+    border:1px solid #e85959
+    text-shadow:1px 1px 0px #b23e35;
+    display: none
+
+.items li.item.zero:hover .click-to-reset
+    display: block
+
 .items li:hover .itemImg
     width: 110px
     height: 110px
@@ -22,6 +49,7 @@
    left: 23px
 
 .itemCount
+    transition background-color 1s ease-in-out
     position: relative
     top: -25px
     left: 17px
@@ -44,7 +72,7 @@
     background:-moz-linear-gradient( center top, #fc8d83 5%, #e4685d 100% );
     text-shadow:1px 1px 0px #666666
 
-.itemCount.zero
+.item.zero .itemCount
     box-shadow:inset 0px 1px 0px 0px #ffffff
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) )
     background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% )

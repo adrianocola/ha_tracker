@@ -2,7 +2,6 @@ app = window.app ? window.app : {};
 
 //TODO
 //IMPLEMENTAR placar de partidas por enemy
-//IMPLEMENTAR tamanho mínimo de senha e username
 //VERIFICAR se quando o reset password foi feito com sucesso foi deletado do user o reset_password
 //MELHORAR efeito de mouse over em um item... aquele resize tá muito feio!
 //ARRUMAR load da aplicação que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
@@ -10,10 +9,9 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR change e-mail
 //IMPLEMENTAR terms and privacy
 //IMPLEMENTAR email de forgot password bonitinho
-//MELHORAR error de signup, janelinha de aviso tá muito feia e ruim de ler
-//IMPLEMENTAR algum erro 500 genérico no server pra ser chamdo em caso de pau genérico com o MongoDB (em commons.js)
 //IMPLEMENTAR maneira de avisar para o usuário que um item zerado pode ser reinicado
 //SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes
+//BUG tenhi a impressão de que as vezes a sessão ainda não está sendo renovada!
 
 
 
