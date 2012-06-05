@@ -8,10 +8,9 @@ app = window.app ? window.app : {};
 //FAZER tratamento de erros no change password e exibir confirmação
 //IMPLEMENTAR change e-mail
 //IMPLEMENTAR terms and privacy
-//IMPLEMENTAR email de forgot password bonitinho
-//SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes
+//SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes - percebi no PC
 //ARRUMAR jeito de minimizar e juntar os javascripts
-
+//COLOCAR auto-login no redis, e não no MongoDB
 
 
 

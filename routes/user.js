@@ -320,7 +320,6 @@ app.post("/api/user/signup", function(req, res, next){
     else if(!req.body.email.match(/\S+@\S+\.\S+/)) reqsError += "Not a valid e-mail address. ";
 
     if(req.body.password == undefined || req.body.password == "") reqsError += "Password is Required. ";
-    else if(req.body.password.length < 4) reqsError += "Password must have at least 4 characters. ";
 
 
     if(reqsError.length > 0){
@@ -436,6 +435,8 @@ app.put("/api/user/change_password",common.verifyAuthorization, function(req, re
 
 app.post("/api/user/forgot_password", function(req, res, next){
 
+
+
     models.User.findOne({"email": req.body.email},{}, common.userId('MASTER'), function(err,user){
 
         if(err){
@@ -459,7 +460,7 @@ app.post("/api/user/forgot_password", function(req, res, next){
             }
 
             multi.set("resetpw:" + confirmation, user._id);
-            multi.expire("resetpw:" + confirmation, 86400);
+            multi.expire("resetpw:" + confirmation, 86400); //1 day
 
             multi.exec(function(err,value){
 
@@ -481,10 +482,16 @@ app.post("/api/user/forgot_password", function(req, res, next){
 
                     //setup e-mail data with unicode symbols
                     var mailOptions = {
+                        generateTextFromHTML: true,
                         from: env.secrets.mail_username,
                         to: user.email,
                         subject: "HATracker - Recover Password",
-                        text: "Click the following link to reset your password: http://" + req.headers.host + "/reset_password?confirmation=" + confirmation
+                        //text: "Click the following link to reset your password: http://" + req.headers.host + "/reset_password?confirmation=" + confirmation
+                        html: "Hey <b>" + user.username + "</b>," +
+                            "<br><br> Forgot your password? Click the link below to reset your password: " +
+                            "<br><br> http://" + req.headers.host + "/reset_password?confirmation=" + confirmation +
+                            "<br><br><br><br> Please, don't reply to this address. If you have any questions send an e-mail to contat@hatracker.com" +
+                            "<br><br> www.hatracker.com"
                     };
 
                     // send mail with defined transport object

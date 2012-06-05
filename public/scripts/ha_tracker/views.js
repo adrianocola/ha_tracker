@@ -186,7 +186,12 @@ var ForgotPasswordView = Backbone.View.extend({
 
         this.$('#forgot-send').html(this.spinner.spin().el);
 
+        if(!this.canSend){
+            return;
+        }
+
         this.canSend = false;
+
 
         new app.Login().forgot_password(this.$('#forgot-password-email').val(),function(err){
             if(err){
@@ -684,7 +689,6 @@ var LoginView = Backbone.View.extend({
     },
 
     forgot_password: function(){
-        console.log("FORGOT");
         new ForgotPasswordView().render();
     },
 

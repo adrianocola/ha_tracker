@@ -77,12 +77,14 @@ block templates
                 input#signup-email.login-field(type="text",placeholder="E-mail",maxlength="100")
                 button#email-error-icon.signup-error.button-02.hidden !
                     span#email-error.tooltip-error
-                div.text e-mail is only used to recover a lost password
+                div.text *e-mail is only used to recover a lost password
                 div.signup-error
                 div.signup-msg
             div.login-right
                 button#signup-ok.button-01.login-button(title="Signup") Signup
                 button#signup-cancel.button-02.login-button(title="Cancel") Cancel
+                div.terms_privacy
+                    a.link(href="/terms_privacy") Terms & Privacy
         div.separator-signup
             span or
         div.signup-fb

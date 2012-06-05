@@ -131,6 +131,13 @@ div.signup-site {
   margin-left: 10px;
   width: 50px;
 }
+.terms_privacy {
+  text-indent: 0px;
+  font: 9px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin-left: 17px;
+  margin-top: 8px;
+  text-align: center;
+}
 .label {
   float: left;
   width: 50px;
@@ -141,7 +148,7 @@ div.signup-site {
 }
 div.text {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
-  color: #00f;
+  color: #808080;
   margin-left: 20px;
   margin-top: 5px;
 }
@@ -149,12 +156,17 @@ button.signup-error {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-weight: bold;
   margin-left: 5px;
   position: relative;
+  padding: 0 0 0 0;
+  width: 17px;
+  height: 20px;
 }
 button.signup-error span {
   display: none;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 button.signup-error:hover span {
   display: block;
@@ -169,9 +181,9 @@ button.signup-error:hover span {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
-  -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
-  box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+  -moz-box-shadow: 2px 5px 5px rgba(0,0,0,0.4);
+  -webkit-box-shadow: 2px 5px 5px rgba(0,0,0,0.4);
+  box-shadow: 2px 5px 5px rgba(0,0,0,0.4);
   padding: 2px;
 }
 .separator-signup {
@@ -518,6 +530,19 @@ body {
   position: relative;
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+.example-info {
+  color: #888;
+  margin-top: -1px;
+  text-align: center;
+  line-height: 20px;
+}
+img.enemies-example {
+  margin-left: -10px;
+}
+img.game-example {
+  margin-left: -5px;
+  margin-top: -5px;
+}
 #player {
   clear: left;
   float: left;
@@ -641,26 +666,63 @@ div.game-info-text {
 div.game-info select {
   padding-bottom: 5px;
 }
+li.game-container {
+  list-style: none;
+  position: relative;
+  margin: 5px 5px 0 -20px;
+}
 .game {
   width: 220px;
   color: #888;
   background-color: #fff;
   line-height: 30px;
-  margin: 5px 5px 0 -20px;
   border: 1px solid #808080;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  list-style: none;
   cursor: pointer;
 }
-.game.won {
+.game.won.showState:not(.selected-game) .gameNum {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
   background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
   background-color: #b8e356;
-  color: #fff;
 }
-.game.lost {
+.game.lost.showState:not(.selected-game) .gameNum {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
+  background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
+  background-color: #fc8d83;
+}
+.game:hover {
+  color: #fff;
+  background-color: #888;
+  border: 1px solid #000;
+}
+div.gameDeleteMask {
+  position: absolute;
+  top: 0px;
+  left: -2px;
+  width: 225px;
+  height: 100%;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #000;
+  opacity: 0.4;
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  -ms-transition: width 1s ease-in-out;
+}
+div.gameDeleteText {
+  line-height: 15px;
+  position: absolute;
+  top: 10px;
+  left: -2px;
+  width: 223px;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0.9;
   -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
   -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
   -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
@@ -669,19 +731,22 @@ div.game-info select {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
   background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
   background-color: #fc8d83;
-  color: #fff;
+  border: 1px solid #e85959;
+  text-shadow: 1px 1px 0px #b23e35;
 }
-.game:hover {
+div.gameDeleteText a {
+  margin-left: 10px;
+  color: #ccc;
+}
+div.gameDeleteText a:hover {
+  font-weight: bold;
   color: #fff;
-  background-color: #888;
-  border: 1px solid #000;
 }
 .selected-game {
   width: 208px;
   color: #fff;
   list-style: none;
   padding: 3px 6px 3px 6px;
-  margin: 5px 5px 0 -20px;
   background-color: #bbb;
   line-height: 30px;
   height: 30px;
@@ -761,20 +826,19 @@ div.game-info select {
   background-color: #555;
 }
 .selected-game .gameNum {
-  background-color: #bfb;
   width: 30px;
   height: 36px;
   margin: -4px 0 0 -8px;
   border-right: 2px solid #666;
-  -moz-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-  -webkit-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-  -moz-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-  -webkit-box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-  box-shadow: 1px 0px 2px rgba(0,0,0,0.49);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
-  background: -moz-linear-gradient(center top, #b8e356 5%, #a5cc52 100%);
-  background-color: #b8e356;
-  border: 1px solid #83c41a;
+  -moz-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  -moz-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  box-shadow: inset 0px 1px 0px 0px #dcecfb;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea));
+  background: -moz-linear-gradient(center top, #bddbfa 5%, #80b5ea 100%);
+  background-color: #bddbfa;
+  border: 1px solid #84bbf3;
 }
 .raceIcon {
   width: 30px;
@@ -783,6 +847,10 @@ div.game-info select {
   margin: 0 5px 3px 5px;
 }
 .gamePanel {
+  width: 100%;
+  height: 100%;
+}
+.gamePanel div {
   display: inline;
   margin-left: 30px;
 }
@@ -824,21 +892,30 @@ div.game-info select {
   line-height: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-#showActive {
-  margin-left: 10px;
+#showActive,
+#showState {
   margin-top: 5px;
 }
-span.showActiveText {
+#showActive {
+  margin-left: 10px;
+}
+#showState {
+  margin-left: 20px;
+}
+span.showActiveText,
+span.showStateText {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #808080;
+  margin-left: 1px;
 }
-.enemy {
+.enemy-container {
+  position: relative;
+  list-style: none;
   background-color: #eee;
   border: 1px solid #808080;
   padding: 5px 0 15px 5px;
   margin: 10px 0 0 -30px;
   line-height: 30px;
-  list-style: none;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
@@ -903,7 +980,7 @@ div.enemy-items-mask {
   width: 280px;
   position: absolute;
   height: 500px;
-  z-index: 100;
+  z-index: 50;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
@@ -1042,10 +1119,17 @@ div.enemy-items-mask {
   display: block;
   height: 55px;
   line-height: 25px;
+  width: 220px;
+  color: #888;
+  background-color: #fff;
+  border: 1px solid #808080;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 .addGamePanel:hover {
   border: 1px solid #808080;
-  margin: 5px 5px 0 -20px;
   line-height: 25px;
 }
 .addGamePanel .add-game-label {
@@ -1065,6 +1149,52 @@ div.enemy-items-mask {
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }
+div.enemyDeleteMask {
+  position: absolute;
+  top: 0px;
+  left: -2px;
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  background-color: #000;
+  opacity: 0.4;
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  -ms-transition: width 1s ease-in-out;
+  border: 1px solid #000;
+}
+div.enemyDeleteText {
+  line-height: 15px;
+  position: absolute;
+  top: 10px;
+  left: -2px;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  opacity: 0.9;
+  -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
+  background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
+  background-color: #fc8d83;
+  border: 1px solid #e85959;
+  text-shadow: 1px 1px 0px #b23e35;
+}
+div.enemyDeleteText a {
+  margin-left: 10px;
+  color: #ddd;
+}
+div.enemyDeleteText a:hover {
+  font-weight: bold;
+  color: #fff;
+}
 .deleteEnemy {
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
@@ -1082,6 +1212,12 @@ div.enemy-items-mask {
 }
 .enemy:hover .deleteEnemy {
   display: block;
+}
+.deleteEnemyConfirmation {
+  float: right;
+  top: 20px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #f00;
 }
 #add-enemy {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
@@ -1182,6 +1318,7 @@ div.enemy-items-mask {
   top: 0px;
 }
 .items li {
+  position: relative;
   display: inline;
   list-style: none;
   width: 70px;
@@ -1194,6 +1331,32 @@ div.enemy-items-mask {
   height: 100px;
   vertical-align: -5px;
 }
+.click-to-reset {
+  line-height: 10px;
+  position: absolute;
+  cursor: pointer;
+  top: 55px;
+  left: 17px;
+  width: 70px;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -moz-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  box-shadow: inset 0px 1px 0px 0px #f7c5c0;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
+  background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
+  background-color: #fc8d83;
+  border: 1px solid #e85959;
+  text-shadow: 1px 1px 0px #b23e35;
+  display: none;
+}
+.items li.item.zero:hover .click-to-reset {
+  display: block;
+}
 .items li:hover .itemImg {
   width: 110px;
   height: 110px;
@@ -1203,6 +1366,10 @@ div.enemy-items-mask {
   left: 23px;
 }
 .itemCount {
+  -webkit-transition: background-color 1s ease-in-out;
+  -moz-transition: background-color 1s ease-in-out;
+  -o-transition: background-color 1s ease-in-out;
+  -ms-transition: background-color 1s ease-in-out;
   position: relative;
   top: -25px;
   left: 17px;
@@ -1231,7 +1398,7 @@ div.enemy-items-mask {
   background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
   text-shadow: 1px 1px 0px #666;
 }
-.itemCount.zero {
+.item.zero .itemCount {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
@@ -1283,4 +1450,7 @@ div.enemy-items-mask {
 .items li:hover .itemCount {
   top: -25px;
   left: 17px;
+}
+.items li.item.zero:hover .click-to-reset {
+  display: none;
 }
