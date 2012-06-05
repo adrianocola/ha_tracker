@@ -125,28 +125,10 @@ exports = module.exports = function(options){
 
         // set-cookie
         res.on('header', function(){
-//            if (!req.authorization) return;
-//            var cookie = req.authorization.cookie
-//                , proto = (req.headers['x-forwarded-proto'] || '').toLowerCase()
-//                , isNew = req.signedCookies[key] != req.sessionToken;
-//
-//            // browser-session length cookie
-//            if (null == cookie.expires) {
-//                if (!isNew) return debug('already set browser-session cookie');
-//                // compare hashes
-//            } else if (originalHash == hash(req.authorization)) {
-//                return debug('unmodified session');
-//            }
-//
-//            var val = cookie.serialize(key, req.sessionToken);
-//            debug('set-cookie %s', val);
-//            res.setHeader('Set-Cookie', val);
-
 
             if(!req.authorization) return;
 
-            if(req.cookies['X-HATracker-Token'] && req.cookies['X-HATracker-Token']==req.sessionToken) return;
-
+            //always set the cookie, to update the TTL of the cookie
             res.cookie('X-HATracker-Token',req.sessionToken,req.authorization.cookie);
 
         });
@@ -179,8 +161,6 @@ exports = module.exports = function(options){
             //console.log('saving');
             req.authorization.resetMaxAge();
             req.authorization.save(function(err){
-                //console.log('saved');
-
                 res.end(data, encoding);
             });
         };

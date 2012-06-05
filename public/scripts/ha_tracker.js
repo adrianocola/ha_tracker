@@ -9,7 +9,6 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR change e-mail
 //IMPLEMENTAR terms and privacy
 //IMPLEMENTAR email de forgot password bonitinho
-//IMPLEMENTAR maneira de avisar para o usuário que um item zerado pode ser reinicado
 //SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes
 //BUG tenhi a impressão de que as vezes a sessão ainda não está sendo renovada!
 
