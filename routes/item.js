@@ -34,9 +34,9 @@ app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, r
 
 });
 
-app.get('/api/itemmanager/:id/items2', common.verifyAuthorization,function(req, res, next){
+app.get('/api/itemmanager/:id/items2',function(req, res, next){
 
-    models.ItemManager.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err,itemManager){
+    models.ItemManager.findById(req.params.id,{}, common.userId('MASTER'), function(err,itemManager){
 
         if(err){
             next(new app.UnexpectedError(err));
