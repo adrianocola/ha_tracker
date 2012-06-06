@@ -4,10 +4,6 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR placar de partidas por enemy
 //ARRUMAR load da aplicação que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
 //IMPLEMENTAR change e-mail
-//IMPLEMENTAR terms and privacy
-//SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes - percebi no PC
-//ARRUMAR jeito de minimizar e juntar os javascripts
-//ADICIONAR algumas data, tipo data de criação do user, data do último login, etc.
 
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...
@@ -15,7 +11,6 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR BOOKMARK COM HISTÓRICO
 //IMPLEMENTAR MODO SEM LOGIN, COM STORAGE LOCAL
 //ARRUMAR layouts, css
-//ARRUMAR interferencia de logins. Se tiver marcado keep signed in e facebook juntos pode zuar
 
 
 //variable to control the login flow. There are 2 types of login:
