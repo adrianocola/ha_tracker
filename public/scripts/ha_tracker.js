@@ -8,7 +8,6 @@ app = window.app ? window.app : {};
 //SE A CONEXÃO FOR LENTA (ex: 3G), pode acontecer de aparecer 2 telas de login ou ela ser chamada 2 vezes - percebi no PC
 //ARRUMAR jeito de minimizar e juntar os javascripts
 //ADICIONAR algumas data, tipo data de criação do user, data do último login, etc.
-//ADICIONAR un link de contato no rodapé
 
 
 //PORCO ainda o esquema de declaração de views, tem umas que são singleton, outras não...

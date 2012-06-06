@@ -348,9 +348,12 @@ div.g-plusone {
 div.fb-like {
   display: inline;
 }
-div.terms {
+div.about {
   display: inline;
   float: right;
+}
+div.about a {
+  margin-left: 10px;
 }
 div.tech {
   display: block;
@@ -465,12 +468,17 @@ body {
   width: 100%;
   height: 100%;
 }
-a.link {
+a.link,
+a.link-grey {
   color: #00f;
   text-decoration: none;
 }
 a.link:hover {
   color: #f90;
+  text-decoration: underline;
+}
+a.link-grey:hover {
+  color: #c60;
   text-decoration: underline;
 }
 .spinner-mini {
@@ -918,6 +926,12 @@ div.gameDeleteText a:hover {
   width: 150px;
   top: -5px;
   left: 40%;
+}
+div.enemy-tip {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #808080;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 .enemies {
   margin: 0 0 0 0;
