@@ -436,6 +436,13 @@ div.enemy-tip
     margin-top: 10px
     margin-left: 20px
 
+div.hidden-enemies-warning
+    font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
+    color: #cfa457
+    //color: red
+    margin-left: 10px
+    margin-top: 5px
+
 .enemies
     margin: 0 0 0 0
 
@@ -472,7 +479,6 @@ span.showActiveText, span.showStateText
 .enemy-container
     position:relative
     list-style: none
-    background-color: #EEEEEE
     border: 1px solid grey
     padding: 5px 0 15px 5px
     margin: 10px 0 0 -30px
@@ -480,13 +486,12 @@ span.showActiveText, span.showStateText
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff
     box-shadow:inset 0px 1px 0px 0px #ffffff
+    border-radius(6px)
+    border:1px solid #dcdcdc
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) )
     background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% )
     //filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf')
     background-color:#ededed
-    border-radius(6px)
-    border:1px solid #dcdcdc
-
 
 .addEnemyPanel
     height: 30px

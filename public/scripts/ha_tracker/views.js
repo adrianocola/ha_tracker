@@ -1000,13 +1000,23 @@ var EnemiesView = Backbone.View.extend({
 
         $enemies.html('');
 
+        var areHiddenEnemies = false;
+
         this.collection.each(function(enemy) {
             if(enemy.isVisible()){
                 var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
+            }else{
+                areHiddenEnemies = true;
             }
 
         },this);
+
+        if(areHiddenEnemies){
+            this.$('.hidden-enemies-warning').removeClass('hidden');
+        }else{
+            this.$('.hidden-enemies-warning').addClass('hidden');
+        }
 
         //verify if the player have the option "Show state" marked
         if(this.collection.player.get('showState')){
@@ -1014,12 +1024,15 @@ var EnemiesView = Backbone.View.extend({
             this.$('.game.lost').addClass('showState');
         }
 
-        //control to hide the selectect game if it is not visible after aplying a filter or active only filter
-        if(!app.SelectionManager.selectedEnemy.isVisible() || !app.SelectionManager.selectedGame.isVisible()){
-            app.SelectedGameView.hide();
-        }else{
-            app.SelectedGameView.show();
+        if(app.SelectionManager.selectedEnemy){
+            //control to hide the selectect game if it is not visible after aplying a filter or active only filter
+            if(!app.SelectionManager.selectedEnemy.isVisible() || !app.SelectionManager.selectedGame.isVisible()){
+                app.SelectedGameView.hide();
+            }else{
+                app.SelectedGameView.show();
+            }
         }
+
 
 
     },
@@ -1059,14 +1072,24 @@ var EnemiesView = Backbone.View.extend({
             this.$('#showState').attr('disabled','disabled');
         }
 
+        var areHiddenEnemies = false;
+
         //render all enemies
         this.collection.each(function(enemy) {
             if(enemy.isVisible()){
                 var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
+            }else{
+                areHiddenEnemies = true;
             }
 
         },this);
+
+        if(areHiddenEnemies){
+            this.$('.hidden-enemies-warning').removeClass('hidden');
+        }else{
+            this.$('.hidden-enemies-warning').addClass('hidden');
+        }
 
         //verify if the player have the option "Show state" marked
         if(this.collection.player.get('showState')){

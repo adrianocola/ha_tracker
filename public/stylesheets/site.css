@@ -933,6 +933,12 @@ div.enemy-tip {
   margin-top: 10px;
   margin-left: 20px;
 }
+div.hidden-enemies-warning {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #cfa457;
+  margin-left: 10px;
+  margin-top: 5px;
+}
 .enemies {
   margin: 0 0 0 0;
 }
@@ -973,7 +979,6 @@ span.showStateText {
 .enemy-container {
   position: relative;
   list-style: none;
-  background-color: #eee;
   border: 1px solid #808080;
   padding: 5px 0 15px 5px;
   margin: 10px 0 0 -30px;
@@ -983,13 +988,13 @@ span.showStateText {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
-  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
-  background-color: #ededed;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
+  background-color: #ededed;
 }
 .addEnemyPanel {
   height: 30px;

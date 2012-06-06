@@ -145,6 +145,7 @@ block templates
         span.showActiveText Show only active
         input#showState(type="checkbox")
         span.showStateText Show state
+        div.hidden-enemies-warning.hidden Some enemies and games are hidden!
         ul.enemies
         div.enemy-tip TIP: double click an enemy name to rename it
 
@@ -187,6 +188,7 @@ block templates
             span Are you sure?
             a.delete-game-yes Yes
             a.delete-game-no No
+
 
     script(type="text/template",id="selected-game-template")
         <% if(data) { %>
