@@ -1070,7 +1070,6 @@ var EnemiesView = Backbone.View.extend({
 
         //verify if the player have the option "Show state" marked
         if(this.collection.player.get('showState')){
-            console.log("DEVERIA PINTAR");
             this.$('#showState').attr('checked',true);
             this.$('.game.won').addClass('showState');
             this.$('.game.lost').addClass('showState');
@@ -1382,6 +1381,8 @@ var AddGameView = Backbone.View.extend({
 
         var game = this.games.first();
 
+        game.unbind("sync",this.createdGame);
+
         this.games.select(game.id);
         app.SelectedGameView.selected(game);
     },
@@ -1648,9 +1649,11 @@ var SelectedGameView = Backbone.View.extend({
 
     render: function(){
 
+
         this.show();
 
         if(this.model){
+
             var json = this.model.toJSON();
 
             this.$el.html(this.template({data: json}));
@@ -1708,6 +1711,7 @@ var SelectedGameView = Backbone.View.extend({
 
 
         }else{
+
             this.$el.html(this.template({data: undefined}));
 
             //this.$('.game-info').html('');
