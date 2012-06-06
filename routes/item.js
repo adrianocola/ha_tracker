@@ -25,6 +25,11 @@ app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, r
 
 app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, function(req, res, next){
 
+    if(req.body.itemCount==undefined){
+        next(new app.ExpectedError(212,"Missing itemCount to update the item"));
+        return;
+    }
+
     models.ItemManager.findById(req.params.manager,{}, common.userId(req.authorization.userId), function(err, itemManager){
 
         if(err){

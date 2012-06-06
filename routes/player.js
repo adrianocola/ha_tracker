@@ -18,6 +18,12 @@ app.get('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
 
 app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next){
 
+    if(req.body.showState==undefined && req.body.showOnlyActive==undefined){
+        next(new app.ExpectedError(210,"Missing showState or showOnlyActive values"));
+        return;
+    }
+
+
     models.Player.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err, player){
 
         if(err){

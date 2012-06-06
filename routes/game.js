@@ -7,6 +7,21 @@ var common = require('./common.js');
 
 app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, res, next){
 
+    if(!req.body.playerRace || !req.body.enemyRace){
+        next(new app.ExpectedError(206,"Missing player race or enemy race to create a new game"));
+        return;
+    }
+
+    var raceNames = u.pluck(consts.Races,'raceName');
+
+    if(!u.include(raceNames,req.body.playerRace) || !u.include(raceNames,req.body.enemyRace)){
+        next(new app.ExpectedError(209,"Invalid player race or enemy race. Valid values are: " + raceNames));
+        return;
+    }
+
+    console.log(req.body.playerRace);
+
+
     models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
 
         if(err){
@@ -88,6 +103,16 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 });
 
 app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res, next){
+
+    if(req.body.state==undefined){
+        next(new app.ExpectedError(207,"Missing state to update the game"));
+        return;
+    }
+
+    if(!consts.States[req.body.state]){
+        next(new app.ExpectedError(208,"Invalid game state. Valid values are: " + JSON.stringify(u.keys(consts.States))));
+        return;
+    }
 
     models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
 

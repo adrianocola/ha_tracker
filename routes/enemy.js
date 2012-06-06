@@ -6,6 +6,17 @@ var common = require('./common.js');
 
 app.post('/api/enemies', common.verifyAuthorization, function(req,res, next){
 
+    if(!req.body.name){
+        next(new app.ExpectedError(202,"Must provide enemy name for enemy creation"));
+        return;
+    }
+
+    if(req.body.name.length > 20){
+        next(new app.ExpectedError(203,"Enemy name with more than 20 characters"));
+        return;
+    }
+
+
     models.Player.findOne({user: req.authorization.userId}, {},common.userId(req.authorization.userId), function(err, player){
 
         if(err){
@@ -50,6 +61,17 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res, next){
 
 
 app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res, next){
+
+    if(!req.body.name){
+        next(new app.ExpectedError(204,"Must provide enemy name for enemy update"));
+        return;
+    }
+
+
+    if(req.body.name.length > 20){
+        next(new app.ExpectedError(203,"Enemy name with more than 20 characters"));
+        return;
+    }
 
     models.Player.findOne({user: req.authorization.userId}, {},common.userId(req.authorization.userId), function(err, player){
 

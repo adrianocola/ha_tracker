@@ -127,7 +127,7 @@ block templates
         div.enemy
             div
                 span.enemyName <%= name %>
-                input.newEnemyName.hidden(type="text")
+                input.newEnemyName.hidden(type="text", maxlength="20")
                 button.deleteEnemy.button-02(title="Delete Enemy") X
                 button.add-game.button-01(title="Add Game") +
                 div.enemyExists.hidden Enemy already exists!
@@ -150,7 +150,7 @@ block templates
         div.enemy-tip TIP: double click an enemy name to rename it
 
     script(type="text/template",id="add-enemy-template")
-        input#add-enemy-name(type="text",placeholder="Enemy Name")
+        input#add-enemy-name(type="text",placeholder="Enemy Name", maxlength="20")
         button.cancel-add-enemy.button-02(title="Cancel") X
         button.confirm-add-enemy.button-01(title="Confirm") &#x2713;
         div.enemyExists.hidden Enemy already exists!
