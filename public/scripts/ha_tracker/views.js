@@ -1265,7 +1265,7 @@ var EnemyView = Backbone.View.extend({
         if(evt.keyCode == 13){
 
             if(this.$('.newEnemyName').val().length != 0 && !this.collection.exists(this.$('.newEnemyName').val())){
-                console.log("ENTER1");
+
                 this.$('.newEnemyName').addClass('hidden');
                 this.$('.enemyName').removeClass('hidden');
 

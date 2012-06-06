@@ -4,10 +4,33 @@ var mongoose = require('mongoose'),
     u = require('underscore'),
     env = require('./env.js');
 
+var Date_Plugin = function(schema, options){
+
+    //add the field createdAt and updatedAt to the schema
+    schema.add({ createdAt: Date, updatedAt: Date });
+
+    // Update the model modification date
+    schema.pre('save', function (next, opt, cb) {
+
+        //if is new must only add the cration date
+        if(this.isNew){
+            this.createdAt = new Date();
+        //else change de modification date
+        }else{
+            this.updatedAt = new Date();
+        }
+
+        next();
+
+    })
+
+}
+
+
 //Mongoose plugin to support ACL object access security
 var ACL_Plugin = function(schema, options) {
 
-    //add the field ACL to all schemas
+    //add the field ACL to the schema
     schema.add({ ACL: {} });
 
     //ACL save middleware, executed when a model saves. Checks if the current
@@ -101,11 +124,13 @@ var ItemSchema = new Schema({
     itemId: Number,
     itemCount: Number
 },{ strict: true });
+ItemSchema.plugin(Date_Plugin);
 
 var ItemManagerSchema = new Schema({
     items: [ItemSchema]
 },{ strict: true });
 ItemManagerSchema.plugin(ACL_Plugin);
+ItemManagerSchema.plugin(Date_Plugin);
 
 var GameSchema = new Schema({
     num: Number,
@@ -115,6 +140,7 @@ var GameSchema = new Schema({
     enemyItems: { type: Schema.ObjectId, ref: 'ItemManager'},
     state: {type: Number, default: 0}
 },{ strict: true });
+GameSchema.plugin(Date_Plugin);
 
 var EnemySchema = new Schema({
     name: {type: String, index: true , required: true},
@@ -122,6 +148,7 @@ var EnemySchema = new Schema({
     position: {type: Number, required: true},
     games: [GameSchema]
 },{ strict: true });
+EnemySchema.plugin(Date_Plugin);
 
 var PlayerSchema = new Schema({
     user:{ type: Schema.ObjectId, ref: 'User', required: true, index: {unique: true}},
@@ -130,6 +157,7 @@ var PlayerSchema = new Schema({
     enemies: [EnemySchema]
 },{ strict: true });
 PlayerSchema.plugin(ACL_Plugin);
+PlayerSchema.plugin(Date_Plugin);
 
 //if asked to remove the player, remove the games
 PlayerSchema.pre('remove',function(next){
@@ -157,9 +185,11 @@ PlayerSchema.pre('remove',function(next){
 var UserSchema = new Schema({
     username: {type: String, lowercase: true, index: { unique: true, sparse: true }},
     email: {type: String, lowercase: true, index: { unique: true, sparse: true }},
-    password: {type: String},
-    reset_password: {type: String},
-    keep_logged: {type: String},
+    password: String,
+    reset_password: String,
+    last_login: Date,
+    creation_date: Date,
+    keep_logged: String,
     facebook: {
         userID: {type: String, index: { unique: true, sparse: true }},
         accessToken: String,
@@ -167,6 +197,7 @@ var UserSchema = new Schema({
     },
     player:{ type: Schema.ObjectId, ref: 'Player', required: true, index: {unique: true}}
 },{ strict: true });
+UserSchema.plugin(Date_Plugin);
 UserSchema.plugin(ACL_Plugin);
 //if removing the user, remove the player
 UserSchema.pre('remove',function(next){

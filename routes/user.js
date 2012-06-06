@@ -169,6 +169,7 @@ app.get('/api/user/login', function(req,res,next){
 
         models.User.findOne({username: req.query.username.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
+
             if(err){
                 next(new app.UnexpectedError(err));
                 return;
