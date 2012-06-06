@@ -1000,7 +1000,7 @@ var EnemiesView = Backbone.View.extend({
 
         $enemies.html('');
 
-        _.each(this.collection.sortBy('position',this),function(enemy) {
+        this.collection.each(function(enemy) {
             if(enemy.isVisible()){
                 var view = new EnemyView({collection: this.collection, model: enemy});
                 $enemies.append(view.render().el);
