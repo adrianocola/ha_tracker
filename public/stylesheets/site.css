@@ -558,6 +558,39 @@ img.game-example {
   margin-left: -5px;
   margin-top: -5px;
 }
+div.tp_privacy,
+div.tp_terms,
+div.tp_change,
+div.tp_back {
+  width: 100%;
+  display: block;
+  margin-left: 20px;
+}
+div.tp_privacy h3,
+div.tp_terms h3 {
+  margin-left: 20px;
+}
+div.tp_terms div {
+  width: 90%;
+  margin-left: 20px;
+}
+div.tp_privacy div {
+  width: 90%;
+  margin-left: 40px;
+}
+div.tp_change {
+  color: #808080;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin-top: 20px;
+}
+div.tp_back {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+div.tp_terms {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
 #player {
   clear: left;
   float: left;
