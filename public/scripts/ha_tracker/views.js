@@ -1042,7 +1042,7 @@ var EnemiesView = Backbone.View.extend({
 
         var $enemies = this.$(".enemies");
 
-        var view = new EnemyView({ model: enemy});
+        var view = new EnemyView({ model: enemy, collection: this.collection});
         $enemies.prepend(view.render().el);
     },
 
