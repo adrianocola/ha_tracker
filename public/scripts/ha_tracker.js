@@ -5,6 +5,7 @@ app = window.app ? window.app : {};
 //ARRUMAR load da aplicação que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
 //IMPLEMENTAR quantidade de jogos escondidos por enemy
 //BUG: Se o player for rápido e logar com e-mail antes do facebook o facebook pode chegar e logar em seguida
+//IMPLEMENTAR estatísticas básicas por enemy e geral
 
 
 

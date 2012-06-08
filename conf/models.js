@@ -138,6 +138,9 @@ var GameSchema = new Schema({
     enemyRace: {type: String, required: true},
     playerItems: { type: Schema.ObjectId, ref: 'ItemManager'},
     enemyItems: { type: Schema.ObjectId, ref: 'ItemManager'},
+    startDate : Date,
+    endDate: Date,
+    turns: Number,
     state: {type: Number, default: 0}
 },{ strict: true });
 GameSchema.plugin(Date_Plugin);
