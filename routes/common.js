@@ -51,9 +51,16 @@ exports.isMobile = function(req){
 
 
 
-exports.statsMix = function(metric_id, value, meta){
+exports.statsMix = function(user_id, metric_id, value, meta){
+
+    console.log(user_id);
 
     if(env.development){
+        return;
+    }
+
+    //ignore test user so it not report to statsMix
+    if(user_id == env.secrets.test_user_id){
         return;
     }
 

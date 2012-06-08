@@ -23,7 +23,8 @@ if (env.development) {
     env.secrets = {
         session: process.env.EXPRESS_SESSION_KEY,
         mail_username: process.env.MAIL_USERNAME,
-        mail_password: process.env.MAIL_PASSWORD
+        mail_password: process.env.MAIL_PASSWORD,
+        test_user_id: process.env.TEST_USER_ID
 
     };
 
