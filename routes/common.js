@@ -53,8 +53,6 @@ exports.isMobile = function(req){
 
 exports.statsMix = function(user_id, metric_id, value, meta){
 
-    console.log(user_id);
-
     if(env.development){
         return;
     }
@@ -76,7 +74,7 @@ exports.statsMix = function(user_id, metric_id, value, meta){
         port: 80,
         path: '/api/v2/stats',
         method: 'POST',
-        headers: {'X-StatsMix-Token': env.statsmix_key , 'Content-Length': data.length}
+        headers: {'X-StatsMix-Token': env.secrets.statsmix_key , 'Content-Length': data.length}
     };
 
     var request = http.request(options);

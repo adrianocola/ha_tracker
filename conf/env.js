@@ -24,13 +24,15 @@ if (env.development) {
         session: process.env.EXPRESS_SESSION_KEY,
         mail_username: process.env.MAIL_USERNAME,
         mail_password: process.env.MAIL_PASSWORD,
+        statsmix_key: process.env.STATSMIX_KEY,
         test_user_id: process.env.TEST_USER_ID
+
 
     };
 
     env.sesson_expire = 7200; //seconds
     env.salt = 'I8~*8Ri:D69U/2etE5C';
     env.facebook_app_id = '349808971750591';
-    env.statsmix_key = process.env.STATSMIX_KEY;
+
 
 }
