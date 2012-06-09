@@ -61,7 +61,7 @@ app.configure(function(){
 
 
     //formats the json output with 3 spaces of identation
-    app.set('json spaces',3);
+    //app.set('json spaces',3);
 
 
 });

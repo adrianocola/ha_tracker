@@ -6,6 +6,7 @@ app = window.app ? window.app : {};
 //IMPLEMENTAR quantidade de jogos escondidos por enemy
 //BUG: Se o player for rápido e logar com e-mail antes do facebook o facebook pode chegar e logar em seguida
 //IMPLEMENTAR estatísticas básicas por enemy e geral
+//IMPLEMENTAR colapse dos jogos de um inimigo
 
 
 
