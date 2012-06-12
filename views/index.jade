@@ -9,6 +9,7 @@ block scripts-vendor
     script(src='/scripts/shared/sha1.js')
     script(src='/scripts/shared/consts.js')
     script(type="text/javascript",src="https://apis.google.com/js/plusone.js")
+    script(type="text/javascript",src="https://www.google.com/jsapi")
 
 
 block scripts-site
@@ -124,8 +125,8 @@ block templates
 
     script(type="text/template",id="enemy-template")
         div.enemy
-            div
-                span.enemyName <%= name %>
+            div.enemyHeader
+                div.enemyName <%= name %>
                 input.newEnemyName.hidden(type="text", maxlength="20")
                 button.deleteEnemy.button-02(title="Delete Enemy") X
                 button.add-game.button-01(title="Add Game") +
@@ -136,6 +137,42 @@ block templates
             span Are you sure?
             a.delete-enemy-yes Yes
             a.delete-enemy-no No
+
+    script(type="text/template",id="selected-enemy-template")
+        div.enemyStats
+            div.statsTotal
+                span.statsLabel Total:
+                span.statsValue
+            div.statsInProgress
+                span.statsLabel In Progress:
+                span.statsValue
+            div.statsWins
+                span.statsLabel Wins:
+                span.statsValue
+            div.statsLosses
+                span.statsLabel Losses:
+                span.statsValue
+
+        div.enemyGraphs
+            div#winsGraph
+            div#lossesGraph
+            div#councilChart
+                img.chartImage(src="/images/council.png")
+                div#councilTable
+                div#councilTable2
+            div#darkelvesChart
+                img.chartImage(src="/images/darkelves.png")
+                div#darkelvesTable
+                div#darkelvesTable2
+            div#dwarvesChart
+                img.chartImage(src="/images/dwarves.png")
+                div#dwarvesTable
+                div#dwarvesTable2
+            div#tribeChart
+                img.chartImage(src="/images/tribe.png")
+                div#tribeTable
+                div#tribeTable2
+
 
     script(type="text/template", id="enemies-template")
         h2 Enemies

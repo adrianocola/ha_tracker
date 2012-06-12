@@ -31,6 +31,9 @@ function tryOpenLoginPanel(){
     }
 };
 
+// Load the Visualization API and the piechart package.
+google.load('visualization', '1.0', {'packages':['corechart','table']});
+
 
 //Override the Backbone.sync function to pass the authorization token on each request
 //made to the server. If the variable with the token is not empty fill the header with the token
@@ -103,48 +106,6 @@ $(function(){
                 console.log("The user isn't logged in to Facebook");
             }
         });
-
-
-//        FB.Event.subscribe('auth.statusChange', function(response){
-//            console.log("MUDOU STATUS: " + response.status);
-//        });
-
-        //executed when the user tries to login or signup or is already authenticated in facebook
-//        FB.Event.subscribe('auth.statusChange', function(response){
-//            FB.Event.unsubscribe('auth.statusChange');
-//            //auth.authResponseChange
-//            console.log(response.authResponse);
-//
-//            if(response.status=="connected")
-//            {
-//                console.log("The user is logged in and has authenticated your app");
-//                if($("#is_logged").length == 0){
-//
-//                    app.LoginView.model.login_facebook(response.authResponse.userID
-//                        ,response.authResponse.accessToken
-//                        ,response.authResponse.expiresIn
-//                        ,true,function(err){
-//
-//                        console.log(err);
-//                        if(!err){
-//                            app.SignupView.logged();
-//                        }
-//
-//                    });
-//                }
-//
-////
-//
-//
-//            } else if (response.status === 'not_authorized') {
-//                console.log("The user is logged in to Facebook, but has not authenticated your app");
-//            } else {
-//                console.log("The user isn't logged in to Facebook");
-//            }
-//
-//            //cont += 1;
-//
-//        });
 
 
     };

@@ -625,6 +625,7 @@ div.tp_terms {
   width: 610px;
   height: 600px;
   padding: 5px 5px 20px 10px;
+  overflow-y: scroll;
   margin: 10px 10px 0 0;
   display: inline;
   border: 1px solid #808080;
@@ -909,6 +910,11 @@ div.gameDeleteText a:hover {
 .gamePanel div {
   display: inline;
   margin-left: 30px;
+}
+.enemyName {
+  width: 150px;
+  display: inline-block;
+  cursor: pointer;
 }
 .enemyName,
 .newEnemyName {
@@ -1489,4 +1495,57 @@ div.enemyDeleteText a:hover {
 }
 .itemAdd {
   display: none;
+}
+div.enemyStats {
+  text-align: center;
+  margin-top: 20px;
+}
+div.enemyStats div {
+  display: inline-block;
+  width: 24%;
+}
+.statsValue {
+  font: 24px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin-left: 4px;
+}
+div.statsInProgress .statsValue {
+  color: #ffc477;
+}
+div.statsWins .statsValue {
+  color: #b8e356;
+}
+div.statsLosses .statsValue {
+  color: #fc8d83;
+}
+div.enemyGraphs {
+  margin-top: 20px;
+}
+#winsGraph,
+#lossesGraph,
+#councilChart,
+#darkelvesChart,
+#dwarvesChart,
+#tribeChart {
+  display: inline-block;
+}
+#councilTable,
+#councilTable2,
+#darkelvesTable,
+#darkelvesTable2,
+#dwarvesTable,
+#dwarvesTable2,
+#tribeTable,
+#tribeTable2 {
+  display: inline-block;
+}
+.chartImage {
+  width: 180px;
+  height: 48px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+div.tableTitle {
+  text-align: center;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
 }

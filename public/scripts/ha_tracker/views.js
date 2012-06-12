@@ -1215,9 +1215,13 @@ var EnemyView = Backbone.View.extend({
         'click .delete-enemy-yes': 'confirmDeleteEnemy',
         'click .delete-enemy-no': 'denyDeleteEnemy',
         'dblclick .enemyName': 'renameEnemy',
-        'keyup .newEnemyName': 'confirmRenameEnemy'
+        'keyup .newEnemyName': 'confirmRenameEnemy',
+        'click .enemyName': 'selectEnemy'
     },
 
+    'selectEnemy': function(){
+        new app.SelectedEnemyView({model: this.model}).render();
+    },
 
     addGame: function(){
 
@@ -1263,7 +1267,7 @@ var EnemyView = Backbone.View.extend({
 
         this.$('.newEnemyName').val(this.$('.enemyName').html());
 
-        this.$('.enemyName').addClass('hidden');
+        this.$('.enemyName').hide();
         this.$('.newEnemyName').removeClass('hidden');
 
         this.$('.newEnemyName').focus();
@@ -1272,7 +1276,7 @@ var EnemyView = Backbone.View.extend({
     cancelRenameEnemy: function(){
 
         this.$('.newEnemyName').addClass('hidden');
-        this.$('.enemyName').removeClass('hidden');
+        this.$('.enemyName').show();
 
         this.$('.enemyExists').addClass('hidden');
 
@@ -1289,7 +1293,7 @@ var EnemyView = Backbone.View.extend({
             if(this.$('.newEnemyName').val().length != 0 && !this.collection.exists(this.$('.newEnemyName').val())){
 
                 this.$('.newEnemyName').addClass('hidden');
-                this.$('.enemyName').removeClass('hidden');
+                this.$('.enemyName').show();
 
                 this.$('.enemyName').html(this.spinner.spin().el);
 
@@ -1360,6 +1364,188 @@ var EnemyView = Backbone.View.extend({
 
         return this;
     }
+});
+
+var SelectedEnemyView = Backbone.View.extend({
+
+    el: "#current-game",
+
+    initialize: function() {
+        _.bindAll(this);
+
+        this.template = _.template($("#selected-enemy-template").html())
+
+    },
+
+    render: function(){
+
+        this.$el.html(this.template());
+
+        var stats = this.model.statistics();
+
+        console.log(stats);
+
+        this.$('div.statsTotal .statsValue').html(stats.inProgress + stats.wins.total + stats.losses.total);
+        this.$('div.statsInProgress .statsValue').html(stats.inProgress);
+        this.$('div.statsWins .statsValue').html(stats.wins.total);
+        this.$('div.statsLosses .statsValue').html(stats.losses.total);
+
+        //*****************************************
+        //************* WINS by TYPE **************
+        //*****************************************
+
+
+        var winData = new google.visualization.DataTable();
+        winData.addColumn('string', 'Type');
+        winData.addColumn('number', 'Value');
+        winData.addRows([
+            ['Crystal', stats.wins.crystal],
+            ['Heroes', stats.wins.heroes],
+            ['Surrender', stats.wins.surrender],
+            ['Timeout', stats.wins.timeout]
+        ]);
+
+        // Set chart options
+        var winOptions = {'title':'Wins by Type',
+            'width':290,
+            'height':220,
+            'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
+
+        // Instantiate and draw our chart, passing in some options.
+        var winChart = new google.visualization.PieChart(document.getElementById('winsGraph'));
+        winChart.draw(winData, winOptions);
+
+        //*****************************************
+        //*********** LOSSES by TYPE **************
+        //*****************************************
+
+        var lossData = new google.visualization.DataTable();
+        lossData.addColumn('string', 'Type');
+        lossData.addColumn('number', 'Value');
+        lossData.addRows([
+            ['Crystal', stats.losses.crystal],
+            ['Heroes', stats.losses.heroes],
+            ['Surrender', stats.losses.surrender],
+            ['Timeout', stats.losses.timeout]
+        ]);
+
+        // Set chart options
+        var lossOptions = {'title':'Losses by Type',
+            'width':290,
+            'height':220,
+            'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
+
+        // Instantiate and draw our chart, passing in some options.
+        var lossChart = new google.visualization.PieChart(document.getElementById('lossesGraph'));
+        lossChart.draw(lossData, lossOptions);
+
+        //*****************************************
+        //*************** COUNCIL *****************
+        //*****************************************
+
+        var councilData = new google.visualization.DataTable();
+        councilData.addColumn('string', 'vs Race');
+        councilData.addColumn('number', 'Wins');
+        councilData.addColumn('number', 'Losses');
+        councilData.addColumn('number', 'Ratio');
+        councilData.addRows([
+            ['Council',  stats.council.council_wins, stats.council.council_losses, {v: stats.council.council_ratio, f: stats.council.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.council.darkelves_wins, stats.council.darkelves_losses, {v: stats.council.darkelves_ratio, f: stats.council.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.council.dwarves_wins, stats.council.dwarves_losses, {v: stats.council.dwarves_ratio, f: stats.council.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.council.tribe_wins, stats.council.tribe_losses, {v: stats.council.tribe_ratio, f: stats.council.tribe_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.council.wins, stats.council.losses, {v: stats.council.ratio, f: stats.council.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var councilTable = new google.visualization.Table(document.getElementById('councilTable'));
+        councilTable.draw(councilData, {'width':270, 'height':160});
+
+        councilData.removeColumn(3);
+        councilData.removeRow(4);
+
+        var councilChart = new google.visualization.ColumnChart(document.getElementById('councilTable2'));
+        councilChart.draw(councilData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'}});
+
+
+        //*****************************************
+        //************* DARK ELVES ****************
+        //*****************************************
+
+        var darkelvesData = new google.visualization.DataTable();
+        darkelvesData.addColumn('string', 'vs Race');
+        darkelvesData.addColumn('number', 'Wins');
+        darkelvesData.addColumn('number', 'Losses');
+        darkelvesData.addColumn('number', 'Ratio');
+        darkelvesData.addRows([
+            ['Council',  stats.darkelves.council_wins, stats.darkelves.council_losses, {v: stats.darkelves.council_ratio, f: stats.darkelves.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.darkelves.darkelves_wins, stats.darkelves.darkelves_losses, {v: stats.darkelves.darkelves_ratio, f: stats.darkelves.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.darkelves.dwarves_wins, stats.darkelves.dwarves_losses, {v: stats.darkelves.dwarves_ratio, f: stats.darkelves.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.darkelves.tribe_wins, stats.darkelves.tribe_losses, {v: stats.darkelves.tribe_ratio, f: stats.darkelves.tribe_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.darkelves.wins, stats.darkelves.losses, {v: stats.darkelves.ratio, f: stats.darkelves.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var darkelvesTable = new google.visualization.Table(document.getElementById('darkelvesTable'));
+        darkelvesTable.draw(darkelvesData, {'width':270, 'height':160});
+
+        darkelvesData.removeColumn(3);
+        darkelvesData.removeRow(4);
+
+        var darkelvesChart = new google.visualization.ColumnChart(document.getElementById('darkelvesTable2'));
+        darkelvesChart.draw(darkelvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
+
+        //*****************************************
+        //*************** DWARVES *****************
+        //*****************************************
+
+        var dwarvesData = new google.visualization.DataTable();
+        dwarvesData.addColumn('string', 'vs Race');
+        dwarvesData.addColumn('number', 'Wins');
+        dwarvesData.addColumn('number', 'Losses');
+        dwarvesData.addColumn('number', 'Ratio');
+        dwarvesData.addRows([
+            ['Council',  stats.dwarves.council_wins, stats.dwarves.council_losses, {v: stats.dwarves.council_ratio, f: stats.dwarves.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.dwarves.darkelves_wins, stats.dwarves.darkelves_losses, {v: stats.dwarves.darkelves_ratio, f: stats.dwarves.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.dwarves.dwarves_wins, stats.dwarves.dwarves_losses, {v: stats.dwarves.dwarves_ratio, f: stats.dwarves.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.dwarves.tribe_wins, stats.dwarves.tribe_losses, {v: stats.dwarves.tribe_ratio, f: stats.dwarves.tribe_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.dwarves.wins, stats.dwarves.losses, {v: stats.dwarves.ratio, f: stats.dwarves.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var dwarvesTable = new google.visualization.Table(document.getElementById('dwarvesTable'));
+        dwarvesTable.draw(dwarvesData, {'width':270, 'height':160});
+
+        dwarvesData.removeColumn(3);
+        dwarvesData.removeRow(4);
+
+        var dwarvesChart = new google.visualization.ColumnChart(document.getElementById('dwarvesTable2'));
+        dwarvesChart.draw(dwarvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
+
+        //*****************************************
+        //**************** TRIBE ******************
+        //*****************************************
+
+        var tribeData = new google.visualization.DataTable();
+        tribeData.addColumn('string', 'vs Race');
+        tribeData.addColumn('number', 'Wins');
+        tribeData.addColumn('number', 'Losses');
+        tribeData.addColumn('number', 'Ratio');
+        tribeData.addRows([
+            ['Council',  stats.tribe.council_wins, stats.tribe.council_losses, {v: stats.tribe.council_ratio, f: stats.tribe.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.tribe.darkelves_wins, stats.tribe.darkelves_losses, {v: stats.tribe.darkelves_ratio, f: stats.tribe.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.tribe.dwarves_wins, stats.tribe.dwarves_losses, {v: stats.tribe.dwarves_ratio, f: stats.tribe.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.tribe.tribe_wins, stats.tribe.tribe_losses, {v: stats.tribe.tribe_ratio, f: stats.tribe.tribe_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.tribe.wins, stats.tribe.losses, {v: stats.tribe.ratio, f: stats.tribe.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var tribeTable = new google.visualization.Table(document.getElementById('tribeTable'));
+        tribeTable.draw(tribeData, {'width':270, 'height':160});
+
+        tribeData.removeColumn(3);
+        tribeData.removeRow(4);
+
+        var tribeChart = new google.visualization.ColumnChart(document.getElementById('tribeTable2'));
+        tribeChart.draw(tribeData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
+
+    }
+
 });
 
 var AddGameView = Backbone.View.extend({
@@ -1561,7 +1747,6 @@ var GameView = Backbone.View.extend({
         return this;
     }
 });
-
 
 var SelectedGameView = Backbone.View.extend({
 
@@ -1985,6 +2170,7 @@ $(function(){
     app.PlayerView = PlayerView;
     app.EnemiesView = EnemiesView;
     app.EnemyView = EnemyView;
+    app.SelectedEnemyView = SelectedEnemyView;
     app.SelectedGameView = new SelectedGameView();
     app.AddGameView = new AddGameView();
     app.AddEnemyView = new AddEnemyView();

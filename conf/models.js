@@ -149,6 +149,18 @@ var EnemySchema = new Schema({
     name: {type: String, index: true , required: true},
     gameCount: {type: Number, default: 0},
     position: {type: Number, required: true},
+    stats: {
+        winsTotal: Number,
+        lossesTotal: Number,
+        wins: {
+            council: {
+                concil: Number,
+                darkelves: Number,
+                dwarves: Number,
+                tribe: Number
+            }
+        }
+    },
     games: [GameSchema]
 },{ strict: true });
 EnemySchema.plugin(Date_Plugin);
