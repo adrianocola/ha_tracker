@@ -10,6 +10,7 @@ var https = require('https');
 var http = require('http');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
+var consts = require('../public/scripts/shared/consts.js');
 
 
 // create reusable transport method (opens pool of SMTP connections)
@@ -867,6 +868,124 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
 
             });
         });
+
+
+
+    });
+
+});
+
+
+
+app.get('/api/random', function(req, res, next){
+
+    models.Player.findById(env.secrets.test_user_id,{}, common.userId('MASTER'), function(err, player){
+
+        var random = Math.floor((Math.random()*100)+1);
+
+        //creates a new enemy
+        if(random<=5){
+
+            //update position of all enemies
+            u.each(player.enemies,function(enemy){
+                enemy.position+=1;
+            });
+
+            var enemy = new models.Enemy({name: "enemy"+ uuid.uuid(10)});
+            enemy.position = 0;
+
+            player.enemies.push(enemy);
+
+            player.save(common.userId('MASTER'),function(err){
+
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
+
+                res.send(enemy);
+
+            });
+
+            //create a new game
+        }else{
+            var enemyIndex = Math.floor((Math.random()*100)+1)%player.enemies.length;
+
+
+            var enemy = player.enemies[enemyIndex];
+            enemy.gameCount+=1;
+
+            var game = new models.Game({
+                playerRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
+                enemyRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
+                state: (Math.floor((Math.random()*100)+1)%9)
+            });
+            game.num = enemy.gameCount;
+
+            //create player's items
+            u.each(consts.Races,function(race){
+                if(game.playerRace === race.raceName){
+
+                    var playerItemManager = new models.ItemManager();
+
+                    u.each(race.items, function(baseItemId){
+                        var baseItem = consts.Items[baseItemId];
+
+                        var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
+
+                        playerItemManager.items.push(item);
+
+                    },this);
+
+                    playerItemManager.addACL(env.secrets.test_user_id,true,true);
+
+                    playerItemManager.save(common.userId('MASTER'),function(err){
+                        if(err) console.log(err);
+                    });
+
+                    game.playerItems = playerItemManager;
+                }
+            })
+
+            //create enemy's items
+            u.each(consts.Races,function(race){
+                if(game.enemyRace === race.raceName){
+
+                    var enemyItemManager = new models.ItemManager();
+
+                    u.each(race.items, function(baseItemId){
+                        var baseItem = consts.Items[baseItemId];
+
+                        var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
+
+                        enemyItemManager.items.push(item);
+
+                    },this);
+
+                    enemyItemManager.addACL(env.secrets.test_user_id,true,true);
+
+                    enemyItemManager.save(common.userId('MASTER'),function(err){
+                        if(err) console.log(err);
+                    });
+
+                    game.enemyItems = enemyItemManager;
+
+                }
+            })
+
+            enemy.games.push(game);
+
+            player.save(common.userId('MASTER'),function(err){
+
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
+
+                res.send(game);
+            });
+
+        }
 
 
 

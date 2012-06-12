@@ -178,3 +178,4 @@ app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function
     });
 
 });
+
