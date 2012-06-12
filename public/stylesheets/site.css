@@ -914,6 +914,7 @@ div.gameDeleteText a:hover {
 .enemyName {
   display: inline-block;
   cursor: pointer;
+  width: 180px;
 }
 .enemyName,
 .newEnemyName {
@@ -924,8 +925,10 @@ div.gameDeleteText a:hover {
   font-weight: bold;
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
-  width: 180px;
   font: 16px Arial, sans-serif;
+}
+.newEnemyName {
+  width: 160px;
 }
 .selected-enemy .enemyName {
   color: #fff;
