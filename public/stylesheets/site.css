@@ -1462,6 +1462,7 @@ div.enemyDeleteText a:hover {
   top: -25px;
   left: 17px;
   float: right;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 20px;
   height: 20px;
   color: #fff;
