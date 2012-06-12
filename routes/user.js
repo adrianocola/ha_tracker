@@ -879,115 +879,128 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
 
 app.get('/api/random', function(req, res, next){
 
-    models.Player.findById(env.secrets.test_user_id,{}, common.userId('MASTER'), function(err, player){
+    models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
 
-        var random = Math.floor((Math.random()*100)+1);
+        console.log(user);
 
-        //creates a new enemy
-        if(random<=5){
+        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
 
-            //update position of all enemies
-            u.each(player.enemies,function(enemy){
-                enemy.position+=1;
-            });
+            var random = Math.floor((Math.random()*100)+1);
 
-            var enemy = new models.Enemy({name: "enemy"+ uuid.uuid(10)});
-            enemy.position = 0;
+            //creates a new enemy
+            if(random<=5){
 
-            player.enemies.push(enemy);
+                //update position of all enemies
+                u.each(player.enemies,function(enemy){
+                    enemy.position+=1;
+                });
 
-            player.save(common.userId('MASTER'),function(err){
+                var enemy = new models.Enemy({name: "enemy"+ uuid.uuid(10)});
+                enemy.position = 0;
 
-                if(err){
-                    next(new app.UnexpectedError(err));
+                player.enemies.push(enemy);
+
+                player.save(common.userId('MASTER'),function(err){
+
+                    if(err){
+                        next(new app.UnexpectedError(err));
+                        return;
+                    }
+
+                    res.send(enemy);
+
+                });
+
+                //create a new game
+            }else{
+                var enemyIndex = -1;
+                if(player.enemies.length == 0){
+                    res.send('No enemies yet!');
                     return;
+                }else if(player.enemies.length == 1){
+                    enemyIndex = 0;
+                }else{
+                    enemyIndex = Math.floor((Math.random()*100)+1)%player.enemies.length;
                 }
 
-                res.send(enemy);
+                var enemy = player.enemies[enemyIndex];
+                enemy.gameCount+=1;
 
-            });
+                var game = new models.Game({
+                    playerRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
+                    enemyRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
+                    state: (Math.floor((Math.random()*100)+1)%9)
+                });
+                game.num = enemy.gameCount;
 
-            //create a new game
-        }else{
-            var enemyIndex = Math.floor((Math.random()*100)+1)%player.enemies.length;
+                //create player's items
+                u.each(consts.Races,function(race){
+                    if(game.playerRace === race.raceName){
 
+                        var playerItemManager = new models.ItemManager();
 
-            var enemy = player.enemies[enemyIndex];
-            enemy.gameCount+=1;
+                        u.each(race.items, function(baseItemId){
+                            var baseItem = consts.Items[baseItemId];
 
-            var game = new models.Game({
-                playerRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
-                enemyRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
-                state: (Math.floor((Math.random()*100)+1)%9)
-            });
-            game.num = enemy.gameCount;
+                            var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
 
-            //create player's items
-            u.each(consts.Races,function(race){
-                if(game.playerRace === race.raceName){
+                            playerItemManager.items.push(item);
 
-                    var playerItemManager = new models.ItemManager();
+                        },this);
 
-                    u.each(race.items, function(baseItemId){
-                        var baseItem = consts.Items[baseItemId];
+                        playerItemManager.addACL(env.secrets.test_user_id,true,true);
 
-                        var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
+                        playerItemManager.save(common.userId('MASTER'),function(err){
+                            if(err) console.log(err);
+                        });
 
-                        playerItemManager.items.push(item);
+                        game.playerItems = playerItemManager;
+                    }
+                })
 
-                    },this);
+                //create enemy's items
+                u.each(consts.Races,function(race){
+                    if(game.enemyRace === race.raceName){
 
-                    playerItemManager.addACL(env.secrets.test_user_id,true,true);
+                        var enemyItemManager = new models.ItemManager();
 
-                    playerItemManager.save(common.userId('MASTER'),function(err){
-                        if(err) console.log(err);
-                    });
+                        u.each(race.items, function(baseItemId){
+                            var baseItem = consts.Items[baseItemId];
 
-                    game.playerItems = playerItemManager;
-                }
-            })
+                            var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
 
-            //create enemy's items
-            u.each(consts.Races,function(race){
-                if(game.enemyRace === race.raceName){
+                            enemyItemManager.items.push(item);
 
-                    var enemyItemManager = new models.ItemManager();
+                        },this);
 
-                    u.each(race.items, function(baseItemId){
-                        var baseItem = consts.Items[baseItemId];
+                        enemyItemManager.addACL(env.secrets.test_user_id,true,true);
 
-                        var item = new models.Item({itemId: baseItemId, itemCount: baseItem.itemCountMax});
+                        enemyItemManager.save(common.userId('MASTER'),function(err){
+                            if(err) console.log(err);
+                        });
 
-                        enemyItemManager.items.push(item);
+                        game.enemyItems = enemyItemManager;
 
-                    },this);
+                    }
+                })
 
-                    enemyItemManager.addACL(env.secrets.test_user_id,true,true);
+                enemy.games.push(game);
 
-                    enemyItemManager.save(common.userId('MASTER'),function(err){
-                        if(err) console.log(err);
-                    });
+                player.save(common.userId('MASTER'),function(err){
 
-                    game.enemyItems = enemyItemManager;
+                    if(err){
+                        next(new app.UnexpectedError(err));
+                        return;
+                    }
 
-                }
-            })
+                    res.send(game);
+                });
 
-            enemy.games.push(game);
-
-            player.save(common.userId('MASTER'),function(err){
-
-                if(err){
-                    next(new app.UnexpectedError(err));
-                    return;
-                }
-
-                res.send(game);
-            });
-
-        }
+            }
 
 
+
+        });
 
     });
 
