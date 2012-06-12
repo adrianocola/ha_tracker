@@ -335,10 +335,6 @@ var Enemy = Backbone.Model.extend({
         },this);
 
 
-        this.bind("error", function(model, err){
-            console.log("ERRO2");
-        });
-
     },
 
     selectGame: function(gameId){

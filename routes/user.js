@@ -330,6 +330,7 @@ app.post("/api/user/signup", function(req, res, next){
 
     if(req.body.username == undefined || req.body.username == "") reqsError += "Username is Required. ";
     else if(req.body.username.length < 3) reqsError += "Username must have at least 3 characters. ";
+    else if(req.body.username.length > 20) reqsError += "Username cannot have more than 20 characters. ";
     else if(req.body.username.match(/[\<\>!@#\$%^&\*, ]+/i)) reqsError += "Username cannot have white spaces or < > ! @ # $ % ^ & *. ";
 
     if(req.body.email == undefined || req.body.email == "") reqsError += "E-mail is Required. ";

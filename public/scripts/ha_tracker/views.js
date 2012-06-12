@@ -1201,9 +1201,13 @@ var EnemyView = Backbone.View.extend({
 
         this.model.games.bind('add', this.render, this);
 
-        this.model.games.bind('change:selected', this.renderSelected,this);
+        this.model.bind('change:selected', this.renderSelected,this);
 
-        this.model.games.bind('change:unselected', this.renderUnselected,this);
+        this.model.bind('change:unselected', this.renderUnselected,this);
+
+        //this.model.games.bind('change:selected', this.renderSelected,this);
+
+        //this.model.games.bind('change:unselected', this.renderUnselected,this);
 
         this.spinner = new Spinner(opts_small);
 
@@ -1242,6 +1246,7 @@ var EnemyView = Backbone.View.extend({
 
     'selectEnemy': function(){
         app.SelectionManager.unselectCurrentGame();
+        app.SelectionManager.setSelectedEnemy(this.model);
         new app.SelectedEnemyView({model: this.model}).render();
     },
 
@@ -1330,7 +1335,8 @@ var EnemyView = Backbone.View.extend({
                 this.$('.enemyExists').addClass('hidden');
 
                 this.$('.newEnemyName').addClass('hidden');
-                this.$('.enemyName').removeClass('hidden');
+
+                this.$('.enemyName').show();
 
             }
 
@@ -1405,8 +1411,8 @@ var SelectedEnemyView = Backbone.View.extend({
 
         var stats = this.model.statistics();
 
-        console.log(stats);
 
+        this.$('div.enemyStatsName').html(this.model.get('name'));
         this.$('div.statsTotal .statsValue').html(stats.inProgress + stats.wins.total + stats.losses.total);
         this.$('div.statsInProgress .statsValue').html(stats.inProgress);
         this.$('div.statsWins .statsValue').html(stats.wins.total);
@@ -1430,7 +1436,8 @@ var SelectedEnemyView = Backbone.View.extend({
         // Set chart options
         var winOptions = {'title':'Wins by Type',
             'width':290,
-            'height':220,
+            'height':180,
+            'chartArea': {width: 280, height: 130},
             'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
 
         // Instantiate and draw our chart, passing in some options.
@@ -1454,7 +1461,8 @@ var SelectedEnemyView = Backbone.View.extend({
         // Set chart options
         var lossOptions = {'title':'Losses by Type',
             'width':290,
-            'height':220,
+            'height':180,
+            'chartArea': {width: 280, height: 130},
             'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
 
         // Instantiate and draw our chart, passing in some options.

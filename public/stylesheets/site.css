@@ -751,7 +751,7 @@ li.game-container {
 }
 .game:hover {
   color: #fff;
-  background-color: #888;
+  background-color: #666;
   border: 1px solid #000;
 }
 div.gameDeleteMask {
@@ -804,7 +804,7 @@ div.gameDeleteText a:hover {
   color: #fff;
   list-style: none;
   padding: 3px 6px 3px 6px;
-  background-color: #bbb;
+  background-color: #888;
   line-height: 30px;
   height: 30px;
   border: 1px solid #000;
@@ -875,7 +875,7 @@ div.gameDeleteText a:hover {
   line-height: 38px;
   text-align: center;
   margin: -1px 0 0 -3px;
-  background-color: #aaa;
+  background-color: #888;
   color: #fff;
 }
 .game:hover .gameNum {
@@ -912,20 +912,27 @@ div.gameDeleteText a:hover {
   margin-left: 30px;
 }
 .enemyName {
-  width: 150px;
   display: inline-block;
   cursor: pointer;
 }
 .enemyName,
 .newEnemyName {
-  margin: 0 0 0 10px;
+  margin: 0 0 0 5px;
   color: #777;
   font-family: arial;
   font-size: 14px;
   font-weight: bold;
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
-  width: 150px;
+  width: 180px;
+  font: 16px Arial, sans-serif;
+}
+.selected-enemy .enemyName {
+  color: #fff;
+  text-shadow: 1px 1px 0px #777;
+}
+.enemyName:hover {
+  text-decoration: underline;
 }
 .enemyName .spinner-small {
   display: inline-block;
@@ -1001,6 +1008,11 @@ span.showStateText {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
   background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
   background-color: #ededed;
+}
+.selected-enemy {
+  background-color: #bdbdbd;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bdbdbd), color-stop(1, #cfcfcf));
+  background: -moz-linear-gradient(center top, #bdbdbd 5%, #cfcfcf 100%);
 }
 .addEnemyPanel {
   height: 30px;
@@ -1279,7 +1291,7 @@ div.enemyDeleteText a:hover {
   width: 25px;
   height: 25px;
   float: right;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 5px;
   display: none;
   padding: 0 0 0 0;
 }
@@ -1495,6 +1507,11 @@ div.enemyDeleteText a:hover {
 }
 .itemAdd {
   display: none;
+}
+div.enemyStatsName {
+  text-align: center;
+  margin-top: 10px;
+  font: 32px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 div.enemyStats {
   text-align: center;
