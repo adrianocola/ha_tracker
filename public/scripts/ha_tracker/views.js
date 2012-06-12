@@ -1214,12 +1214,34 @@ var EnemyView = Backbone.View.extend({
         'click .deleteEnemy': 'deleteEnemy',
         'click .delete-enemy-yes': 'confirmDeleteEnemy',
         'click .delete-enemy-no': 'denyDeleteEnemy',
-        'dblclick .enemyName': 'renameEnemy',
         'keyup .newEnemyName': 'confirmRenameEnemy',
-        'click .enemyName': 'selectEnemy'
+        'click .enemyName': 'clickRouter'
+    },
+
+    clickRouter: function(){
+
+        var nowTime = new Date().getTime();
+        var that = this;
+
+        //verify if its a double click (interval between clicks < 200ms)
+        if(this.clickTime && nowTime - this.clickTime < 200 ){
+            clearTimeout(this.timer);
+            this.renameEnemy();
+        //if only occurred one click waits 200ms for a second one. If no second click, select the enemy
+        }else{
+            this.timer = setTimeout(function(){
+                that.selectEnemy();
+            },200);
+
+        }
+
+        this.clickTime = nowTime;
+
+
     },
 
     'selectEnemy': function(){
+        app.SelectionManager.unselectCurrentGame();
         new app.SelectedEnemyView({model: this.model}).render();
     },
 
