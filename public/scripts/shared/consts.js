@@ -241,11 +241,11 @@
     exports.States = {
         0: 'In Progress',
         1: 'Won - Crystal',
-        2: 'Won - Heroes',
+        2: 'Won - TKO',
         3: 'Won - Surrender',
         4: 'Won - Timeout',
         5: 'Lost - Crystal',
-        6: 'Lost - Heroes',
+        6: 'Lost - TKO',
         7: 'Lost - Surrender',
         8: 'Lost - Timeout'
     }
@@ -253,11 +253,11 @@
     exports.States_Inverse = {
         'In Progress': 0,
         'Won - Crystal': 1,
-        'Won - Heroes': 2,
+        'Won - TKO': 2,
         'Won - Surrender': 3,
         'Won - Timeout': 4,
         'Lost - Crystal': 5,
-        'Lost - Heroes': 6,
+        'Lost - TKO': 6,
         'Lost - Surrender': 7,
         'Lost - Timeout': 8
     };

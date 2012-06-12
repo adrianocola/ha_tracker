@@ -128,9 +128,9 @@ block templates
             div.enemyHeader
                 div.enemyName <%= name %>
                 input.newEnemyName.hidden(type="text", maxlength="20")
-                button.deleteEnemy.button-02(title="Delete Enemy") X
+                button.deleteEnemy.button-02(title="Delete Opponent") X
                 button.add-game.button-01(title="Add Game") +
-                div.enemyExists.hidden Enemy already exists!
+                div.enemyExists.hidden Opponent already exists!
             ul.games
         div.enemyDeleteMask.hidden
         div.enemyDeleteText.hidden
@@ -149,10 +149,10 @@ block templates
                 span.statsLabel In Progress:
                 span.statsValue
             div.statsWins
-                span.statsLabel Wins:
+                span.statsLabel Victories:
                 span.statsValue
             div.statsLosses
-                span.statsLabel Losses:
+                span.statsLabel Defeats:
                 span.statsValue
 
         div.enemyGraphs
@@ -177,17 +177,17 @@ block templates
 
 
     script(type="text/template", id="enemies-template")
-        h2 Enemies
-        button#add-enemy Add Enemy
+        h2 Opponents
+        button#add-enemy Add Opponent
         a.link.statistics Show statistics
-        input#filter(type="text",placeholder="Filter Enemies")
+        input#filter(type="text",placeholder="Filter Opponents")
         input#showActive(type="checkbox")
         span.showActiveText Show only active
         input#showState(type="checkbox")
         span.showStateText Show state
-        div.hidden-enemies-warning.hidden Some enemies and games are hidden!
+        div.hidden-enemies-warning.hidden Some opponents are hidden!
         ul.enemies
-        div.enemy-tip TIP: double click an enemy name to rename it
+        div.enemy-tip TIP: double click an opponent name to rename it
 
     script(type="text/template",id="statistics-template")
         div.enemyStatsName
@@ -200,10 +200,10 @@ block templates
                 span.statsLabel In Progress:
                 span.statsValue
             div.statsWins
-                span.statsLabel Wins:
+                span.statsLabel Victories:
                 span.statsValue
             div.statsLosses
-                span.statsLabel Losses:
+                span.statsLabel Defeats:
                 span.statsValue
 
         div.enemyGraphs
@@ -229,10 +229,10 @@ block templates
 
 
     script(type="text/template",id="add-enemy-template")
-        input#add-enemy-name(type="text",placeholder="Enemy Name", maxlength="20")
+        input#add-enemy-name(type="text",placeholder="Opponent Name", maxlength="20")
         button.cancel-add-enemy.button-02(title="Cancel") X
         button.confirm-add-enemy.button-01(title="Confirm") &#x2713;
-        div.enemyExists.hidden Enemy already exists!
+        div.enemyExists.hidden Opponent already exists!
 
 
     script(type="text/template",id="add-game-template")
@@ -278,18 +278,18 @@ block templates
                 span In Progress
             div.state-box.won
                 input#state_won(type="radio",name="game-status")
-                span Won
+                span Victory
                 select#state_select_won
-                    option(value="Won - Crystal") Destroyed Crystal
-                    option(value="Won - Heroes") Killed Heroes
+                    option(value="Won - Crystal") Crystal
+                    option(value="Won - TKO") TKO
                     option(value="Won - Surrender") Surrendered
                     option(value="Won - Timeout") Stopped playing
             div.state-box.lost
                 input#state_lost(type="radio",name="game-status")
-                span Lost
+                span Defeat
                 select#state_select_lost
-                    option(value="Lost - Crystal") Destroyed Crystal
-                    option(value="Lost - Heroes") Killed Heroes
+                    option(value="Lost - Crystal") Crystal
+                    option(value="Lost - TKO") TKO
                     option(value="Lost - Surrender") Surrendered
                     option(value="Lost - Timeout") Stopped playing
         <% } %>
@@ -331,7 +331,7 @@ block main-layout
         div.example
             h4.example-info
                 div.
-                    Manage items and heroes you and your enemy have left in a game
+                    Manage items and heroes you and your opponent have left in a game
                 div.
                     <a id='example-signup' class='link'>Signup</a> or login and start using HA Tracker right now!
             img.game-example(src='/images/game.png')

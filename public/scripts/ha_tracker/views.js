@@ -1147,13 +1147,13 @@ var StatisticsView = Backbone.View.extend({
         winData.addColumn('number', 'Value');
         winData.addRows([
             ['Crystal', stats.wins.crystal],
-            ['Heroes', stats.wins.heroes],
+            ['TKO', stats.wins.heroes],
             ['Surrender', stats.wins.surrender],
             ['Timeout', stats.wins.timeout]
         ]);
 
         // Set chart options
-        var winOptions = {'title':'Wins by Type',
+        var winOptions = {'title':'Victories by Type',
             'width':290,
             'height':180,
             'chartArea': {width: 280, height: 130},
@@ -1172,13 +1172,13 @@ var StatisticsView = Backbone.View.extend({
         lossData.addColumn('number', 'Value');
         lossData.addRows([
             ['Crystal', stats.losses.crystal],
-            ['Heroes', stats.losses.heroes],
+            ['TKO', stats.losses.heroes],
             ['Surrender', stats.losses.surrender],
             ['Timeout', stats.losses.timeout]
         ]);
 
         // Set chart options
-        var lossOptions = {'title':'Losses by Type',
+        var lossOptions = {'title':'Defeats by Type',
             'width':290,
             'height':180,
             'chartArea': {width: 280, height: 130},
@@ -1194,8 +1194,8 @@ var StatisticsView = Backbone.View.extend({
 
         var councilData = new google.visualization.DataTable();
         councilData.addColumn('string', 'vs Race');
-        councilData.addColumn('number', 'Wins');
-        councilData.addColumn('number', 'Losses');
+        councilData.addColumn('number', 'Victories');
+        councilData.addColumn('number', 'Defeats');
         councilData.addColumn('number', 'Ratio');
         councilData.addRows([
             ['Council',  stats.council.council_wins, stats.council.council_losses, {v: stats.council.council_ratio, f: stats.council.council_ratio.toFixed(2)  + '%'}],
@@ -1221,8 +1221,8 @@ var StatisticsView = Backbone.View.extend({
 
         var darkelvesData = new google.visualization.DataTable();
         darkelvesData.addColumn('string', 'vs Race');
-        darkelvesData.addColumn('number', 'Wins');
-        darkelvesData.addColumn('number', 'Losses');
+        darkelvesData.addColumn('number', 'Victories');
+        darkelvesData.addColumn('number', 'Defeats');
         darkelvesData.addColumn('number', 'Ratio');
         darkelvesData.addRows([
             ['Council',  stats.darkelves.council_wins, stats.darkelves.council_losses, {v: stats.darkelves.council_ratio, f: stats.darkelves.council_ratio.toFixed(2)  + '%'}],
@@ -1247,8 +1247,8 @@ var StatisticsView = Backbone.View.extend({
 
         var dwarvesData = new google.visualization.DataTable();
         dwarvesData.addColumn('string', 'vs Race');
-        dwarvesData.addColumn('number', 'Wins');
-        dwarvesData.addColumn('number', 'Losses');
+        dwarvesData.addColumn('number', 'Victories');
+        dwarvesData.addColumn('number', 'Defeats');
         dwarvesData.addColumn('number', 'Ratio');
         dwarvesData.addRows([
             ['Council',  stats.dwarves.council_wins, stats.dwarves.council_losses, {v: stats.dwarves.council_ratio, f: stats.dwarves.council_ratio.toFixed(2)  + '%'}],
@@ -1273,8 +1273,8 @@ var StatisticsView = Backbone.View.extend({
 
         var tribeData = new google.visualization.DataTable();
         tribeData.addColumn('string', 'vs Race');
-        tribeData.addColumn('number', 'Wins');
-        tribeData.addColumn('number', 'Losses');
+        tribeData.addColumn('number', 'Victories');
+        tribeData.addColumn('number', 'Defeats');
         tribeData.addColumn('number', 'Ratio');
         tribeData.addRows([
             ['Council',  stats.tribe.council_wins, stats.tribe.council_losses, {v: stats.tribe.council_ratio, f: stats.tribe.council_ratio.toFixed(2)  + '%'}],
@@ -1299,8 +1299,8 @@ var StatisticsView = Backbone.View.extend({
 
         var enemiesData = new google.visualization.DataTable();
         enemiesData.addColumn('string', 'Enemy');
-        enemiesData.addColumn('number', 'Wins');
-        enemiesData.addColumn('number', 'Losses');
+        enemiesData.addColumn('number', 'Victories');
+        enemiesData.addColumn('number', 'Defeats');
         enemiesData.addColumn('number', 'Ratio');
         _.each(stats.enemiesStats, function(enemyStats){
             enemiesData.addRow([enemyStats.name,  enemyStats.wins.total, enemyStats.losses.total, {v: enemyStats.ratio, f: enemyStats.ratio.toFixed(2)  + '%'}]);
@@ -1638,13 +1638,13 @@ var SelectedEnemyView = Backbone.View.extend({
         winData.addColumn('number', 'Value');
         winData.addRows([
             ['Crystal', stats.wins.crystal],
-            ['Heroes', stats.wins.heroes],
+            ['TKO', stats.wins.heroes],
             ['Surrender', stats.wins.surrender],
             ['Timeout', stats.wins.timeout]
         ]);
 
         // Set chart options
-        var winOptions = {'title':'Wins by Type',
+        var winOptions = {'title':'Victories by Type',
             'width':290,
             'height':180,
             'chartArea': {width: 280, height: 130},
@@ -1663,13 +1663,13 @@ var SelectedEnemyView = Backbone.View.extend({
         lossData.addColumn('number', 'Value');
         lossData.addRows([
             ['Crystal', stats.losses.crystal],
-            ['Heroes', stats.losses.heroes],
+            ['TKO', stats.losses.heroes],
             ['Surrender', stats.losses.surrender],
             ['Timeout', stats.losses.timeout]
         ]);
 
         // Set chart options
-        var lossOptions = {'title':'Losses by Type',
+        var lossOptions = {'title':'Defeats by Type',
             'width':290,
             'height':180,
             'chartArea': {width: 280, height: 130},
@@ -1685,8 +1685,8 @@ var SelectedEnemyView = Backbone.View.extend({
 
         var councilData = new google.visualization.DataTable();
         councilData.addColumn('string', 'vs Race');
-        councilData.addColumn('number', 'Wins');
-        councilData.addColumn('number', 'Losses');
+        councilData.addColumn('number', 'Victories');
+        councilData.addColumn('number', 'Defeats');
         councilData.addColumn('number', 'Ratio');
         councilData.addRows([
             ['Council',  stats.council.council_wins, stats.council.council_losses, {v: stats.council.council_ratio, f: stats.council.council_ratio.toFixed(2)  + '%'}],
@@ -1712,8 +1712,8 @@ var SelectedEnemyView = Backbone.View.extend({
 
         var darkelvesData = new google.visualization.DataTable();
         darkelvesData.addColumn('string', 'vs Race');
-        darkelvesData.addColumn('number', 'Wins');
-        darkelvesData.addColumn('number', 'Losses');
+        darkelvesData.addColumn('number', 'Victories');
+        darkelvesData.addColumn('number', 'Defeats');
         darkelvesData.addColumn('number', 'Ratio');
         darkelvesData.addRows([
             ['Council',  stats.darkelves.council_wins, stats.darkelves.council_losses, {v: stats.darkelves.council_ratio, f: stats.darkelves.council_ratio.toFixed(2)  + '%'}],
@@ -1738,8 +1738,8 @@ var SelectedEnemyView = Backbone.View.extend({
 
         var dwarvesData = new google.visualization.DataTable();
         dwarvesData.addColumn('string', 'vs Race');
-        dwarvesData.addColumn('number', 'Wins');
-        dwarvesData.addColumn('number', 'Losses');
+        dwarvesData.addColumn('number', 'Victories');
+        dwarvesData.addColumn('number', 'Defeats');
         dwarvesData.addColumn('number', 'Ratio');
         dwarvesData.addRows([
             ['Council',  stats.dwarves.council_wins, stats.dwarves.council_losses, {v: stats.dwarves.council_ratio, f: stats.dwarves.council_ratio.toFixed(2)  + '%'}],
@@ -1764,8 +1764,8 @@ var SelectedEnemyView = Backbone.View.extend({
 
         var tribeData = new google.visualization.DataTable();
         tribeData.addColumn('string', 'vs Race');
-        tribeData.addColumn('number', 'Wins');
-        tribeData.addColumn('number', 'Losses');
+        tribeData.addColumn('number', 'Victories');
+        tribeData.addColumn('number', 'Defeats');
         tribeData.addColumn('number', 'Ratio');
         tribeData.addRows([
             ['Council',  stats.tribe.council_wins, stats.tribe.council_losses, {v: stats.tribe.council_ratio, f: stats.tribe.council_ratio.toFixed(2)  + '%'}],

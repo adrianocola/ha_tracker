@@ -625,7 +625,7 @@ div.tp_terms {
   width: 610px;
   height: 600px;
   padding: 5px 5px 20px 10px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin: 10px 10px 0 0;
   display: inline;
   border: 1px solid #808080;
@@ -648,7 +648,7 @@ div.state-box {
   cursor: pointer;
   display: inline;
   color: #fff;
-  margin-left: 20px;
+  margin-left: 18px;
   padding: 5px 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -1334,7 +1334,8 @@ div.enemyDeleteText a:hover {
   font-size: 15px;
   font-weight: bold;
   padding: 4px 5px;
-  margin: 0 0 0 68px;
+  margin-top: 15px;
+  float: right;
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }
