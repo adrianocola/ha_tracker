@@ -379,6 +379,8 @@ var Enemy = Backbone.Model.extend({
     statistics: function(){
 
         var stats = {
+            name: this.get("name"),
+            ratio: 0,
             inProgress: 0,
             wins:{
                 total: 0,
@@ -537,7 +539,9 @@ var Enemy = Backbone.Model.extend({
             stats[playerRace][enemyRace + win_or_lost] += 1;
 
         });
-        
+
+        stats.ratio = stats.wins.total / (stats.wins.total + stats.losses.total) * 100 || 0;
+
         stats.council.ratio = stats.council.wins / (stats.council.wins + stats.council.losses) * 100 || 0;
         stats.council.council_ratio = stats.council.council_wins / (stats.council.council_wins + stats.council.council_losses) * 100 || 0;
         stats.council.darkelves_ratio = stats.council.darkelves_wins / (stats.council.darkelves_wins + stats.council.darkelves_losses) * 100 || 0;
@@ -617,6 +621,193 @@ var Enemies = Backbone.Collection.extend({
         this.each(function(enemy){
             enemy.showOnlyActive(showOnlyActive);
         });
+    },
+
+    statistics: function(){
+
+        var stats = {
+            enemiesStats: [],
+            inProgress: 0,
+            wins:{
+                total: 0,
+                crystal: 0,
+                heroes: 0,
+                surrender: 0,
+                timeout: 0
+            },
+            losses:{
+                total: 0,
+                crystal: 0,
+                heroes: 0,
+                surrender: 0,
+                timeout: 0
+            },
+            council:{
+                wins: 0,
+                losses: 0,
+                ratio: 0,
+                council_wins: 0,
+                council_losses: 0,
+                council_ratio: 0,
+                darkelves_wins: 0,
+                darkelves_losses: 0,
+                darkelves_ratio: 0,
+                dwarves_wins: 0,
+                dwarves_losses: 0,
+                dwarves_ratio: 0,
+                tribe_wins: 0,
+                tribe_losses: 0,
+                tribe_ratio: 0
+            },
+            darkelves:{
+                wins: 0,
+                losses: 0,
+                ratio: 0,
+                council_wins: 0,
+                council_losses: 0,
+                council_ratio: 0,
+                darkelves_wins: 0,
+                darkelves_losses: 0,
+                darkelves_ratio: 0,
+                dwarves_wins: 0,
+                dwarves_losses: 0,
+                dwarves_ratio: 0,
+                tribe_wins: 0,
+                tribe_losses: 0,
+                tribe_ratio: 0
+            },
+            dwarves:{
+                wins: 0,
+                losses: 0,
+                ratio: 0,
+                council_wins: 0,
+                council_losses: 0,
+                council_ratio: 0,
+                darkelves_wins: 0,
+                darkelves_losses: 0,
+                darkelves_ratio: 0,
+                dwarves_wins: 0,
+                dwarves_losses: 0,
+                dwarves_ratio: 0,
+                tribe_wins: 0,
+                tribe_losses: 0,
+                tribe_ratio: 0
+            },
+            tribe:{
+                wins: 0,
+                losses: 0,
+                ratio: 0,
+                council_wins: 0,
+                council_losses: 0,
+                council_ratio: 0,
+                darkelves_wins: 0,
+                darkelves_losses: 0,
+                darkelves_ratio: 0,
+                dwarves_wins: 0,
+                dwarves_losses: 0,
+                dwarves_ratio: 0,
+                tribe_wins: 0,
+                tribe_losses: 0,
+                tribe_ratio: 0
+            }
+
+        };
+
+
+        this.each(function(enemy){
+            var enemyStats = enemy.statistics();
+
+            stats.enemiesStats.push(enemyStats);
+
+            stats.inProgress += enemyStats.inProgress;
+                
+            stats.wins.total += enemyStats.wins.total;
+            stats.wins.crystal += enemyStats.wins.crystal;
+            stats.wins.heroes += enemyStats.wins.heroes;
+            stats.wins.surrender += enemyStats.wins.surrender;
+            stats.wins.timeout += enemyStats.wins.timeout;
+
+            stats.losses.total += enemyStats.losses.total;
+            stats.losses.crystal += enemyStats.losses.crystal;
+            stats.losses.heroes += enemyStats.losses.heroes;
+            stats.losses.surrender += enemyStats.losses.surrender;
+            stats.losses.timeout += enemyStats.losses.timeout;
+
+            stats.council.wins += enemyStats.council.wins;
+            stats.council.losses += enemyStats.council.losses;
+            stats.council.council_wins += enemyStats.council.council_wins;
+            stats.council.council_losses += enemyStats.council.council_losses;
+            stats.council.darkelves_wins += enemyStats.council.darkelves_wins;
+            stats.council.darkelves_losses += enemyStats.council.darkelves_losses;
+            stats.council.dwarves_wins += enemyStats.council.dwarves_wins;
+            stats.council.dwarves_losses += enemyStats.council.dwarves_losses;
+            stats.council.tribe_wins += enemyStats.council.tribe_wins;
+            stats.council.tribe_losses += enemyStats.council.tribe_losses;
+
+            stats.darkelves.wins += enemyStats.darkelves.wins;
+            stats.darkelves.losses += enemyStats.darkelves.losses;
+            stats.darkelves.council_wins += enemyStats.darkelves.council_wins;
+            stats.darkelves.council_losses += enemyStats.darkelves.council_losses;
+            stats.darkelves.darkelves_wins += enemyStats.darkelves.darkelves_wins;
+            stats.darkelves.darkelves_losses += enemyStats.darkelves.darkelves_losses;
+            stats.darkelves.dwarves_wins += enemyStats.darkelves.dwarves_wins;
+            stats.darkelves.dwarves_losses += enemyStats.darkelves.dwarves_losses;
+            stats.darkelves.tribe_wins += enemyStats.darkelves.tribe_wins;
+            stats.darkelves.tribe_losses += enemyStats.darkelves.tribe_losses;
+
+            stats.dwarves.wins += enemyStats.dwarves.wins;
+            stats.dwarves.losses += enemyStats.dwarves.losses;
+            stats.dwarves.council_wins += enemyStats.dwarves.council_wins;
+            stats.dwarves.council_losses += enemyStats.dwarves.council_losses;
+            stats.dwarves.darkelves_wins += enemyStats.dwarves.darkelves_wins;
+            stats.dwarves.darkelves_losses += enemyStats.dwarves.darkelves_losses;
+            stats.dwarves.dwarves_wins += enemyStats.dwarves.dwarves_wins;
+            stats.dwarves.dwarves_losses += enemyStats.dwarves.dwarves_losses;
+            stats.dwarves.tribe_wins += enemyStats.dwarves.tribe_wins;
+            stats.dwarves.tribe_losses += enemyStats.dwarves.tribe_losses;
+
+            stats.tribe.wins += enemyStats.tribe.wins;
+            stats.tribe.losses += enemyStats.tribe.losses;
+            stats.tribe.council_wins += enemyStats.tribe.council_wins;
+            stats.tribe.council_losses += enemyStats.tribe.council_losses;
+            stats.tribe.darkelves_wins += enemyStats.tribe.darkelves_wins;
+            stats.tribe.darkelves_losses += enemyStats.tribe.darkelves_losses;
+            stats.tribe.dwarves_wins += enemyStats.tribe.dwarves_wins;
+            stats.tribe.dwarves_losses += enemyStats.tribe.dwarves_losses;
+            stats.tribe.tribe_wins += enemyStats.tribe.tribe_wins;
+            stats.tribe.tribe_losses += enemyStats.tribe.tribe_losses;
+
+        },this);
+
+        stats.ratio = stats.wins.total / (stats.wins.total + stats.losses.total) * 100 || 0;
+
+        stats.council.ratio = stats.council.wins / (stats.council.wins + stats.council.losses) * 100 || 0;
+        stats.council.council_ratio = stats.council.council_wins / (stats.council.council_wins + stats.council.council_losses) * 100 || 0;
+        stats.council.darkelves_ratio = stats.council.darkelves_wins / (stats.council.darkelves_wins + stats.council.darkelves_losses) * 100 || 0;
+        stats.council.dwarves_ratio = stats.council.dwarves_wins / (stats.council.dwarves_wins + stats.council.dwarves_losses) * 100 || 0;
+        stats.council.tribe_ratio = stats.council.tribe_wins / (stats.council.tribe_wins + stats.council.tribe_losses) * 100 || 0;
+
+        stats.darkelves.ratio = stats.darkelves.wins / (stats.darkelves.wins + stats.darkelves.losses) * 100 || 0;
+        stats.darkelves.council_ratio = stats.darkelves.council_wins / (stats.darkelves.council_wins + stats.darkelves.council_losses) * 100 || 0;
+        stats.darkelves.darkelves_ratio = stats.darkelves.darkelves_wins / (stats.darkelves.darkelves_wins + stats.darkelves.darkelves_losses) * 100 || 0;
+        stats.darkelves.dwarves_ratio = stats.darkelves.dwarves_wins / (stats.darkelves.dwarves_wins + stats.darkelves.dwarves_losses) * 100 || 0;
+        stats.darkelves.tribe_ratio = stats.darkelves.tribe_wins / (stats.darkelves.tribe_wins + stats.darkelves.tribe_losses) * 100 || 0;
+
+        stats.dwarves.ratio = stats.dwarves.wins / (stats.dwarves.wins + stats.dwarves.losses) * 100 || 0;
+        stats.dwarves.council_ratio = stats.dwarves.council_wins / (stats.dwarves.council_wins + stats.dwarves.council_losses) * 100 || 0;
+        stats.dwarves.darkelves_ratio = stats.dwarves.darkelves_wins / (stats.dwarves.darkelves_wins + stats.dwarves.darkelves_losses) * 100 || 0;
+        stats.dwarves.dwarves_ratio = stats.dwarves.dwarves_wins / (stats.dwarves.dwarves_wins + stats.dwarves.dwarves_losses) * 100 || 0;
+        stats.dwarves.tribe_ratio = stats.dwarves.tribe_wins / (stats.dwarves.tribe_wins + stats.dwarves.tribe_losses) * 100 || 0;
+
+        stats.tribe.ratio = stats.tribe.wins / (stats.tribe.wins + stats.tribe.losses) * 100 || 0;
+        stats.tribe.council_ratio = stats.tribe.council_wins / (stats.tribe.council_wins + stats.tribe.council_losses) * 100 || 0;
+        stats.tribe.darkelves_ratio = stats.tribe.darkelves_wins / (stats.tribe.darkelves_wins + stats.tribe.darkelves_losses) * 100 || 0;
+        stats.tribe.dwarves_ratio = stats.tribe.dwarves_wins / (stats.tribe.dwarves_wins + stats.tribe.dwarves_losses) * 100 || 0;
+        stats.tribe.tribe_ratio = stats.tribe.tribe_wins / (stats.tribe.tribe_wins + stats.tribe.tribe_losses) * 100 || 0;
+
+
+        return stats;
+
     }
 
 

@@ -179,6 +179,7 @@ block templates
     script(type="text/template", id="enemies-template")
         h2 Enemies
         button#add-enemy Add Enemy
+        a.link.statistics Show statistics
         input#filter(type="text",placeholder="Filter Enemies")
         input#showActive(type="checkbox")
         span.showActiveText Show only active
@@ -187,6 +188,45 @@ block templates
         div.hidden-enemies-warning.hidden Some enemies and games are hidden!
         ul.enemies
         div.enemy-tip TIP: double click an enemy name to rename it
+
+    script(type="text/template",id="statistics-template")
+        div.enemyStatsName
+
+        div.enemyStats
+            div.statsTotal
+                span.statsLabel Total:
+                span.statsValue
+            div.statsInProgress
+                span.statsLabel In Progress:
+                span.statsValue
+            div.statsWins
+                span.statsLabel Wins:
+                span.statsValue
+            div.statsLosses
+                span.statsLabel Losses:
+                span.statsValue
+
+        div.enemyGraphs
+            div#enemiesTable
+            div#winsGraph
+            div#lossesGraph
+            div#councilChart
+                img.chartImage(src="/images/council.png")
+                div#councilTable
+                div#councilTable2
+            div#darkelvesChart
+                img.chartImage(src="/images/darkelves.png")
+                div#darkelvesTable
+                div#darkelvesTable2
+            div#dwarvesChart
+                img.chartImage(src="/images/dwarves.png")
+                div#dwarvesTable
+                div#dwarvesTable2
+            div#tribeChart
+                img.chartImage(src="/images/tribe.png")
+                div#tribeTable
+                div#tribeTable2
+
 
     script(type="text/template",id="add-enemy-template")
         input#add-enemy-name(type="text",placeholder="Enemy Name", maxlength="20")

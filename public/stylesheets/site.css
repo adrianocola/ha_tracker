@@ -959,13 +959,21 @@ div.hidden-enemies-warning {
   margin: 0 0 0 0;
 }
 .enemies h2 {
-  margin-left: 15px;
+  margin-left: 10px;
+  margin-bottom: 0px;
   display: inline-block;
   color: #555;
   font-family: arial;
   font-weight: bold;
   text-shadow: 1px 1px 0px #fff;
   text-decoration: none;
+}
+.statistics {
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: left;
+  margin-left: 10px;
+  margin-top: -20px;
+  display: inline-block;
 }
 #filter {
   -webkit-border-radius: 6px;
@@ -1558,6 +1566,9 @@ div.enemyGraphs {
 #tribeTable,
 #tribeTable2 {
   display: inline-block;
+}
+#enemiesTable {
+  margin-bottom: 20px;
 }
 .chartImage {
   width: 180px;
