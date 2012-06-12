@@ -1131,11 +1131,38 @@ var StatisticsView = Backbone.View.extend({
         var stats = this.collection.statistics();
 
 
-        this.$('div.enemyStatsName').html("Statistics");
+        this.$('div.enemyStatsName').html("Global Statistics");
         this.$('div.statsTotal .statsValue').html(stats.inProgress + stats.wins.total + stats.losses.total);
         this.$('div.statsInProgress .statsValue').html(stats.inProgress);
         this.$('div.statsWins .statsValue').html(stats.wins.total);
         this.$('div.statsLosses .statsValue').html(stats.losses.total);
+
+        //*****************************************
+        //*************** ENEMIES *****************
+        //*****************************************
+
+        var enemiesData = new google.visualization.DataTable();
+        enemiesData.addColumn('string', 'Enemy');
+        enemiesData.addColumn('number', 'Victories');
+        enemiesData.addColumn('number', 'Defeats');
+        enemiesData.addColumn('number', 'Ratio');
+        _.each(stats.enemiesStats, function(enemyStats){
+            enemiesData.addRow([enemyStats.name,  enemyStats.wins.total, enemyStats.losses.total, {v: enemyStats.ratio, f: enemyStats.ratio.toFixed(2)  + '%'}]);
+        },this);
+        enemiesData.addRow(['TOTAL',  stats.wins.total, stats.losses.total, {v: stats.ratio, f: stats.ratio.toFixed(2)  + '%'}]);
+
+        var enemiesTable = new google.visualization.Table(document.getElementById('enemiesTable'));
+        enemiesTable.draw(enemiesData, {'width':590});
+
+        //if there are no games, don't show the charts
+        if(stats.inProgress + stats.wins.total + stats.losses.total == 0){
+            this.$('div.enemyGraphs').hide();
+            return;
+        }else{
+            this.$('div.noCharts').hide();
+        }
+
+
 
         //*****************************************
         //************* WINS by TYPE **************
@@ -1293,22 +1320,7 @@ var StatisticsView = Backbone.View.extend({
         var tribeChart = new google.visualization.ColumnChart(document.getElementById('tribeTable2'));
         tribeChart.draw(tribeData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
 
-        //*****************************************
-        //*************** ENEMIES *****************
-        //*****************************************
 
-        var enemiesData = new google.visualization.DataTable();
-        enemiesData.addColumn('string', 'Enemy');
-        enemiesData.addColumn('number', 'Victories');
-        enemiesData.addColumn('number', 'Defeats');
-        enemiesData.addColumn('number', 'Ratio');
-        _.each(stats.enemiesStats, function(enemyStats){
-            enemiesData.addRow([enemyStats.name,  enemyStats.wins.total, enemyStats.losses.total, {v: enemyStats.ratio, f: enemyStats.ratio.toFixed(2)  + '%'}]);
-        },this);
-        enemiesData.addRow(['TOTAL',  stats.wins.total, stats.losses.total, {v: stats.ratio, f: stats.ratio.toFixed(2)  + '%'}]);
-
-        var enemiesTable = new google.visualization.Table(document.getElementById('enemiesTable'));
-        enemiesTable.draw(enemiesData, {'width':590});
 
     }
 
@@ -1627,6 +1639,16 @@ var SelectedEnemyView = Backbone.View.extend({
         this.$('div.statsInProgress .statsValue').html(stats.inProgress);
         this.$('div.statsWins .statsValue').html(stats.wins.total);
         this.$('div.statsLosses .statsValue').html(stats.losses.total);
+
+
+        //if there are no games, don't show the charts
+        if(stats.inProgress + stats.wins.total + stats.losses.total == 0){
+            this.$('div.enemyGraphs').hide();
+            return;
+        }else{
+            this.$('div.noCharts').hide();
+        }
+
 
         //*****************************************
         //************* WINS by TYPE **************

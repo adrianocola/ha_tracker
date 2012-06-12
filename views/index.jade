@@ -174,12 +174,13 @@ block templates
                 img.chartImage(src="/images/tribe.png")
                 div#tribeTable
                 div#tribeTable2
+        div.noCharts No games against this opponent yet. Add some games to see some charts!
 
 
     script(type="text/template", id="enemies-template")
         h2 Opponents
         button#add-enemy Add Opponent
-        a.link.statistics Show statistics
+        a.link.statistics Show global statistics
         input#filter(type="text",placeholder="Filter Opponents")
         input#showActive(type="checkbox")
         span.showActiveText Show only active
@@ -206,8 +207,9 @@ block templates
                 span.statsLabel Defeats:
                 span.statsValue
 
+        div#enemiesTable
+
         div.enemyGraphs
-            div#enemiesTable
             div#winsGraph
             div#lossesGraph
             div#councilChart
@@ -226,6 +228,7 @@ block templates
                 img.chartImage(src="/images/tribe.png")
                 div#tribeTable
                 div#tribeTable2
+        div.noCharts No games yet. Add some games to see some charts!
 
 
     script(type="text/template",id="add-enemy-template")
