@@ -19,8 +19,6 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
         return;
     }
 
-    console.log(req.body.playerRace);
-
 
     models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
 

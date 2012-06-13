@@ -881,14 +881,13 @@ app.get('/api/random', function(req, res, next){
 
     models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
 
-        console.log(user);
 
         models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
 
             var random = Math.floor((Math.random()*100)+1);
 
             //creates a new enemy
-            if(random<=5){
+            if(random<=3){
 
                 //update position of all enemies
                 u.each(player.enemies,function(enemy){
@@ -920,18 +919,16 @@ app.get('/api/random', function(req, res, next){
                 }else if(player.enemies.length == 1){
                     enemyIndex = 0;
                 }else{
-                    enemyIndex = Math.floor((Math.random()*100)+1)%player.enemies.length;
+                    enemyIndex = Math.floor((Math.random()*1000000)+1)%player.enemies.length;
                 }
 
                 var enemy = player.enemies[enemyIndex];
-                enemy.gameCount+=1;
 
                 var game = new models.Game({
                     playerRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
                     enemyRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
                     state: (Math.floor((Math.random()*100)+1)%9)
                 });
-                game.num = enemy.gameCount;
 
                 //create player's items
                 u.each(consts.Races,function(race){
@@ -984,7 +981,12 @@ app.get('/api/random', function(req, res, next){
                     }
                 })
 
+                enemy.gameCount+=1;
+
+                game.num = enemy.gameCount;
+
                 enemy.games.push(game);
+
 
                 player.save(common.userId('MASTER'),function(err){
 

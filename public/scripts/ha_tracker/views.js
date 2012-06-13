@@ -269,19 +269,12 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.can_change_password = true;
 
-        var that = this;
+        this.show();
 
         //fetch the player
         var player = new app.Player({id: this.model.get('player')});
 
-        player.fetch({success: function(){
-            that.show();
-
-            player.loadEnemies();
-            new app.PlayerView({model: player}).render();
-
-        }});
-
+        new app.PlayerView({model: player});
     },
 
     events: {
@@ -916,10 +909,28 @@ var PlayerView = Backbone.View.extend({
 
         _.bindAll(this);
 
-        //this.model.bind("change",this.render,this);
+        var that = this;
+
+        this.spinner = new Spinner(opts_big);
+
+        this.renderLoading();
+
+        this.model.fetch({success: function(){
+
+            that.model.loadEnemies();
+            that.render();
+
+        }});
 
     },
 
+    renderLoading: function(){
+
+        this.$el.empty();
+        this.$el.append(this.spinner.spin().el);
+
+
+    },
 
     render: function(){
 
@@ -943,11 +954,6 @@ var EnemiesView = Backbone.View.extend({
         this.template = _.template($('#enemies-template').html());
 
         _.bindAll(this);
-
-        //se um game foi selecionado também precisa resetar a view
-        this.collection.bind('reset selected', this.render, this);
-
-        this.collection.bind('add', this.enemyAdded, this);
 
     },
 
@@ -1068,7 +1074,9 @@ var EnemiesView = Backbone.View.extend({
         $enemies.prepend(view.render().el);
     },
 
+
     render: function() {
+
         var $enemies;
 
         $(this.el).html(this.template({}));

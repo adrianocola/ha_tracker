@@ -133,7 +133,7 @@ ItemManagerSchema.plugin(ACL_Plugin);
 ItemManagerSchema.plugin(Date_Plugin);
 
 var GameSchema = new Schema({
-    num: Number,
+    num: {type: Number, default: 1},
     playerRace: {type: String, required: true},
     enemyRace: {type: String, required: true},
     playerItems: { type: Schema.ObjectId, ref: 'ItemManager'},
