@@ -113,7 +113,7 @@ div#signup {
   z-index: 1000;
 }
 div.signup-site {
-  height: 110px;
+  height: 135px;
 }
 #signup-username,
 #signup-email,
@@ -149,7 +149,7 @@ div.signup-site {
 div.text {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #808080;
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 5px;
 }
 button.signup-error {
@@ -289,12 +289,22 @@ div.user_panel {
   float: left;
 }
 .reset-account,
-.delete-account,
+.delete-account {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
 .change-field,
 .change-password {
   display: block;
   width: 100%;
-  margin-bottom: 10px;
+  margin-top: 10px;
+}
+button.change-password {
+  height: 20px;
+}
+.reset-error {
+  margin-top: -10px;
 }
 div.confirm-delete,
 div.confirm-reset {
@@ -338,9 +348,12 @@ div.g-plusone {
 div.fb-like {
   display: inline;
 }
-div.terms {
+div.about {
   display: inline;
   float: right;
+}
+div.about a {
+  margin-left: 10px;
 }
 div.tech {
   display: block;
@@ -373,7 +386,7 @@ div#forgot-password-panel {
 }
 div.forgot-info {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
-  color: #00f;
+  color: #808080;
   margin-top: -5px;
   margin-bottom: 10px;
 }
@@ -434,6 +447,11 @@ input#reset-repeat-password {
 #reset-cancel {
   float: right;
 }
+#reset-done {
+  margin-left: 30%;
+  margin-top: 10px;
+  width: 80px;
+}
 div.reset-error {
   color: #f00;
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -450,12 +468,17 @@ body {
   width: 100%;
   height: 100%;
 }
-a.link {
+a.link,
+a.link-grey {
   color: #00f;
   text-decoration: none;
 }
 a.link:hover {
   color: #f90;
+  text-decoration: underline;
+}
+a.link-grey:hover {
+  color: #c60;
   text-decoration: underline;
 }
 .spinner-mini {
@@ -543,6 +566,39 @@ img.game-example {
   margin-left: -5px;
   margin-top: -5px;
 }
+div.tp_privacy,
+div.tp_terms,
+div.tp_change,
+div.tp_back {
+  width: 100%;
+  display: block;
+  margin-left: 20px;
+}
+div.tp_privacy h3,
+div.tp_terms h3 {
+  margin-left: 20px;
+}
+div.tp_terms div {
+  width: 90%;
+  margin-left: 20px;
+}
+div.tp_privacy div {
+  width: 90%;
+  margin-left: 40px;
+}
+div.tp_change {
+  color: #808080;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin-top: 20px;
+}
+div.tp_back {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+div.tp_terms {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
 #player {
   clear: left;
   float: left;
@@ -569,6 +625,7 @@ img.game-example {
   width: 610px;
   height: 600px;
   padding: 5px 5px 20px 10px;
+  overflow-y: auto;
   margin: 10px 10px 0 0;
   display: inline;
   border: 1px solid #808080;
@@ -591,7 +648,7 @@ div.state-box {
   cursor: pointer;
   display: inline;
   color: #fff;
-  margin-left: 20px;
+  margin-left: 18px;
   padding: 5px 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -694,7 +751,7 @@ li.game-container {
 }
 .game:hover {
   color: #fff;
-  background-color: #888;
+  background-color: #666;
   border: 1px solid #000;
 }
 div.gameDeleteMask {
@@ -747,7 +804,7 @@ div.gameDeleteText a:hover {
   color: #fff;
   list-style: none;
   padding: 3px 6px 3px 6px;
-  background-color: #bbb;
+  background-color: #888;
   line-height: 30px;
   height: 30px;
   border: 1px solid #000;
@@ -818,7 +875,7 @@ div.gameDeleteText a:hover {
   line-height: 38px;
   text-align: center;
   margin: -1px 0 0 -3px;
-  background-color: #aaa;
+  background-color: #888;
   color: #fff;
 }
 .game:hover .gameNum {
@@ -854,16 +911,31 @@ div.gameDeleteText a:hover {
   display: inline;
   margin-left: 30px;
 }
+.enemyName {
+  display: inline-block;
+  cursor: pointer;
+  width: 180px;
+}
 .enemyName,
 .newEnemyName {
-  margin: 0 0 0 10px;
+  margin: 0 0 0 5px;
   color: #777;
   font-family: arial;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
-  width: 150px;
+  font: 16px Arial, sans-serif;
+}
+.newEnemyName {
+  width: 160px;
+}
+.selected-enemy .enemyName {
+  color: #fff;
+  text-shadow: 1px 1px 0px #777;
+}
+.enemyName:hover {
+  text-decoration: underline;
 }
 .enemyName .spinner-small {
   display: inline-block;
@@ -871,17 +943,37 @@ div.gameDeleteText a:hover {
   top: -5px;
   left: 40%;
 }
+div.enemy-tip {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #808080;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+div.hidden-enemies-warning {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #cfa457;
+  margin-left: 10px;
+  margin-top: 5px;
+}
 .enemies {
   margin: 0 0 0 0;
 }
 .enemies h2 {
-  margin-left: 15px;
+  margin-left: 10px;
+  margin-bottom: 0px;
   display: inline-block;
   color: #555;
   font-family: arial;
   font-weight: bold;
   text-shadow: 1px 1px 0px #fff;
   text-decoration: none;
+}
+.statistics {
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: left;
+  margin-left: 10px;
+  margin-top: -20px;
+  display: inline-block;
 }
 #filter {
   -webkit-border-radius: 6px;
@@ -911,7 +1003,6 @@ span.showStateText {
 .enemy-container {
   position: relative;
   list-style: none;
-  background-color: #eee;
   border: 1px solid #808080;
   padding: 5px 0 15px 5px;
   margin: 10px 0 0 -30px;
@@ -921,13 +1012,18 @@ span.showStateText {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
-  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
-  background-color: #ededed;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
+  background-color: #ededed;
+}
+.selected-enemy {
+  background-color: #bdbdbd;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bdbdbd), color-stop(1, #cfcfcf));
+  background: -moz-linear-gradient(center top, #bdbdbd 5%, #cfcfcf 100%);
 }
 .addEnemyPanel {
   height: 30px;
@@ -1206,7 +1302,7 @@ div.enemyDeleteText a:hover {
   width: 25px;
   height: 25px;
   float: right;
-  margin: 0 5px 0 10px;
+  margin: 0 5px 0 5px;
   display: none;
   padding: 0 0 0 0;
 }
@@ -1238,7 +1334,8 @@ div.enemyDeleteText a:hover {
   font-size: 15px;
   font-weight: bold;
   padding: 4px 5px;
-  margin: 0 0 0 68px;
+  margin-top: 15px;
+  float: right;
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }
@@ -1374,6 +1471,7 @@ div.enemyDeleteText a:hover {
   top: -25px;
   left: 17px;
   float: right;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 20px;
   height: 20px;
   color: #fff;
@@ -1423,6 +1521,78 @@ div.enemyDeleteText a:hover {
 .itemAdd {
   display: none;
 }
+div.enemyStatsName {
+  text-align: center;
+  margin-top: 10px;
+  font: 32px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+div.enemyStats {
+  text-align: center;
+  margin-top: 20px;
+}
+div.enemyStats div {
+  display: inline-block;
+  width: 24%;
+}
+.statsValue {
+  font: 24px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin-left: 4px;
+}
+div.statsInProgress .statsValue {
+  color: #ffc477;
+}
+div.statsWins .statsValue {
+  color: #b8e356;
+}
+div.statsLosses .statsValue {
+  color: #fc8d83;
+}
+div.enemyGraphs {
+  margin-top: 20px;
+}
+#winsGraph,
+#lossesGraph {
+  width: 290px;
+  height: 180px;
+}
+#winsGraph,
+#lossesGraph,
+#councilChart,
+#darkelvesChart,
+#dwarvesChart,
+#tribeChart {
+  display: inline-block;
+}
+#councilTable,
+#councilTable2,
+#darkelvesTable,
+#darkelvesTable2,
+#dwarvesTable,
+#dwarvesTable2,
+#tribeTable,
+#tribeTable2 {
+  display: inline-block;
+}
+#enemiesTable {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.chartImage {
+  width: 180px;
+  height: 48px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+div.tableTitle {
+  text-align: center;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.noCharts {
+  text-align: center;
+  color: #f00;
+  margin-top: 20px;
+}
 .reset-account,
 .delete-account,
 .change-field,
@@ -1442,6 +1612,10 @@ div.enemyDeleteText a:hover {
 }
 .game .deleteGame {
   display: block;
+}
+div.state-box {
+  margin-left: 10px;
+  padding: 5px 5px;
 }
 .items li:hover .itemImg {
   width: 100px;
