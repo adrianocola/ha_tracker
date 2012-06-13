@@ -7,6 +7,11 @@ app = window.app ? window.app : {};
 //BUG: Se o player for rápido e logar com e-mail antes do facebook o facebook pode chegar e logar em seguida
 //IMPLEMENTAR estatísticas básicas por enemy e geral
 //IMPLEMENTAR colapse dos jogos de um inimigo
+//IMPLEMENTAR dica visual de que o jogo ou o enemy está sendo deletado (spinner)
+//IMPLEMENTAR área de notes em cada jogo
+//ARRUMAR erro de InvalidObjectID que ocorre quando um game é deletado
+//ARRUMAR visualização de stado do game no iphone, está zuado
+//ARRUMAR distnacia entre mensagem de erro e mensagem de e-mail na hora do signup
 
 
 

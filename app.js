@@ -109,7 +109,7 @@ app.configure('production', function(){
                 host: rtg.hostname,
                 pass: rtg.auth?rtg.auth.split(":")[1]:''
             }),
-            cookie: { maxAge: 7200000 }}));
+            cookie: { maxAge: 86400000 }}));
 
 
     app.use(express.favicon('/public/favicon.ico'));
