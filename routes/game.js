@@ -151,14 +151,8 @@ app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function
 
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
-        u.each(game.playerItems, function(itemId){
-            models.Item.remove({_id: itemId},function(err){ if(err) console.log(err);});
-        },this);
-
-        u.each(game.enemyItems, function(itemId){
-            models.Item.remove({_id: itemId},function(err){ if(err) console.log(err);});
-        },this);
-
+        models.ItemManager.remove({_id: game.playerItems},function(err){ if(err) console.log(err);});
+        models.ItemManager.remove({_id: game.enemyItems},function(err){ if(err) console.log(err);});
 
         game.remove();
 
