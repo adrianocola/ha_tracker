@@ -12,6 +12,7 @@ app = window.app ? window.app : {};
 //ARRUMAR erro de InvalidObjectID que ocorre quando um game é deletado
 //ARRUMAR visualização de stado do game no iphone, está zuado
 //ARRUMAR distnacia entre mensagem de erro e mensagem de e-mail na hora do signup
+//ARRUMAR criação de inimigo. O Spinner tá eterno
 
 
 

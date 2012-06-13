@@ -953,6 +953,8 @@ var EnemiesView = Backbone.View.extend({
     initialize: function(){
         this.template = _.template($('#enemies-template').html());
 
+        this.collection.bind('add', this.enemyAdded, this);
+
         _.bindAll(this);
 
     },
