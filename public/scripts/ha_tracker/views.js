@@ -1178,7 +1178,6 @@ var StatisticsView = Backbone.View.extend({
         //************* WINS by TYPE **************
         //*****************************************
 
-
         var winData = new google.visualization.DataTable();
         winData.addColumn('string', 'Type');
         winData.addColumn('number', 'Value');
@@ -1191,14 +1190,14 @@ var StatisticsView = Backbone.View.extend({
 
         // Set chart options
         var winOptions = {'title':'Victories by Type',
-            'width':290,
-            'height':180,
             'chartArea': {width: 280, height: 130},
             'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
 
         // Instantiate and draw our chart, passing in some options.
         var winChart = new google.visualization.PieChart(document.getElementById('winsGraph'));
         winChart.draw(winData, winOptions);
+
+
 
         //*****************************************
         //*********** LOSSES by TYPE **************
@@ -1216,8 +1215,6 @@ var StatisticsView = Backbone.View.extend({
 
         // Set chart options
         var lossOptions = {'title':'Defeats by Type',
-            'width':290,
-            'height':180,
             'chartArea': {width: 280, height: 130},
             'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
 
@@ -1664,7 +1661,6 @@ var SelectedEnemyView = Backbone.View.extend({
         //************* WINS by TYPE **************
         //*****************************************
 
-
         var winData = new google.visualization.DataTable();
         winData.addColumn('string', 'Type');
         winData.addColumn('number', 'Value');
@@ -1677,14 +1673,13 @@ var SelectedEnemyView = Backbone.View.extend({
 
         // Set chart options
         var winOptions = {'title':'Victories by Type',
-            'width':290,
-            'height':180,
             'chartArea': {width: 280, height: 130},
             'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
 
         // Instantiate and draw our chart, passing in some options.
         var winChart = new google.visualization.PieChart(document.getElementById('winsGraph'));
         winChart.draw(winData, winOptions);
+
 
         //*****************************************
         //*********** LOSSES by TYPE **************
@@ -1702,8 +1697,6 @@ var SelectedEnemyView = Backbone.View.extend({
 
         // Set chart options
         var lossOptions = {'title':'Defeats by Type',
-            'width':290,
-            'height':180,
             'chartArea': {width: 280, height: 130},
             'titleTextStyle':{fontName: 'Lucida Grande' ,fontSize: 14}};
 
@@ -2216,7 +2209,7 @@ var PlayerItemsView = Backbone.View.extend({
         this.spinner = new Spinner(opts_big);
 
         this.collection.bind("reset",this.renderItems,this);
-        this.collection.bind("sync",this.renderRemaining,this);
+        this.collection.bind("change:itemCount",this.renderRemaining,this);
     },
 
     renderItems: function(){
@@ -2338,7 +2331,7 @@ var ItemView = Backbone.View.extend({
 
         this.spinner = new Spinner(opts_small);
 
-        this.template = _.template($("#item-template").html())
+        this.template = _.template($("#item-template").html());
 
         this.model.bind("sync", this.renderSync, this);
 

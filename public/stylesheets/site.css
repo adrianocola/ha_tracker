@@ -1551,6 +1551,11 @@ div.enemyGraphs {
   margin-top: 20px;
 }
 #winsGraph,
+#lossesGraph {
+  width: 290px;
+  height: 180px;
+}
+#winsGraph,
 #lossesGraph,
 #councilChart,
 #darkelvesChart,
