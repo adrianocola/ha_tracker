@@ -1134,9 +1134,11 @@ var StatisticsView = Backbone.View.extend({
 
     render: function(){
 
-        this.$el.html(this.template());
+        this.$el.html(new Spinner(opts_big).spin().el);
 
         var stats = this.collection.statistics();
+
+        this.$el.html(this.template());
 
 
         this.$('div.enemyStatsName').html("Global Statistics");
