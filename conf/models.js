@@ -132,15 +132,24 @@ var ItemManagerSchema = new Schema({
 ItemManagerSchema.plugin(ACL_Plugin);
 ItemManagerSchema.plugin(Date_Plugin);
 
+var GameNoteSchema = new Schema({
+    note: String
+},{ strict: true });
+GameNoteSchema.plugin(Date_Plugin);
+
+var GameNoteManagerSchema = new Schema({
+    notes: [GameNoteSchema]
+},{ strict: true });
+GameNoteManagerSchema.plugin(ACL_Plugin);
+GameNoteManagerSchema.plugin(Date_Plugin);
+
 var GameSchema = new Schema({
     num: {type: Number, default: 1},
     playerRace: {type: String, required: true},
     enemyRace: {type: String, required: true},
     playerItems: { type: Schema.ObjectId, ref: 'ItemManager'},
     enemyItems: { type: Schema.ObjectId, ref: 'ItemManager'},
-    startDate : Date,
-    endDate: Date,
-    turns: Number,
+    gameNotes: { type: Schema.ObjectId, ref: 'GameNoteManager'},
     state: {type: Number, default: 0}
 },{ strict: true });
 GameSchema.plugin(Date_Plugin);
@@ -180,17 +189,23 @@ PlayerSchema.pre('remove',function(next){
     var that = this;
 
     var itemsIdsArray = [];
+    var notesIdsArray = [];
 
     u.each(this.enemies,function(enemy){
+        //search for games items and game notes inside of each game
         u.each(enemy.games,function(game){
             itemsIdsArray.push({_id: game.playerItems});
             itemsIdsArray.push({_id: game.enemyItems});
+
+            notesIdsArray.push({_id: game.gameNotes});
         });
     });
 
-    console.log(itemsIdsArray);
+    //remove game items
+    exports.ItemManager.where().or(itemsIdsArray).remove();
 
-    exports.ItemManager.find().or(itemsIdsArray).remove();
+    //delete game notes
+    exports.GameNoteManager.where().or(notesIdsArray).remove();
 
     next();
 
@@ -247,6 +262,8 @@ exports.Enemy = mongoose.model('Enemy', EnemySchema);
 exports.Game = mongoose.model('Game', GameSchema);
 exports.ItemManager = mongoose.model('ItemManager', ItemManagerSchema);
 exports.Item = mongoose.model('Item', ItemSchema);
+exports.GameNoteManager = mongoose.model('GameNoteManager', GameNoteManagerSchema);
+exports.GameNote = mongoose.model('GameNote', GameNoteSchema);
 
 mongoose.connect(env.mongo_url);
 

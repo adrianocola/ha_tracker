@@ -124,10 +124,6 @@ app.configure('production', function(){
 });
 
 
-
-
-
-
 models = require('./conf/models');
 
 [   'index',
@@ -135,7 +131,8 @@ models = require('./conf/models');
     'player',
     'enemy',
     'game',
-    'item'
+    'item',
+    'gamenote'
 ].forEach(function(route) {
     require('./routes/' + route);
 });

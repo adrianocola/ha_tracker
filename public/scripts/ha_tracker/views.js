@@ -922,6 +922,16 @@ var PlayerView = Backbone.View.extend({
 
         }});
 
+        $('#current-game').resize(function(){
+
+            $('#player').height('auto');
+            if($('#current-game').height() > $('#player').height()){
+                $('#player').height($('#current-game').height());
+            }else{
+                $('#current-game').height($('#player').height());
+            }
+        });
+
     },
 
     renderLoading: function(){
@@ -1050,6 +1060,14 @@ var EnemiesView = Backbone.View.extend({
             }
         }
 
+        $('#player').height('auto');
+        $('#current-game').height('auto');
+        if($('#current-game').height() > $('#player').height()){
+            $('#player').height($('#current-game').height());
+        }else{
+            $('#current-game').height($('#player').height());
+        }
+
 
 
     },
@@ -1057,6 +1075,7 @@ var EnemiesView = Backbone.View.extend({
 
     addEnemy: function(){
 
+        $('#player').height('auto');
 
         var $enemies = this.$(".enemies")
 
@@ -1067,6 +1086,8 @@ var EnemiesView = Backbone.View.extend({
     },
 
     enemyAdded: function(enemy){
+
+        $('#player').height('auto');
 
         app.AddEnemyView.remove();
 
@@ -1482,6 +1503,8 @@ var EnemyView = Backbone.View.extend({
     },
 
     addGame: function(){
+
+        $('#player').height('auto');
 
         app.AddGameView.games = this.model.games;
         this.$(".games").prepend(app.AddGameView.render().el);
@@ -1917,6 +1940,7 @@ var GameView = Backbone.View.extend({
     selectGame: function(){
         this.collection.select(this.model.id);
         app.SelectedGameView.selected(this.model);
+
     },
 
     deleteGame: function(){
@@ -2028,6 +2052,14 @@ var SelectedGameView = Backbone.View.extend({
 
         app.SelectionManager.bind("change:unselectedGame change:unselectedEnemy",this.clean,this);
 
+        $('#player').resize(function(){
+
+            $('#current-game').height('auto');
+            if($('#player').height() > $('#current-game').height()){
+                $('#current-game').height($('#player').height());
+            }
+        });
+
     },
 
     events: {
@@ -2124,7 +2156,6 @@ var SelectedGameView = Backbone.View.extend({
 
     render: function(){
 
-
         this.show();
 
         if(this.model){
@@ -2135,6 +2166,8 @@ var SelectedGameView = Backbone.View.extend({
 
             this.playerItems = new PlayerItemsView({collection: this.model.playerItems, model: this.model});
             this.enemyItems = new EnemyItemsView({collection: this.model.enemyItems, model: this.model});
+
+            this.gameNotes = new GameNotesView({collection: this.model.gameNotes, model: this.model});
 
             //configure game state
             if(json.state == 0){
@@ -2179,21 +2212,192 @@ var SelectedGameView = Backbone.View.extend({
 
             var $items_panel = this.$('.items-panel');
 
+            this.$el.height('auto');
+
             $items_panel.append(this.playerItems.render().el);
             $items_panel.append(this.enemyItems.render().el);
 
-
-
+            this.$('.gameNotesPanel').append(this.gameNotes.render().el);
 
         }else{
 
             this.$el.html(this.template({data: undefined}));
 
-            //this.$('.game-info').html('');
         }
 
         return this;
     }
+
+});
+
+var GameNotesView = Backbone.View.extend({
+
+    class: "gameNotes",
+
+    initialize: function(){
+
+        this.template = _.template($("#game-notes-template").html());
+
+        _.bindAll(this);
+
+        this.spinner = new Spinner(opts_medium);
+
+        this.collection.bind("reset",this.renderNotes,this);
+
+        this.collection.bind("remove",this.nodeRemoved,this);
+
+    },
+
+    events: {
+        'click .addNoteButton': 'addNote',
+        'keydown .addNoteText': 'pressEnter'
+    },
+
+    pressEnter: function(evt){
+        if(evt.ctrlKey && evt.keyCode == 13){
+            this.addNote();
+
+            evt.preventDefault();
+        }else{
+            this.$('div.addNoteTip').show();
+        }
+    },
+
+    addNote: function(){
+
+
+        if(this.$('.addNoteText').val()==''){
+            return;
+        }
+
+        var that = this;
+
+        this.$('div.addNoteTip').hide();
+
+        //if the current-game if bigger of the same size of the enemy, try to increase
+        //its size when adding a new note
+        if($('#current-game').height() >= $('#player').height()){
+            $('#current-game').height('auto');
+        }
+
+        var that = this;
+
+        var note = new app.GameNote({note: this.$('.addNoteText').val()});
+
+        this.collection.create(note,{wait:true, success: function(){
+
+            that.$('.notesPanel').show();
+
+            var nodeView = new GameNoteView({model: note});
+
+            that.$('ul.notes').prepend(nodeView.render().el);
+
+            that.$('.addNoteText').val('');
+
+
+
+        }});
+
+
+    },
+
+    nodeRemoved: function(){
+
+        if(this.collection.length == 0){
+            this.renderNotes();
+        }
+
+    },
+
+
+    renderNotes: function(){
+
+        if(this.collection.length == 0){
+            this.$('.notesPanel').hide();
+            return;
+        }else{
+            this.$('.notesPanel').show();
+        }
+
+        var $notes = this.$('ul.notes');
+        $notes.html('');
+
+
+
+        this.collection.each(function(note){
+
+            var noteView = new GameNoteView({model: note});
+
+            $notes.append(noteView.render().el);
+        });
+
+    },
+
+    render: function(){
+
+        this.$el.html(this.template());
+
+        return this;
+
+    }
+
+});
+
+
+var GameNoteView = Backbone.View.extend({
+
+    tagName:"li",
+    className: "gameNote",
+
+    initialize: function(){
+
+        this.template = _.template($("#game-note-template").html());
+
+    },
+
+    events: {
+        //'dblclick div.noteText': 'editNote',
+        'click .deleteNote': 'deleteNote'
+    },
+
+    deleteNote: function(){
+
+        var that = this;
+
+        this.model.destroy({wait:true, error: simpleErrorHandler, success: function(){
+            that.$el.slideUp(function(){
+                that.remove();
+            });
+
+        }});
+
+    },
+
+//    editNote: function(){
+//        this.$('textarea.editNoteText').val(this.model.get('note'));
+//
+//        this.$('div.noteText').hide();
+//        this.$('textarea.editNoteText').show();
+//    },
+
+    render: function(){
+
+        function pad2(number){
+            return (number < 10 ? '0' : '') + number;
+        }
+
+        var note = this.model.get('note').replace(/\n/g, '<br />');
+        var date = new Date(this.model.get('createdAt'));
+
+        date = date.getFullYear() + '-' + pad2(date.getMonth()+1) + '-' + pad2(date.getDate()) + "<br>" + pad2(date.getHours()) + ':' + pad2(date.getMinutes()) + ':' + pad2(date.getSeconds());
+
+        this.$el.html(this.template({note: note, date: date}));
+
+        return this;
+
+    }
+
+
 
 });
 

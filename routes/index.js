@@ -4,6 +4,11 @@ var env = require('../conf/env.js');
 var common = require('./common.js');
 var uuid = require('../api/uuid.js');
 
+app.get('/teste', function(req, res){
+
+    res.render('teste');
+});
+
 app.get('/', function(req, res){
 
 

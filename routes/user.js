@@ -114,6 +114,11 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next)
             return;
         }
 
+        if(!user){
+            next(new app.UnexpectedError("User is null"));
+            return;
+        }
+
         //if is a facebook user, clean facebook access token
         if(user.facebook.userID){
 
@@ -559,6 +564,11 @@ app.get("/api/user/reset_password_username", function(req, res, next){
                 return;
             }
 
+            if(!user){
+                next(new app.UnexpectedError("User is null"));
+                return;
+            }
+
             if(!value){
                 next(new app.ExpectedError(113, 'Invalid user for password reset'));
                 return;
@@ -600,6 +610,11 @@ app.put("/api/user/reset_password", function(req, res, next){
                 return;
             }
 
+            if(!user){
+                next(new app.UnexpectedError("User is null"));
+                return;
+            }
+
             if(!value){
                 next(new app.ExpectedError(413,'Invalid user for password reset'));
                 return;
@@ -635,6 +650,11 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
         if(err){
             next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(!user){
+            next(new app.UnexpectedError("User is null"));
             return;
         }
 
@@ -768,6 +788,11 @@ app.delete('/api/user/delete',common.verifyAuthorization, function(req, res, nex
             return;
         }
 
+        if(!user){
+            next(new app.UnexpectedError("User is null"));
+            return;
+        }
+
         //remove from facebook
         if(user.facebook.userID){
             //https://developers.facebook.com/docs/reference/api/user/
@@ -814,6 +839,11 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
             return;
         }
 
+        if(!user){
+            next(new app.UnexpectedError("User is null"));
+            return;
+        }
+
 
         models.Player.findOne({user: req.authorization.userId},{},common.userId(req.authorization.userId),function(err, player){
 
@@ -821,6 +851,11 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
 
                 if(err){
                     next(new app.UnexpectedError(err));
+                    return;
+                }
+
+                if(!player){
+                    next(new app.UnexpectedError("Player is null"));
                     return;
                 }
 

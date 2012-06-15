@@ -7,7 +7,15 @@ app.get('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
 
     models.Player.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err, player){
 
-        if(err) console.log(err);
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
+            return;
+        }
 
         res.send(player);
 
@@ -28,6 +36,11 @@ app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
 
         if(err){
             next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
             return;
         }
 

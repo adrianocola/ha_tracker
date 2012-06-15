@@ -14,6 +14,11 @@ app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, r
             return;
         }
 
+        if(!itemManager){
+            next(new app.UnexpectedError("ItemManager is null"));
+            return;
+        }
+
         res.send({data: itemManager.items});
 
 
@@ -34,6 +39,11 @@ app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, funct
 
         if(err){
             next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(!itemManager){
+            next(new app.UnexpectedError("ItemManager is null"));
             return;
         }
 

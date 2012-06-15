@@ -126,6 +126,50 @@ var Items = Backbone.Collection.extend({
 
 });
 
+
+var GameNote = Backbone.Model.extend({
+
+    idAttribute: "_id",
+
+    initialize: function(){
+
+        _.bindAll(this);
+
+    }
+
+
+
+});
+
+
+var GameNotes = Backbone.Collection.extend({
+    model: GameNote,
+
+    url: function(){
+        return '/api/gamenotemanager/' + this.notesId + '/notes';
+    },
+
+    initialize: function(notesId){
+
+        this.notesId = notesId;
+
+    },
+
+    comparator: function(note){
+
+        return -new Date(note.get('createdAt')).getTime();
+
+    },
+
+    parse: function(response){
+
+        return response.data;
+
+    }
+
+});
+
+
 var SelectionManager = Backbone.Model.extend({
 
     initialize: function(){
@@ -215,12 +259,16 @@ var Game = Backbone.Model.extend({
         if(!this.isNew()){
             this.playerItems = new Items(this.get('playerItems'));
             this.enemyItems = new Items(this.get('enemyItems'));
+
+            this.gameNotes = new GameNotes(this.get('gameNotes'));
         }else{
             //if the game is being created in the client it must
             // wait the server return with the playerItems and enemyItems id
             this.bind("sync",function(){
                 this.playerItems = new Items(this.get('playerItems'));
                 this.enemyItems = new Items(this.get('enemyItems'));
+
+                this.gameNotes = new GameNotes(this.get('gameNotes'));
             },this);
         }
     },
@@ -269,6 +317,12 @@ var Game = Backbone.Model.extend({
         this.enemyItems.fetch({error: function(model, err){
             that.trigger('error',err);
         }});
+
+        this.gameNotes.fetch({error: function(model, err){
+            that.trigger('error',err);
+        }});
+
+
     },
 
     isVisible: function(){
@@ -1130,10 +1184,12 @@ $(function(){
     app.Enemy = Enemy;
     app.Game = Game;
     app.Item = Item;
+    app.GameNote = GameNote;
 
     app.Enemies = Enemies;
     app.Games = Games;
     app.Items = Items;
+    app.GameNotes = GameNotes;
 
     app.SelectionManager = new SelectionManager();
 

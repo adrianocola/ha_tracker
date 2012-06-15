@@ -4,6 +4,60 @@ var consts = require('../public/scripts/shared/consts.js');
 var u = require('underscore');
 var common = require('./common.js');
 
+app.get('/api/fixGameNotes', function(req, res, next){
+
+    models.User.find({},{}, common.userId('MASTER'), function(err, users){
+
+        var cont = 0;
+
+        u.each(users,function(user){
+
+            models.Player.findOne({user: req.authorization.userId},{}, common.userId(user._id), function(err, player){
+
+                u.each(player.enemies,function(enemy){
+                    u.each(enemy.games,function(game){
+                        //create game notes
+
+                        if(!game.gameNotes){
+                            var gameNotes = new models.GameNoteManager();
+                            gameNotes.addACL(user._id,true,true);
+
+                            gameNotes.save(common.userId(user._id),function(err){
+                                if(err) console.log(err);
+                            });
+
+                            game.gameNotes = gameNotes;
+
+                        }
+
+                    });
+                });
+
+                player.save(common.userId(user._id),function(err){
+                    if(err) console.log(err);
+
+                    cont++;
+
+                    if(cont >= users.length){
+                        res.send('true');
+                    }
+
+                });
+
+
+
+
+            });
+
+        });
+
+
+    });
+
+
+
+});
+
 
 app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, res, next){
 
@@ -24,6 +78,11 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
         if(err){
             next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
             return;
         }
 
@@ -84,6 +143,16 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
             }
         })
 
+        //create game notes
+        var gameNotes = new models.GameNoteManager();
+        gameNotes.addACL(req.authorization.userId,true,true);
+
+        gameNotes.save(common.userId(req.authorization.userId),function(err){
+            if(err) console.log(err);
+        });
+
+        game.gameNotes = gameNotes;
+
         enemy.games.push(game);
 
         player.save(common.userId(req.authorization.userId),function(err){
@@ -93,12 +162,13 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
                 return;
             }
 
-            res.send(game);
+            res.send(enemy.games.id(game._id));
         });
 
     });
 
 });
+
 
 app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res, next){
 
@@ -119,6 +189,11 @@ app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(re
             return;
         }
 
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
+            return;
+        }
+
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
         game.state = req.body.state;
@@ -130,7 +205,7 @@ app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(re
                 return;
             }
 
-            res.send("true");
+            res.send(player.enemies.id(req.params.enemy).games.id(req.params.id));
         });
 
 
@@ -149,10 +224,20 @@ app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function
             return;
         }
 
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
+            return;
+        }
+
         var game = player.enemies.id(req.params.enemy).games.id(req.params.id);
 
-        models.ItemManager.remove({_id: game.playerItems},function(err){ if(err) console.log(err);});
-        models.ItemManager.remove({_id: game.enemyItems},function(err){ if(err) console.log(err);});
+        //also delete game items
+        models.ItemManager.where().or([{_id: game.playerItems},{_id: game.enemyItems}]).remove(function(err){ if(err) console.log(err);});
+
+        //delete game notes
+        models.GameNoteManager.remove({_id: game.gameNotes},function(err){ if(err) console.log(err);});
+
+
 
         game.remove();
 

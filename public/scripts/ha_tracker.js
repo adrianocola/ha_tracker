@@ -1,15 +1,12 @@
 app = window.app ? window.app : {};
 
 //TODO
-//IMPLEMENTAR placar de partidas por enemy
 //ARRUMAR load da aplicação que as vezes abaixa o scroll sozinho (deve ser por causa da tela de signup)
-//IMPLEMENTAR quantidade de jogos escondidos por enemy
 //BUG: Se o player for rápido e logar com e-mail antes do facebook o facebook pode chegar e logar em seguida
-//IMPLEMENTAR estatísticas básicas por enemy e geral
 //IMPLEMENTAR colapse dos jogos de um inimigo
 //IMPLEMENTAR dica visual de que o jogo ou o enemy está sendo deletado (spinner)
 //IMPLEMENTAR área de notes em cada jogo
-//ARRUMAR erro de InvalidObjectID que ocorre quando um game é deletado
+//PORQUE sempre tem scroll pra horizontal no browser?
 
 
 

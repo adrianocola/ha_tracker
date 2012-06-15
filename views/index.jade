@@ -2,6 +2,7 @@ extends layout
 
 block scripts-vendor
     script(src='/scripts/vendor/jquery-min.js')
+    script(src='/scripts/vendor/jquery-resize-min.js')
     script(src='/scripts/vendor/underscore-min.js')
     script(src='/scripts/vendor/backbone-min.js')
     script(src='/scripts/vendor/spin-min.js')
@@ -246,7 +247,7 @@ block templates
             option(value="Dwarves") Dwarves
             option(value="Tribe") Tribe
         br
-        div.add-game-label Enemy:
+        div.add-game-label Opponent:
         select.add-game-enemy-race
             option(value="Council") Council
             option(value="Dark Elves") Dark Elves
@@ -301,6 +302,22 @@ block templates
                 div.read-only-items Read-Only
             div.enemy-items-mask.hidden
                 div.read-only-items Read-Only
+        div.gameNotesPanel
+
+    script(type="text/template", id="game-notes-template")
+        div.addNotePanel
+            textarea.addNoteText
+            button.addNoteButton.button-01(title="Add Note") Add Note
+            div.addNoteTip.hidden TIP: You can also use ctrl+ENTER to add a new note
+        div.notesPanel.hidden
+            ul.notes
+
+    script(type="text/template", id="game-note-template")
+        div.noteDate <%= date %>
+        div.noteText <%= note %>
+        //textarea.editNoteText.hidden
+        button.deleteNote.button-02(title="Delete Note") -
+
 
     script(type="text/template", id="player-items-template")
         <% print('<img class=\"raceTitle\" src=\"' + playerRaceTitle + '\"/>'); %>

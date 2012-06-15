@@ -1,8 +1,14 @@
 @import '../common'
 
+html
+    height: 100%
+
 body
-    width:100%
-    height:100%
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+    margin: 0
+    padding: 0
+    height: 100%
+    margin-top: -20px
 
 a.link, a.link-grey
     color: #00f;
@@ -51,41 +57,38 @@ a.link-grey:hover
     text-align: center
     position: relative
 
-body
-  padding: 30px
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
-
 #main
-    float: left
     width: 100%
     background-color: #EEEEEE
-    margin: -40px 0 30px 0
 
 #main-container
     margin: 0 auto
     width: 960px
+    height: 100%
+    background-color: #FFFFFF
 
 #main-layout
-    float: left
     width: 960px
     background-color: #FFFFFF
-    padding-bottom: 10px
+    //overflow-y: auto
+    //border: 1px solid red
+    //min-height: 600px
+    //height:auto
+    height: 100%
 
 #header
-    float: left
     width: 940px
+    height: 80px
     padding: 0 10px
     color: #FFFFFF
     background-color: #AAAAAA
-    position: relative
 
 #footer
-    float: left
     width: 940px
+    height: 60px
     padding: 10px 10px
     color: #FFFFFF
     background-color: #AAAAAA
-    position: relative
     font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
 
 .example-info
@@ -132,14 +135,27 @@ div.tp_terms
     margin-left: 20px
 
 #player
-    clear: left
-    float: left
+    //float: left
+    display: inline-block
+    height:auto;
+    vertical-align: top
+    min-height: 600px
     width: 280px
-    height: 600px
-    overflow: auto
     padding: 5px 10px 20px 5px
-    margin: 10px 0 0 10px
-    display: inline
+    margin: 10px 0 10px 10px
+    border: 1px solid grey
+    border-radius(10px)
+
+#current-game
+    //float: right
+    display: inline-block
+    width: 610px
+    vertical-align: top
+    //left: 30px;
+    min-height: 600px
+    padding: 5px 5px 20px 10px
+    //overflow-y: auto
+    margin: 10px 10px 10px 10px
     border: 1px solid grey
     border-radius(10px)
 
@@ -149,17 +165,6 @@ div.tp_terms
     font-weight:bold
     text-decoration:none
     text-shadow:1px 1px 0px #ffffff
-
-#current-game
-    float: right
-    width: 610px
-    height: 600px
-    padding: 5px 5px 20px 10px
-    overflow-y: auto
-    margin: 10px 10px 0 0
-    display: inline
-    border: 1px solid grey
-    border-radius(10px)
 
 #current-game h2
     color:#555555
@@ -171,6 +176,107 @@ div.tp_terms
 #current-game .items-panel
     display: block
     height: 500px
+
+#current-game .gameNotesPanel
+    display: block
+    width: 565px
+    //height: 200px
+    height: 100%
+    //border: 1px solid grey
+    border-radius(10px)
+    margin-top: 20px
+    margin-left: 10px
+    padding: 5px 10px
+
+li.gameNote
+    list-style: none
+    border-bottom: 1px solid #dddddd
+    border-top: 1px solid #dddddd
+    //border-radius(10px)
+    margin-left: -30px
+    margin-right: 10px
+    padding: 5px 3px
+    display: block
+
+li.gameNote:hover
+    background-color: #dddddd
+    border-bottom: 1px solid #888888
+    border-top: 1px solid #888888
+
+div.noteText
+    width: 400px
+    margin-left: 5px
+    display: inline-block
+    text-align:justify
+    text-justify:inter-word
+
+div.noteDate
+    display: inline-block
+    text-align: center
+    vertical-align: top
+    border-radius(10px)
+    padding: 3px 5px
+    border: 1px solid #888888
+    background-color: #dddddd
+    font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
+
+li.gameNote:hover .noteDate
+    border: 1px solid #444444
+    background-color: #888888
+    color: #ffffff
+
+
+textarea.editNoteText
+    width: 400px
+    height: 40px
+    resize: none
+    margin-left: 10px
+    //border-radius(10px)
+
+.deleteNote
+    float: right
+    width: 20px
+    height: 20px
+    font-size:20px
+    font-weight:bold
+    margin: -2px 6px 0 0
+    padding: 0 0 0 0
+    line-height: 15px
+    border-radius(6px)
+    display: none
+
+li.gameNote:hover .deleteNote
+    display: block
+
+div.notesPanel
+    //height: 150px
+    height: 100%
+    border: 1px solid #dddddd
+    border-radius(10px)
+
+.addNotePanel
+    height: auto
+    margin-bottom: 10px
+
+.addNoteButton
+    border-radius(10px)
+    width: 85px
+    height: 40px
+    display: inline-block
+    vertical-align:top
+    margin-left: 10px
+
+div.addNoteTip
+    font: 10px "Lucida Grande", Helvetica, Arial, sans-serif
+    color: #cfa457
+
+.addNoteText
+   height: 35px
+   width: 460px
+   border: 1px solid #dddddd
+   border-radius(10px)
+   display: inline-block
+   resize: none
 
 div.state-box
     cursor: pointer
@@ -460,6 +566,7 @@ div.hidden-enemies-warning
 
 .enemies
     margin: 0 0 0 0
+    height: 100%
 
 .enemies h2
     margin-left: 10px
@@ -636,8 +743,7 @@ enemy-grad-end = #fafafa
 .enemy-items
     float: right
     width: 280px
-    //border: 1px solid #DDDDDD
-    margin: 0 10px 0 0
+    margin: 0 15px 0 0
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff
     box-shadow:inset 0px 1px 0px 0px #ffffff
@@ -722,7 +828,7 @@ img-size = 40px
 
 .addGamePanel .add-game-label
     display: inline-block
-    width: 45px
+    width: 55px
     margin-left: 5px
     font: 12px "Lucida Grande", Helvetica, Arial, sans-serif
 
@@ -731,7 +837,7 @@ img-size = 40px
     border:1px solid #dcdcdc
     display:inline-block
     color:#777777
-    width:100px
+    width:90px
     padding:4px 5px
     margin: 0 5px 0 10px
     text-decoration:none

@@ -24,6 +24,11 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res, next){
             return;
         }
 
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
+            return;
+        }
+
         //first verify if there is an enemy with the same name
         var foundEnemy = u.find(player.enemies, function(enemy){ return enemy.name.toLowerCase() == req.body.name.toLowerCase(); });
 
@@ -51,7 +56,7 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res, next){
                 return;
             }
 
-            res.send(enemy);
+            res.send(player.enemies.id(enemy._id));
 
         });
 
@@ -77,6 +82,11 @@ app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res, next){
 
         if(err){
             next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
             return;
         }
 
@@ -116,15 +126,29 @@ app.delete('/api/enemies/:id', common.verifyAuthorization, function(req, res, ne
             return;
         }
 
+        if(!player){
+            next(new app.UnexpectedError("Player is null"));
+            return;
+        }
+
         var enemy = player.enemies.id(req.params.id);
 
-        u.each(enemy.games, function(game){
+        var itemsIdsArray = [];
+        var notesIdsArray = [];
 
-            models.ItemManager.remove({_id: game.playerItems},function(err){ if(err) console.log(err);});
+        //search for games items and game notes inside of each game
+        u.each(enemy.games,function(game){
+            itemsIdsArray.push({_id: game.playerItems});
+            itemsIdsArray.push({_id: game.enemyItems});
 
-            models.ItemManager.remove({_id: game.enemyItems},function(err){ if(err) console.log(err);});
+            notesIdsArray.push({_id: game.gameNotes});
+        });
 
-        },this);
+        //remove game items
+        models.ItemManager.where().or(itemsIdsArray).remove();
+
+        //delete game notes
+        models.GameNoteManager.where().or(notesIdsArray).remove();
 
         enemy.remove();
 
