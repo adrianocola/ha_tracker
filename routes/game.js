@@ -12,9 +12,16 @@ app.get('/api/fixGameNotes', function(req, res, next){
 
         u.each(users,function(user){
 
-            models.Player.findOne({user: req.authorization.userId},{}, common.userId(user._id), function(err, player){
+            models.Player.findOne({user: user._id},{}, common.userId(user._id), function(err, player){
 
-                if(!player){
+                if(player){
+                    cont++;
+
+                    if(cont >= users.length){
+                        res.send('true');
+                    }
+
+
                     return;
 
                 }
@@ -44,7 +51,7 @@ app.get('/api/fixGameNotes', function(req, res, next){
                     cont++;
 
                     if(cont >= users.length){
-
+                        res.send('true');
                     }
 
                 });
@@ -59,8 +66,6 @@ app.get('/api/fixGameNotes', function(req, res, next){
 
 
     });
-
-    res.send('true');
 
 
 
