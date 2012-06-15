@@ -12,7 +12,10 @@ app.get('/api/fixGameNotes', function(req, res, next){
 
         u.each(users,function(user){
 
+            console.log("USER: " + user.username);
+
             models.Player.findOne({user: user._id},{}, common.userId(user._id), function(err, player){
+
 
                 if(player){
                     cont++;
@@ -25,6 +28,8 @@ app.get('/api/fixGameNotes', function(req, res, next){
                     return;
 
                 }
+
+                console.log("ENEMIES: " + player.enemies);
 
                 u.each(player.enemies,function(enemy){
                     u.each(enemy.games,function(game){
