@@ -4,77 +4,7 @@ var consts = require('../public/scripts/shared/consts.js');
 var u = require('underscore');
 var common = require('./common.js');
 
-app.get('/api/fixGameNotes', function(req, res, next){
 
-    models.User.find({},{}, common.userId('MASTER'), function(err, users){
-
-        var cont = 0;
-
-        u.each(users,function(user){
-
-            console.log("USER: " + user.username);
-
-            models.Player.findOne({user: user._id},{}, common.userId(user._id), function(err, player){
-
-
-                if(!player){
-                    cont++;
-
-                    if(cont >= users.length){
-                        res.send('true');
-                    }
-
-
-                    return;
-
-                }
-
-                console.log("ENEMIES: " + player.enemies.length);
-
-                u.each(player.enemies,function(enemy){
-                    u.each(enemy.games,function(game){
-                        //create game notes
-
-                        if(!game.gameNotes){
-                            var gameNotes = new models.GameNoteManager();
-                            gameNotes.addACL(user._id,true,true);
-
-                            gameNotes.save(common.userId(user._id),function(err){
-                                if(err) console.log(err);
-                            });
-
-                            game.gameNotes = gameNotes;
-
-                        }
-
-                    });
-                });
-
-                player.save(common.userId(user._id),function(err){
-                    if(err) console.log(err);
-
-                    cont++;
-
-                    if(cont >= users.length){
-                        res.send('true');
-                    }
-
-                });
-
-
-
-
-            });
-
-        });
-
-
-
-    });
-
-
-
-});
 
 
 app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, res, next){
