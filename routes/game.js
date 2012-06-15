@@ -14,6 +14,11 @@ app.get('/api/fixGameNotes', function(req, res, next){
 
             models.Player.findOne({user: req.authorization.userId},{}, common.userId(user._id), function(err, player){
 
+                if(!player){
+                    return;
+
+                }
+
                 u.each(player.enemies,function(enemy){
                     u.each(enemy.games,function(game){
                         //create game notes
