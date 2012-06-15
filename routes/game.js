@@ -44,7 +44,7 @@ app.get('/api/fixGameNotes', function(req, res, next){
                     cont++;
 
                     if(cont >= users.length){
-                        res.send('true');
+
                     }
 
                 });
@@ -57,7 +57,10 @@ app.get('/api/fixGameNotes', function(req, res, next){
         });
 
 
+
     });
+
+    res.send('true');
 
 
 

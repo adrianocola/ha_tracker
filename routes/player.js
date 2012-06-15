@@ -17,6 +17,37 @@ app.get('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
             return;
         }
 
+        u.each(player.enemies,function(enemy){
+            u.each(enemy.games,function(game){
+                //create game notes
+
+                if(!game.gameNotes){
+                    var gameNotes = new models.GameNoteManager();
+                    gameNotes.addACL(user._id,true,true);
+
+                    gameNotes.save(common.userId(user._id),function(err){
+                        if(err) console.log(err);
+                    });
+
+                    game.gameNotes = gameNotes;
+
+                }
+
+            });
+        });
+
+        player.save(common.userId(user._id),function(err){
+            if(err) console.log(err);
+
+            cont++;
+
+            if(cont >= users.length){
+                res.send('true');
+            }
+
+        });
+
+
         res.send(player);
 
 
