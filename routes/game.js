@@ -17,7 +17,7 @@ app.get('/api/fixGameNotes', function(req, res, next){
             models.Player.findOne({user: user._id},{}, common.userId(user._id), function(err, player){
 
 
-                if(player){
+                if(!player){
                     cont++;
 
                     if(cont >= users.length){
@@ -29,7 +29,7 @@ app.get('/api/fixGameNotes', function(req, res, next){
 
                 }
 
-                console.log("ENEMIES: " + player.enemies);
+                console.log("ENEMIES: " + player.enemies.length);
 
                 u.each(player.enemies,function(enemy){
                     u.each(enemy.games,function(game){
