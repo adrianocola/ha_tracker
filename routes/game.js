@@ -7,58 +7,22 @@ var common = require('./common.js');
 
 app.get('/api/gameCounter', function(req, res, next){
 
-    models.User.find({},{}, common.userId('MASTER'), function(err, users){
+    models.Player.find({},{}, common.userId('MASTER'), function(err, players){
 
-        var cont = 0;
         var gameCont = 0;
 
-        u.each(users,function(user){
-
-            models.Player.findOne({user: user._id},{}, common.userId(user._id), function(err, player){
-
-
-                if(!player){
-                    cont++;
-
-                    if(cont >= users.length){
-                        //res.send('true');
-                        res.send(gameCont);
-                    }
-
-
-                    return;
-
-                }
-
-                console.log("ENEMIES: " + player.enemies.length);
-
-                u.each(player.enemies,function(enemy){
-                    u.each(enemy.games,function(game){
-                        //create game notes
-                        gameCont++;
-
-                    });
+        u.each(players,function(player){
+            u.each(player.enemies,function(enemy){
+                u.each(enemy.games,function(game){
+                    gameCont++;
                 });
-
-                player.save(common.userId(user._id),function(err){
-                    if(err) console.log(err);
-
-                    cont++;
-
-                    if(cont >= users.length){
-                        res.send(gameCont);
-                    }
-
-                });
-
-
-
-
             });
+
+
 
         });
 
-
+        res.send(gameCont);
 
     });
 
