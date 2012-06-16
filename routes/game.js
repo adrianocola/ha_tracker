@@ -18,11 +18,9 @@ app.get('/api/gameCounter', function(req, res, next){
                 });
             });
 
-
-
         });
 
-        res.send(gameCont);
+        res.json({gameCont: gameCont});
 
     });
 
