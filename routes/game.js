@@ -5,6 +5,68 @@ var u = require('underscore');
 var common = require('./common.js');
 
 
+app.get('/api/gameCounter', function(req, res, next){
+
+    models.User.find({},{}, common.userId('MASTER'), function(err, users){
+
+        var cont = 0;
+        var gameCont = 0;
+
+        u.each(users,function(user){
+
+            models.Player.findOne({user: user._id},{}, common.userId(user._id), function(err, player){
+
+
+                if(!player){
+                    cont++;
+
+                    if(cont >= users.length){
+                        //res.send('true');
+                        res.send(gameCont);
+                    }
+
+
+                    return;
+
+                }
+
+                console.log("ENEMIES: " + player.enemies.length);
+
+                u.each(player.enemies,function(enemy){
+                    u.each(enemy.games,function(game){
+                        //create game notes
+                        gameCont++;
+
+                    });
+                });
+
+                player.save(common.userId(user._id),function(err){
+                    if(err) console.log(err);
+
+                    cont++;
+
+                    if(cont >= users.length){
+                        res.send(gameCont);
+                    }
+
+                });
+
+
+
+
+            });
+
+        });
+
+
+
+    });
+
+
+
+});
+
+
 
 
 app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, res, next){

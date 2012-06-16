@@ -522,7 +522,7 @@ a.link-grey:hover {
   position: relative;
 }
 #main {
-  margin: 0px 20px;
+  width: 100%;
   background-color: #eee;
 }
 #main-container {
