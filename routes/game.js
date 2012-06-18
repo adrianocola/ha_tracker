@@ -1,25 +1,34 @@
 var app = require('../app.js');
 var models = require('../conf/models.js');
 var consts = require('../public/scripts/shared/consts.js');
+var env = require('../conf/env.js');
 var u = require('underscore');
 var common = require('./common.js');
 
 
 app.get('/api/verifyAAA', function(req, res, next){
 
-    models.Player.findById(env.secrets.test_user_id,{}, common.userId('MASTER'), function(err, player){
 
-        var gameCont = 0;
+    models.User.findById(env.secrets.test_user_id, {}, common.userId('MASTER'), function(err, user){
 
-        u.each(player.enemies,function(enemy){
-            u.each(enemy.games,function(game){
-                gameCont++;
+        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
+
+            var gameCont = 0;
+
+            u.each(player.enemies,function(enemy){
+                u.each(enemy.games,function(game){
+                    gameCont++;
+                });
             });
+
+            res.json({gameCont: gameCont});
+
         });
 
-        res.json({gameCont: gameCont});
 
     });
+
+
 
 
 
@@ -56,11 +65,17 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
 
             });
 
-            models.ItemManager.where().or(noGameItems).remove(function(err){
-                if(err) console.log(err);
+            if(noGameItems.length != 0){
+                models.ItemManager.where().or(noGameItems).remove(function(err){
+                    if(err) console.log(err);
 
-                res.json({itemCont: itemCont, noGameItems: noGameItems});
-            });
+                    res.json({itemCont: itemCont, noGameItems: noGameItems});
+                });
+            }else{
+                res.json({itemCont: itemCont});
+            }
+
+
 
 
 
@@ -68,6 +83,8 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
 
 
     });
+
+});
 
 
 app.get('/api/itemCounter', function(req, res, next){
