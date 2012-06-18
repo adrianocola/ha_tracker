@@ -67,11 +67,17 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
 
             });
 
-            if(noGameItems.length != 0){
-                models.ItemManager.where().or(noGameItems).remove(function(err){
+            if(itemIds.length >0){
+
+                var removeIds = [];
+                u.each(itemIds, function(id){
+                    removeIds.push({_id: id});
+                });
+
+                models.ItemManager.where().or(removeIds).remove(function(err){
                     if(err) console.log(err);
 
-                    res.json({itemCont: itemIds.length, noGameItems: itemIds});
+                    res.json({itemCont: removeIds.length, noGameItems: removeIds});
                 });
             }else{
                 res.json({itemCont: itemIds.length});
