@@ -40,6 +40,7 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
 
         var itemIds = [];
 
+
         u.each(items, function(item){
             itemIds.push(item._id.toString());
         });
@@ -49,6 +50,7 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
         models.Player.find({},{}, common.userId('MASTER'), function(err, players){
 
             var itemCont = 0;
+
 
             u.each(players,function(player){
                 u.each(player.enemies,function(enemy){
@@ -107,6 +109,7 @@ app.get('/api/itemCounter', function(req, res, next){
         models.Player.find({},{}, common.userId('MASTER'), function(err, players){
 
             var itemCont = 0;
+            var totalItemCont = 0;
 
             u.each(players,function(player){
                 u.each(player.enemies,function(enemy){
@@ -122,13 +125,15 @@ app.get('/api/itemCounter', function(req, res, next){
                             itemCont++;
                         }
 
+                        totalItemCont+=2;
+
 
                     });
                 });
 
             });
 
-            res.json({itemCont: itemCont, noGameItems: noGameItems});
+            res.json({totalItemCont: totalItemCont, itemCont: itemCont, noGameItems: noGameItems});
 
         });
 
