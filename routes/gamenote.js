@@ -4,6 +4,24 @@ var consts = require('../public/scripts/shared/consts.js');
 var u = require('underscore');
 var common = require('./common.js');
 
+app.get('/api/notesCount',function(req, res, next){
+
+    models.GameNoteManager.find({},{}, common.userId('MASTER'), function(err,noteManagers){
+
+        var qtd = 0;
+
+        u.each(noteManagers,function(noteManager){
+            qtd += noteManager.notes.length;
+        });
+
+        res.send({count: qtd});
+
+
+    });
+
+
+});
+
 
 app.get('/api/gamenotemanager/:id/notes', common.verifyAuthorization,function(req, res, next){
 
