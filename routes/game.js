@@ -45,25 +45,20 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
             itemIds.push(item._id.toString());
         });
 
-        var noGameItems = [];
-
         models.Player.find({},{}, common.userId('MASTER'), function(err, players){
-
-            var itemCont = 0;
-
 
             u.each(players,function(player){
                 u.each(player.enemies,function(enemy){
                     u.each(enemy.games,function(game){
 
-                        if(!u.include(itemIds, game.playerItems.toString())){
-                            noGameItems.push(game.playerItems.toString());
-                            itemCont++;
+                        var playerIndex = itemIds.indexOf(game.playerItems.toString());
+                        if(playerIndex!=-1){
+                            itemIds.splice(playerIndex,1);
                         }
 
-                        if(!u.include(itemIds, game.enemyItems.toString())){
-                            noGameItems.push(game.enemyItems.toString());
-                            itemCont++;
+                        var enemyIndex = itemIds.indexOf(game.enemyItems.toString());
+                        if(enemyIndex!=-1){
+                            itemIds.splice(enemyIndex,1);
                         }
 
 
@@ -76,10 +71,10 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
                 models.ItemManager.where().or(noGameItems).remove(function(err){
                     if(err) console.log(err);
 
-                    res.json({itemCont: itemCont, noGameItems: noGameItems});
+                    res.json({itemCont: itemIds.length, noGameItems: itemIds});
                 });
             }else{
-                res.json({itemCont: itemCont});
+                res.json({itemCont: itemIds.length});
             }
 
 
@@ -104,25 +99,24 @@ app.get('/api/itemCounter', function(req, res, next){
             itemIds.push(item._id.toString());
         });
 
-        var noGameItems = [];
+        var registeredItemCount = itemIds.length;
 
         models.Player.find({},{}, common.userId('MASTER'), function(err, players){
 
-            var itemCont = 0;
             var totalItemCont = 0;
 
             u.each(players,function(player){
                 u.each(player.enemies,function(enemy){
                     u.each(enemy.games,function(game){
 
-                        if(!u.include(itemIds, game.playerItems.toString())){
-                            noGameItems.push(game.playerItems.toString());
-                            itemCont++;
+                        var playerIndex = itemIds.indexOf(game.playerItems.toString());
+                        if(playerIndex!=-1){
+                            itemIds.splice(playerIndex,1);
                         }
 
-                        if(!u.include(itemIds, game.enemyItems.toString())){
-                            noGameItems.push(game.enemyItems.toString());
-                            itemCont++;
+                        var enemyIndex = itemIds.indexOf(game.enemyItems.toString());
+                        if(enemyIndex!=-1){
+                            itemIds.splice(enemyIndex,1);
                         }
 
                         totalItemCont+=2;
@@ -133,7 +127,7 @@ app.get('/api/itemCounter', function(req, res, next){
 
             });
 
-            res.json({registeredItemCound: itemIds.length, totalItemCont: totalItemCont, itemCont: itemCont, noGameItems: noGameItems});
+            res.json({registeredItemCount: registeredItemCount, gamesItemCont: totalItemCont, noGameCont: itemIds.length, noGameItems: itemIds});
 
         });
 
