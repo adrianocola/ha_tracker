@@ -38,7 +38,12 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
 
     models.ItemManager.find({},{},common.userId('MASTER'), function(err, items){
 
-        var itemIds = u.pluck(items,'_id');
+        var itemIds = [];
+
+        u.each(items, function(item){
+            itemIds.push(item._id.toString());
+        });
+
         var noGameItems = [];
 
         models.Player.find({},{}, common.userId('MASTER'), function(err, players){
@@ -49,13 +54,13 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
                 u.each(player.enemies,function(enemy){
                     u.each(enemy.games,function(game){
 
-                        if(u.include(itemIds, game.playerItems)){
-                            noGameItems.push({_id: game.playerItems});
+                        if(!u.include(itemIds, game.playerItems.toString())){
+                            noGameItems.push(game.playerItems);
                             itemCont++;
                         }
 
-                        if(u.include(itemIds, game.enemyItems)){
-                            noGameItems.push({_id: game.enemyItems});
+                        if(!u.include(itemIds, game.enemyItems.toString())){
+                            noGameItems.push(game.enemyItems);
                             itemCont++;
                         }
 
@@ -91,7 +96,12 @@ app.get('/api/itemCounter', function(req, res, next){
 
     models.ItemManager.find({},{},common.userId('MASTER'), function(err, items){
 
-        var itemIds = u.pluck(items,'_id');
+        var itemIds = [];
+
+        u.each(items, function(item){
+            itemIds.push(item._id.toString());
+        });
+
         var noGameItems = [];
 
         models.Player.find({},{}, common.userId('MASTER'), function(err, players){
@@ -102,12 +112,12 @@ app.get('/api/itemCounter', function(req, res, next){
                 u.each(player.enemies,function(enemy){
                     u.each(enemy.games,function(game){
 
-                        if(u.include(itemIds, game.playerItems)){
+                        if(!u.include(itemIds, game.playerItems.toString())){
                             noGameItems.push(game.playerItems);
                             itemCont++;
                         }
 
-                        if(u.include(itemIds, game.enemyItems)){
+                        if(!u.include(itemIds, game.enemyItems.toString())){
                             noGameItems.push(game.enemyItems);
                             itemCont++;
                         }
