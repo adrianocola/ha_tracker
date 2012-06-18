@@ -13,15 +13,18 @@ app.get('/api/verifyAAA', function(req, res, next){
 
         models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
 
+
             var gameCont = 0;
+            var returned = [];
 
             u.each(player.enemies,function(enemy){
                 u.each(enemy.games,function(game){
                     gameCont++;
+                    returned.push(game.gameNotes);
                 });
             });
 
-            res.json({gameCont: gameCont});
+            res.json({gameCont: gameCont, returned: returned.length, returnedIds: returned});
 
         });
 
@@ -34,113 +37,6 @@ app.get('/api/verifyAAA', function(req, res, next){
 
 });
 
-app.get('/api/itemCleanerOfDoom', function(req, res, next){
-
-    models.ItemManager.find({},{},common.userId('MASTER'), function(err, items){
-
-        var itemIds = [];
-
-
-        u.each(items, function(item){
-            itemIds.push(item._id.toString());
-        });
-
-        models.Player.find({},{}, common.userId('MASTER'), function(err, players){
-
-            u.each(players,function(player){
-                u.each(player.enemies,function(enemy){
-                    u.each(enemy.games,function(game){
-
-                        var playerIndex = itemIds.indexOf(game.playerItems.toString());
-                        if(playerIndex!=-1){
-                            itemIds.splice(playerIndex,1);
-                        }
-
-                        var enemyIndex = itemIds.indexOf(game.enemyItems.toString());
-                        if(enemyIndex!=-1){
-                            itemIds.splice(enemyIndex,1);
-                        }
-
-
-                    });
-                });
-
-            });
-
-            if(itemIds.length >0){
-
-                var removeIds = [];
-                u.each(itemIds, function(id){
-                    removeIds.push({_id: id});
-                });
-
-                models.ItemManager.where().or(removeIds).remove(function(err){
-                    if(err) console.log(err);
-
-                    res.json({itemCont: removeIds.length, noGameItems: removeIds});
-                });
-            }else{
-                res.json({itemCont: itemIds.length});
-            }
-
-
-
-
-
-        });
-
-
-    });
-
-});
-
-
-app.get('/api/itemCounter', function(req, res, next){
-
-    models.ItemManager.find({},{},common.userId('MASTER'), function(err, items){
-
-        var itemIds = [];
-
-        u.each(items, function(item){
-            itemIds.push(item._id.toString());
-        });
-
-        var registeredItemCount = itemIds.length;
-
-        models.Player.find({},{}, common.userId('MASTER'), function(err, players){
-
-            var totalItemCont = 0;
-
-            u.each(players,function(player){
-                u.each(player.enemies,function(enemy){
-                    u.each(enemy.games,function(game){
-
-                        var playerIndex = itemIds.indexOf(game.playerItems.toString());
-                        if(playerIndex!=-1){
-                            itemIds.splice(playerIndex,1);
-                        }
-
-                        var enemyIndex = itemIds.indexOf(game.enemyItems.toString());
-                        if(enemyIndex!=-1){
-                            itemIds.splice(enemyIndex,1);
-                        }
-
-                        totalItemCont+=2;
-
-
-                    });
-                });
-
-            });
-
-            res.json({registeredItemCount: registeredItemCount, gamesItemCont: totalItemCont, noGameCont: itemIds.length, noGameItems: itemIds});
-
-        });
-
-
-    });
-
-});
 
 
 app.get('/api/gameCounter', function(req, res, next){
