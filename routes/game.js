@@ -4,6 +4,46 @@ var consts = require('../public/scripts/shared/consts.js');
 var u = require('underscore');
 var common = require('./common.js');
 
+app.get('/api/itemCounter', function(req, res, next){
+
+    models.ItemManager.find({},{},common.userId('MASTER'), function(err, items){
+
+        var itemIds = u.pluck(items,'_id');
+        var noGameItems = [];
+
+        models.Player.find({},{}, common.userId('MASTER'), function(err, players){
+
+            var itemCont = 0;
+
+            u.each(players,function(player){
+                u.each(player.enemies,function(enemy){
+                    u.each(enemy.games,function(game){
+
+                        if(u.include(itemIds, game.playerItems)){
+                            noGameItems.push(game.playerItems);
+                            itemCont++;
+                        }
+
+                        if(u.include(itemIds, game.enemyItems)){
+                            noGameItems.push(game.enemyItems);
+                            itemCont++;
+                        }
+
+
+                    });
+                });
+
+            });
+
+            res.json({itemCont: itemCont, noGameItems: noGameItems});
+
+        });
+
+
+    });
+
+});
+
 
 app.get('/api/gameCounter', function(req, res, next){
 
