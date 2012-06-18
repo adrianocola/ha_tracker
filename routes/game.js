@@ -57,12 +57,12 @@ app.get('/api/itemCleanerOfDoom', function(req, res, next){
                     u.each(enemy.games,function(game){
 
                         if(!u.include(itemIds, game.playerItems.toString())){
-                            noGameItems.push(game.playerItems);
+                            noGameItems.push(game.playerItems.toString());
                             itemCont++;
                         }
 
                         if(!u.include(itemIds, game.enemyItems.toString())){
-                            noGameItems.push(game.enemyItems);
+                            noGameItems.push(game.enemyItems.toString());
                             itemCont++;
                         }
 
@@ -116,12 +116,12 @@ app.get('/api/itemCounter', function(req, res, next){
                     u.each(enemy.games,function(game){
 
                         if(!u.include(itemIds, game.playerItems.toString())){
-                            noGameItems.push(game.playerItems);
+                            noGameItems.push(game.playerItems.toString());
                             itemCont++;
                         }
 
                         if(!u.include(itemIds, game.enemyItems.toString())){
-                            noGameItems.push(game.enemyItems);
+                            noGameItems.push(game.enemyItems.toString());
                             itemCont++;
                         }
 
@@ -133,7 +133,7 @@ app.get('/api/itemCounter', function(req, res, next){
 
             });
 
-            res.json({totalItemCont: totalItemCont, itemCont: itemCont, noGameItems: noGameItems});
+            res.json({registeredItemCound: itemIds.length, totalItemCont: totalItemCont, itemCont: itemCont, noGameItems: noGameItems});
 
         });
 
