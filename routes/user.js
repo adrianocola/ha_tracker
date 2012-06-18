@@ -653,12 +653,6 @@ app.get("/api/user/login-facebook", function(req, res, next){
             return;
         }
 
-        if(!user){
-            next(new app.UnexpectedError("User is null"));
-            return;
-        }
-
-
         //found existing user
         if(user){
             //if is startup means that the user is logged in facebook and
