@@ -5,66 +5,6 @@ var env = require('../conf/env.js');
 var u = require('underscore');
 var common = require('./common.js');
 
-
-app.get('/api/verifyAAA', function(req, res, next){
-
-
-    models.User.findById(env.secrets.test_user_id, {}, common.userId('MASTER'), function(err, user){
-
-        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
-
-
-            var gameCont = 0;
-            var returned = [];
-
-            u.each(player.enemies,function(enemy){
-                u.each(enemy.games,function(game){
-                    gameCont++;
-                    returned.push(game.gameNotes);
-                });
-            });
-
-            res.json({gameCont: gameCont, returned: returned.length, returnedIds: returned});
-
-        });
-
-
-    });
-
-
-
-
-
-});
-
-
-
-app.get('/api/gameCounter', function(req, res, next){
-
-    models.Player.find({},{}, common.userId('MASTER'), function(err, players){
-
-        var gameCont = 0;
-
-        u.each(players,function(player){
-            u.each(player.enemies,function(enemy){
-                u.each(enemy.games,function(game){
-                    gameCont++;
-                });
-            });
-
-        });
-
-        res.json({gameCont: gameCont});
-
-    });
-
-
-
-});
-
-
-
-
 app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, res, next){
 
     if(!req.body.playerRace || !req.body.enemyRace){
