@@ -42,12 +42,6 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
         enemy.gameCount+=1;
 
         var game = new models.Game(req.body);
-
-        if(!game){
-            next(new app.UnexpectedError("Game is null"));
-            return;
-        }
-
         game.num = enemy.gameCount;
 
         //create player's items

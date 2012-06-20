@@ -133,6 +133,11 @@ app.delete('/api/enemies/:id', common.verifyAuthorization, function(req, res, ne
 
         var enemy = player.enemies.id(req.params.id);
 
+        if(!enemy){
+            next(new app.UnexpectedError("Enemy is null"));
+            return;
+        }
+
         var itemsIdsArray = [];
         var notesIdsArray = [];
 
