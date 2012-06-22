@@ -25,7 +25,6 @@ div.signup-msg {
   color: #000;
   background-color: #fff;
   padding: 5px 10px 5px 10px;
-  position: relative;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -36,8 +35,8 @@ div.signup-msg {
   width: 400px;
   min-height: 45px;
   margin-top: -40px;
-  margin-bottom: 10px;
   margin-left: 53%;
+  float: right;
 }
 .separator-login {
   position: relative;
@@ -237,9 +236,9 @@ div#error .dismiss {
   color: #000;
   background-color: #fff;
   padding: 22px 10px 5px 10px;
-  position: absolute;
-  top: -20px;
-  right: 80px;
+  position: relative;
+  top: -85px;
+  left: 80%;
   min-width: 40px;
   max-height: 25px;
   min-height: 25px;
@@ -263,7 +262,7 @@ div#error .dismiss {
   max-height: 1000px;
 }
 #logged-player.dismissed {
-  top: -70px;
+  top: -130px;
 }
 a.logout,
 a.settings {
@@ -530,6 +529,11 @@ a.link-grey:hover {
   width: 960px;
   height: 100%;
   background-color: #fff;
+}
+#main-container h1 {
+  position: relative;
+  top: 20px;
+  width: 500px;
 }
 #main-layout {
   width: 960px;

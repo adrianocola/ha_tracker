@@ -2,7 +2,21 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     u = require('underscore'),
-    env = require('./env.js');
+    env = require('./env.js'),
+    debug = require('debug')('mongoose');
+
+//mongoose.set('debug', function (name, method) {
+//    switch (method) {
+//        case 'find':
+//        case 'findOne':
+//        case 'insert':
+//        case 'update':
+//        case 'remove':
+//            // etc
+//            debug(name + '.' + method + '(%j, %j)', arguments[2], arguments[3])
+//            break;
+//    }
+//})
 
 var Date_Plugin = function(schema, options){
 

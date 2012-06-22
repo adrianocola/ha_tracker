@@ -5,7 +5,6 @@ var express = require('express')
   , RedisStore = require('connect-redis')(express)
   , redis = require('redis-url').connect(env.redis_url);
 
-
 // faz com que o retorno desse arquivo no método require seja a variável app
 // isso permitirá outros arquivos manipular app (ex: adicionar rotas)
 var app = module.exports = express();
