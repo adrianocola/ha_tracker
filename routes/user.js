@@ -916,7 +916,7 @@ app.get('/api/random', function(req, res, next){
             var random = Math.floor((Math.random()*100)+1);
 
             //creates a new enemy
-            if(random<50){
+            if(random<1){
 
                 //update position of all enemies
                 u.each(player.enemies,function(enemy){
@@ -1031,11 +1031,9 @@ app.get('/api/random', function(req, res, next){
 
                     if(err){
                         next(new app.UnexpectedError(err));
-                        console.log(game);
                         return;
                     }
 
-                    console.log(game);
                     res.send(game);
 
                 });
