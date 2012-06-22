@@ -825,7 +825,6 @@ app.delete('/api/user/delete',common.verifyAuthorization, function(req, res, nex
 
 app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next){
 
-
     models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
 
         if(err){
@@ -841,17 +840,18 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
 
         models.Player.findOne({user: req.authorization.userId},{},common.userId(req.authorization.userId),function(err, player){
 
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
+
+            if(!player){
+                next(new app.UnexpectedError("Player is null"));
+                return;
+            }
+
+
             player.remove(function(err){
-
-                if(err){
-                    next(new app.UnexpectedError(err));
-                    return;
-                }
-
-                if(!player){
-                    next(new app.UnexpectedError("Player is null"));
-                    return;
-                }
 
                 var player = new models.Player();
                 player.user = user;

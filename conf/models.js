@@ -5,18 +5,18 @@ var mongoose = require('mongoose'),
     env = require('./env.js'),
     debug = require('debug')('mongoose');
 
-//mongoose.set('debug', function (name, method) {
-//    switch (method) {
-//        case 'find':
-//        case 'findOne':
-//        case 'insert':
-//        case 'update':
-//        case 'remove':
-//            // etc
-//            debug(name + '.' + method + '(%j, %j)', arguments[2], arguments[3])
-//            break;
-//    }
-//})
+mongoose.set('debug', function (name, method) {
+    switch (method) {
+        case 'find':
+        case 'findOne':
+        case 'insert':
+        case 'update':
+        case 'remove':
+            // etc
+            debug(name + '.' + method + '(%j, %j)', arguments[2], arguments[3])
+            break;
+    }
+})
 
 var Date_Plugin = function(schema, options){
 
@@ -138,7 +138,6 @@ var ItemSchema = new Schema({
     itemId: Number,
     itemCount: Number
 },{ strict: true });
-ItemSchema.plugin(Date_Plugin);
 
 var ItemManagerSchema = new Schema({
     items: [ItemSchema]
@@ -149,7 +148,6 @@ ItemManagerSchema.plugin(Date_Plugin);
 var GameNoteSchema = new Schema({
     note: String
 },{ strict: true });
-GameNoteSchema.plugin(Date_Plugin);
 
 var GameNoteManagerSchema = new Schema({
     notes: [GameNoteSchema]
