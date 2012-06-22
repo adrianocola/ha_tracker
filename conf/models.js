@@ -146,7 +146,8 @@ ItemManagerSchema.plugin(ACL_Plugin);
 ItemManagerSchema.plugin(Date_Plugin);
 
 var GameNoteSchema = new Schema({
-    note: String
+    note: String,
+    createdAt: Date
 },{ strict: true });
 
 var GameNoteManagerSchema = new Schema({

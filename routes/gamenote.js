@@ -66,6 +66,7 @@ app.post('/api/gamenotemanager/:manager/notes', common.verifyAuthorization, func
         }
 
         var note = new models.GameNote({note: req.body.note});
+        note.createdAt = new Date();
 
         gameNoteManager.notes.push(note);
 
