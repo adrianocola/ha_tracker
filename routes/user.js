@@ -916,7 +916,7 @@ app.get('/api/random', function(req, res, next){
             var random = Math.floor((Math.random()*100)+1);
 
             //creates a new enemy
-            if(random<=3){
+            if(random<50){
 
                 //update position of all enemies
                 u.each(player.enemies,function(enemy){
@@ -958,6 +958,16 @@ app.get('/api/random', function(req, res, next){
                     enemyRace: consts.Races[(Math.floor((Math.random()*100)+1)%4)].raceName,
                     state: (Math.floor((Math.random()*100)+1)%9)
                 });
+
+                //create game notes
+                var gameNotes = new models.GameNoteManager();
+                gameNotes.addACL(env.secrets.test_user_id,true,true);
+
+                gameNotes.save(common.userId('MASTER'),function(err){
+                    if(err) console.log(err);
+                });
+
+                game.gameNotes = gameNotes;
 
                 //create player's items
                 u.each(consts.Races,function(race){
@@ -1021,13 +1031,104 @@ app.get('/api/random', function(req, res, next){
 
                     if(err){
                         next(new app.UnexpectedError(err));
+                        console.log(game);
                         return;
                     }
 
+                    console.log(game);
                     res.send(game);
+
                 });
 
             }
+
+
+
+        });
+
+    });
+
+});
+
+
+app.get('/api/random-item', function(req, res, next){
+
+    models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
+
+
+        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
+
+
+            var enemyIndex = -1;
+            if(player.enemies.length == 0){
+                res.send('No enemies yet!');
+                return;
+            }else if(player.enemies.length == 1){
+                enemyIndex = 0;
+            }else{
+                enemyIndex = Math.floor((Math.random()*1000000)+1)%player.enemies.length;
+            }
+
+
+
+            var enemy = player.enemies[enemyIndex];
+
+            var gameIndex = -1;
+            if(enemy.games.length == 0){
+                res.send('No Games yet!');
+                return;
+            }else if(enemy.games.length == 1){
+                gameIndex = 0;
+            }else{
+                gameIndex = Math.floor((Math.random()*1000000)+1)%enemy.games.length;
+            }
+
+
+
+            var game = enemy.games[gameIndex];
+
+            var random = Math.floor((Math.random()*100)+1);
+
+            var itemsId = -1;
+
+            if(random<=50){
+                itemsId = game.playerItems;
+            }else{
+                itemsId = game.enemyItems;
+            }
+
+            models.ItemManager.findById(itemsId,{}, common.userId('MASTER'), function(err, itemManager){
+
+                if(err){
+                    next(new app.UnexpectedError(err));
+                    return;
+                }
+
+                if(!itemManager){
+                    next(new app.UnexpectedError("ItemManager is null"));
+                    return;
+                }
+
+                var itemIndex = Math.floor((Math.random()*1000000)+1)%itemManager.items.length;
+
+                var item = itemManager.items[itemIndex];
+
+                item.itemCount = item.itemCount == 0 ? 1 : 0;
+
+                itemManager.save(common.userId('MASTER'), function(err){
+
+                    if(err){
+                        next(new app.UnexpectedError(err));
+                        return;
+                    }
+
+                    res.send(item);
+
+                });
+
+            });
+
+
 
 
 

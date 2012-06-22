@@ -872,8 +872,12 @@ var LoginView = Backbone.View.extend({
     },
 
     dismiss: function(){
+        var that = this;
+
         this.visible = false;
-        this.$el.fadeTo(300,0);
+        this.$el.fadeTo(300,0, function(){
+            that.$el.hide();
+        });
     },
 
     show: function(){
