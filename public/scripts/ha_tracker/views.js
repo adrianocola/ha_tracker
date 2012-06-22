@@ -922,15 +922,15 @@ var PlayerView = Backbone.View.extend({
 
         }});
 
-        $('#current-game').resize(function(){
-
-            $('#player').height('auto');
-            if($('#current-game').height() > $('#player').height()){
-                $('#player').height($('#current-game').height());
-            }else{
-                $('#current-game').height($('#player').height());
-            }
-        });
+//        $('#current-game').resize(function(){
+//
+//            $('#player').height('auto');
+//            if($('#current-game').height() > $('#player').height()){
+//                $('#player').height($('#current-game').height());
+//            }else{
+//                $('#current-game').height($('#player').height());
+//            }
+//        });
 
     },
 
@@ -2052,13 +2052,13 @@ var SelectedGameView = Backbone.View.extend({
 
         app.SelectionManager.bind("change:unselectedGame change:unselectedEnemy",this.clean,this);
 
-        $('#player').resize(function(){
-
-            $('#current-game').height('auto');
-            if($('#player').height() > $('#current-game').height()){
-                $('#current-game').height($('#player').height());
-            }
-        });
+//        $('#player').resize(function(){
+//
+//            $('#current-game').height('auto');
+//            if($('#player').height() > $('#current-game').height()){
+//                $('#current-game').height($('#player').height());
+//            }
+//        });
 
     },
 
