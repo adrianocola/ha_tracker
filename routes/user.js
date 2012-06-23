@@ -1051,15 +1051,30 @@ app.get('/api/random', function(req, res, next){
 
 app.get('/api/random-item-ids', function(req, res, next){
 
-    models.ItemManager.find({},['_id'], common.userId('MASTER'), function(err, itemManagers){
 
-        var ids = [];
+    models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
 
-        u.each(itemManagers, function(im){
-            ids.push(im._id);
+
+        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
+
+
+            var ids = [];
+
+            u.each(player.enemies, function(enemy){
+                u.each(enemy.games,function(game){
+                    ids.push(game.playerItems);
+                    ids.push(game.enemyItems);
+                });
+
+            });
+
+            res.send(ids);
+
+
+
+
+
         });
-
-        res.send(ids);
 
     });
 
