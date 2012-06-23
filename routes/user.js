@@ -1092,8 +1092,7 @@ app.get('/api/random-item2', function(req, res, next){
 
     var itemId = ids[itemIdIndex];
 
-
-    models.ItemManager.findById(itemId,['itemCount'], common.userId('MASTER'), function(err, itemManager){
+    models.ItemManager.findById(itemId,{}, common.userId('MASTER'), function(err, itemManager){
 
         var itemIndex = Math.floor((Math.random()*1000000)+1)%itemManager.items.length;
 
