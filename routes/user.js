@@ -1049,6 +1049,52 @@ app.get('/api/random', function(req, res, next){
 });
 
 
+app.get('/api/random-item-ids', function(req, res, next){
+
+    models.ItemManager.find({},['_id'], common.userId('MASTER'), function(err, itemManagers){
+
+        var ids = [];
+
+        u.each(itemManagers, function(im){
+            ids.push(im._id);
+        });
+
+        res.send(ids);
+
+    });
+
+
+});
+
+
+app.get('/api/random-item2', function(req, res, next){
+
+    models.ItemManager.findById(itemsId,{}, common.userId('MASTER'), function(err, itemManager){
+
+        var itemIndex = Math.floor((Math.random()*1000000)+1)%itemManager.items.length;
+
+        var item = itemManager.items[itemIndex];
+
+        item.itemCount = item.itemCount == 0 ? 1 : 0;
+
+        itemManager.save(common.userId('MASTER'), function(err){
+
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
+
+            res.send(item);
+
+        });
+
+    });
+
+});
+
+
+
+
 app.get('/api/random-item', function(req, res, next){
 
     models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
