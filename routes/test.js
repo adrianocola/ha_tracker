@@ -298,6 +298,7 @@ app.get('/api/random-item', function(req, res, next){
 
 
 
+
 app.get('/api/notesCount',function(req, res, next){
 
     models.GameNoteManager.find({},{}, common.userId('MASTER'), function(err,noteManagers){
