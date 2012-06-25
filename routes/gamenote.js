@@ -22,6 +22,27 @@ app.get('/api/notesCount',function(req, res, next){
 
 });
 
+app.get('/api/notesView',function(req, res, next){
+
+    models.GameNoteManager.find({},{}, common.userId('MASTER'), function(err,noteManagers){
+
+        var notes = [];
+
+        u.each(noteManagers,function(noteManager){
+            if(noteManager.notes.length){
+                notes.push(noteManager.notes);
+            }
+
+        });
+
+        res.send({notes: notes});
+
+
+    });
+
+
+});
+
 
 app.get('/api/gamenotemanager/:id/notes', common.verifyAuthorization,function(req, res, next){
 
