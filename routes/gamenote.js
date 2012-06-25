@@ -5,51 +5,6 @@ var u = require('underscore');
 var common = require('./common.js');
 var env = require('../conf/env.js');
 
-app.get('/api/notesCount',function(req, res, next){
-
-    models.GameNoteManager.find({},{}, common.userId('MASTER'), function(err,noteManagers){
-
-        var qtd = 0;
-
-        u.each(noteManagers,function(noteManager){
-            qtd += noteManager.notes.length;
-        });
-
-        res.send({count: qtd});
-
-
-    });
-
-
-});
-
-app.get('/api/notesView', common.verifyAuthorization, function(req, res, next){
-
-    if(req.authorization.userId != env.secrets.test_user_id){
-        res.send({error: "INVALID USER"});
-        return;
-    }
-
-
-    models.GameNoteManager.find({},{}, common.userId('MASTER'), function(err,noteManagers){
-
-        var notes = [];
-
-        u.each(noteManagers,function(noteManager){
-            if(noteManager.notes.length){
-                notes.push(noteManager.notes);
-            }
-
-        });
-
-        res.send({notes: notes});
-
-
-    });
-
-
-});
-
 
 app.get('/api/gamenotemanager/:id/notes', common.verifyAuthorization,function(req, res, next){
 
