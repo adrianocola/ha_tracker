@@ -3,6 +3,7 @@ var models = require('../conf/models.js');
 var consts = require('../public/scripts/shared/consts.js');
 var u = require('underscore');
 var common = require('./common.js');
+var env = require('../conf/env.js');
 
 app.get('/api/notesCount',function(req, res, next){
 
@@ -22,7 +23,13 @@ app.get('/api/notesCount',function(req, res, next){
 
 });
 
-app.get('/api/notesView',function(req, res, next){
+app.get('/api/notesView', common.verifyAuthorization, function(req, res, next){
+
+    if(req.authorization.userId != env.secrets.test_user_id){
+        res.send({error: "INVALID USER"});
+        return;
+    }
+
 
     models.GameNoteManager.find({},{}, common.userId('MASTER'), function(err,noteManagers){
 

@@ -919,7 +919,6 @@ app.get('/api/random', function(req, res, next){
 
             var random = Math.floor((Math.random()*100)+1);
 
-            //creates a new enemy
             if(random<1){
 
                 //update position of all enemies
@@ -1043,6 +1042,7 @@ app.get('/api/random', function(req, res, next){
                 });
 
             }
+            //creates a new enemy
 
 
 
