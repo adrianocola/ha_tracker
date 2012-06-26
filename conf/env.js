@@ -10,7 +10,6 @@ env.production = !env.development;
 
 if (env.development) {
 
-    env.sesson_expire = 300; //seconds
     env.salt = 'SYr=*E!{tPb3aRXk#}[';
     env.facebook_app_id = '103668843104996';
     try {
@@ -30,7 +29,6 @@ if (env.development) {
 
     };
 
-    env.sesson_expire = 7200; //seconds
     env.salt = 'I8~*8Ri:D69U/2etE5C';
     env.facebook_app_id = '349808971750591';
 

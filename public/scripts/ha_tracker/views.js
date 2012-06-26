@@ -926,15 +926,17 @@ var PlayerView = Backbone.View.extend({
 
         }});
 
-//        $('#current-game').resize(function(){
-//
+        $('#current-game').resize(function(){
+            $('#player').height($('#current-game').height());
+
 //            $('#player').height('auto');
+//            //.css({max-height: navHeight + 'px; });
 //            if($('#current-game').height() > $('#player').height()){
 //                $('#player').height($('#current-game').height());
 //            }else{
 //                $('#current-game').height($('#player').height());
 //            }
-//        });
+        });
 
     },
 
