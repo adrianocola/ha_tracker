@@ -347,6 +347,7 @@ app.post("/api/user/signup", function(req, res, next){
     else if(!req.body.email.match(/\S+@\S+\.\S+/)) reqsError += "Not a valid e-mail address. ";
 
     if(req.body.password == undefined || req.body.password == "") reqsError += "Password is Required. ";
+    else if(req.body.password.length < 4) reqsError += "Password must have at least 4 characters. ";
 
 
     if(reqsError.length > 0){

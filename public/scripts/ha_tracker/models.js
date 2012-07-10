@@ -653,7 +653,8 @@ var Enemies = Backbone.Collection.extend({
 
     comparator: function(enemy){
 
-        return enemy.get('position');
+        //return enemy.get('position');
+        return enemy.get('name');
 
     },
 
@@ -964,36 +965,34 @@ var Login = Backbone.Model.extend({
             url: "/api/nonce"
         }).success(function( nonce ) {
 
-                username = username.toLowerCase();
+            username = username.toLowerCase();
 
-                //generate the password hash combining the actual password hash plus the random
-                //number the server sends to the client (nonce) . The client password or hash is never sent
-                //on the wire on the login
-                var secure_password = md5.hex_md5(md5.hex_md5(username + $.trim($("#salt").html()) + password) + nonce);
+            //generate the password hash combining the actual password hash plus the random
+            //number the server sends to the client (nonce) . The client password or hash is never sent
+            //on the wire on the login
+            var secure_password = md5.hex_md5(md5.hex_md5(username + $.trim($("#salt").html()) + password) + nonce);
 
-                $.ajax({
-                    data: "username=" + username + "&password=" + secure_password + "&nonce=" + nonce + (keepLogged?"&keepLogged=true":""),
-                    url: "/api/user/login"
-                }).success(function( msg ) {
+            $.ajax({
+                data: "username=" + username + "&password=" + secure_password + "&nonce=" + nonce + (keepLogged?"&keepLogged=true":""),
+                url: "/api/user/login"
+            }).success(function( msg ) {
 
-                        //set the token to be used in authenticated requests
-                        app.HATrackerToken = msg.token;
+                //set the token to be used in authenticated requests
+                app.HATrackerToken = msg.token;
 
-                        that.set(msg);
-                        cb(undefined,msg);
+                that.set(msg);
+                cb(undefined,msg);
 
-                    }).fail(function(err){
-                        try{
-                            cb(JSON.parse(err.responseText).error);
-                        } catch(e){
-                            cb(err.responseText);
-                        }
-
-                    });
-
-
+            }).fail(function(err){
+                try{
+                    cb(JSON.parse(err.responseText).error);
+                } catch(e){
+                    cb(err.responseText);
+                }
 
             });
+
+        });
     },
 
 
