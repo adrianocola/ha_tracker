@@ -161,9 +161,6 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next)
 
 app.get('/api/user/login', function(req,res,next){
 
-    console.log(req.headers['user-agent']);
-
-
     //validate nonce
     validateNonce(req.query.nonce, next, function(valid){
 
@@ -226,7 +223,7 @@ app.get('/api/user/login', function(req,res,next){
 
                         res.json(secureUser);
 
-                        common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
+                        common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.platform(req)});
 
                     });
 
@@ -238,7 +235,7 @@ app.get('/api/user/login', function(req,res,next){
 
                     res.json(secureUser);
 
-                    common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
+                    common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.platform(req)});
                 }
 
 
@@ -277,7 +274,7 @@ app.get('/api/user/continue_login', function(req,res,next){
 
             res.json(secureUser);
 
-            common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.isMobile(req)?"mobile":"web"});
+            common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.platform(req)});
 
         });
 
@@ -320,7 +317,7 @@ app.get('/api/user/continue_login', function(req,res,next){
 
                     res.json(secureUser);
 
-                    common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.isMobile(req)?"mobile":"web"});
+                    common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.platform(req)});
 
                 });
 
@@ -407,7 +404,7 @@ app.post("/api/user/signup", function(req, res, next){
                 res.json(secureUser);
 
 
-                common.statsMix(req.authorization.userId, 4320,1,{type: 'email', platform: common.isMobile(req)?"mobile":"web"});
+                common.statsMix(req.authorization.userId, 4320,1,{type: 'email', platform: common.platform(req)});
 
             });
 
@@ -681,7 +678,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
                     res.send(secureUser);
 
-                    common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.isMobile(req)?"mobile":"web"});
+                    common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
 
                 });
 
@@ -708,7 +705,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
                         res.send(secureUser);
 
-                        common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.isMobile(req)?"mobile":"web"});
+                        common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
 
 
                     });
@@ -758,7 +755,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
                         res.send(secureUser);
 
-                        common.statsMix(req.authorization.userId, 4320,1,{type: 'facebook', platform: common.isMobile(req)?"mobile":"web"});
+                        common.statsMix(req.authorization.userId, 4320,1,{type: 'facebook', platform: common.platform(req)});
 
 
                     });

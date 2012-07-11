@@ -49,6 +49,23 @@ exports.isMobile = function(req){
     return req.headers['user-agent'].indexOf("Mobile") > -1;
 };
 
+exports.platform = function(req){
+
+    var header = req.headers['user-agent'];
+
+    if(header.indexOf("HATracker") > -1){
+        return "app";
+    }else if(header.indexOf("Mozilla") > -1){
+        if(header.indexOf("Mobile") > -1){
+            return "mobile";
+        }else{
+            return "web";
+        }
+    }else{
+        return "api";
+    }
+};
+
 
 
 exports.statsMix = function(user_id, metric_id, value, meta){
