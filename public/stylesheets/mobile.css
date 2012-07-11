@@ -25,7 +25,6 @@ div.signup-msg {
   color: #000;
   background-color: #fff;
   padding: 5px 10px 5px 10px;
-  position: relative;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -33,11 +32,10 @@ div.signup-msg {
   -moz-transition: all 1s ease-in-out;
   -o-transition: all 1s ease-in-out;
   -ms-transition: all 1s ease-in-out;
-  overflow: visible;
   width: 400px;
   min-height: 45px;
-  margin-top: -60px;
-  margin-bottom: 10px;
+  margin-top: -40px;
+  margin-left: 53%;
   float: right;
 }
 .separator-login {
@@ -238,9 +236,9 @@ div#error .dismiss {
   color: #000;
   background-color: #fff;
   padding: 22px 10px 5px 10px;
-  position: absolute;
-  top: -20px;
-  right: 80px;
+  position: relative;
+  top: -70px;
+  left: 80%;
   min-width: 40px;
   max-height: 25px;
   min-height: 25px;
@@ -264,7 +262,7 @@ div#error .dismiss {
   max-height: 1000px;
 }
 #logged-player.dismissed {
-  top: -70px;
+  top: -130px;
 }
 a.logout,
 a.settings {
@@ -464,9 +462,15 @@ div.reset-msg {
   text-align: center;
   margin-top: 5px;
 }
-body {
-  width: 100%;
+html {
   height: 100%;
+}
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  margin-top: -20px;
 }
 a.link,
 a.link-grey {
@@ -516,41 +520,39 @@ a.link-grey:hover {
   text-align: center;
   position: relative;
 }
-body {
-  padding: 30px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
 #main {
-  float: left;
   width: 100%;
   background-color: #eee;
-  margin: -40px 0 30px 0;
 }
 #main-container {
   margin: 0 auto;
   width: 960px;
+  height: 100%;
+  background-color: #fff;
+}
+#main-container h1 {
+  position: relative;
+  top: 20px;
+  width: 500px;
 }
 #main-layout {
-  float: left;
   width: 960px;
   background-color: #fff;
-  padding-bottom: 10px;
+  height: 100%;
 }
 #header {
-  float: left;
   width: 940px;
+  height: 80px;
   padding: 0 10px;
   color: #fff;
   background-color: #aaa;
-  position: relative;
 }
 #footer {
-  float: left;
   width: 940px;
+  height: 60px;
   padding: 10px 10px;
   color: #fff;
   background-color: #aaa;
-  position: relative;
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 .example-info {
@@ -600,14 +602,27 @@ div.tp_terms {
   margin-left: 20px;
 }
 #player {
-  clear: left;
-  float: left;
+  display: inline-block;
+  height: 635px;
+  vertical-align: top;
+  min-height: 635px;
   width: 280px;
-  height: 600px;
-  overflow: auto;
   padding: 5px 10px 20px 5px;
-  margin: 10px 0 0 10px;
-  display: inline;
+  margin: 10px 0 10px 10px;
+  border: 1px solid #808080;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#current-game {
+  display: inline-block;
+  width: 610px;
+  vertical-align: top;
+  min-height: 635px;
+  padding: 5px 5px 20px 10px;
+  margin: 10px 10px 10px 10px;
   border: 1px solid #808080;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -620,19 +635,6 @@ div.tp_terms {
   text-decoration: none;
   text-shadow: 1px 1px 0px #fff;
 }
-#current-game {
-  float: right;
-  width: 610px;
-  height: 600px;
-  padding: 5px 5px 20px 10px;
-  overflow-y: auto;
-  margin: 10px 10px 0 0;
-  display: inline;
-  border: 1px solid #808080;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-}
 #current-game h2 {
   color: #555;
   font-family: arial;
@@ -643,6 +645,113 @@ div.tp_terms {
 #current-game .items-panel {
   display: block;
   height: 500px;
+}
+#current-game .gameNotesPanel {
+  display: block;
+  width: 565px;
+  height: 100%;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding: 5px 10px;
+}
+li.gameNote {
+  list-style: none;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  margin-left: -30px;
+  margin-right: 10px;
+  padding: 5px 3px;
+  display: block;
+}
+li.gameNote:hover {
+  background-color: #ddd;
+  border-bottom: 1px solid #888;
+  border-top: 1px solid #888;
+}
+div.noteText {
+  width: 400px;
+  margin-left: 5px;
+  display: inline-block;
+  text-align: justify;
+  text-justify: inter-word;
+}
+div.noteDate {
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 3px 5px;
+  border: 1px solid #888;
+  background-color: #ddd;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+li.gameNote:hover .noteDate {
+  border: 1px solid #444;
+  background-color: #888;
+  color: #fff;
+}
+textarea.editNoteText {
+  width: 400px;
+  height: 40px;
+  resize: none;
+  margin-left: 10px;
+}
+.deleteNote {
+  float: right;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: -2px 6px 0 0;
+  padding: 0 0 0 0;
+  line-height: 15px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  display: none;
+}
+li.gameNote:hover .deleteNote {
+  display: block;
+}
+div.notesPanel {
+  height: 100%;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+.addNotePanel {
+  height: auto;
+  margin-bottom: 10px;
+}
+.addNoteButton {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  width: 85px;
+  height: 40px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10px;
+}
+div.addNoteTip {
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #cfa457;
+}
+.addNoteText {
+  height: 35px;
+  width: 460px;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  display: inline-block;
+  resize: none;
 }
 div.state-box {
   cursor: pointer;
@@ -957,6 +1066,7 @@ div.hidden-enemies-warning {
 }
 .enemies {
   margin: 0 0 0 0;
+  height: auto;
 }
 .enemies h2 {
   margin-left: 10px;
@@ -1141,7 +1251,7 @@ div.enemy-items-mask {
 .enemy-items {
   float: right;
   width: 280px;
-  margin: 0 10px 0 0;
+  margin: 0 15px 0 0;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
@@ -1230,7 +1340,7 @@ div.enemy-items-mask {
 }
 .addGamePanel .add-game-label {
   display: inline-block;
-  width: 45px;
+  width: 55px;
   margin-left: 5px;
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -1239,7 +1349,7 @@ div.enemy-items-mask {
   border: 1px solid #dcdcdc;
   display: inline-block;
   color: #777;
-  width: 100px;
+  width: 90px;
   padding: 4px 5px;
   margin: 0 5px 0 10px;
   text-decoration: none;

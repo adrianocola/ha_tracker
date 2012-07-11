@@ -161,6 +161,9 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next)
 
 app.get('/api/user/login', function(req,res,next){
 
+    console.log(req.headers['user-agent']);
+
+
     //validate nonce
     validateNonce(req.query.nonce, next, function(valid){
 
