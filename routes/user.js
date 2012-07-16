@@ -86,7 +86,7 @@ app.get('/api/nonce', function(req, res, next){
     var multi = app.redis.multi();
 
     multi.set('nonce:' + nonce, '');
-    multi.expire('nonce:' + nonce, 60);
+    multi.expire('nonce:' + nonce, 120);
 
     multi.exec(function(err,value){
 
