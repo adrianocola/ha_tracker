@@ -651,48 +651,23 @@ app.put("/api/user/reset_password", function(req, res, next){
 
 app.get("/api/user/login-facebook", function(req, res, next){
 
-    models.User.findOne({"facebook.userID": req.query.userID},{}, common.userId('MASTER'), function(err,user){
+    var fb_login = function(){
 
-        if(err){
-            next(new app.UnexpectedError(err));
-            return;
-        }
+        models.User.findOne({"facebook.userID": req.query.userID},{}, common.userId('MASTER'), function(err,user){
 
-        //found existing user
-        if(user){
-            //if is startup means that the user is logged in facebook and
-            //is registered here as a valid
-            if(req.query.startup){
-                //check if the user is authenticated here (didn't made logoff)
-                if(user.facebook.accessToken != req.query.accessToken){
-                    next(new app.ExpectedError(109,"Facebook Session Expired or User Logged out from Facebook"));
-                    return;
-                }
+            if(err){
+                next(new app.UnexpectedError(err));
+                return;
+            }
 
-                req.generateAuthorization(function(){
-
-                    req.authorization.userId = user._id;
-
-                    var secureUser = user.secure();
-                    secureUser._doc.token = req.sessionToken;
-
-                    res.send(secureUser);
-
-                    common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
-
-                });
-
-            //if the user is authenticated in facebook but logged off
-            // he can click on facebook button again and login
-            }else{
-
-                user.facebook.accessToken = req.query.accessToken;
-                user.facebook.expiresIn = req.query.expiresIn;
-
-                user.save(common.userId('MASTER'),function(err){
-
-                    if(err){
-                        next(new app.UnexpectedError(err));
+            //found existing user
+            if(user){
+                //if is startup means that the user is logged in facebook and
+                //is registered here as a valid
+                if(req.query.startup){
+                    //check if the user is authenticated here (didn't made logoff)
+                    if(user.facebook.accessToken != req.query.accessToken){
+                        next(new app.ExpectedError(109,"Facebook Session Expired or User Logged out from Facebook"));
                         return;
                     }
 
@@ -707,72 +682,139 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
                         common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
 
-
                     });
 
-                });
-            }
+                    //if the user is authenticated in facebook but logged off
+                    // he can click on facebook button again and login
+                }else{
 
-        //must create a new user, user signed up via facebook
-        //but check if is not startup. If is startup means that the
-        //user must first click on facebook button to authenticate
-        }else if(!req.query.startup){
+                    user.facebook.accessToken = req.query.accessToken;
+                    user.facebook.expiresIn = req.query.expiresIn;
 
-            var user = new models.User();
-            var player = new models.Player();
+                    user.save(common.userId('MASTER'),function(err){
 
-            user.facebook = {};
+                        if(err){
+                            next(new app.UnexpectedError(err));
+                            return;
+                        }
 
-            user.facebook.userID = req.query.userID;
-            user.facebook.accessToken = req.query.accessToken;
-            user.facebook.expiresIn = req.query.expiresIn;
-            user.player = player;
-            user.addACL(user._id,true,true);
+                        req.generateAuthorization(function(){
 
-            player.user = user;
-            player.addACL(user._id,true,true);
+                            req.authorization.userId = user._id;
 
-            user.save( common.userId('MASTER'),function(err){
+                            var secureUser = user.secure();
+                            secureUser._doc.token = req.sessionToken;
 
-                if(err){
-                    next(new app.UnexpectedError(err));
-                    return;
+                            res.send(secureUser);
+
+                            common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
+
+
+                        });
+
+                    });
                 }
 
-                player.save( common.userId('MASTER'),function(err){
+                //must create a new user, user signed up via facebook
+                //but check if is not startup. If is startup means that the
+                //user must first click on facebook button to authenticate
+            }else if(!req.query.startup){
+
+                var user = new models.User();
+                var player = new models.Player();
+
+                user.facebook = {};
+
+                user.facebook.userID = req.query.userID;
+                user.facebook.accessToken = req.query.accessToken;
+                user.facebook.expiresIn = req.query.expiresIn;
+                user.player = player;
+                user.addACL(user._id,true,true);
+
+                player.user = user;
+                player.addACL(user._id,true,true);
+
+                user.save( common.userId('MASTER'),function(err){
 
                     if(err){
                         next(new app.UnexpectedError(err));
                         return;
                     }
 
-                    req.generateAuthorization(function(){
+                    player.save( common.userId('MASTER'),function(err){
 
-                        req.authorization.userId = user._id;
+                        if(err){
+                            next(new app.UnexpectedError(err));
+                            return;
+                        }
 
-                        var secureUser = user.secure();
-                        secureUser._doc.token = req.sessionToken;
+                        req.generateAuthorization(function(){
 
-                        res.send(secureUser);
+                            req.authorization.userId = user._id;
 
-                        common.statsMix(req.authorization.userId, 4320,1,{type: 'facebook', platform: common.platform(req)});
+                            var secureUser = user.secure();
+                            secureUser._doc.token = req.sessionToken;
 
+                            res.send(secureUser);
+
+                            common.statsMix(req.authorization.userId, 4320,1,{type: 'facebook', platform: common.platform(req)});
+
+
+                        });
 
                     });
 
+
                 });
+                //user is logged in facebook ,don' have account here but is startup
+                //so I can' create an account here.
+            }else{
+                clearAuthorization(req,res);
+                next(new app.ExpectedError(108, "Facebook user not authenticated!"));
+            }
 
 
-            });
-            //user is logged in facebook ,don' have account here but is startup
-            //so I can' create an account here.
-        }else{
-            clearAuthorization(req,res);
-            next(new app.ExpectedError(108, "Facebook user not authenticated!"));
-        }
+        });
+
+    }
 
 
+    //verify if the player token is valid (check with the following request)
+    //https://graph.facebook.com/me?fields=id&access_token=AAACEdEose0cBAL3qtdGaZCvkkCfq0YzlLyO6CBZBuI7m5dB2aJT1U7dsQn0yKqYLbON5qWm0Nq45tp27HSFh8qaynpiVzVoZCHPXGEBCsYZAF2pQG4Y7
+
+    var request = https.request({
+        host: 'graph.facebook.com',
+        port: 443,
+        path: '/me?fields=id&access_token=' + req.query.accessToken,
+        method: 'GET'
+    },function (response) {
+        response.setEncoding('utf8');
+
+        var data = "";
+
+        response.on('data', function (chunk) {
+            data += chunk;
+        });
+
+
+        response.on('end', function(){
+
+            var msg = JSON.parse(data);
+
+            if(msg.id && msg.id == req.query.userID){
+                fb_login();
+            }else{
+                clearAuthorization(req,res);
+                next(new app.ExpectedError(108, "Facebook user not authenticated!"));
+            }
+
+        });
+
+        response.on('error', function(e){
+            next(new app.UnexpectedError(err));
+        });
     });
+    request.end();
 
 });
 
