@@ -1666,21 +1666,13 @@ div.enemyGraphs {
   height: 180px;
 }
 #winsGraph,
-#lossesGraph,
-#councilChart,
-#darkelvesChart,
-#dwarvesChart,
-#tribeChart {
+#lossesGraph {
   display: inline-block;
 }
-#councilTable,
-#councilTable2,
-#darkelvesTable,
-#darkelvesTable2,
-#dwarvesTable,
-#dwarvesTable2,
-#tribeTable,
-#tribeTable2 {
+.raceChart {
+  display: inline-block;
+}
+.raceTable {
   display: inline-block;
 }
 #enemiesTable {

@@ -1265,6 +1265,7 @@ var StatisticsView = Backbone.View.extend({
             ['Dark Elves',  stats.council.darkelves_wins, stats.council.darkelves_losses, {v: stats.council.darkelves_ratio, f: stats.council.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.council.dwarves_wins, stats.council.dwarves_losses, {v: stats.council.dwarves_ratio, f: stats.council.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.council.tribe_wins, stats.council.tribe_losses, {v: stats.council.tribe_ratio, f: stats.council.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.council.tf2_wins, stats.council.tf2_losses, {v: stats.council.tf2_ratio, f: stats.council.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.council.wins, stats.council.losses, {v: stats.council.ratio, f: stats.council.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1272,7 +1273,7 @@ var StatisticsView = Backbone.View.extend({
         councilTable.draw(councilData, {'width':270, 'height':160});
 
         councilData.removeColumn(3);
-        councilData.removeRow(4);
+        councilData.removeRow(5);
 
         var councilChart = new google.visualization.ColumnChart(document.getElementById('councilTable2'));
         councilChart.draw(councilData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'}});
@@ -1292,6 +1293,7 @@ var StatisticsView = Backbone.View.extend({
             ['Dark Elves',  stats.darkelves.darkelves_wins, stats.darkelves.darkelves_losses, {v: stats.darkelves.darkelves_ratio, f: stats.darkelves.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.darkelves.dwarves_wins, stats.darkelves.dwarves_losses, {v: stats.darkelves.dwarves_ratio, f: stats.darkelves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.darkelves.tribe_wins, stats.darkelves.tribe_losses, {v: stats.darkelves.tribe_ratio, f: stats.darkelves.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.darkelves.tf2_wins, stats.darkelves.tf2_losses, {v: stats.darkelves.tf2_ratio, f: stats.darkelves.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.darkelves.wins, stats.darkelves.losses, {v: stats.darkelves.ratio, f: stats.darkelves.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1299,7 +1301,7 @@ var StatisticsView = Backbone.View.extend({
         darkelvesTable.draw(darkelvesData, {'width':270, 'height':160});
 
         darkelvesData.removeColumn(3);
-        darkelvesData.removeRow(4);
+        darkelvesData.removeRow(5);
 
         var darkelvesChart = new google.visualization.ColumnChart(document.getElementById('darkelvesTable2'));
         darkelvesChart.draw(darkelvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1318,6 +1320,7 @@ var StatisticsView = Backbone.View.extend({
             ['Dark Elves',  stats.dwarves.darkelves_wins, stats.dwarves.darkelves_losses, {v: stats.dwarves.darkelves_ratio, f: stats.dwarves.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.dwarves.dwarves_wins, stats.dwarves.dwarves_losses, {v: stats.dwarves.dwarves_ratio, f: stats.dwarves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.dwarves.tribe_wins, stats.dwarves.tribe_losses, {v: stats.dwarves.tribe_ratio, f: stats.dwarves.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.dwarves.tf2_wins, stats.dwarves.tf2_losses, {v: stats.dwarves.tf2_ratio, f: stats.dwarves.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.dwarves.wins, stats.dwarves.losses, {v: stats.dwarves.ratio, f: stats.dwarves.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1325,7 +1328,7 @@ var StatisticsView = Backbone.View.extend({
         dwarvesTable.draw(dwarvesData, {'width':270, 'height':160});
 
         dwarvesData.removeColumn(3);
-        dwarvesData.removeRow(4);
+        dwarvesData.removeRow(5);
 
         var dwarvesChart = new google.visualization.ColumnChart(document.getElementById('dwarvesTable2'));
         dwarvesChart.draw(dwarvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1344,6 +1347,7 @@ var StatisticsView = Backbone.View.extend({
             ['Dark Elves',  stats.tribe.darkelves_wins, stats.tribe.darkelves_losses, {v: stats.tribe.darkelves_ratio, f: stats.tribe.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.tribe.dwarves_wins, stats.tribe.dwarves_losses, {v: stats.tribe.dwarves_ratio, f: stats.tribe.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.tribe.tribe_wins, stats.tribe.tribe_losses, {v: stats.tribe.tribe_ratio, f: stats.tribe.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.tribe.tf2_wins, stats.tribe.tf2_losses, {v: stats.tribe.tf2_ratio, f: stats.tribe.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.tribe.wins, stats.tribe.losses, {v: stats.tribe.ratio, f: stats.tribe.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1351,11 +1355,38 @@ var StatisticsView = Backbone.View.extend({
         tribeTable.draw(tribeData, {'width':270, 'height':160});
 
         tribeData.removeColumn(3);
-        tribeData.removeRow(4);
+        tribeData.removeRow(5);
 
         var tribeChart = new google.visualization.ColumnChart(document.getElementById('tribeTable2'));
         tribeChart.draw(tribeData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
 
+
+        //*****************************************
+        //***************** TF2 *******************
+        //*****************************************
+
+        var tf2Data = new google.visualization.DataTable();
+        tf2Data.addColumn('string', 'vs Race');
+        tf2Data.addColumn('number', 'Victories');
+        tf2Data.addColumn('number', 'Defeats');
+        tf2Data.addColumn('number', 'Ratio');
+        tf2Data.addRows([
+            ['Council',  stats.tf2.council_wins, stats.tf2.council_losses, {v: stats.tf2.council_ratio, f: stats.tf2.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.tf2.darkelves_wins, stats.tf2.darkelves_losses, {v: stats.tf2.darkelves_ratio, f: stats.tf2.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.tf2.dwarves_wins, stats.tf2.dwarves_losses, {v: stats.tf2.dwarves_ratio, f: stats.tf2.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.tf2.tribe_wins, stats.tf2.tribe_losses, {v: stats.tf2.tribe_ratio, f: stats.tf2.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.tf2.tf2_wins, stats.tf2.tf2_losses, {v: stats.tf2.tf2_ratio, f: stats.tf2.tf2_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.tf2.wins, stats.tf2.losses, {v: stats.tf2.ratio, f: stats.tf2.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var tf2Table = new google.visualization.Table(document.getElementById('tf2Table'));
+        tf2Table.draw(tf2Data, {'width':270, 'height':160});
+
+        tf2Data.removeColumn(3);
+        tf2Data.removeRow(5);
+
+        var tf2Chart = new google.visualization.ColumnChart(document.getElementById('tf2Table2'));
+        tf2Chart.draw(tf2Data, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
 
 
     }
@@ -1749,6 +1780,7 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dark Elves',  stats.council.darkelves_wins, stats.council.darkelves_losses, {v: stats.council.darkelves_ratio, f: stats.council.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.council.dwarves_wins, stats.council.dwarves_losses, {v: stats.council.dwarves_ratio, f: stats.council.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.council.tribe_wins, stats.council.tribe_losses, {v: stats.council.tribe_ratio, f: stats.council.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.council.tf2_wins, stats.council.tf2_losses, {v: stats.council.tf2_ratio, f: stats.council.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.council.wins, stats.council.losses, {v: stats.council.ratio, f: stats.council.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1756,7 +1788,7 @@ var SelectedEnemyView = Backbone.View.extend({
         councilTable.draw(councilData, {'width':270, 'height':160});
 
         councilData.removeColumn(3);
-        councilData.removeRow(4);
+        councilData.removeRow(5);
 
         var councilChart = new google.visualization.ColumnChart(document.getElementById('councilTable2'));
         councilChart.draw(councilData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'}});
@@ -1776,6 +1808,7 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dark Elves',  stats.darkelves.darkelves_wins, stats.darkelves.darkelves_losses, {v: stats.darkelves.darkelves_ratio, f: stats.darkelves.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.darkelves.dwarves_wins, stats.darkelves.dwarves_losses, {v: stats.darkelves.dwarves_ratio, f: stats.darkelves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.darkelves.tribe_wins, stats.darkelves.tribe_losses, {v: stats.darkelves.tribe_ratio, f: stats.darkelves.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.darkelves.tf2_wins, stats.darkelves.tf2_losses, {v: stats.darkelves.tf2_ratio, f: stats.darkelves.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.darkelves.wins, stats.darkelves.losses, {v: stats.darkelves.ratio, f: stats.darkelves.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1783,7 +1816,7 @@ var SelectedEnemyView = Backbone.View.extend({
         darkelvesTable.draw(darkelvesData, {'width':270, 'height':160});
 
         darkelvesData.removeColumn(3);
-        darkelvesData.removeRow(4);
+        darkelvesData.removeRow(5);
 
         var darkelvesChart = new google.visualization.ColumnChart(document.getElementById('darkelvesTable2'));
         darkelvesChart.draw(darkelvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1802,6 +1835,7 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dark Elves',  stats.dwarves.darkelves_wins, stats.dwarves.darkelves_losses, {v: stats.dwarves.darkelves_ratio, f: stats.dwarves.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.dwarves.dwarves_wins, stats.dwarves.dwarves_losses, {v: stats.dwarves.dwarves_ratio, f: stats.dwarves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.dwarves.tribe_wins, stats.dwarves.tribe_losses, {v: stats.dwarves.tribe_ratio, f: stats.dwarves.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.dwarves.tf2_wins, stats.dwarves.tf2_losses, {v: stats.dwarves.tf2_ratio, f: stats.dwarves.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.dwarves.wins, stats.dwarves.losses, {v: stats.dwarves.ratio, f: stats.dwarves.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1809,7 +1843,7 @@ var SelectedEnemyView = Backbone.View.extend({
         dwarvesTable.draw(dwarvesData, {'width':270, 'height':160});
 
         dwarvesData.removeColumn(3);
-        dwarvesData.removeRow(4);
+        dwarvesData.removeRow(5);
 
         var dwarvesChart = new google.visualization.ColumnChart(document.getElementById('dwarvesTable2'));
         dwarvesChart.draw(dwarvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1828,6 +1862,7 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dark Elves',  stats.tribe.darkelves_wins, stats.tribe.darkelves_losses, {v: stats.tribe.darkelves_ratio, f: stats.tribe.darkelves_ratio.toFixed(2)  + '%'}],
             ['Dwarves',  stats.tribe.dwarves_wins, stats.tribe.dwarves_losses, {v: stats.tribe.dwarves_ratio, f: stats.tribe.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.tribe.tribe_wins, stats.tribe.tribe_losses, {v: stats.tribe.tribe_ratio, f: stats.tribe.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.tribe.tf2_wins, stats.tribe.tf2_losses, {v: stats.tribe.tf2_ratio, f: stats.tribe.tf2_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.tribe.wins, stats.tribe.losses, {v: stats.tribe.ratio, f: stats.tribe.ratio.toFixed(2)  + '%'}]
         ]);
 
@@ -1835,10 +1870,37 @@ var SelectedEnemyView = Backbone.View.extend({
         tribeTable.draw(tribeData, {'width':270, 'height':160});
 
         tribeData.removeColumn(3);
-        tribeData.removeRow(4);
+        tribeData.removeRow(5);
 
         var tribeChart = new google.visualization.ColumnChart(document.getElementById('tribeTable2'));
         tribeChart.draw(tribeData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
+
+        //*****************************************
+        //***************** TF2 *******************
+        //*****************************************
+
+        var tf2Data = new google.visualization.DataTable();
+        tf2Data.addColumn('string', 'vs Race');
+        tf2Data.addColumn('number', 'Victories');
+        tf2Data.addColumn('number', 'Defeats');
+        tf2Data.addColumn('number', 'Ratio');
+        tf2Data.addRows([
+            ['Council',  stats.tf2.council_wins, stats.tf2.council_losses, {v: stats.tf2.council_ratio, f: stats.tf2.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.tf2.darkelves_wins, stats.tf2.darkelves_losses, {v: stats.tf2.darkelves_ratio, f: stats.tf2.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.tf2.dwarves_wins, stats.tf2.dwarves_losses, {v: stats.tf2.dwarves_ratio, f: stats.tf2.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.tf2.tribe_wins, stats.tf2.tribe_losses, {v: stats.tf2.tribe_ratio, f: stats.tf2.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.tf2.tf2_wins, stats.tf2.tf2_losses, {v: stats.tf2.tf2_ratio, f: stats.tf2.tf2_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.tf2.wins, stats.tf2.losses, {v: stats.tf2.ratio, f: stats.tf2.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var tf2able = new google.visualization.Table(document.getElementById('tf2Table'));
+        tf2able.draw(tf2Data, {'width':270, 'height':160});
+
+        tf2Data.removeColumn(3);
+        tf2Data.removeRow(5);
+
+        var tf2Chart = new google.visualization.ColumnChart(document.getElementById('tf2Table2'));
+        tf2Chart.draw(tf2Data, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
 
     }
 
