@@ -204,7 +204,56 @@
                 itemImg: "/images/items/haunchofmeat.png",
                 itemName: "Haunch of Meat",
                 itemCountMax: 4
-            }
+            },
+        '35':
+        {
+            itemImg: "/images/items/spy.png",
+            itemName: "Spy",
+            itemCountMax: 0
+        },
+        '36':
+        {
+            itemImg: "/images/items/sniper.png",
+            itemName: "Sniper",
+            itemCountMax: 0
+        },
+        '37':
+        {
+            itemImg: "/images/items/engineer_tf.png",
+            itemName: "Engineer",
+            itemCountMax: 0
+        },
+        '38':
+        {
+            itemImg: "/images/items/soldier.png",
+            itemName: "Soldier",
+            itemCountMax: 0
+        },
+        '39':
+        {
+            itemImg: "/images/items/scout.png",
+            itemName: "Scout",
+            itemCountMax: 0
+        },
+        '40':
+        {
+            itemImg: "/images/items/medic.png",
+            itemName: "Medic",
+            itemCountMax: 0
+        },
+        '41':
+        {
+            itemImg: "/images/items/heavy.png",
+            itemName: "Heavy",
+            itemCountMax: 0
+        },
+        '42':
+        {
+            itemImg: "/images/items/demoman.png",
+            itemName: "Demoman",
+            itemCountMax: 0
+        }
+
     }
 
     exports.Council = {
@@ -235,7 +284,14 @@
         items: [27,28,29,30,31,32,7,33,34]
     }
 
-    exports.Races = [exports.Council, exports.DarkElves, exports.Dwarves, exports.Tribe];
+    exports.TF2 = {
+        raceName: "TF2",
+        raceTitle: "/images/teamfortress2.png",
+        raceIcon: "/images/teamfortress2_icon.png",
+        items: [35,36,37,38,39,40,41,42]
+    }
+
+    exports.Races = [exports.Council, exports.DarkElves, exports.Dwarves, exports.Tribe, exports.TF2];
 
 
     exports.States = {

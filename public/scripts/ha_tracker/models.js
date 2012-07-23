@@ -25,7 +25,13 @@ var Tribe = {
     raceIcon: "/images/tribe_icon.png"
 }
 
-var Races = [Council, DarkElves, Dwarves, Tribe];
+var TF2 = {
+    raceName: "TF2",
+    raceTitle: "/images/teamfortress2.png",
+    raceIcon: "/images/teamfortress2_icon.png"
+}
+
+var Races = [Council, DarkElves, Dwarves, Tribe,TF2];
 
 
 var Item = Backbone.Model.extend({

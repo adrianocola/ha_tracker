@@ -779,8 +779,9 @@ app.get("/api/user/login-facebook", function(req, res, next){
     }
 
 
-    //verify if the player token is valid (check with the following request)
-    //https://graph.facebook.com/me?fields=id&access_token=AAACEdEose0cBAL3qtdGaZCvkkCfq0YzlLyO6CBZBuI7m5dB2aJT1U7dsQn0yKqYLbON5qWm0Nq45tp27HSFh8qaynpiVzVoZCHPXGEBCsYZAF2pQG4Y7
+    //verify if the player token is valid (check with the following request).
+    //This requests returns the user ID that is registered with the token
+    //https://graph.facebook.com/me?fields=id&access_token=<token>
 
     var request = https.request({
         host: 'graph.facebook.com',
@@ -801,7 +802,9 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
             var msg = JSON.parse(data);
 
+            //check if the IDs match
             if(msg.id && msg.id == req.query.userID){
+                //proceed with facebook login/signup
                 fb_login();
             }else{
                 clearAuthorization(req,res);
