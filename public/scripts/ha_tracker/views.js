@@ -2795,9 +2795,9 @@ var ItemView = Backbone.View.extend({
     },
 
     events: {
-        'click .itemSub': 'sub',
+        'click .itemSub': 'subClick',
         'click .click-to-reset': 'imgClick',
-        'click .itemAdd': 'add',
+        'click .itemAdd': 'addClick',
         'click .itemImg': 'imgClick'
     },
 
@@ -2817,6 +2817,44 @@ var ItemView = Backbone.View.extend({
         this.$(".itemCount").html(this.model.get("itemCount"));
     },
 
+    subClick: function(){
+
+        //only allow one update of item count
+        if(!this.canEdit){
+            return;
+        }
+
+        this.sub();
+
+        this.$(".itemImg").fadeTo(0,0.3);
+
+        this.$(".itemCount").addClass('zero');
+        //start spinner
+        this.$(".itemCount").html(this.spinner.spin().el);
+
+        this.canEdit = false;
+
+    },
+
+    addClick: function(){
+
+        //only allow one update of item count
+        if(!this.canEdit){
+            return;
+        }
+
+        this.add();
+
+        this.$(".itemImg").fadeTo(0,0.3);
+
+        this.$(".itemCount").addClass('zero');
+        //start spinner
+        this.$(".itemCount").html(this.spinner.spin().el);
+
+        this.canEdit = false;
+
+    },
+
     imgClick: function(){
         //only allow one update of item count
         if(!this.canEdit){
@@ -2829,7 +2867,7 @@ var ItemView = Backbone.View.extend({
 
         this.$(".itemCount").addClass('zero');
         //start spinner
-        this.$(".itemCount").html(that.spinner.spin().el);
+        this.$(".itemCount").html(this.spinner.spin().el);
 
         this.canEdit = false;
 
