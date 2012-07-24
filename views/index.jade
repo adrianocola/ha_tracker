@@ -103,6 +103,10 @@ block templates
                 a.link.logout logout
         div.settings
             div.separator
+            div.options
+                input#showItemsAsList(type="checkbox")
+                span.showItemsAsListText Show Items as List
+            div.separator
             div.change-password
                 input#change-password-current.change-field(type="text",placeholder="Current Password")
                 input#change-password-new.change-field(type="password",placeholder="New Password")
@@ -344,8 +348,10 @@ block templates
         div.click-to-reset Click to reset
         span.itemName <%= itemName %>
         span.itemCount <%= itemCount %>
+        span.itemPerc
         button.itemSub.button-02 -
         button.itemAdd.button-01 +
+
 
 
 block header

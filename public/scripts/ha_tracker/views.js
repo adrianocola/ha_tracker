@@ -269,12 +269,26 @@ var LoggedPlayerView = Backbone.View.extend({
 
         this.can_change_password = true;
 
-        this.show();
+        var that = this;
 
         //fetch the player
-        var player = new app.Player({id: this.model.get('player')});
+        this.player = new app.Player({id: this.model.get('player')});
 
-        new app.PlayerView({model: player});
+        //update the showItemsAsList option checkbox once the player it's loaded
+        this.player.bind('change',function(){
+            that.player.unbind('change');
+
+            if(that.player.get('showItemsAsList')){
+                that.$('#showItemsAsList').attr('checked',true);
+            }
+        });
+
+        new app.PlayerView({model: this.player});
+
+
+        this.show();
+
+
     },
 
     events: {
@@ -287,7 +301,20 @@ var LoggedPlayerView = Backbone.View.extend({
         'click .reset-account': 'resetAcctount',
         'click .reset-yes': 'confirmReset',
         'click .reset-no': 'denyReset',
-        'click button.change-password': 'changePassword'
+        'click button.change-password': 'changePassword',
+        'change #showItemsAsList': 'showItemsAsList'
+
+    },
+
+    showItemsAsList: function(){
+
+
+        var showItemsAsList = this.$('#showItemsAsList').attr('checked')?true:false;
+
+        app.SelectedGameView.renderItemsDisplay(showItemsAsList);
+
+        app.currentPlayer.save({showItemsAsList: showItemsAsList});
+
 
     },
 
@@ -474,6 +501,8 @@ var LoggedPlayerView = Backbone.View.extend({
         }else{
             $(this.el).html(this.template({data: json}));
         }
+
+
 
         return this;
 
@@ -2221,6 +2250,51 @@ var SelectedGameView = Backbone.View.extend({
         return this.render();
     },
 
+    renderAsItemList: function(){
+
+        this.$('.items-panel').removeClass('itemTable');
+        this.$('.player-items-mask').removeClass('itemTable');
+        this.$('.player-items').removeClass('itemTable');
+        this.$('.enemy-items-mask').removeClass('itemTable');
+        this.$('.enemy-items').removeClass('itemTable');
+
+        this.$('.items-panel').addClass('itemList');
+        this.$('.player-items-mask').addClass('itemList');
+        this.$('.player-items').addClass('itemList');
+        this.$('.enemy-items-mask').addClass('itemList');
+        this.$('.enemy-items').addClass('itemList');
+
+    },
+
+    renderAsItemTable: function(){
+
+        this.$('.items-panel').removeClass('itemList');
+        this.$('.player-items-mask').removeClass('itemList');
+        this.$('.player-items').removeClass('itemList');
+        this.$('.enemy-items-mask').removeClass('itemList');
+        this.$('.enemy-items').removeClass('itemList');
+
+        this.$('.items-panel').addClass('itemTable');
+        this.$('.player-items-mask').addClass('itemTable');
+        this.$('.player-items').addClass('itemTable');
+        this.$('.enemy-items-mask').addClass('itemTable');
+        this.$('.enemy-items').addClass('itemTable');
+
+    },
+
+    renderItemsDisplay: function(asList){
+
+        if(asList){
+            this.renderAsItemList();
+        }else{
+            this.renderAsItemTable();
+        }
+
+        this.playerItems.renderItemsDisplay(asList);
+        this.enemyItems.renderItemsDisplay(asList);
+
+    },
+
 
     render: function(){
 
@@ -2287,11 +2361,20 @@ var SelectedGameView = Backbone.View.extend({
 
             this.$('.gameNotesPanel').append(this.gameNotes.render().el);
 
+
+            if(app.currentPlayer.get('showItemsAsList')){
+                this.renderAsItemList();
+            }else{
+                this.renderAsItemTable();
+            }
+
         }else{
 
             this.$el.html(this.template({data: undefined}));
 
         }
+
+
 
         return this;
     }
@@ -2484,6 +2567,8 @@ var PlayerItemsView = Backbone.View.extend({
 
         this.collection.bind("reset",this.renderItems,this);
         this.collection.bind("change:itemCount",this.renderRemaining,this);
+
+        this.items = [];
     },
 
     renderItems: function(){
@@ -2494,12 +2579,23 @@ var PlayerItemsView = Backbone.View.extend({
 
         var $items = this.$('.items');
 
+        var collection = this.collection;
+
+        var that = this;
+
         this.collection.each(function(item){
-            $items.append(new ItemView({model: item}).render().el);
+
+            var itemView = new ItemView({model: item, collection: collection });
+
+            that.items.push(itemView);
+
+            $items.append(itemView.render().el);
         },this);
 
 
         this.renderRemaining();
+
+
 
         $items.hide();
         $items.fadeIn(700);
@@ -2513,7 +2609,38 @@ var PlayerItemsView = Backbone.View.extend({
 
         this.$("h3").html("Remaining: " + this.collection.remaining());
 
+        _.each(this.items, function(itemView){
+            itemView.renderPercentage();
+        });
+
+
         return this;
+
+    },
+
+    renderAsItemList: function(){
+        this.$('.items').removeClass('itemTable');
+
+        this.$('.items').addClass('itemList');
+    },
+
+    renderAsItemTable: function(){
+        this.$('.items').removeClass('itemList');
+
+        this.$('.items').addClass('itemTable');
+    },
+
+    renderItemsDisplay: function(asList){
+
+        if(asList){
+            this.renderAsItemList();
+        }else{
+            this.renderAsItemTable();
+        }
+
+        _.each(this.items, function(itemView){
+            itemView.renderItemsDisplay(asList);
+        });
 
     },
 
@@ -2524,6 +2651,13 @@ var PlayerItemsView = Backbone.View.extend({
         $(this.el).fadeTo(0,0.3);
 
         this.$('.items').append(this.spinner.spin().el);
+
+        if(app.currentPlayer.get('showItemsAsList')){
+            this.renderAsItemList();
+        }else{
+            this.renderAsItemTable();
+        }
+
 
         return this;
 
@@ -2547,6 +2681,8 @@ var EnemyItemsView = Backbone.View.extend({
         this.collection.bind("reset",this.renderItems,this);
         this.collection.bind("change:itemCount",this.renderRemaining,this);
 
+        this.items = [];
+
     },
 
     renderItems: function(){
@@ -2557,9 +2693,18 @@ var EnemyItemsView = Backbone.View.extend({
 
         var $items = this.$('.items');
 
+        var collection = this.collection;
+
+        var that = this;
+
         this.collection.each(function(item){
 
-            $items.append(new ItemView({model: item}).render().el);
+            var itemView = new ItemView({model: item, collection: collection });
+
+            that.items.push(itemView);
+
+            $items.append(itemView.render().el);
+
         });
 
         this.renderRemaining();
@@ -2575,7 +2720,37 @@ var EnemyItemsView = Backbone.View.extend({
 
         this.$("h3").html("Remaining: " + this.collection.remaining());
 
+        _.each(this.items, function(itemView){
+            itemView.renderPercentage();
+        });
+
         return this;
+
+    },
+
+    renderAsItemList: function(){
+        this.$('.items').removeClass('itemTable');
+
+        this.$('.items').addClass('itemList');
+    },
+
+    renderAsItemTable: function(){
+        this.$('.items').removeClass('itemList');
+
+        this.$('.items').addClass('itemTable');
+    },
+
+    renderItemsDisplay: function(asList){
+
+        if(asList){
+            this.renderAsItemList();
+        }else{
+            this.renderAsItemTable();
+        }
+
+        _.each(this.items, function(itemView){
+            itemView.renderItemsDisplay(asList);
+        });
 
     },
 
@@ -2586,6 +2761,12 @@ var EnemyItemsView = Backbone.View.extend({
         $(this.el).fadeTo(0,0.3);
 
         this.$('.items').append(this.spinner.spin().el);
+
+        if(app.currentPlayer.get('showItemsAsList')){
+            this.renderAsItemList();
+        }else{
+            this.renderAsItemTable();
+        }
 
         return this;
 
@@ -2610,11 +2791,12 @@ var ItemView = Backbone.View.extend({
         this.model.bind("sync", this.renderSync, this);
 
         this.canEdit = true;
+
     },
 
     events: {
         'click .itemSub': 'sub',
-        'click .click-to-reset': 'sub',
+        'click .click-to-reset': 'imgClick',
         'click .itemAdd': 'add',
         'click .itemImg': 'imgClick'
     },
@@ -2641,16 +2823,25 @@ var ItemView = Backbone.View.extend({
             return;
         }
 
-
         this.sub();
 
         this.$(".itemImg").fadeTo(0,0.3);
 
         this.$(".itemCount").addClass('zero');
         //start spinner
-        this.$(".itemCount").html(this.spinner.spin().el);
+        this.$(".itemCount").html(that.spinner.spin().el);
 
         this.canEdit = false;
+
+
+
+    },
+
+    renderPercentage: function(){
+
+        var perc = this.collection.remaining()>0?(this.model.get('itemCount')/this.collection.remaining()*100).toFixed(1)+'%': '0.0%';
+
+        this.$(".itemPerc").html(perc);
 
     },
 
@@ -2690,11 +2881,69 @@ var ItemView = Backbone.View.extend({
 
     },
 
+    renderAsItemList: function(){
+
+        this.$('.itemImg').removeClass('itemTable');
+        this.$('.click-to-reset').removeClass('itemTable');
+        this.$('.itemName').removeClass('itemTable');
+        this.$('.itemCount').removeClass('itemTable');
+        this.$('.itemPerc').removeClass('itemTable');
+        this.$('.itemSub').removeClass('itemTable');
+        this.$('.itemAdd').removeClass('itemTable');
+
+        this.$('.itemImg').addClass('itemList');
+        this.$('.click-to-reset').addClass('itemList');
+        this.$('.itemName').addClass('itemList');
+        this.$('.itemCount').addClass('itemList');
+        this.$('.itemPerc').addClass('itemList');
+        this.$('.itemSub').addClass('itemList');
+        this.$('.itemAdd').addClass('itemList');
+
+    },
+
+    renderAsItemTable: function(){
+
+        this.$('.itemImg').removeClass('itemList');
+        this.$('.click-to-reset').removeClass('itemList');
+        this.$('.itemName').removeClass('itemList');
+        this.$('.itemCount').removeClass('itemList');
+        this.$('.itemPerc').removeClass('itemList');
+        this.$('.itemSub').removeClass('itemList');
+        this.$('.itemAdd').removeClass('itemList');
+
+        this.$('.itemImg').addClass('itemTable');
+        this.$('.click-to-reset').addClass('itemTable');
+        this.$('.itemName').addClass('itemTable');
+        this.$('.itemCount').addClass('itemTable');
+        this.$('.itemPerc').addClass('itemTable');
+        this.$('.itemSub').addClass('itemTable');
+        this.$('.itemAdd').addClass('itemTable');
+
+    },
+
+    renderItemsDisplay: function(asList){
+
+        if(asList){
+            this.renderAsItemList();
+        }else{
+            this.renderAsItemTable();
+        }
+
+    },
+
     render: function(){
 
         $(this.el).html(this.template(this.model.formatToJSON()));
 
         this.renderItemCount();
+
+        this.renderPercentage();
+
+        if(app.currentPlayer.get('showItemsAsList')){
+            this.renderAsItemList();
+        }else{
+            this.renderAsItemTable();
+        }
 
 
         return this;

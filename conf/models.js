@@ -191,6 +191,7 @@ var PlayerSchema = new Schema({
     user:{ type: Schema.ObjectId, ref: 'User', required: true, index: {unique: true}},
     showOnlyActive: {type: Boolean, default: 0},
     showState: {type: Boolean, default: 0},
+    showItemsAsList: {type: Boolean, default: 0},
     enemies: [EnemySchema]
 },{ strict: true });
 PlayerSchema.plugin(ACL_Plugin);

@@ -27,7 +27,7 @@ app.get('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
 app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next){
 
     if(req.body.showState==undefined && req.body.showOnlyActive==undefined){
-        next(new app.ExpectedError(210,"Missing showState or showOnlyActive values"));
+        next(new app.ExpectedError(210,"Missing showState, showOnlyActive or showItemsAsList values"));
         return;
     }
 
@@ -50,6 +50,10 @@ app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
 
         if(req.body.showState!=undefined){
             player.showState = req.body.showState;
+        }
+
+        if(req.body.showItemsAsList!=undefined){
+            player.showItemsAsList = req.body.showItemsAsList;
         }
 
 

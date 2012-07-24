@@ -644,7 +644,7 @@ div.tp_terms {
 }
 #current-game .items-panel {
   display: block;
-  height: 500px;
+  height: 600px;
 }
 #current-game .gameNotesPanel {
   display: block;
@@ -1185,7 +1185,6 @@ div.player-items-mask,
 div.enemy-items-mask {
   width: 280px;
   position: absolute;
-  height: 500px;
   z-index: 50;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -1217,12 +1216,6 @@ div.read-only-items {
   border: 1px solid #e85959;
   text-shadow: 1px 1px 0px #b23e35;
 }
-div.player-items-mask {
-  margin-left: 10px;
-}
-div.enemy-items-mask {
-  margin-left: 318px;
-}
 .player-items {
   float: left;
   width: 280px;
@@ -1239,14 +1232,6 @@ div.enemy-items-mask {
   -moz-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dedede;
-}
-.player-items h3 {
-  padding: 10px 25px;
-  margin: 400px 0 0 0;
-}
-.enemy-items h3 {
-  padding: 10px 25px;
-  margin: 400px 0 0 0;
 }
 .enemy-items {
   float: right;
@@ -1270,39 +1255,6 @@ div.enemy-items-mask {
   display: block;
   margin-left: auto;
   margin-right: auto;
-}
-.items {
-  margin: 0 0 10px -10px;
-  padding: 0 0 0 15px;
-  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
-  list-style: none;
-}
-.itemImg {
-  width: 40px;
-  height: 40px;
-  vertical-align: -5px;
-  cursor: pointer;
-}
-.itemName {
-  display: inline-block;
-  width: 90px;
-  text-align: left;
-}
-.itemCount {
-  display: inline-block;
-  width: 50px;
-  text-align: center;
-  cursor: pointer;
-}
-.itemSub {
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-}
-.itemAdd {
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
 }
 .add-game {
   -webkit-border-radius: 25px;
@@ -1524,7 +1476,30 @@ div.enemyDeleteText a:hover {
   position: relative;
   top: 0px;
 }
-.items li {
+#current-game .items-panel.itemTable {
+  height: 500px;
+}
+.player-items.itemTable,
+.enemy-items.itemTable {
+  height: 500px;
+}
+div.player-items-mask.itemTable,
+div.enemy-items-mask.itemTable {
+  height: 500px;
+}
+div.player-items-mask.itemTable {
+  margin-left: 10px;
+}
+div.enemy-items-mask.itemTable {
+  margin-left: 314px;
+}
+.items.itemTable {
+  margin: 0 0 10px -10px;
+  padding: 0 0 0 15px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  list-style: none;
+}
+.items.itemTable li {
   position: relative;
   display: inline;
   list-style: none;
@@ -1533,12 +1508,12 @@ div.enemyDeleteText a:hover {
   float: left;
   margin: 0 10px 10px 0;
 }
-.itemImg {
+.itemImg.itemTable {
   width: 100px;
   height: 100px;
   vertical-align: -5px;
 }
-.click-to-reset {
+.click-to-reset.itemTable {
   line-height: 10px;
   position: absolute;
   cursor: pointer;
@@ -1561,18 +1536,18 @@ div.enemyDeleteText a:hover {
   text-shadow: 1px 1px 0px #b23e35;
   display: none;
 }
-.items li.item.zero:hover .click-to-reset {
+.items.itemTable li.item.zero:hover .click-to-reset {
   display: block;
 }
-.items li:hover .itemImg {
+.items.itemTable li:hover .itemImg {
   width: 110px;
   height: 110px;
 }
-.items li:hover .itemCount {
+.items.itemTable li:hover .itemCount {
   top: -25px;
   left: 23px;
 }
-.itemCount {
+.itemCount.itemTable {
   -webkit-transition: background-color 1s ease-in-out;
   -moz-transition: background-color 1s ease-in-out;
   -o-transition: background-color 1s ease-in-out;
@@ -1606,7 +1581,7 @@ div.enemyDeleteText a:hover {
   background: -moz-linear-gradient(center top, #fc8d83 5%, #e4685d 100%);
   text-shadow: 1px 1px 0px #666;
 }
-.item.zero .itemCount {
+.item.zero .itemCount.itemTable {
   -moz-box-shadow: inset 0px 1px 0px 0px #fff;
   -webkit-box-shadow: inset 0px 1px 0px 0px #fff;
   box-shadow: inset 0px 1px 0px 0px #fff;
@@ -1622,14 +1597,99 @@ div.enemyDeleteText a:hover {
   color: #777;
   text-shadow: 1px 1px 0px #fff;
 }
-.itemName {
+.itemName.itemTable {
   display: none;
 }
-.itemSub {
+.itemSub.itemTable {
   display: none;
 }
-.itemAdd {
+.itemAdd.itemTable {
   display: none;
+}
+.itemPerc.itemTable {
+  display: none;
+}
+.player-items.itemTable h3,
+.enemy-items.itemTable h3 {
+  padding: 10px 25px;
+  margin: 400px 0 0 0;
+}
+#current-game .items-panel.itemList {
+  height: 700px;
+}
+.player-items.itemList,
+.enemy-items.itemList {
+  height: 700px;
+}
+div.player-items-mask.itemList,
+div.enemy-items-mask.itemList {
+  height: 700px;
+}
+div.player-items-mask.itemList {
+  margin-left: 10px;
+}
+div.enemy-items-mask.itemList {
+  margin-left: 314px;
+}
+.items.itemList {
+  margin: 0 0 10px -10px;
+  padding: 0 0 0 15px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  list-style: none;
+}
+.items.itemList li {
+  list-style: none;
+}
+.itemImg.itemList {
+  width: 50px;
+  height: 50px;
+  vertical-align: -10px;
+  cursor: pointer;
+}
+.click-to-reset.itemList {
+  display: none;
+}
+.itemCount.itemList {
+  display: inline-block;
+  width: 50px;
+  font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  cursor: pointer;
+}
+.item.zero .itemCount.itemList {
+  color: #aaa;
+}
+.itemName.itemList {
+  display: inline-block;
+  width: 70px;
+  text-align: left;
+}
+.item.zero .itemName.itemList {
+  color: #aaa;
+}
+.itemSub.itemList {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  vertical-align: 5px;
+}
+.itemAdd.itemList {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  vertical-align: 5px;
+}
+.itemPerc.itemList {
+  display: inline-block;
+  width: 45px;
+  text-align: center;
+}
+.item.zero .itemPerc.itemList {
+  color: #aaa;
+}
+.player-items.itemList h3,
+.enemy-items.itemList h3 {
+  padding: 10px 25px;
 }
 div.enemyStatsName {
   text-align: center;

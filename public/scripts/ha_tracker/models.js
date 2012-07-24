@@ -1005,6 +1005,8 @@ var Player = Backbone.Model.extend({
         this.enemies = new app.Enemies(this.get('enemies'));
 
         this.enemies.player = this;
+
+        app.currentPlayer = this;
     },
 
     selectGame: function(enemyId, gameId){
