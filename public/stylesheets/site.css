@@ -601,6 +601,12 @@ div.tp_terms {
   margin-bottom: 20px;
   margin-left: 20px;
 }
+div.update {
+  color: #888;
+  text-align: center;
+  margin-top: 3px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
 #player {
   display: inline-block;
   height: 635px;
