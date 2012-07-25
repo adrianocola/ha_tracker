@@ -47,11 +47,11 @@ div.signup-msg {
   margin-right: 10px;
 }
 #login-username {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 #login-username,
 #login-password {
-  width: 40%;
+  width: 113px;
 }
 #login-ok {
   margin-left: 5px;
@@ -600,6 +600,12 @@ div.tp_back {
 div.tp_terms {
   margin-bottom: 20px;
   margin-left: 20px;
+}
+div.update {
+  color: #888;
+  text-align: center;
+  margin-top: 3px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 #player {
   display: inline-block;
@@ -1762,6 +1768,10 @@ div.tableTitle {
   display: block;
   width: 95%;
   margin-bottom: 10px;
+}
+#login-username,
+#login-password {
+  width: 100px;
 }
 #filter {
   width: 250px;
