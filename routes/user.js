@@ -158,6 +158,25 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next)
 
 });
 
+app.get('/api/user/get_username', function(req,res,next){
+
+    //check if the email was sent in the request
+    if(!req.query.email){
+        clearAuthorization(req,res);
+        next(new app.ExpectedError(109,"Missing Login Credentials"));
+        return;
+    }
+
+    models.User.findOne({email: req.query.email.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
+
+        //returns the username of the user with the following e-mail
+        res.json({username: user.username});
+
+    });
+
+
+});
+
 
 app.get('/api/user/login', function(req,res,next){
 

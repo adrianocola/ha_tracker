@@ -845,12 +845,12 @@ var LoginView = Backbone.View.extend({
 
         var withError = false;
 
-        //verify if its a valid username before sending to the server
-        this.model.set({username: username}, {error: function(model,error){
-            that.$('.login-error').html(error);
-
-            withError = true;
-        }});
+//        //verify if its a valid username before sending to the server
+//        this.model.set({username: username}, {error: function(model,error){
+//            that.$('.login-error').html(error);
+//
+//            withError = true;
+//        }});
 
         if(withError) return;
 

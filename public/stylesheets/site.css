@@ -47,11 +47,11 @@ div.signup-msg {
   margin-right: 10px;
 }
 #login-username {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 #login-username,
 #login-password {
-  width: 40%;
+  width: 113px;
 }
 #login-ok {
   margin-left: 5px;
