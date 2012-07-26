@@ -1,0 +1,46 @@
+extends layout
+
+block scripts-vendor
+    script(src='/scripts/vendor/jquery-min.js')
+    script(src='/scripts/vendor/jquery-resize-min.js')
+    script(src='/scripts/vendor/underscore-min.js')
+    script(src='/scripts/vendor/backbone-min.js')
+    script(src='/scripts/vendor/spin-min.js')
+    script(src='/scripts/shared/consts.js')
+
+
+block scripts-site
+    script(src='/scripts/ha_tracker/routes.js')
+    script(src='/scripts/ha_tracker/models.js')
+    script(src='/scripts/ha_tracker/views.js')
+
+block templates
+    script(type="text/template", id="item-template")
+        | <img class="itemImg" src="<%= itemImg %>"/>
+        div.click-to-reset Click to reset
+        span.itemName <%= itemName %>
+        span.itemCount <%= itemCount %>
+        span.itemPerc
+        button.itemSub.button-02 -
+        button.itemAdd.button-01 +
+
+
+
+block header
+
+block main-layout
+    h2 Analysis
+    h3 Total de Players
+    h3 Total de Jogos
+    h3 Média de Jogos por Player
+    h3 Estado dos jogos (Grafico Pizza - Em progresso, vitória, derrota)
+
+
+
+block main-page
+
+
+
+
+
+

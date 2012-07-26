@@ -67,6 +67,15 @@ app.get('/terms_privacy', function(req, res){
 
 });
 
+app.get('/analysis', function(req, res){
+
+    res.render('analysis', {data: { salt: env.salt, facebook_app_id: env.facebook_app_id, mobile: common.isMobile(req) }});
+
+});
+
+
+
+
 //blitz.io verification
 app.get('/mu-ebf93d2c-933d9476-93c43788-d7bb532c', function(req,res){
     res.send(200,'42');

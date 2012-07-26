@@ -132,7 +132,8 @@ models = require('./conf/models');
     'game',
     'item',
     'gamenote',
-    'test'
+    'test',
+    'analysis'
 ].forEach(function(route) {
     require('./routes/' + route);
 });
