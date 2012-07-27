@@ -284,7 +284,7 @@ function performAnalysis(req, res, next){
         var multi = app.redis.multi();
 
         multi.set('analysis', JSON.stringify(stats));
-        multi.expire('analysis', 10);
+        multi.expire('analysis', 600);
 
         multi.exec(function(err,value){
 
