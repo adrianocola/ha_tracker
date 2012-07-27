@@ -192,6 +192,7 @@ var PlayerSchema = new Schema({
     showOnlyActive: {type: Boolean, default: 0},
     showState: {type: Boolean, default: 0},
     showItemsAsList: {type: Boolean, default: 0},
+    percentageType: {type: Number, default: 0},
     enemies: [EnemySchema]
 },{ strict: true });
 PlayerSchema.plugin(ACL_Plugin);

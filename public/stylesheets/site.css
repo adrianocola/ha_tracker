@@ -277,6 +277,12 @@ a.settings {
 a.settings {
   float: left;
 }
+input.percentageType {
+  margin-left: 15px;
+}
+span.percentageOptionText {
+  cursor: help;
+}
 a.logout {
   float: right;
 }
@@ -1657,7 +1663,7 @@ div.enemy-items-mask.itemList {
 }
 .itemCount.itemList {
   display: inline-block;
-  width: 50px;
+  width: 40px;
   font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
   text-align: center;
   cursor: pointer;
@@ -1687,7 +1693,7 @@ div.enemy-items-mask.itemList {
 }
 .itemPerc.itemList {
   display: inline-block;
-  width: 45px;
+  width: 55px;
   text-align: center;
 }
 .item.zero .itemPerc.itemList {

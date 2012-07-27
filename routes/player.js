@@ -26,8 +26,9 @@ app.get('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
 
 app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next){
 
-    if(req.body.showState==undefined && req.body.showOnlyActive==undefined){
-        next(new app.ExpectedError(210,"Missing showState, showOnlyActive or showItemsAsList values"));
+    if(req.body.showState==undefined && req.body.showOnlyActive==undefined
+        && req.body.showItemsAsList==undefined && req.body.percentageType==undefined){
+        next(new app.ExpectedError(210,"Missing showState, showOnlyActive, showItemsAsList or percentageType values"));
         return;
     }
 
@@ -54,6 +55,10 @@ app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
 
         if(req.body.showItemsAsList!=undefined){
             player.showItemsAsList = req.body.showItemsAsList;
+        }
+
+        if(req.body.percentageType!=undefined){
+            player.percentageType = req.body.percentageType;
         }
 
 

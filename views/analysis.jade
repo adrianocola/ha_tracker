@@ -13,6 +13,20 @@ block scripts-site
     script(src='/scripts/ha_tracker/routes.js')
     script(src='/scripts/ha_tracker/models.js')
     script(src='/scripts/ha_tracker/views.js')
+    script(type="text/javascript").
+        $(window).load(function(){
+            console.log("LIXO");
+            $.ajax({
+                url: "/api/analysis"
+            }).success(function( msg ) {
+                console.log(JSON.stringify({ foo: "lorem", bar: "ipsum" },null, '\t'));
+                $('#data').html(JSON.stringify(msg,null, '\t'));
+                //$('#data').html(JSON.stringify({ foo: "lorem", bar: "ipsum" },null, '\t'));
+
+            });
+        })
+
+
 
 block templates
     script(type="text/template", id="item-template")
@@ -29,12 +43,12 @@ block templates
 block header
 
 block main-layout
-    h2 Analysis
-    h3 Total de Players
-    h3 Total de Jogos
-    h3 Média de Jogos por Player
-    h3 Estado dos jogos (Grafico Pizza - Em progresso, vitória, derrota)
-
+    //h2 Analysis
+    //h3 Total de Players
+    //h3 Total de Jogos
+    //h3 Média de Jogos por Player
+    //h3 Estado dos jogos (Grafico Pizza - Em progresso, vitória, derrota)
+    pre#data teste
 
 
 block main-page

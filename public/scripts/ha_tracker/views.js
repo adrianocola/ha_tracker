@@ -1,5 +1,17 @@
 app = window.app ? window.app : {};
 
+app.f = new Array();
+function factorial (n){
+    if (n==0 || n==1) return 1;
+    if(app.f[n]>0)
+        return app.f[n];
+    else
+        return app.f[n]=factorial(n-1)*n;
+}
+
+
+//var factorial = [1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000, 20922789888000, 355687428096000, 6402373705728000, 121645100408832000, 2432902008176640000, 51090942171709440000, 1124000727777607680000];
+
 var opts_mini = {
     lines: 6, // The number of lines to draw
     length: 0, // The length of each line
@@ -280,6 +292,20 @@ var LoggedPlayerView = Backbone.View.extend({
 
             if(that.player.get('showItemsAsList')){
                 that.$('#showItemsAsList').attr('checked',true);
+                that.$('#percentageToDrop').removeClass('hidden');
+                that.$('#percentageInDeck').removeClass('hidden');
+                that.$('.percentageOptionText').removeClass('hidden');
+                console.log(that.player.get('percentageType'));
+                if(that.player.get('percentageType')==0){
+                    that.$('#percentageToDrop').attr('checked',true);
+                }else if(that.player.get('percentageType')==1){
+                    that.$('#percentageInDeck').attr('checked',true);
+                }
+
+            }else{
+                that.$('#percentageToDrop').addClass('hidden');
+                that.$('#percentageInDeck').addClass('hidden');
+                that.$('.percentageOptionText').addClass('hidden');
             }
         });
 
@@ -302,7 +328,34 @@ var LoggedPlayerView = Backbone.View.extend({
         'click .reset-yes': 'confirmReset',
         'click .reset-no': 'denyReset',
         'click button.change-password': 'changePassword',
-        'change #showItemsAsList': 'showItemsAsList'
+        'change #showItemsAsList': 'showItemsAsList',
+        'change #percentageToDrop': 'percentageToDrop',
+        'change #percentageInDeck': 'percentageInDeck'
+
+
+    },
+
+    percentageInDeck: function(){
+
+        app.currentPlayer.save({percentageType: 1});
+
+        if(app.SelectedGameView.model){
+            app.SelectedGameView.renderItemsDisplay(true);
+        }
+
+
+
+    },
+
+    percentageToDrop: function(){
+
+        app.currentPlayer.save({percentageType: 0});
+
+        if(app.SelectedGameView.model){
+            app.SelectedGameView.renderItemsDisplay(true);
+        }
+
+
 
     },
 
@@ -310,12 +363,34 @@ var LoggedPlayerView = Backbone.View.extend({
 
 
         var showItemsAsList = this.$('#showItemsAsList').attr('checked')?true:false;
+        var percentageType = 0;
 
-        app.SelectedGameView.renderItemsDisplay(showItemsAsList);
+        if(showItemsAsList){
+            this.$('#percentageToDrop').removeClass('hidden');
+            this.$('#percentageInDeck').removeClass('hidden');
+            this.$('.percentageOptionText').removeClass('hidden');
 
-        app.currentPlayer.save({showItemsAsList: showItemsAsList});
+            if(this.player.get('percentageType')==0){
+                this.$('#percentageToDrop').attr('checked',true);
+                percentageType=0;
+            }else if(this.player.get('percentageType')==1){
+                this.$('#percentageInDeck').attr('checked',true);
+                percentageType=1;
+            }else{
+                this.$('#percentageToDrop').attr('checked',true);
+            }
 
+        }else{
+            this.$('#percentageToDrop').addClass('hidden');
+            this.$('#percentageInDeck').addClass('hidden');
+            this.$('.percentageOptionText').addClass('hidden');
+        }
 
+        app.currentPlayer.save({showItemsAsList: showItemsAsList, percentageType: percentageType});
+
+        if(app.SelectedGameView.model){
+            app.SelectedGameView.renderItemsDisplay(showItemsAsList);
+        }
     },
 
     changePassword: function(){
@@ -2877,7 +2952,35 @@ var ItemView = Backbone.View.extend({
 
     renderPercentage: function(){
 
-        var perc = this.collection.remaining()>0?(this.model.get('itemCount')/this.collection.remaining()*100).toFixed(1)+'%': '0.0%';
+        var total = this.collection.remaining();
+        var itemCount = this.model.get('itemCount');
+
+        var perc = 0;
+
+        if(app.currentPlayer.get('percentageType')==0){
+
+            perc = total>0?(itemCount/total*100).toFixed(1)+'%': '0.0%';
+
+        }else if(app.currentPlayer.get('percentageType')==1){
+
+            if(total > 22){
+                total = 22;
+            }
+            if(itemCount == 0){
+                perc =0;
+            }
+            else if(total - itemCount < 6){
+                perc = 1;
+            }else{
+
+                //1-FACT($A3-B$2)*FACT($A3-6)/(FACT($A3)*FACT($A3-B$2-6))
+                perc = 1 - (factorial(total-itemCount)*factorial(total-6)/(factorial(total)*factorial(total-itemCount-6)));
+            }
+
+            perc = perc>0?(perc*100).toFixed(1)+'%': '0.0%';
+
+        }
+
 
         this.$(".itemPerc").html(perc);
 
@@ -2936,6 +3039,8 @@ var ItemView = Backbone.View.extend({
         this.$('.itemPerc').addClass('itemList');
         this.$('.itemSub').addClass('itemList');
         this.$('.itemAdd').addClass('itemList');
+
+        this.renderPercentage();
 
     },
 
