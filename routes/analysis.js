@@ -26,10 +26,10 @@ function performAnalysis(req, res, next){
             enemies_per_player: 0,
             games: 0,
             games_per_enemy: 0,
-            ratio: 0,
             inProgress: 0,
             wins:{
                 total: 0,
+                ratio: 0,
                 crystal: 0,
                 heroes: 0,
                 surrender: 0,
@@ -37,6 +37,7 @@ function performAnalysis(req, res, next){
             },
             losses:{
                 total: 0,
+                ratio: 0,
                 crystal: 0,
                 heroes: 0,
                 surrender: 0,
@@ -165,26 +166,24 @@ function performAnalysis(req, res, next){
                     if(gameState==0){
                         stats.inProgress = stats.inProgress + 1;
                         return;
+                    }else if(gameState==1){
+                        stats.wins.crystal = stats.wins.crystal + 1;
+                    }else if(gameState==2){
+                        stats.wins.heroes = stats.wins.crystal + 1;
+                    }else if(gameState==3){
+                        stats.wins.surrender = stats.wins.surrender + 1;
+                    }else if(gameState==4){
+                        stats.wins.timeout = stats.wins.timeout + 1;
+                    }else if(gameState==5){
+                        stats.losses.crystal = stats.losses.crystal + 1;
+                    }else if(gameState==6){
+                        stats.losses.heroes = stats.losses.crystal + 1;
+                    }else if(gameState==7){
+                        stats.losses.surrender = stats.losses.surrender + 1;
+                    }else if(gameState==8){
+                        stats.losses.timeout = stats.losses.timeout + 1;
                     }
 
-                    switch(gameState){
-                        case 1: stats.wins.crystal = stats.wins.crystal + 1;
-                            break;
-                        case 2: stats.wins.heroes = stats.wins.heroes + 1;
-                            break;
-                        case 3: stats.wins.surrender = stats.wins.surrender + 1;
-                            break;
-                        case 4: stats.wins.timeout = stats.wins.timeout + 1;
-                            break;
-                        case 5: stats.losses.crystal = stats.losses.crystal + 1;
-                            break;
-                        case 6: stats.losses.heroes = stats.losses.heroes + 1;
-                            break;
-                        case 7: stats.losses.surrender = stats.losses.surrender + 1;
-                            break;
-                        case 8: stats.losses.timeout = stats.losses.timeout + 1;
-                            break;
-                    }
 
                     var playerRace = "";
                     var enemyRace = "";
@@ -240,11 +239,13 @@ function performAnalysis(req, res, next){
         });
 
 
-        stats.enemies_per_player = ( stats.players / stats.enemies )  || 0;
-        stats.games_per_enemy = ( stats.enemies / stats.games )  || 0;
+        stats.enemies_per_player = ( stats.enemies / stats.players )  || 0;
+        stats.games_per_enemy = ( stats.games / stats.enemies )  || 0;
 
 
-        stats.ratio = stats.wins.total / (stats.wins.total + stats.losses.total) * 100 || 0;
+        stats.wins.ratio = stats.wins.total / (stats.wins.total + stats.losses.total) * 100 || 0;
+        stats.losses.ratio = stats.losses.total / (stats.wins.total + stats.losses.total) * 100 || 0;
+
 
         stats.council.ratio = stats.council.wins / (stats.council.wins + stats.council.losses) * 100 || 0;
         stats.council.council_ratio = stats.council.council_wins / (stats.council.council_wins + stats.council.council_losses) * 100 || 0;
