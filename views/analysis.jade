@@ -15,14 +15,10 @@ block scripts-site
     script(src='/scripts/ha_tracker/views.js')
     script(type="text/javascript").
         $(window).load(function(){
-            console.log("LIXO");
             $.ajax({
                 url: "/api/analysis"
             }).success(function( msg ) {
-                console.log(JSON.stringify({ foo: "lorem", bar: "ipsum" },null, '\t'));
                 $('#data').html(JSON.stringify(msg,null, '\t'));
-                //$('#data').html(JSON.stringify({ foo: "lorem", bar: "ipsum" },null, '\t'));
-
             });
         })
 
