@@ -207,51 +207,75 @@
             },
         '35':
         {
-            itemImg: "/images/items/spy.png",
-            itemName: "Spy",
-            itemCountMax: 0
+            itemImg: "/images/items/heavy.png",
+            itemName: "Heavy",
+            itemCountMax: 2
         },
         '36':
         {
-            itemImg: "/images/items/sniper.png",
-            itemName: "Sniper",
-            itemCountMax: 0
+            itemImg: "/images/items/soldier.png",
+            itemName: "Soldier",
+            itemCountMax: 2
         },
         '37':
         {
-            itemImg: "/images/items/engineer_tf.png",
-            itemName: "Engineer",
-            itemCountMax: 0
+            itemImg: "/images/items/pyro.png",
+            itemName: "Pyro",
+            itemCountMax: 2
         },
         '38':
         {
-            itemImg: "/images/items/soldier.png",
-            itemName: "Soldier",
-            itemCountMax: 0
+            itemImg: "/images/items/demoman.png",
+            itemName: "Demoman",
+            itemCountMax: 2
         },
         '39':
         {
             itemImg: "/images/items/scout.png",
             itemName: "Scout",
-            itemCountMax: 0
+            itemCountMax: 2
         },
         '40':
         {
             itemImg: "/images/items/medic.png",
             itemName: "Medic",
-            itemCountMax: 0
+            itemCountMax: 2
         },
         '41':
         {
-            itemImg: "/images/items/heavy.png",
-            itemName: "Heavy",
-            itemCountMax: 0
+            itemImg: "/images/items/engineer_tf.png",
+            itemName: "Engineer",
+            itemCountMax: 2
         },
         '42':
         {
-            itemImg: "/images/items/demoman.png",
-            itemName: "Demoman",
-            itemCountMax: 0
+            itemImg: "/images/items/sniper.png",
+            itemName: "Sniper",
+            itemCountMax: 2
+        },
+        '43':
+        {
+            itemImg: "/images/items/spy.png",
+            itemName: "Spy",
+            itemCountMax: 2
+        },
+        '44':
+        {
+            itemImg: "/images/items/jarate.png",
+            itemName: "Jarate",
+            itemCountMax: 2
+        },
+        '45':
+        {
+            itemImg: "/images/items/sandvich.png",
+            itemName: "Sandvich",
+            itemCountMax: 2
+        },
+        '46':
+        {
+            itemImg: "/images/items/respawn.png",
+            itemName: "Respawn",
+            itemCountMax: 2
         }
 
     }
@@ -288,7 +312,7 @@
         raceName: "TF2",
         raceTitle: "/images/teamfortress2.png",
         raceIcon: "/images/teamfortress2_icon.png",
-        items: [35,36,37,38,39,40,41,42]
+        items: [35,36,37,38,39,40,41,42,43,44,45,46]
     }
 
     exports.Races = [exports.Council, exports.DarkElves, exports.Dwarves, exports.Tribe, exports.TF2];
