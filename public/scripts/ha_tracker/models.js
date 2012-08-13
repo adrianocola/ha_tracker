@@ -1134,7 +1134,13 @@ var Login = Backbone.Model.extend({
 
 
                 }).fail(function(err){
-                    cb(err.responseText);
+
+                    try{
+                        cb(JSON.parse(err.responseText).error);
+                    } catch(e){
+                        cb(err.responseText);
+                    }
+
                 });
 
         }else{

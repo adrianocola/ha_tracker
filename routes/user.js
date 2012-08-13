@@ -169,6 +169,16 @@ app.get('/api/user/get_username', function(req,res,next){
 
     models.User.findOne({email: req.query.email.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
 
+        if(err){
+            next(new app.UnexpectedError(err));
+            return;
+        }
+
+        if(!user){
+            next(new app.ExpectedError(117,"No user registered with that e-mail address"));
+            return;
+        }
+
         //returns the username of the user with the following e-mail
         res.json({username: user.username});
 
