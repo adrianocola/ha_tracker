@@ -376,8 +376,8 @@ block header
     div#logged-player.logged-window.dismissed
 
 block main-layout
-    //
-        div.update <i><b>UPDATE:</b> Now you can view game items as a list. Go to the settings menu (bellow you name) and check the option <b>"Show Item as List"</b></i>
+
+    div.update <i><b>UPDATE:</b> Added Shaolin Team!</b></i>
     div#player
         div.example
             h4.example-info Manage your games and keep track of wins, losses and games in progress
@@ -390,6 +390,13 @@ block main-layout
                 div.
                     <a id='example-signup' class='link'>Signup</a> or login and start using HA Tracker right now!
             img.game-example(src='/images/game.png')
+
+    script(type="text/javascript").
+        $(function(){
+            setTimeout(function(){
+                $('.update').slideUp();
+            },30000);
+        });
 
 block main-page
     div#signup-blanket.hidden
