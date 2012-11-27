@@ -1370,14 +1370,15 @@ var StatisticsView = Backbone.View.extend({
             ['Dwarves',  stats.council.dwarves_wins, stats.council.dwarves_losses, {v: stats.council.dwarves_ratio, f: stats.council.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.council.tribe_wins, stats.council.tribe_losses, {v: stats.council.tribe_ratio, f: stats.council.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.council.tf2_wins, stats.council.tf2_losses, {v: stats.council.tf2_ratio, f: stats.council.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.council.shaolin_wins, stats.council.shaolin_losses, {v: stats.council.shaolin_ratio, f: stats.council.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.council.wins, stats.council.losses, {v: stats.council.ratio, f: stats.council.ratio.toFixed(2)  + '%'}]
         ]);
 
         var councilTable = new google.visualization.Table(document.getElementById('councilTable'));
-        councilTable.draw(councilData, {'width':270, 'height':160});
+        councilTable.draw(councilData, {'width':270, 'height':200});
 
         councilData.removeColumn(3);
-        councilData.removeRow(5);
+        councilData.removeRow(6);
 
         var councilChart = new google.visualization.ColumnChart(document.getElementById('councilTable2'));
         councilChart.draw(councilData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'}});
@@ -1398,14 +1399,16 @@ var StatisticsView = Backbone.View.extend({
             ['Dwarves',  stats.darkelves.dwarves_wins, stats.darkelves.dwarves_losses, {v: stats.darkelves.dwarves_ratio, f: stats.darkelves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.darkelves.tribe_wins, stats.darkelves.tribe_losses, {v: stats.darkelves.tribe_ratio, f: stats.darkelves.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.darkelves.tf2_wins, stats.darkelves.tf2_losses, {v: stats.darkelves.tf2_ratio, f: stats.darkelves.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.darkelves.shaolin_wins, stats.darkelves.shaolin_losses, {v: stats.darkelves.shaolin_ratio, f: stats.darkelves.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.darkelves.wins, stats.darkelves.losses, {v: stats.darkelves.ratio, f: stats.darkelves.ratio.toFixed(2)  + '%'}]
+            
         ]);
 
         var darkelvesTable = new google.visualization.Table(document.getElementById('darkelvesTable'));
-        darkelvesTable.draw(darkelvesData, {'width':270, 'height':160});
+        darkelvesTable.draw(darkelvesData, {'width':270, 'height':200});
 
         darkelvesData.removeColumn(3);
-        darkelvesData.removeRow(5);
+        darkelvesData.removeRow(6);
 
         var darkelvesChart = new google.visualization.ColumnChart(document.getElementById('darkelvesTable2'));
         darkelvesChart.draw(darkelvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1425,14 +1428,15 @@ var StatisticsView = Backbone.View.extend({
             ['Dwarves',  stats.dwarves.dwarves_wins, stats.dwarves.dwarves_losses, {v: stats.dwarves.dwarves_ratio, f: stats.dwarves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.dwarves.tribe_wins, stats.dwarves.tribe_losses, {v: stats.dwarves.tribe_ratio, f: stats.dwarves.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.dwarves.tf2_wins, stats.dwarves.tf2_losses, {v: stats.dwarves.tf2_ratio, f: stats.dwarves.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.dwarves.shaolin_wins, stats.dwarves.shaolin_losses, {v: stats.dwarves.shaolin_ratio, f: stats.dwarves.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.dwarves.wins, stats.dwarves.losses, {v: stats.dwarves.ratio, f: stats.dwarves.ratio.toFixed(2)  + '%'}]
         ]);
 
         var dwarvesTable = new google.visualization.Table(document.getElementById('dwarvesTable'));
-        dwarvesTable.draw(dwarvesData, {'width':270, 'height':160});
+        dwarvesTable.draw(dwarvesData, {'width':270, 'height':200});
 
         dwarvesData.removeColumn(3);
-        dwarvesData.removeRow(5);
+        dwarvesData.removeRow(6);
 
         var dwarvesChart = new google.visualization.ColumnChart(document.getElementById('dwarvesTable2'));
         dwarvesChart.draw(dwarvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1452,14 +1456,15 @@ var StatisticsView = Backbone.View.extend({
             ['Dwarves',  stats.tribe.dwarves_wins, stats.tribe.dwarves_losses, {v: stats.tribe.dwarves_ratio, f: stats.tribe.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.tribe.tribe_wins, stats.tribe.tribe_losses, {v: stats.tribe.tribe_ratio, f: stats.tribe.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.tribe.tf2_wins, stats.tribe.tf2_losses, {v: stats.tribe.tf2_ratio, f: stats.tribe.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.tribe.shaolin_wins, stats.tribe.shaolin_losses, {v: stats.tribe.shaolin_ratio, f: stats.tribe.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.tribe.wins, stats.tribe.losses, {v: stats.tribe.ratio, f: stats.tribe.ratio.toFixed(2)  + '%'}]
         ]);
 
         var tribeTable = new google.visualization.Table(document.getElementById('tribeTable'));
-        tribeTable.draw(tribeData, {'width':270, 'height':160});
+        tribeTable.draw(tribeData, {'width':270, 'height':200});
 
         tribeData.removeColumn(3);
-        tribeData.removeRow(5);
+        tribeData.removeRow(6);
 
         var tribeChart = new google.visualization.ColumnChart(document.getElementById('tribeTable2'));
         tribeChart.draw(tribeData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1480,17 +1485,47 @@ var StatisticsView = Backbone.View.extend({
             ['Dwarves',  stats.tf2.dwarves_wins, stats.tf2.dwarves_losses, {v: stats.tf2.dwarves_ratio, f: stats.tf2.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.tf2.tribe_wins, stats.tf2.tribe_losses, {v: stats.tf2.tribe_ratio, f: stats.tf2.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.tf2.tf2_wins, stats.tf2.tf2_losses, {v: stats.tf2.tf2_ratio, f: stats.tf2.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.tf2.shaolin_wins, stats.tf2.shaolin_losses, {v: stats.tf2.shaolin_ratio, f: stats.tf2.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.tf2.wins, stats.tf2.losses, {v: stats.tf2.ratio, f: stats.tf2.ratio.toFixed(2)  + '%'}]
         ]);
 
         var tf2Table = new google.visualization.Table(document.getElementById('tf2Table'));
-        tf2Table.draw(tf2Data, {'width':270, 'height':160});
+        tf2Table.draw(tf2Data, {'width':270, 'height':200});
 
         tf2Data.removeColumn(3);
-        tf2Data.removeRow(5);
+        tf2Data.removeRow(6);
 
         var tf2Chart = new google.visualization.ColumnChart(document.getElementById('tf2Table2'));
         tf2Chart.draw(tf2Data, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
+
+
+        //*****************************************
+        //*************** Shaolin *****************
+        //*****************************************
+
+        var shaolinData = new google.visualization.DataTable();
+        shaolinData.addColumn('string', 'vs Race');
+        shaolinData.addColumn('number', 'Victories');
+        shaolinData.addColumn('number', 'Defeats');
+        shaolinData.addColumn('number', 'Ratio');
+        shaolinData.addRows([
+            ['Council',  stats.shaolin.council_wins, stats.shaolin.council_losses, {v: stats.shaolin.council_ratio, f: stats.shaolin.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.shaolin.darkelves_wins, stats.shaolin.darkelves_losses, {v: stats.shaolin.darkelves_ratio, f: stats.shaolin.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.shaolin.dwarves_wins, stats.shaolin.dwarves_losses, {v: stats.shaolin.dwarves_ratio, f: stats.shaolin.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.shaolin.tribe_wins, stats.shaolin.tribe_losses, {v: stats.shaolin.tribe_ratio, f: stats.shaolin.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.shaolin.tf2_wins, stats.shaolin.tf2_losses, {v: stats.shaolin.tf2_ratio, f: stats.shaolin.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.shaolin.shaolin_wins, stats.shaolin.shaolin_losses, {v: stats.shaolin.shaolin_ratio, f: stats.shaolin.shaolin_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.shaolin.wins, stats.shaolin.losses, {v: stats.shaolin.ratio, f: stats.shaolin.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var shaolinTable = new google.visualization.Table(document.getElementById('shaolinTable'));
+        shaolinTable.draw(shaolinData, {'width':270, 'height':200});
+
+        shaolinData.removeColumn(3);
+        shaolinData.removeRow(6);
+
+        var shaolinChart = new google.visualization.ColumnChart(document.getElementById('shaolinTable2'));
+        shaolinChart.draw(shaolinData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
 
 
     }
@@ -1885,14 +1920,15 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dwarves',  stats.council.dwarves_wins, stats.council.dwarves_losses, {v: stats.council.dwarves_ratio, f: stats.council.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.council.tribe_wins, stats.council.tribe_losses, {v: stats.council.tribe_ratio, f: stats.council.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.council.tf2_wins, stats.council.tf2_losses, {v: stats.council.tf2_ratio, f: stats.council.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.council.shaolin_wins, stats.council.shaolin_losses, {v: stats.council.shaolin_ratio, f: stats.council.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.council.wins, stats.council.losses, {v: stats.council.ratio, f: stats.council.ratio.toFixed(2)  + '%'}]
         ]);
 
         var councilTable = new google.visualization.Table(document.getElementById('councilTable'));
-        councilTable.draw(councilData, {'width':270, 'height':160});
+        councilTable.draw(councilData, {'width':270, 'height':200});
 
         councilData.removeColumn(3);
-        councilData.removeRow(5);
+        councilData.removeRow(6);
 
         var councilChart = new google.visualization.ColumnChart(document.getElementById('councilTable2'));
         councilChart.draw(councilData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'}});
@@ -1913,14 +1949,15 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dwarves',  stats.darkelves.dwarves_wins, stats.darkelves.dwarves_losses, {v: stats.darkelves.dwarves_ratio, f: stats.darkelves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.darkelves.tribe_wins, stats.darkelves.tribe_losses, {v: stats.darkelves.tribe_ratio, f: stats.darkelves.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.darkelves.tf2_wins, stats.darkelves.tf2_losses, {v: stats.darkelves.tf2_ratio, f: stats.darkelves.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.darkelves.shaolin_wins, stats.darkelves.shaolin_losses, {v: stats.darkelves.shaolin_ratio, f: stats.darkelves.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.darkelves.wins, stats.darkelves.losses, {v: stats.darkelves.ratio, f: stats.darkelves.ratio.toFixed(2)  + '%'}]
         ]);
 
         var darkelvesTable = new google.visualization.Table(document.getElementById('darkelvesTable'));
-        darkelvesTable.draw(darkelvesData, {'width':270, 'height':160});
+        darkelvesTable.draw(darkelvesData, {'width':270, 'height':200});
 
         darkelvesData.removeColumn(3);
-        darkelvesData.removeRow(5);
+        darkelvesData.removeRow(6);
 
         var darkelvesChart = new google.visualization.ColumnChart(document.getElementById('darkelvesTable2'));
         darkelvesChart.draw(darkelvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1940,14 +1977,15 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dwarves',  stats.dwarves.dwarves_wins, stats.dwarves.dwarves_losses, {v: stats.dwarves.dwarves_ratio, f: stats.dwarves.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.dwarves.tribe_wins, stats.dwarves.tribe_losses, {v: stats.dwarves.tribe_ratio, f: stats.dwarves.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.dwarves.tf2_wins, stats.dwarves.tf2_losses, {v: stats.dwarves.tf2_ratio, f: stats.dwarves.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.dwarves.shaolin_wins, stats.dwarves.shaolin_losses, {v: stats.dwarves.shaolin_ratio, f: stats.dwarves.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.dwarves.wins, stats.dwarves.losses, {v: stats.dwarves.ratio, f: stats.dwarves.ratio.toFixed(2)  + '%'}]
         ]);
 
         var dwarvesTable = new google.visualization.Table(document.getElementById('dwarvesTable'));
-        dwarvesTable.draw(dwarvesData, {'width':270, 'height':160});
+        dwarvesTable.draw(dwarvesData, {'width':270, 'height':200});
 
         dwarvesData.removeColumn(3);
-        dwarvesData.removeRow(5);
+        dwarvesData.removeRow(6);
 
         var dwarvesChart = new google.visualization.ColumnChart(document.getElementById('dwarvesTable2'));
         dwarvesChart.draw(dwarvesData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1967,14 +2005,15 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dwarves',  stats.tribe.dwarves_wins, stats.tribe.dwarves_losses, {v: stats.tribe.dwarves_ratio, f: stats.tribe.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.tribe.tribe_wins, stats.tribe.tribe_losses, {v: stats.tribe.tribe_ratio, f: stats.tribe.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.tribe.tf2_wins, stats.tribe.tf2_losses, {v: stats.tribe.tf2_ratio, f: stats.tribe.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.tribe.shaolin_wins, stats.tribe.shaolin_losses, {v: stats.tribe.shaolin_ratio, f: stats.tribe.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.tribe.wins, stats.tribe.losses, {v: stats.tribe.ratio, f: stats.tribe.ratio.toFixed(2)  + '%'}]
         ]);
 
         var tribeTable = new google.visualization.Table(document.getElementById('tribeTable'));
-        tribeTable.draw(tribeData, {'width':270, 'height':160});
+        tribeTable.draw(tribeData, {'width':270, 'height':200});
 
         tribeData.removeColumn(3);
-        tribeData.removeRow(5);
+        tribeData.removeRow(6);
 
         var tribeChart = new google.visualization.ColumnChart(document.getElementById('tribeTable2'));
         tribeChart.draw(tribeData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
@@ -1994,17 +2033,46 @@ var SelectedEnemyView = Backbone.View.extend({
             ['Dwarves',  stats.tf2.dwarves_wins, stats.tf2.dwarves_losses, {v: stats.tf2.dwarves_ratio, f: stats.tf2.dwarves_ratio.toFixed(2)  + '%'}],
             ['Tribe',  stats.tf2.tribe_wins, stats.tf2.tribe_losses, {v: stats.tf2.tribe_ratio, f: stats.tf2.tribe_ratio.toFixed(2)  + '%'}],
             ['TF2',  stats.tf2.tf2_wins, stats.tf2.tf2_losses, {v: stats.tf2.tf2_ratio, f: stats.tf2.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.tf2.shaolin_wins, stats.tf2.shaolin_losses, {v: stats.tf2.shaolin_ratio, f: stats.tf2.shaolin_ratio.toFixed(2)  + '%'}],
             ['TOTAL',  stats.tf2.wins, stats.tf2.losses, {v: stats.tf2.ratio, f: stats.tf2.ratio.toFixed(2)  + '%'}]
         ]);
 
-        var tf2able = new google.visualization.Table(document.getElementById('tf2Table'));
-        tf2able.draw(tf2Data, {'width':270, 'height':160});
+        var tf2Table = new google.visualization.Table(document.getElementById('tf2Table'));
+        tf2Table.draw(tf2Data, {'width':270, 'height':200});
 
         tf2Data.removeColumn(3);
-        tf2Data.removeRow(5);
+        tf2Data.removeRow(6);
 
         var tf2Chart = new google.visualization.ColumnChart(document.getElementById('tf2Table2'));
         tf2Chart.draw(tf2Data, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
+
+        //*****************************************
+        //*************** Shaolin *****************
+        //*****************************************
+
+        var shaolinData = new google.visualization.DataTable();
+        shaolinData.addColumn('string', 'vs Race');
+        shaolinData.addColumn('number', 'Victories');
+        shaolinData.addColumn('number', 'Defeats');
+        shaolinData.addColumn('number', 'Ratio');
+        shaolinData.addRows([
+            ['Council',  stats.shaolin.council_wins, stats.shaolin.council_losses, {v: stats.shaolin.council_ratio, f: stats.shaolin.council_ratio.toFixed(2)  + '%'}],
+            ['Dark Elves',  stats.shaolin.darkelves_wins, stats.shaolin.darkelves_losses, {v: stats.shaolin.darkelves_ratio, f: stats.shaolin.darkelves_ratio.toFixed(2)  + '%'}],
+            ['Dwarves',  stats.shaolin.dwarves_wins, stats.shaolin.dwarves_losses, {v: stats.shaolin.dwarves_ratio, f: stats.shaolin.dwarves_ratio.toFixed(2)  + '%'}],
+            ['Tribe',  stats.shaolin.tribe_wins, stats.shaolin.tribe_losses, {v: stats.shaolin.tribe_ratio, f: stats.shaolin.tribe_ratio.toFixed(2)  + '%'}],
+            ['TF2',  stats.shaolin.tf2_wins, stats.shaolin.tf2_losses, {v: stats.shaolin.tf2_ratio, f: stats.shaolin.tf2_ratio.toFixed(2)  + '%'}],
+            ['Shaolin',  stats.shaolin.shaolin_wins, stats.shaolin.shaolin_losses, {v: stats.shaolin.shaolin_ratio, f: stats.shaolin.shaolin_ratio.toFixed(2)  + '%'}],
+            ['TOTAL',  stats.shaolin.wins, stats.shaolin.losses, {v: stats.shaolin.ratio, f: stats.shaolin.ratio.toFixed(2)  + '%'}]
+        ]);
+
+        var shaolinTable = new google.visualization.Table(document.getElementById('shaolinTable'));
+        shaolinTable.draw(shaolinData, {'width':270, 'height':200});
+
+        shaolinData.removeColumn(3);
+        shaolinData.removeRow(6);
+
+        var shaolinChart = new google.visualization.ColumnChart(document.getElementById('shaolinTable2'));
+        shaolinChart.draw(shaolinData, {'isStacked': true,'width':320,'height':200,colors: ['green', 'red'],legend: {position: 'top'} });
 
     }
 

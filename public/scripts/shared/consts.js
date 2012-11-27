@@ -276,6 +276,54 @@
             itemImg: "/images/items/respawn.png",
             itemName: "Respawn",
             itemCountMax: 2
+        },
+        '47':
+        {
+            itemImg: "/images/items/monk.png",
+            itemName: "Monk",
+            itemCountMax: 3
+        },
+        '48':
+        {
+            itemImg: "/images/items/windblade.png",
+            itemName: "Windblade",
+            itemCountMax: 3
+        },
+        '49':
+        {
+            itemImg: "/images/items/poisoner.png",
+            itemName: "Poisoner",
+            itemCountMax: 3
+        },
+        '50':
+        {
+            itemImg: "/images/items/taoist.png",
+            itemName: "Taoist",
+            itemCountMax: 3
+        },
+        '51':
+        {
+            itemImg: "/images/items/shadow.png",
+            itemName: "Shadow",
+            itemCountMax: 1
+        },
+        '52':
+        {
+            itemImg: "/images/items/dragon.png",
+            itemName: "Dragon",
+            itemCountMax: 2
+        },
+        '53':
+        {
+            itemImg: "/images/items/combopotion.png",
+            itemName: "Combo Potion",
+            itemCountMax: 2
+        },
+        '54':
+        {
+            itemImg: "/images/items/bamboo.png",
+            itemName: "Bamboo",
+            itemCountMax: 2
         }
 
     }
@@ -315,7 +363,14 @@
         items: [35,36,37,38,39,40,41,42,43,44,45,46]
     }
 
-    exports.Races = [exports.Council, exports.DarkElves, exports.Dwarves, exports.Tribe, exports.TF2];
+    exports.Shaolin = {
+        raceName: "Shaolin",
+        raceTitle: "/images/shaolin.png",
+        raceIcon: "/images/shaolin_icon.png",
+        items: [47,48,49,50,51,52,7,8,9,53,54]
+    }
+
+    exports.Races = [exports.Council, exports.DarkElves, exports.Dwarves, exports.Tribe, exports.TF2, exports.Shaolin];
 
 
     exports.States = {

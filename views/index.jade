@@ -190,6 +190,10 @@ block templates
                 img.chartImage(src="/images/teamfortress2.png")
                 div#tf2Table.raceTable
                 div#tf2Table2.raceTable
+            div#shaolinChart.raceChart
+                img.chartImage(src="/images/shaolin.png")
+                div#shaolinTable.raceTable
+                div#shaolinTable2.raceTable
         div.noCharts No games against this opponent yet. Add some games to see some charts!
 
 
@@ -248,6 +252,10 @@ block templates
                 img.chartImage(src="/images/teamfortress2.png")
                 div#tf2Table.raceTable
                 div#tf2Table2.raceTable
+            div#shaolinChart.raceChart
+                img.chartImage(src="/images/shaolin.png")
+                div#shaolinTable.raceTable
+                div#shaolinTable2.raceTable
         div.noCharts No games yet. Add some games to see some charts!
 
 
@@ -266,6 +274,7 @@ block templates
             option(value="Dwarves") Dwarves
             option(value="Tribe") Tribe
             option(value="TF2") TF2
+            option(value="Shaolin") Shaolin
         br
         div.add-game-label Opponent:
         select.add-game-enemy-race
@@ -274,6 +283,7 @@ block templates
             option(value="Dwarves") Dwarves
             option(value="Tribe") Tribe
             option(value="TF2") TF2
+            option(value="Shaolin") Shaolin
         button.cancel-add-game.button-02(title="Cancel") X
         button.confirm-add-game.button-01(title="Confirm") &#x2713;
 
@@ -366,7 +376,8 @@ block header
     div#logged-player.logged-window.dismissed
 
 block main-layout
-    div.update <i><b>UPDATE:</b> Now you can view game items as a list. Go to the settings menu (bellow you name) and check the option <b>"Show Item as List"</b></i>
+    //
+        div.update <i><b>UPDATE:</b> Now you can view game items as a list. Go to the settings menu (bellow you name) and check the option <b>"Show Item as List"</b></i>
     div#player
         div.example
             h4.example-info Manage your games and keep track of wins, losses and games in progress

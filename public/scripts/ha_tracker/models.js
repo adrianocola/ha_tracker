@@ -31,7 +31,13 @@ var TF2 = {
     raceIcon: "/images/teamfortress2_icon.png"
 }
 
-var Races = [Council, DarkElves, Dwarves, Tribe,TF2];
+var Shaolin = {
+    raceName: "Shaolin",
+    raceTitle: "/images/shaolin.png",
+    raceIcon: "/images/shaolin_icon.png"
+}
+
+var Races = [Council, DarkElves, Dwarves, Tribe,TF2, Shaolin];
 
 
 var Item = Backbone.Model.extend({
@@ -474,7 +480,10 @@ var Enemy = Backbone.Model.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             darkelves:{
                 wins: 0,
@@ -494,7 +503,10 @@ var Enemy = Backbone.Model.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             dwarves:{
                 wins: 0,
@@ -514,7 +526,10 @@ var Enemy = Backbone.Model.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             tribe:{
                 wins: 0,
@@ -534,7 +549,10 @@ var Enemy = Backbone.Model.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             tf2:{
                 wins: 0,
@@ -554,7 +572,33 @@ var Enemy = Backbone.Model.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
+            },
+            shaolin:{
+                wins: 0,
+                losses: 0,
+                ratio: 0,
+                council_wins: 0,
+                council_losses: 0,
+                council_ratio: 0,
+                darkelves_wins: 0,
+                darkelves_losses: 0,
+                darkelves_ratio: 0,
+                dwarves_wins: 0,
+                dwarves_losses: 0,
+                dwarves_ratio: 0,
+                tribe_wins: 0,
+                tribe_losses: 0,
+                tribe_ratio: 0,
+                tf2_wins: 0,
+                tf2_losses: 0,
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             }
 
 
@@ -602,6 +646,8 @@ var Enemy = Backbone.Model.extend({
                     break;
                 case 'TF2': playerRace = "tf2";
                     break;
+                case 'Shaolin': playerRace = "shaolin";
+                    break;
             }
 
 
@@ -615,6 +661,8 @@ var Enemy = Backbone.Model.extend({
                 case 'Tribe': enemyRace = "tribe";
                     break;
                 case 'TF2': enemyRace = "tf2";
+                    break;
+                case 'Shaolin': playerRace = "shaolin";
                     break;
             }
 
@@ -646,6 +694,7 @@ var Enemy = Backbone.Model.extend({
         stats.council.dwarves_ratio = stats.council.dwarves_wins / (stats.council.dwarves_wins + stats.council.dwarves_losses) * 100 || 0;
         stats.council.tribe_ratio = stats.council.tribe_wins / (stats.council.tribe_wins + stats.council.tribe_losses) * 100 || 0;
         stats.council.tf2_ratio = stats.council.tf2_wins / (stats.council.tf2_wins + stats.council.tf2_losses) * 100 || 0;
+        stats.council.shaolin_ratio = stats.council.shaolin_wins / (stats.council.shaolin_wins + stats.council.shaolin_losses) * 100 || 0;
 
         stats.darkelves.ratio = stats.darkelves.wins / (stats.darkelves.wins + stats.darkelves.losses) * 100 || 0;
         stats.darkelves.council_ratio = stats.darkelves.council_wins / (stats.darkelves.council_wins + stats.darkelves.council_losses) * 100 || 0;
@@ -653,6 +702,7 @@ var Enemy = Backbone.Model.extend({
         stats.darkelves.dwarves_ratio = stats.darkelves.dwarves_wins / (stats.darkelves.dwarves_wins + stats.darkelves.dwarves_losses) * 100 || 0;
         stats.darkelves.tribe_ratio = stats.darkelves.tribe_wins / (stats.darkelves.tribe_wins + stats.darkelves.tribe_losses) * 100 || 0;
         stats.darkelves.tf2_ratio = stats.darkelves.tf2_wins / (stats.darkelves.tf2_wins + stats.darkelves.tf2_losses) * 100 || 0;
+        stats.darkelves.shaolin_ratio = stats.darkelves.shaolin_wins / (stats.darkelves.shaolin_wins + stats.darkelves.shaolin_losses) * 100 || 0;
 
         stats.dwarves.ratio = stats.dwarves.wins / (stats.dwarves.wins + stats.dwarves.losses) * 100 || 0;
         stats.dwarves.council_ratio = stats.dwarves.council_wins / (stats.dwarves.council_wins + stats.dwarves.council_losses) * 100 || 0;
@@ -660,6 +710,7 @@ var Enemy = Backbone.Model.extend({
         stats.dwarves.dwarves_ratio = stats.dwarves.dwarves_wins / (stats.dwarves.dwarves_wins + stats.dwarves.dwarves_losses) * 100 || 0;
         stats.dwarves.tribe_ratio = stats.dwarves.tribe_wins / (stats.dwarves.tribe_wins + stats.dwarves.tribe_losses) * 100 || 0;
         stats.dwarves.tf2_ratio = stats.dwarves.tf2_wins / (stats.dwarves.tf2_wins + stats.dwarves.tf2_losses) * 100 || 0;
+        stats.dwarves.shaolin_ratio = stats.dwarves.shaolin_wins / (stats.dwarves.shaolin_wins + stats.dwarves.shaolin_losses) * 100 || 0;
 
         stats.tribe.ratio = stats.tribe.wins / (stats.tribe.wins + stats.tribe.losses) * 100 || 0;
         stats.tribe.council_ratio = stats.tribe.council_wins / (stats.tribe.council_wins + stats.tribe.council_losses) * 100 || 0;
@@ -667,6 +718,7 @@ var Enemy = Backbone.Model.extend({
         stats.tribe.dwarves_ratio = stats.tribe.dwarves_wins / (stats.tribe.dwarves_wins + stats.tribe.dwarves_losses) * 100 || 0;
         stats.tribe.tribe_ratio = stats.tribe.tribe_wins / (stats.tribe.tribe_wins + stats.tribe.tribe_losses) * 100 || 0;
         stats.tribe.tf2_ratio = stats.tribe.tf2_wins / (stats.tribe.tf2_wins + stats.tribe.tf2_losses) * 100 || 0;
+        stats.tribe.shaolin_ratio = stats.tribe.shaolin_wins / (stats.tribe.shaolin_wins + stats.tribe.shaolin_losses) * 100 || 0;
 
         stats.tf2.ratio = stats.tf2.wins / (stats.tf2.wins + stats.tf2.losses) * 100 || 0;
         stats.tf2.council_ratio = stats.tf2.council_wins / (stats.tf2.council_wins + stats.tf2.council_losses) * 100 || 0;
@@ -674,6 +726,15 @@ var Enemy = Backbone.Model.extend({
         stats.tf2.dwarves_ratio = stats.tf2.dwarves_wins / (stats.tf2.dwarves_wins + stats.tf2.dwarves_losses) * 100 || 0;
         stats.tf2.tribe_ratio = stats.tf2.tribe_wins / (stats.tf2.tribe_wins + stats.tf2.tribe_losses) * 100 || 0;
         stats.tf2.tf2_ratio = stats.tf2.tf2_wins / (stats.tf2.tf2_wins + stats.tf2.tf2_losses) * 100 || 0;
+        stats.tf2.shaolin_ratio = stats.tf2.shaolin_wins / (stats.tf2.shaolin_wins + stats.tf2.shaolin_losses) * 100 || 0;
+
+        stats.shaolin.ratio = stats.shaolin.wins / (stats.shaolin.wins + stats.shaolin.losses) * 100 || 0;
+        stats.shaolin.council_ratio = stats.shaolin.council_wins / (stats.shaolin.council_wins + stats.shaolin.council_losses) * 100 || 0;
+        stats.shaolin.darkelves_ratio = stats.shaolin.darkelves_wins / (stats.shaolin.darkelves_wins + stats.shaolin.darkelves_losses) * 100 || 0;
+        stats.shaolin.dwarves_ratio = stats.shaolin.dwarves_wins / (stats.shaolin.dwarves_wins + stats.shaolin.dwarves_losses) * 100 || 0;
+        stats.shaolin.tribe_ratio = stats.shaolin.tribe_wins / (stats.shaolin.tribe_wins + stats.shaolin.tribe_losses) * 100 || 0;
+        stats.shaolin.tf2_ratio = stats.shaolin.tf2_wins / (stats.shaolin.tf2_wins + stats.shaolin.tf2_losses) * 100 || 0;
+        stats.shaolin.shaolin_ratio = stats.shaolin.shaolin_wins / (stats.shaolin.shaolin_wins + stats.shaolin.shaolin_losses) * 100 || 0;
         
 
         return stats;
@@ -770,7 +831,10 @@ var Enemies = Backbone.Collection.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             darkelves:{
                 wins: 0,
@@ -790,7 +854,10 @@ var Enemies = Backbone.Collection.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             dwarves:{
                 wins: 0,
@@ -810,7 +877,10 @@ var Enemies = Backbone.Collection.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             tribe:{
                 wins: 0,
@@ -830,7 +900,10 @@ var Enemies = Backbone.Collection.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             tf2:{
                 wins: 0,
@@ -850,8 +923,36 @@ var Enemies = Backbone.Collection.extend({
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
+            },
+            shaolin:{
+                wins: 0,
+                losses: 0,
+                ratio: 0,
+                council_wins: 0,
+                council_losses: 0,
+                council_ratio: 0,
+                darkelves_wins: 0,
+                darkelves_losses: 0,
+                darkelves_ratio: 0,
+                dwarves_wins: 0,
+                dwarves_losses: 0,
+                dwarves_ratio: 0,
+                tribe_wins: 0,
+                tribe_losses: 0,
+                tribe_ratio: 0,
+                tf2_wins: 0,
+                tf2_losses: 0,
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             }
+
+
 
         };
 
@@ -887,6 +988,8 @@ var Enemies = Backbone.Collection.extend({
             stats.council.tribe_losses += enemyStats.council.tribe_losses;
             stats.council.tf2_wins += enemyStats.council.tf2_wins;
             stats.council.tf2_losses += enemyStats.council.tf2_losses;
+            stats.council.shaolin_wins += enemyStats.council.shaolin_wins;
+            stats.council.shaolin_losses += enemyStats.council.shaolin_losses;
 
             stats.darkelves.wins += enemyStats.darkelves.wins;
             stats.darkelves.losses += enemyStats.darkelves.losses;
@@ -900,6 +1003,8 @@ var Enemies = Backbone.Collection.extend({
             stats.darkelves.tribe_losses += enemyStats.darkelves.tribe_losses;
             stats.darkelves.tf2_wins += enemyStats.darkelves.tf2_wins;
             stats.darkelves.tf2_losses += enemyStats.darkelves.tf2_losses;
+            stats.darkelves.shaolin_wins += enemyStats.darkelves.shaolin_wins;
+            stats.darkelves.shaolin_losses += enemyStats.darkelves.shaolin_losses;
 
             stats.dwarves.wins += enemyStats.dwarves.wins;
             stats.dwarves.losses += enemyStats.dwarves.losses;
@@ -913,6 +1018,8 @@ var Enemies = Backbone.Collection.extend({
             stats.dwarves.tribe_losses += enemyStats.dwarves.tribe_losses;
             stats.dwarves.tf2_wins += enemyStats.dwarves.tf2_wins;
             stats.dwarves.tf2_losses += enemyStats.dwarves.tf2_losses;
+            stats.dwarves.shaolin_wins += enemyStats.dwarves.shaolin_wins;
+            stats.dwarves.shaolin_losses += enemyStats.dwarves.shaolin_losses;
 
             stats.tribe.wins += enemyStats.tribe.wins;
             stats.tribe.losses += enemyStats.tribe.losses;
@@ -926,6 +1033,8 @@ var Enemies = Backbone.Collection.extend({
             stats.tribe.tribe_losses += enemyStats.tribe.tribe_losses;
             stats.tribe.tf2_wins += enemyStats.tribe.tf2_wins;
             stats.tribe.tf2_losses += enemyStats.tribe.tf2_losses;
+            stats.tribe.shaolin_wins += enemyStats.tribe.shaolin_wins;
+            stats.tribe.shaolin_losses += enemyStats.tribe.shaolin_losses;
 
             stats.tf2.wins += enemyStats.tf2.wins;
             stats.tf2.losses += enemyStats.tf2.losses;
@@ -939,6 +1048,23 @@ var Enemies = Backbone.Collection.extend({
             stats.tf2.tribe_losses += enemyStats.tf2.tribe_losses;
             stats.tf2.tf2_wins += enemyStats.tf2.tf2_wins;
             stats.tf2.tf2_losses += enemyStats.tf2.tf2_losses;
+            stats.tf2.shaolin_wins += enemyStats.tf2.shaolin_wins;
+            stats.tf2.shaolin_losses += enemyStats.tf2.shaolin_losses;
+
+            stats.shaolin.wins += enemyStats.shaolin.wins;
+            stats.shaolin.losses += enemyStats.shaolin.losses;
+            stats.shaolin.council_wins += enemyStats.shaolin.council_wins;
+            stats.shaolin.council_losses += enemyStats.shaolin.council_losses;
+            stats.shaolin.darkelves_wins += enemyStats.shaolin.darkelves_wins;
+            stats.shaolin.darkelves_losses += enemyStats.shaolin.darkelves_losses;
+            stats.shaolin.dwarves_wins += enemyStats.shaolin.dwarves_wins;
+            stats.shaolin.dwarves_losses += enemyStats.shaolin.dwarves_losses;
+            stats.shaolin.tribe_wins += enemyStats.shaolin.tribe_wins;
+            stats.shaolin.tribe_losses += enemyStats.shaolin.tribe_losses;
+            stats.shaolin.tf2_wins += enemyStats.shaolin.tf2_wins;
+            stats.shaolin.tf2_losses += enemyStats.shaolin.tf2_losses;
+            stats.shaolin.shaolin_wins += enemyStats.shaolin.shaolin_wins;
+            stats.shaolin.shaolin_losses += enemyStats.shaolin.shaolin_losses;
             
 
         },this);
@@ -950,7 +1076,8 @@ var Enemies = Backbone.Collection.extend({
         stats.council.darkelves_ratio = stats.council.darkelves_wins / (stats.council.darkelves_wins + stats.council.darkelves_losses) * 100 || 0;
         stats.council.dwarves_ratio = stats.council.dwarves_wins / (stats.council.dwarves_wins + stats.council.dwarves_losses) * 100 || 0;
         stats.council.tribe_ratio = stats.council.tribe_wins / (stats.council.tribe_wins + stats.council.tribe_losses) * 100 || 0;
-        stats.council.tf2_ratio = stats.council.tf2_wins / (stats.council.tf2_wins + stats.council.tf2_losses) * 100 || 0;        
+        stats.council.tf2_ratio = stats.council.tf2_wins / (stats.council.tf2_wins + stats.council.tf2_losses) * 100 || 0;
+        stats.council.shaolin_ratio = stats.council.shaolin_wins / (stats.council.shaolin_wins + stats.council.shaolin_losses) * 100 || 0;
 
         stats.darkelves.ratio = stats.darkelves.wins / (stats.darkelves.wins + stats.darkelves.losses) * 100 || 0;
         stats.darkelves.council_ratio = stats.darkelves.council_wins / (stats.darkelves.council_wins + stats.darkelves.council_losses) * 100 || 0;
@@ -958,6 +1085,7 @@ var Enemies = Backbone.Collection.extend({
         stats.darkelves.dwarves_ratio = stats.darkelves.dwarves_wins / (stats.darkelves.dwarves_wins + stats.darkelves.dwarves_losses) * 100 || 0;
         stats.darkelves.tribe_ratio = stats.darkelves.tribe_wins / (stats.darkelves.tribe_wins + stats.darkelves.tribe_losses) * 100 || 0;
         stats.darkelves.tf2_ratio = stats.darkelves.tf2_wins / (stats.darkelves.tf2_wins + stats.darkelves.tf2_losses) * 100 || 0;
+        stats.darkelves.shaolin_ratio = stats.darkelves.shaolin_wins / (stats.darkelves.shaolin_wins + stats.darkelves.shaolin_losses) * 100 || 0;
 
         stats.dwarves.ratio = stats.dwarves.wins / (stats.dwarves.wins + stats.dwarves.losses) * 100 || 0;
         stats.dwarves.council_ratio = stats.dwarves.council_wins / (stats.dwarves.council_wins + stats.dwarves.council_losses) * 100 || 0;
@@ -965,6 +1093,7 @@ var Enemies = Backbone.Collection.extend({
         stats.dwarves.dwarves_ratio = stats.dwarves.dwarves_wins / (stats.dwarves.dwarves_wins + stats.dwarves.dwarves_losses) * 100 || 0;
         stats.dwarves.tribe_ratio = stats.dwarves.tribe_wins / (stats.dwarves.tribe_wins + stats.dwarves.tribe_losses) * 100 || 0;
         stats.dwarves.tf2_ratio = stats.dwarves.tf2_wins / (stats.dwarves.tf2_wins + stats.dwarves.tf2_losses) * 100 || 0;
+        stats.dwarves.shaolin_ratio = stats.dwarves.shaolin_wins / (stats.dwarves.shaolin_wins + stats.dwarves.shaolin_losses) * 100 || 0;
 
         stats.tribe.ratio = stats.tribe.wins / (stats.tribe.wins + stats.tribe.losses) * 100 || 0;
         stats.tribe.council_ratio = stats.tribe.council_wins / (stats.tribe.council_wins + stats.tribe.council_losses) * 100 || 0;
@@ -972,6 +1101,7 @@ var Enemies = Backbone.Collection.extend({
         stats.tribe.dwarves_ratio = stats.tribe.dwarves_wins / (stats.tribe.dwarves_wins + stats.tribe.dwarves_losses) * 100 || 0;
         stats.tribe.tribe_ratio = stats.tribe.tribe_wins / (stats.tribe.tribe_wins + stats.tribe.tribe_losses) * 100 || 0;
         stats.tribe.tf2_ratio = stats.tribe.tf2_wins / (stats.tribe.tf2_wins + stats.tribe.tf2_losses) * 100 || 0;
+        stats.tribe.shaolin_ratio = stats.tribe.shaolin_wins / (stats.tribe.shaolin_wins + stats.tribe.shaolin_losses) * 100 || 0;
 
         stats.tf2.ratio = stats.tf2.wins / (stats.tf2.wins + stats.tf2.losses) * 100 || 0;
         stats.tf2.council_ratio = stats.tf2.council_wins / (stats.tf2.council_wins + stats.tf2.council_losses) * 100 || 0;
@@ -979,6 +1109,15 @@ var Enemies = Backbone.Collection.extend({
         stats.tf2.dwarves_ratio = stats.tf2.dwarves_wins / (stats.tf2.dwarves_wins + stats.tf2.dwarves_losses) * 100 || 0;
         stats.tf2.tribe_ratio = stats.tf2.tribe_wins / (stats.tf2.tribe_wins + stats.tf2.tribe_losses) * 100 || 0;
         stats.tf2.tf2_ratio = stats.tf2.tf2_wins / (stats.tf2.tf2_wins + stats.tf2.tf2_losses) * 100 || 0;
+        stats.tf2.shaolin_ratio = stats.tf2.shaolin_wins / (stats.tf2.shaolin_wins + stats.tf2.shaolin_losses) * 100 || 0;
+
+        stats.shaolin.ratio = stats.shaolin.wins / (stats.shaolin.wins + stats.shaolin.losses) * 100 || 0;
+        stats.shaolin.council_ratio = stats.shaolin.council_wins / (stats.shaolin.council_wins + stats.shaolin.council_losses) * 100 || 0;
+        stats.shaolin.darkelves_ratio = stats.shaolin.darkelves_wins / (stats.shaolin.darkelves_wins + stats.shaolin.darkelves_losses) * 100 || 0;
+        stats.shaolin.dwarves_ratio = stats.shaolin.dwarves_wins / (stats.shaolin.dwarves_wins + stats.shaolin.dwarves_losses) * 100 || 0;
+        stats.shaolin.tribe_ratio = stats.shaolin.tribe_wins / (stats.shaolin.tribe_wins + stats.shaolin.tribe_losses) * 100 || 0;
+        stats.shaolin.tf2_ratio = stats.shaolin.tf2_wins / (stats.shaolin.tf2_wins + stats.shaolin.tf2_losses) * 100 || 0;
+        stats.shaolin.shaolin_ratio = stats.shaolin.shaolin_wins / (stats.shaolin.shaolin_wins + stats.shaolin.shaolin_losses) * 100 || 0;
 
 
         return stats;
