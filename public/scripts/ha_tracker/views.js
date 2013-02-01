@@ -1285,7 +1285,7 @@ var StatisticsView = Backbone.View.extend({
         //*****************************************
 
         var enemiesData = new google.visualization.DataTable();
-        enemiesData.addColumn('string', 'Enemy');
+        enemiesData.addColumn('string', 'Opponent');
         enemiesData.addColumn('number', 'Victories');
         enemiesData.addColumn('number', 'Defeats');
         enemiesData.addColumn('number', 'Ratio');
