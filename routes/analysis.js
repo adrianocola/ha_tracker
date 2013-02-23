@@ -61,7 +61,10 @@ function performAnalysis(req, res, next){
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             darkelves:{
                 wins: 0,
@@ -81,7 +84,10 @@ function performAnalysis(req, res, next){
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             dwarves:{
                 wins: 0,
@@ -101,7 +107,10 @@ function performAnalysis(req, res, next){
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             tribe:{
                 wins: 0,
@@ -121,7 +130,10 @@ function performAnalysis(req, res, next){
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             },
             tf2:{
                 wins: 0,
@@ -141,7 +153,33 @@ function performAnalysis(req, res, next){
                 tribe_ratio: 0,
                 tf2_wins: 0,
                 tf2_losses: 0,
-                tf2_ratio: 0
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
+            },
+            shaolin:{
+                wins: 0,
+                losses: 0,
+                ratio: 0,
+                council_wins: 0,
+                council_losses: 0,
+                council_ratio: 0,
+                darkelves_wins: 0,
+                darkelves_losses: 0,
+                darkelves_ratio: 0,
+                dwarves_wins: 0,
+                dwarves_losses: 0,
+                dwarves_ratio: 0,
+                tribe_wins: 0,
+                tribe_losses: 0,
+                tribe_ratio: 0,
+                tf2_wins: 0,
+                tf2_losses: 0,
+                tf2_ratio: 0,
+                shaolin_wins: 0,
+                shaolin_losses: 0,
+                shaolin_ratio: 0
             }
 
 
@@ -199,6 +237,8 @@ function performAnalysis(req, res, next){
                             break;
                         case 'TF2': playerRace = "tf2";
                             break;
+                        case 'Shaolin': playerRace = "shaolin";
+                            break;
                     }
 
 
@@ -212,6 +252,8 @@ function performAnalysis(req, res, next){
                         case 'Tribe': enemyRace = "tribe";
                             break;
                         case 'TF2': enemyRace = "tf2";
+                            break;
+                        case 'Shaolin': enemyRace = "shaolin";
                             break;
                     }
 
@@ -253,6 +295,7 @@ function performAnalysis(req, res, next){
         stats.council.dwarves_ratio = stats.council.dwarves_wins / (stats.council.dwarves_wins + stats.council.dwarves_losses) * 100 || 0;
         stats.council.tribe_ratio = stats.council.tribe_wins / (stats.council.tribe_wins + stats.council.tribe_losses) * 100 || 0;
         stats.council.tf2_ratio = stats.council.tf2_wins / (stats.council.tf2_wins + stats.council.tf2_losses) * 100 || 0;
+        stats.council.shaolin_ratio = stats.council.shaolin_wins / (stats.council.shaolin_wins + stats.council.shaolin_losses) * 100 || 0;
 
         stats.darkelves.ratio = stats.darkelves.wins / (stats.darkelves.wins + stats.darkelves.losses) * 100 || 0;
         stats.darkelves.council_ratio = stats.darkelves.council_wins / (stats.darkelves.council_wins + stats.darkelves.council_losses) * 100 || 0;
@@ -260,6 +303,7 @@ function performAnalysis(req, res, next){
         stats.darkelves.dwarves_ratio = stats.darkelves.dwarves_wins / (stats.darkelves.dwarves_wins + stats.darkelves.dwarves_losses) * 100 || 0;
         stats.darkelves.tribe_ratio = stats.darkelves.tribe_wins / (stats.darkelves.tribe_wins + stats.darkelves.tribe_losses) * 100 || 0;
         stats.darkelves.tf2_ratio = stats.darkelves.tf2_wins / (stats.darkelves.tf2_wins + stats.darkelves.tf2_losses) * 100 || 0;
+        stats.darkelves.shaolin_ratio = stats.darkelves.shaolin_wins / (stats.darkelves.shaolin_wins + stats.darkelves.shaolin_losses) * 100 || 0;
 
         stats.dwarves.ratio = stats.dwarves.wins / (stats.dwarves.wins + stats.dwarves.losses) * 100 || 0;
         stats.dwarves.council_ratio = stats.dwarves.council_wins / (stats.dwarves.council_wins + stats.dwarves.council_losses) * 100 || 0;
@@ -267,6 +311,7 @@ function performAnalysis(req, res, next){
         stats.dwarves.dwarves_ratio = stats.dwarves.dwarves_wins / (stats.dwarves.dwarves_wins + stats.dwarves.dwarves_losses) * 100 || 0;
         stats.dwarves.tribe_ratio = stats.dwarves.tribe_wins / (stats.dwarves.tribe_wins + stats.dwarves.tribe_losses) * 100 || 0;
         stats.dwarves.tf2_ratio = stats.dwarves.tf2_wins / (stats.dwarves.tf2_wins + stats.dwarves.tf2_losses) * 100 || 0;
+        stats.dwarves.shaolin_ratio = stats.dwarves.shaolin_wins / (stats.dwarves.shaolin_wins + stats.dwarves.shaolin_losses) * 100 || 0;
 
         stats.tribe.ratio = stats.tribe.wins / (stats.tribe.wins + stats.tribe.losses) * 100 || 0;
         stats.tribe.council_ratio = stats.tribe.council_wins / (stats.tribe.council_wins + stats.tribe.council_losses) * 100 || 0;
@@ -274,6 +319,7 @@ function performAnalysis(req, res, next){
         stats.tribe.dwarves_ratio = stats.tribe.dwarves_wins / (stats.tribe.dwarves_wins + stats.tribe.dwarves_losses) * 100 || 0;
         stats.tribe.tribe_ratio = stats.tribe.tribe_wins / (stats.tribe.tribe_wins + stats.tribe.tribe_losses) * 100 || 0;
         stats.tribe.tf2_ratio = stats.tribe.tf2_wins / (stats.tribe.tf2_wins + stats.tribe.tf2_losses) * 100 || 0;
+        stats.tribe.shaolin_ratio = stats.tribe.shaolin_wins / (stats.tribe.shaolin_wins + stats.tribe.shaolin_losses) * 100 || 0;
 
         stats.tf2.ratio = stats.tf2.wins / (stats.tf2.wins + stats.tf2.losses) * 100 || 0;
         stats.tf2.council_ratio = stats.tf2.council_wins / (stats.tf2.council_wins + stats.tf2.council_losses) * 100 || 0;
@@ -281,6 +327,15 @@ function performAnalysis(req, res, next){
         stats.tf2.dwarves_ratio = stats.tf2.dwarves_wins / (stats.tf2.dwarves_wins + stats.tf2.dwarves_losses) * 100 || 0;
         stats.tf2.tribe_ratio = stats.tf2.tribe_wins / (stats.tf2.tribe_wins + stats.tf2.tribe_losses) * 100 || 0;
         stats.tf2.tf2_ratio = stats.tf2.tf2_wins / (stats.tf2.tf2_wins + stats.tf2.tf2_losses) * 100 || 0;
+        stats.tf2.shaolin_ratio = stats.tf2.shaolin_wins / (stats.tf2.shaolin_wins + stats.tf2.shaolin_losses) * 100 || 0;
+
+        stats.shaolin.ratio = stats.shaolin.wins / (stats.shaolin.wins + stats.shaolin.losses) * 100 || 0;
+        stats.shaolin.council_ratio = stats.shaolin.council_wins / (stats.shaolin.council_wins + stats.shaolin.council_losses) * 100 || 0;
+        stats.shaolin.darkelves_ratio = stats.shaolin.darkelves_wins / (stats.shaolin.darkelves_wins + stats.shaolin.darkelves_losses) * 100 || 0;
+        stats.shaolin.dwarves_ratio = stats.shaolin.dwarves_wins / (stats.shaolin.dwarves_wins + stats.shaolin.dwarves_losses) * 100 || 0;
+        stats.shaolin.tribe_ratio = stats.shaolin.tribe_wins / (stats.shaolin.tribe_wins + stats.shaolin.tribe_losses) * 100 || 0;
+        stats.shaolin.tf2_ratio = stats.shaolin.tf2_wins / (stats.shaolin.tf2_wins + stats.shaolin.tf2_losses) * 100 || 0;
+        stats.shaolin.shaolin_ratio = stats.shaolin.shaolin_wins / (stats.shaolin.shaolin_wins + stats.shaolin.shaolin_losses) * 100 || 0;
 
         var multi = app.redis.multi();
 
