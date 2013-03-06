@@ -23,7 +23,7 @@ if (env.development) {
         session: process.env.EXPRESS_SESSION_KEY,
         mail_username: process.env.MAIL_USERNAME,
         mail_password: process.env.MAIL_PASSWORD,
-        statsmix_key: process.env.STATSMIX_KEY,
+        //statsmix_key: process.env.STATSMIX_KEY,
         test_user_id: process.env.TEST_USER_ID,
         test_player_id: process.env.TEST_PLAYER_ID
 

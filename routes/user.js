@@ -252,7 +252,7 @@ app.get('/api/user/login', function(req,res,next){
 
                         res.json(secureUser);
 
-                        common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.platform(req)});
+                        //common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.platform(req)});
 
                     });
 
@@ -264,7 +264,7 @@ app.get('/api/user/login', function(req,res,next){
 
                     res.json(secureUser);
 
-                    common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.platform(req)});
+                    //common.statsMix(req.authorization.userId, 4321,1,{type: 'email', platform: common.platform(req)});
                 }
 
 
@@ -303,7 +303,7 @@ app.get('/api/user/continue_login', function(req,res,next){
 
             res.json(secureUser);
 
-            common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.platform(req)});
+            //common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.platform(req)});
 
         });
 
@@ -346,7 +346,7 @@ app.get('/api/user/continue_login', function(req,res,next){
 
                     res.json(secureUser);
 
-                    common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.platform(req)});
+                    //common.statsMix(req.authorization.userId, 4321,1,{type: 'relogin', platform: common.platform(req)});
 
                 });
 
@@ -433,7 +433,7 @@ app.post("/api/user/signup", function(req, res, next){
                 res.json(secureUser);
 
 
-                common.statsMix(req.authorization.userId, 4320,1,{type: 'email', platform: common.platform(req)});
+                //common.statsMix(req.authorization.userId, 4320,1,{type: 'email', platform: common.platform(req)});
 
             });
 
@@ -709,7 +709,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
                         res.send(secureUser);
 
-                        common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
+                        //common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
 
                     });
 
@@ -736,7 +736,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
                             res.send(secureUser);
 
-                            common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
+                            //common.statsMix(req.authorization.userId, 4321,1,{type: 'facebook', platform: common.platform(req)});
 
 
                         });
@@ -786,7 +786,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
                             res.send(secureUser);
 
-                            common.statsMix(req.authorization.userId, 4320,1,{type: 'facebook', platform: common.platform(req)});
+                            //common.statsMix(req.authorization.userId, 4320,1,{type: 'facebook', platform: common.platform(req)});
 
 
                         });
