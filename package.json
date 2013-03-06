@@ -20,9 +20,6 @@
     "jade": "*",
     "stylus": "*",
     "underscore": "*",
-    "nodetime": "*",
-    "timekit": "*",
-    "v8tools": "*",
     "nodefly": "stable"
 
   }
