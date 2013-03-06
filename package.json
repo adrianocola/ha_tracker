@@ -19,7 +19,11 @@
     "redis-url": "0.1.x",
     "jade": "*",
     "stylus": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "nodetime": "*",
+    "timekit": "*",
+    "v8tools": "*",
+    "nodefly": "stable"
 
   }
 }

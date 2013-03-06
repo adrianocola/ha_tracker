@@ -1,3 +1,20 @@
+if(process.env.NODETIME_ACCOUNT_KEY) {
+    require('nodetime').profile({
+        accountKey: process.env.NODETIME_ACCOUNT_KEY,
+        appName: 'HATracker' // optional
+    });
+}
+
+if(process.env.NODEFLY_APPLICATION_KEY){
+    require('nodefly').profile(
+        process.env.NODEFLY_APPLICATION_KEY,
+        ['HATracker','Heroku']
+    );
+}
+
+
+
+
 var express = require('express')
   , http = require('http')
   , env = require('./conf/env')
