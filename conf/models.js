@@ -73,7 +73,7 @@ var ACL_Plugin = function(schema, options) {
     // if the current requet can access the object
     schema.pre('init', function(next, obj, opt){
 
-        if(opt.options.userId){
+        if(opt && opt.options.userId){
 
             //if is the master user or the object doesn't have ACL
             if(opt.options.userId == 'MASTER' || !obj.ACL){
