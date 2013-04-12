@@ -17,7 +17,7 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res, next){
     }
 
 
-    models.Player.findOne({user: req.authorization.userId}, {},common.userId(req.authorization.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId}, {}, function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -49,7 +49,7 @@ app.post('/api/enemies', common.verifyAuthorization, function(req,res, next){
 
         player.enemies.push(enemy);
 
-        player.save(common.userId(req.authorization.userId),function(err){
+        player.save(function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -78,7 +78,7 @@ app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res, next){
         return;
     }
 
-    models.Player.findOne({user: req.authorization.userId}, {},common.userId(req.authorization.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId}, {}, function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -101,7 +101,7 @@ app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res, next){
         var enemy = player.enemies.id(req.params.id);
         enemy.name = req.body.name;
 
-        player.save(common.userId(req.authorization.userId),function(err){
+        player.save(function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -119,7 +119,7 @@ app.put('/api/enemies/:id', common.verifyAuthorization, function(req,res, next){
 
 app.delete('/api/enemies/:id', common.verifyAuthorization, function(req, res, next){
 
-    models.Player.findOne({user: req.authorization.userId},{},common.userId(req.authorization.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId},{}, function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -164,7 +164,7 @@ app.delete('/api/enemies/:id', common.verifyAuthorization, function(req, res, ne
             }
         });
 
-        player.save(common.userId(req.authorization.userId),function(err){
+        player.save(function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));

@@ -7,7 +7,7 @@ var common = require('./common.js');
 
 function performAnalysis(req, res, next){
 
-    models.Player.find({},{}, common.userId('MASTER'), function(err, players){
+    models.Player.find({},{},  function(err, players){
 
         if(err){
             next(new app.UnexpectedError(err));

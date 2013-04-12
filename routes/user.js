@@ -111,7 +111,7 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next)
     }
 
 
-    models.User.findById(req.authorization.userId,{}, common.userId('MASTER'), function(err,user){
+    models.User.findById(req.authorization.userId,{},  function(err,user){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -129,7 +129,7 @@ app.get('/api/user/logout', common.verifyAuthorization, function(req, res, next)
             user.facebook.accessToken = undefined;
             user.facebook.expiresIn = undefined;
 
-            user.save(common.userId('MASTER'),function(err){
+            user.save(function(err){
 
                 if(err){
                     next(new app.UnexpectedError(err));
@@ -167,7 +167,7 @@ app.get('/api/user/get_username', function(req,res,next){
         return;
     }
 
-    models.User.findOne({email: req.query.email.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
+    models.User.findOne({email: req.query.email.toLowerCase()},{},  function(err,user){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -206,7 +206,7 @@ app.get('/api/user/login', function(req,res,next){
             return;
         }
 
-        models.User.findOne({username: req.query.username.toLowerCase()},{}, common.userId('MASTER'), function(err,user){
+        models.User.findOne({username: req.query.username.toLowerCase()},{},  function(err,user){
 
 
             if(err){
@@ -284,7 +284,7 @@ app.get('/api/user/login', function(req,res,next){
 app.get('/api/user/continue_login', function(req,res,next){
 
     if(req.authorization){
-        models.User.findById(req.authorization.userId,{}, common.userId(req.authorization.userId), function(err,user){
+        models.User.findById(req.authorization.userId,{},  function(err,user){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -323,7 +323,7 @@ app.get('/api/user/continue_login', function(req,res,next){
                 return;
             }
 
-            models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
+            models.User.findById(value,{},  function(err,user){
 
                 if(err){
                     next(new app.UnexpectedError(err));
@@ -399,7 +399,7 @@ app.post("/api/user/signup", function(req, res, next){
     //player.addACL(user._id,true,true);
 
     //save user
-    user.save( common.userId('MASTER'),function(err){
+    user.save( function(err){
 
         if(err){
             console.log(err);
@@ -414,7 +414,7 @@ app.post("/api/user/signup", function(req, res, next){
         }
 
         //save player
-        player.save(common.userId('MASTER'),function(err){
+        player.save(function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -455,7 +455,7 @@ app.put("/api/user/change_password",common.verifyAuthorization, function(req, re
             return;
         }
 
-        models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
+        models.User.findById(req.authorization.userId,{},function(err, user){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -469,7 +469,7 @@ app.put("/api/user/change_password",common.verifyAuthorization, function(req, re
 
             user.password = req.body.new_password;
 
-            user.save(common.userId(req.authorization.userId),function(err){
+            user.save(function(err){
 
                 if(err){
                     next(new app.UnexpectedError(err));
@@ -494,7 +494,7 @@ app.post("/api/user/forgot_password", function(req, res, next){
 
 
 
-    models.User.findOne({"email": req.body.email},{}, common.userId('MASTER'), function(err,user){
+    models.User.findOne({"email": req.body.email},{},  function(err,user){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -529,7 +529,7 @@ app.post("/api/user/forgot_password", function(req, res, next){
                 //set the user with the confirmation number
                 user.reset_password = confirmation;
 
-                user.save(common.userId(user._id),function(err){
+                user.save(function(err){
 
                     if(err){
                         next(new app.UnexpectedError(err));
@@ -591,7 +591,7 @@ app.get("/api/user/reset_password_username", function(req, res, next){
         }
 
 
-        models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
+        models.User.findById(value,{},  function(err,user){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -637,7 +637,7 @@ app.put("/api/user/reset_password", function(req, res, next){
             return;
         }
 
-        models.User.findById(value,{}, common.userId('MASTER'), function(err,user){
+        models.User.findById(value,{},  function(err,user){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -657,7 +657,7 @@ app.put("/api/user/reset_password", function(req, res, next){
             user.password = req.body.password;
             delete user.reset_password;
 
-            user.save(common.userId(user._id),function(err){
+            user.save(function(err){
 
                 if(err){
                     next(new app.UnexpectedError(err));
@@ -682,7 +682,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 
     var fb_login = function(){
 
-        models.User.findOne({"facebook.userID": req.query.userID},{}, common.userId('MASTER'), function(err,user){
+        models.User.findOne({"facebook.userID": req.query.userID},{},  function(err,user){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -720,7 +720,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
                     user.facebook.accessToken = req.query.accessToken;
                     user.facebook.expiresIn = req.query.expiresIn;
 
-                    user.save(common.userId('MASTER'),function(err){
+                    user.save(function(err){
 
                         if(err){
                             next(new app.UnexpectedError(err));
@@ -763,14 +763,14 @@ app.get("/api/user/login-facebook", function(req, res, next){
                 player.user = user;
                 //player.addACL(user._id,true,true);
 
-                user.save( common.userId('MASTER'),function(err){
+                user.save( function(err){
 
                     if(err){
                         next(new app.UnexpectedError(err));
                         return;
                     }
 
-                    player.save( common.userId('MASTER'),function(err){
+                    player.save( function(err){
 
                         if(err){
                             next(new app.UnexpectedError(err));
@@ -854,7 +854,7 @@ app.get("/api/user/login-facebook", function(req, res, next){
 app.delete('/api/user/delete',common.verifyAuthorization, function(req, res, next){
 
 
-    models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
+    models.User.findById(req.authorization.userId,{},function(err, user){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -904,7 +904,7 @@ app.delete('/api/user/delete',common.verifyAuthorization, function(req, res, nex
 
 app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next){
 
-    models.User.findById(req.authorization.userId,{},common.userId(req.authorization.userId),function(err, user){
+    models.User.findById(req.authorization.userId,{},function(err, user){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -917,7 +917,7 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
         }
 
 
-        models.Player.findOne({user: req.authorization.userId},{},common.userId(req.authorization.userId),function(err, player){
+        models.Player.findOne({user: req.authorization.userId},{},function(err, player){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -939,7 +939,7 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
                 user.player = player;
 
                 //save user
-                user.save( common.userId('MASTER'),function(err){
+                user.save( function(err){
 
                     if(err){
 
@@ -954,7 +954,7 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
                     }
 
                     //save player
-                    player.save(common.userId('MASTER'),function(err){
+                    player.save(function(err){
 
                         if(err){
                             next(new app.UnexpectedError(err));

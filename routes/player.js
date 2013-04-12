@@ -5,7 +5,7 @@ var common = require('./common.js');
 
 app.get('/api/players/:id', common.verifyAuthorization ,function(req, res, next){
 
-    models.Player.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err, player){
+    models.Player.findById(req.params.id,{},  function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -33,7 +33,7 @@ app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
     }
 
 
-    models.Player.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err, player){
+    models.Player.findById(req.params.id,{},  function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -62,7 +62,7 @@ app.put('/api/players/:id', common.verifyAuthorization ,function(req, res, next)
         }
 
 
-        player.save(common.userId(req.authorization.userId),function(err){
+        player.save(function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));

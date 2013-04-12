@@ -8,7 +8,7 @@ var env = require('../conf/env.js');
 
 app.get('/api/gamenotemanager/:id/notes', common.verifyAuthorization,function(req, res, next){
 
-    models.GameNoteManager.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err,gameNoteManager){
+    models.GameNoteManager.findById(req.params.id,{},  function(err,gameNoteManager){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -36,7 +36,7 @@ app.post('/api/gamenotemanager/:manager/notes', common.verifyAuthorization, func
         return;
     }
 
-    models.GameNoteManager.findById(req.params.manager,{}, common.userId(req.authorization.userId), function(err, gameNoteManager){
+    models.GameNoteManager.findById(req.params.manager,{},  function(err, gameNoteManager){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -53,7 +53,7 @@ app.post('/api/gamenotemanager/:manager/notes', common.verifyAuthorization, func
 
         gameNoteManager.notes.push(note);
 
-        gameNoteManager.save(common.userId(req.authorization.userId), function(err){
+        gameNoteManager.save( function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -74,7 +74,7 @@ app.post('/api/gamenotemanager/:manager/notes', common.verifyAuthorization, func
 //        return;
 //    }
 //
-//    models.GameNoteManager.findById(req.params.manager,{}, common.userId(req.authorization.userId), function(err, gameNoteManager){
+//    models.GameNoteManager.findById(req.params.manager,{},  function(err, gameNoteManager){
 //
 //        if(err){
 //            next(new app.UnexpectedError(err));
@@ -90,7 +90,7 @@ app.post('/api/gamenotemanager/:manager/notes', common.verifyAuthorization, func
 //
 //        note.note = req.body.note;
 //
-//        gameNoteManager.save(common.userId(req.authorization.userId), function(err){
+//        gameNoteManager.save( function(err){
 //
 //            if(err){
 //                next(new app.UnexpectedError(err));
@@ -107,7 +107,7 @@ app.post('/api/gamenotemanager/:manager/notes', common.verifyAuthorization, func
 app.delete('/api/gamenotemanager/:manager/notes/:id', common.verifyAuthorization, function(req, res, next){
 
 
-    models.GameNoteManager.findById(req.params.manager,{}, common.userId(req.authorization.userId), function(err, gameNoteManager){
+    models.GameNoteManager.findById(req.params.manager,{},  function(err, gameNoteManager){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -123,7 +123,7 @@ app.delete('/api/gamenotemanager/:manager/notes/:id', common.verifyAuthorization
 
         note.remove();
 
-        gameNoteManager.save(common.userId(req.authorization.userId), function(err){
+        gameNoteManager.save( function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));

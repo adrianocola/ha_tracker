@@ -7,7 +7,7 @@ var common = require('./common.js');
 
 app.get('/api/itemmanager/:id/items', common.verifyAuthorization,function(req, res, next){
 
-    models.ItemManager.findById(req.params.id,{}, common.userId(req.authorization.userId), function(err,itemManager){
+    models.ItemManager.findById(req.params.id,{},  function(err,itemManager){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -35,7 +35,7 @@ app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, funct
         return;
     }
 
-    models.ItemManager.findById(req.params.manager,{}, common.userId(req.authorization.userId), function(err, itemManager){
+    models.ItemManager.findById(req.params.manager,{},  function(err, itemManager){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -51,7 +51,7 @@ app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, funct
 
         item.itemCount = req.body.itemCount;
 
-        itemManager.save(common.userId(req.authorization.userId), function(err){
+        itemManager.save( function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));

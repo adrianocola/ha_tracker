@@ -20,7 +20,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
     }
 
 
-    models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId},{},  function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -61,7 +61,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
                 //playerItemManager.addACL(req.authorization.userId,true,true);
 
-                playerItemManager.save(common.userId(req.authorization.userId),function(err){
+                playerItemManager.save(function(err){
                     if(err) console.log(err);
                 });
 
@@ -86,7 +86,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
                 //enemyItemManager.addACL(req.authorization.userId,true,true);
 
-                enemyItemManager.save(common.userId(req.authorization.userId),function(err){
+                enemyItemManager.save(function(err){
                     if(err) console.log(err);
                 });
 
@@ -99,7 +99,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
         var gameNotes = new models.GameNoteManager();
         //gameNotes.addACL(req.authorization.userId,true,true);
 
-        gameNotes.save(common.userId(req.authorization.userId),function(err){
+        gameNotes.save(function(err){
             if(err) console.log(err);
         });
 
@@ -107,7 +107,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
         enemy.games.push(game);
 
-        player.save(common.userId(req.authorization.userId),function(err){
+        player.save(function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -134,7 +134,7 @@ app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(re
         return;
     }
 
-    models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId},{},  function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -150,7 +150,7 @@ app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(re
 
         game.state = req.body.state;
 
-        player.save(common.userId(req.authorization.userId), function(err){
+        player.save( function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -169,7 +169,7 @@ app.put('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(re
 
 app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function(req, res, next){
 
-    models.Player.findOne({user: req.authorization.userId},{}, common.userId(req.authorization.userId), function(err, player){
+    models.Player.findOne({user: req.authorization.userId},{},  function(err, player){
 
         if(err){
             next(new app.UnexpectedError(err));
@@ -193,7 +193,7 @@ app.delete('/api/enemies/:enemy/games/:id', common.verifyAuthorization, function
 
         game.remove();
 
-        player.save(common.userId(req.authorization.userId), function(err){
+        player.save( function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));

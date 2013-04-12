@@ -8,10 +8,10 @@ var u = require('underscore');
 
 app.get('/api/random', function(req, res, next){
 
-    models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
+    models.User.findById(env.secrets.test_user_id,{},function(err, user){
 
 
-        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
+        models.Player.findById(user.player,{},  function(err, player){
 
             var random = Math.floor((Math.random()*100)+1);
 
@@ -27,7 +27,7 @@ app.get('/api/random', function(req, res, next){
 
                 player.enemies.push(enemy);
 
-                player.save(common.userId('MASTER'),function(err){
+                player.save(function(err){
 
                     if(err){
                         next(new app.UnexpectedError(err));
@@ -62,7 +62,7 @@ app.get('/api/random', function(req, res, next){
                 var gameNotes = new models.GameNoteManager();
                 gameNotes.addACL(env.secrets.test_user_id,true,true);
 
-                gameNotes.save(common.userId('MASTER'),function(err){
+                gameNotes.save(function(err){
                     if(err) console.log(err);
                 });
 
@@ -85,7 +85,7 @@ app.get('/api/random', function(req, res, next){
 
                         playerItemManager.addACL(env.secrets.test_user_id,true,true);
 
-                        playerItemManager.save(common.userId('MASTER'),function(err){
+                        playerItemManager.save(function(err){
                             if(err) console.log(err);
                         });
 
@@ -110,7 +110,7 @@ app.get('/api/random', function(req, res, next){
 
                         enemyItemManager.addACL(env.secrets.test_user_id,true,true);
 
-                        enemyItemManager.save(common.userId('MASTER'),function(err){
+                        enemyItemManager.save(function(err){
                             if(err) console.log(err);
                         });
 
@@ -126,7 +126,7 @@ app.get('/api/random', function(req, res, next){
                 enemy.games.push(game);
 
 
-                player.save(common.userId('MASTER'),function(err){
+                player.save(function(err){
 
                     if(err){
                         next(new app.UnexpectedError(err));
@@ -151,10 +151,10 @@ app.get('/api/random', function(req, res, next){
 
 app.get('/api/prepare-random-item2', function(req, res, next){
 
-    models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
+    models.User.findById(env.secrets.test_user_id,{},function(err, user){
 
 
-        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
+        models.Player.findById(user.player,{},  function(err, player){
 
 
             ids = [];
@@ -183,7 +183,7 @@ app.get('/api/random-item2', function(req, res, next){
 
     var itemId = ids[itemIdIndex];
 
-    models.ItemManager.findById(itemId,{}, common.userId('MASTER'), function(err, itemManager){
+    models.ItemManager.findById(itemId,{},  function(err, itemManager){
 
         var itemIndex = Math.floor((Math.random()*1000000)+1)%itemManager.items.length;
 
@@ -191,7 +191,7 @@ app.get('/api/random-item2', function(req, res, next){
 
         item.itemCount = item.itemCount == 0 ? 1 : 0;
 
-        itemManager.save(common.userId('MASTER'), function(err){
+        itemManager.save( function(err){
 
             if(err){
                 next(new app.UnexpectedError(err));
@@ -211,10 +211,10 @@ app.get('/api/random-item2', function(req, res, next){
 
 app.get('/api/random-item', function(req, res, next){
 
-    models.User.findById(env.secrets.test_user_id,{},common.userId('MASTER'),function(err, user){
+    models.User.findById(env.secrets.test_user_id,{},function(err, user){
 
 
-        models.Player.findById(user.player,{}, common.userId('MASTER'), function(err, player){
+        models.Player.findById(user.player,{},  function(err, player){
 
 
             var enemyIndex = -1;
@@ -255,7 +255,7 @@ app.get('/api/random-item', function(req, res, next){
                 itemsId = game.enemyItems;
             }
 
-            models.ItemManager.findById(itemsId,{}, common.userId('MASTER'), function(err, itemManager){
+            models.ItemManager.findById(itemsId,{},  function(err, itemManager){
 
                 if(err){
                     next(new app.UnexpectedError(err));
@@ -273,7 +273,7 @@ app.get('/api/random-item', function(req, res, next){
 
                 item.itemCount = item.itemCount == 0 ? 1 : 0;
 
-                itemManager.save(common.userId('MASTER'), function(err){
+                itemManager.save( function(err){
 
                     if(err){
                         next(new app.UnexpectedError(err));
@@ -301,7 +301,7 @@ app.get('/api/random-item', function(req, res, next){
 
 app.get('/api/notesCount',function(req, res, next){
 
-    models.GameNoteManager.find({},{}, common.userId('MASTER'), function(err,noteManagers){
+    models.GameNoteManager.find({},{},  function(err,noteManagers){
 
         var qtd = 0;
 
