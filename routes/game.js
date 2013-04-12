@@ -59,7 +59,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
                 },this);
 
-                playerItemManager.addACL(req.authorization.userId,true,true);
+                //playerItemManager.addACL(req.authorization.userId,true,true);
 
                 playerItemManager.save(common.userId(req.authorization.userId),function(err){
                     if(err) console.log(err);
@@ -84,7 +84,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
                 },this);
 
-                enemyItemManager.addACL(req.authorization.userId,true,true);
+                //enemyItemManager.addACL(req.authorization.userId,true,true);
 
                 enemyItemManager.save(common.userId(req.authorization.userId),function(err){
                     if(err) console.log(err);
@@ -97,7 +97,7 @@ app.post('/api/enemies/:enemy/games', common.verifyAuthorization, function(req, 
 
         //create game notes
         var gameNotes = new models.GameNoteManager();
-        gameNotes.addACL(req.authorization.userId,true,true);
+        //gameNotes.addACL(req.authorization.userId,true,true);
 
         gameNotes.save(common.userId(req.authorization.userId),function(err){
             if(err) console.log(err);

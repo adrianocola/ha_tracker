@@ -393,10 +393,10 @@ app.post("/api/user/signup", function(req, res, next){
     user.password = req.body.password;
     user.email = req.body.email;
     user.player = player;
-    user.addACL(user._id,true,true);
+    //user.addACL(user._id,true,true);
 
     player.user = user;
-    player.addACL(user._id,true,true);
+    //player.addACL(user._id,true,true);
 
     //save user
     user.save( common.userId('MASTER'),function(err){
@@ -758,10 +758,10 @@ app.get("/api/user/login-facebook", function(req, res, next){
                 user.facebook.accessToken = req.query.accessToken;
                 user.facebook.expiresIn = req.query.expiresIn;
                 user.player = player;
-                user.addACL(user._id,true,true);
+                //user.addACL(user._id,true,true);
 
                 player.user = user;
-                player.addACL(user._id,true,true);
+                //player.addACL(user._id,true,true);
 
                 user.save( common.userId('MASTER'),function(err){
 
@@ -934,7 +934,7 @@ app.delete('/api/user/reset',common.verifyAuthorization, function(req, res, next
 
                 var player = new models.Player();
                 player.user = user;
-                player.addACL(user._id,true,true);
+                //player.addACL(user._id,true,true);
 
                 user.player = player;
 

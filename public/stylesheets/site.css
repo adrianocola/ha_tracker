@@ -371,6 +371,14 @@ div.github,
 div.ref {
   margin-top: 10px;
 }
+div.github {
+  display: inline-block;
+}
+div.guide {
+  display: inline-block;
+  float: right;
+  margin-top: 10px;
+}
 div#forgot-password-panel {
   position: absolute;
   top: 30%;

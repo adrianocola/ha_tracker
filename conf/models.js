@@ -69,8 +69,8 @@ var ACL_Plugin = function(schema, options) {
 
     })
 
-    //ACL init middleware, executed when a model is loaded form the DB. Checks
-    // if the current requet can access the object
+    //ACL init middleware, executed when a model is loaded from the DB. Checks
+    // if the current request can access the object
     schema.pre('init', function(next, obj, opt){
 
         if(opt && opt.options.userId){
@@ -142,7 +142,7 @@ var ItemSchema = new Schema({
 var ItemManagerSchema = new Schema({
     items: [ItemSchema]
 },{ strict: true });
-ItemManagerSchema.plugin(ACL_Plugin);
+//ItemManagerSchema.plugin(ACL_Plugin);
 ItemManagerSchema.plugin(Date_Plugin);
 
 var GameNoteSchema = new Schema({
@@ -153,7 +153,7 @@ var GameNoteSchema = new Schema({
 var GameNoteManagerSchema = new Schema({
     notes: [GameNoteSchema]
 },{ strict: true });
-GameNoteManagerSchema.plugin(ACL_Plugin);
+//GameNoteManagerSchema.plugin(ACL_Plugin);
 GameNoteManagerSchema.plugin(Date_Plugin);
 
 var GameSchema = new Schema({
@@ -195,7 +195,7 @@ var PlayerSchema = new Schema({
     percentageType: {type: Number, default: 0},
     enemies: [EnemySchema]
 },{ strict: true });
-PlayerSchema.plugin(ACL_Plugin);
+//PlayerSchema.plugin(ACL_Plugin);
 PlayerSchema.plugin(Date_Plugin);
 
 //if asked to remove the player, remove the games
@@ -243,7 +243,7 @@ var UserSchema = new Schema({
     player:{ type: Schema.ObjectId, ref: 'Player', required: true, index: {unique: true}}
 },{ strict: true });
 UserSchema.plugin(Date_Plugin);
-UserSchema.plugin(ACL_Plugin);
+//UserSchema.plugin(ACL_Plugin);
 //if removing the user, remove the player
 UserSchema.pre('remove',function(next){
 

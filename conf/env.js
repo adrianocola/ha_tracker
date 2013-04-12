@@ -1,6 +1,6 @@
 var env = module.exports = {
     node_env: process.env.NODE_ENV || 'development',
-    port: parseInt(process.env.PORT) || 3000,
+    port: parseInt(process.env.PORT) || 5001,
     mongo_url: process.env.MONGOLAB_URI || 'mongodb://localhost/ha_tracker',
     redis_url: process.env.REDISTOGO_URL || 'redis://localhost:6379/',
     nodetime_key: process.env.NODETIME_ACCOUNT_KEY
