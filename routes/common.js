@@ -68,44 +68,44 @@ exports.platform = function(req){
 
 
 
-//exports.statsMix = function(user_id, metric_id, value, meta){
-//
-//    if(env.development){
-//        return;
-//    }
-//
-//    //ignore test user so it not report to statsMix
-//    if(user_id == env.secrets.test_user_id){
-//        return;
-//    }
-//
-//
-//    var date = new Date();
-//
-//    var dateStr = date.getUTCFullYear() + "-" + (date.getUTCMonth()+1) + "-" + date.getUTCDate() + " " + date.getUTCHours() + ":" + date.getUTCMinutes() + ":" + date.getUTCSeconds();
-//
-//    var data = "value=" + value + "&profile_id=4066&metric_id=" + metric_id + "&generated_at=" + dateStr + (meta? "&meta=" + JSON.stringify(meta) :"");
-//
-//    var options = {
-//        host: 'api.statsmix.com',
-//        port: 80,
-//        path: '/api/v2/stats',
-//        method: 'POST',
-//        headers: {'X-StatsMix-Token': env.secrets.statsmix_key , 'Content-Length': data.length}
-//    };
-//
-//    var request = http.request(options);
-//
-//    request.on('error', function(e) {
-//        console.log('Statsmix error: ' + e.message);
-//    });
-//
-//    request.write(data);
-//
-//
-//    request.end();
-//
-//};
+exports.statsMix = function(user_id, metric_id, value, meta){
+
+    if(env.development){
+        return;
+    }
+
+    //ignore test user so it not report to statsMix
+    if(user_id == env.secrets.test_user_id){
+        return;
+    }
+
+
+    var date = new Date();
+
+    var dateStr = date.getUTCFullYear() + "-" + (date.getUTCMonth()+1) + "-" + date.getUTCDate() + " " + date.getUTCHours() + ":" + date.getUTCMinutes() + ":" + date.getUTCSeconds();
+
+    var data = "value=" + value + "&profile_id=4066&metric_id=" + metric_id + "&generated_at=" + dateStr + (meta? "&meta=" + JSON.stringify(meta) :"");
+
+    var options = {
+        host: 'api.statsmix.com',
+        port: 80,
+        path: '/api/v2/stats',
+        method: 'POST',
+        headers: {'X-StatsMix-Token': env.secrets.statsmix_key , 'Content-Length': data.length}
+    };
+
+    var request = http.request(options);
+
+    request.on('error', function(e) {
+        console.log('Statsmix error: ' + e.message);
+    });
+
+    request.write(data);
+
+
+    request.end();
+
+};
 
 
 

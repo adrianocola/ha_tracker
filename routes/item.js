@@ -60,7 +60,7 @@ app.put('/api/itemmanager/:manager/items/:id', common.verifyAuthorization, funct
 
             res.send(item);
 
-            //common.statsMix(req.authorization.userId, 4322,1,{item: consts.Items[item.itemId].itemName});
+            common.statsMix(req.authorization.userId, 4322,1,{item: consts.Items[item.itemId].itemName});
         });
 
     });
