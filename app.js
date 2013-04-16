@@ -1,10 +1,10 @@
 
-if(process.env.NODEFLY_APPLICATION_KEY){
+/*if(process.env.NODEFLY_APPLICATION_KEY){
     require('nodefly').profile(
         process.env.NODEFLY_APPLICATION_KEY,
         ['HATracker','Heroku']
     );
-}
+}*/
 
 
 
