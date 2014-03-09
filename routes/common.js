@@ -70,6 +70,10 @@ exports.platform = function(req){
 
 exports.statsMix = function(user_id, metric_id, value, meta){
 
+    //not using statsmix anymore...
+    return;
+
+
     if(env.development){
         return;
     }
@@ -78,7 +82,6 @@ exports.statsMix = function(user_id, metric_id, value, meta){
     if(user_id == env.secrets.test_user_id){
         return;
     }
-
 
     var date = new Date();
 
