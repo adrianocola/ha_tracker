@@ -10,17 +10,17 @@
     "npm":  "1.x"
     },
   "dependencies": {
-    "express": "3.x",
-    "mongoose": "3.x",
+    "express": "3.5.0",
+    "mongoose": "3.8.8",
     "debug": "0.7.0",
-    "nodemailer": "0.3.x",
-    "connect-redis": "1.4.x",
-    "hiredis": "0.1.x",
-    "redis-url": "0.1.x",
-    "jade": "*",
-    "stylus": "*",
-    "underscore": "*",
-    "nodefly": "stable"
+    "nodemailer": "0.3.44",
+    "connect-redis": "1.4.7",
+    "hiredis": "0.1.16",
+    "redis-url": "0.1.0",
+    "jade": "1.3.0",
+    "stylus": "0.42.3",
+    "underscore": "1.6.0",
+    "nodefly": "0.1.46"
 
   }
 }
